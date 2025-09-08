@@ -1,0 +1,42 @@
+services:
+  front-app:
+    build:
+      context: .
+      dockerfile: .devcontainer/frontend/Dockerfile
+    container_name: front-app
+    ports:
+      - "3000:3000"
+    tty: true
+    environment:
+      NODE_ENV: "production"
+    healthcheck:
+      test: ['CMD-SHELL', 'node -e "fetch(\"http://localhost:3000\").then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  back-server:
+    build:
+      context: .
+      dockerfile: .devcontainer/backend/Dockerfile
+    container_name: back-server
+    ports:
+      - "5000:5000"
+    tty: true
+    restart: unless-stopped
+
+  postgre_db:
+    image: postgres:16-alpine
+    container_name: postgre_db
+    volumes:
+      - ./backend/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      # 仮設定
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    tty: true
+    restart: unless-stopped

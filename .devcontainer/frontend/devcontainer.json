@@ -1,0 +1,23 @@
+{
+    "name": "front-app",
+    "dockerComposeFile": ["../../compose.yaml", "../../compose.dev.yaml"],
+    "service": "front-app",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+        // 仮想マシンにインストールするVSCodeの拡張機能
+            "extensions": [
+            "dbaeumer.vscode-eslint",                    // ESLint
+            "esbenp.prettier-vscode",                    // Prettier
+            "bradlc.vscode-tailwindcss",                 // Tailwind CSS IntelliSense
+            "dsznajder.es7-react-js-snippets",           // React/Redux Snippets
+            "editorconfig.editorconfig",                 // EditorConfig
+            "eamodio.gitlens",                           // GitLens
+            "streetsidesoftware.code-spell-checker",     // 英文スペルチェック
+            "formulahendry.auto-rename-tag",             // タグ名の自動リネーム
+            "styled-components.vscode-styled-components",// styled-components 用シンタックス
+            "yoavbls.pretty-ts-errors"                   // TypeScript エラーメッセージ改善
+            ]
+        }
+    }
+}

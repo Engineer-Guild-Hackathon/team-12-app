@@ -1,0 +1,19 @@
+{
+    "name": "back-server",
+    "dockerComposeFile": ["../../compose.yaml", "../../compose.dev.yaml"],
+    "service": "back-server",
+    "workspaceFolder": "/backend/src",
+    "customizations": {
+        "vscode": {
+        // 仮想マシンにインストールするVSCodeの拡張機能
+            "extensions": [
+            "ms-python.python",
+            "oderwat.indent-rainbow",
+            "ms-ceintl.vscode-language-pack-ja",
+            "ms-python.black-formatter",
+            "samuelcolvin.jinjahtml",
+            "tamasefe.even-better-toml"
+            ]
+        }
+    }
+}

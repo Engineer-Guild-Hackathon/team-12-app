@@ -1,0 +1,21 @@
+services:
+  front-app:
+    environment:
+      NODE_ENV: "development"
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./frontend/nextjs-project:/app:delegated
+      - web-node-modules:/app/node_modules
+    # 後で適宜修正
+    # command: sh -c "if [ -f pnpm-lock.yaml ]; then corepack enable && pnpm i; pnpm dev; \
+    #                 elif [ -f yarn.lock ]; then yarn; yarn dev; \
+    #                 else npm i; npm run dev; fi"
+  back-server:
+    environment:
+      - FLASK_ENV=development
+    volumes:
+      - ./backend/src:/src
+
+volumes:
+  web-node-modules:

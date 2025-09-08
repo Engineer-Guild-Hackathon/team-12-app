@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+authors = ["Tomopu <https://github.com/Tomopu>"]
+description = ""
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3.1.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.2"
+mypy = "^1.10.1"
+ipykernel = "^6.29.5"
+pytest = "^8.2.2"
+pytest-clarity = "^1.0.1"
+code2flow = "^2.5.1"
+requests = "^2.32.3"
+mojimoji = "^0.0.13"
+
+[tool.poetry.group.doc.dependencies]
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.6.3"
+
+[tool.ruff]
+lint.ignore = ["E501"]
+lint.select = ["C9", "E", "F", "W", "I"]
+line-length = 120
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.packages]]
+include = "backend"
