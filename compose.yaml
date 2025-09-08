@@ -1,8 +1,5 @@
 services:
   front-app:
-    build:
-      context: .
-      dockerfile: .devcontainer/frontend/Dockerfile
     container_name: front-app
     ports:
       - "3000:3000"
