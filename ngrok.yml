@@ -1,0 +1,7 @@
+version: "2"
+
+tunnels:
+  front-app:
+    proto: http
+    addr: front-app:3000
+    host_header: rewrite
