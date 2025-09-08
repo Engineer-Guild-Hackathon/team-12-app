@@ -35,6 +35,7 @@ import Image from "next/image";
   height={600}
   priority={true} // 重要な画像の場合
 />;
+```
 
 ### Modal
 
