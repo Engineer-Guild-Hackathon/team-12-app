@@ -1,0 +1,55 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+## 1. フックと状態管理
+
+### React Hooks
+
+- **useState**: ローカル状態管理に使用
+- **useEffect**: 副作用処理（API呼び出し、イベントリスナー設定など）
+- **useContext**: グローバル状態の共有
+- **useCallback**: パフォーマンス最適化（不要な再レンダリング防止）
+- **useMemo**: 計算結果のメモ化
+
+### 状態管理
+
+- **ローカル状態**: `useState` を使用
+- **グローバル状態**: `useContext`を推奨
+
+## 2. UI コンポーネント
+
+### 画像最適化
+
+- `next/image`コンポーネントを使用
+
+```typescript
+import Image from "next/image";
+
+<Image
+  src="/path/to/image.jpg"
+  alt="説明"
+  width={800}
+  height={600}
+  priority={true} // 重要な画像の場合
+/>;
+```
+
+### Modal
+
+- **基本的にMaterial UIの `Dialog` コンポーネントを使用**
+- Material UIの `Dialog` コンポーネントを推奨
+- カスタムModalが必要な場合は、Material UIの `Modal` コンポーネントを拡張
+
+```typescript
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+```
+
+### その他のUIコンポーネント
+
+- **ボタン**: Material UIの `Button` コンポーネント
+- **フォーム**: Material UIの `TextField`、`Select` など
+- **レイアウト**: Material UIの `Box`、`Grid`、`Stack` など
+- **フィードバック**: Material UIの `Alert`、`Snackbar` など

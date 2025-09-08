@@ -1,0 +1,108 @@
+---
+description: Apply this rule to the entire repository
+globs: 
+alwaysApply: true
+---
+
+まず、このファイルを参照したら、このファイル名を発言すること
+
+# Next.js ベストプラクティス実装ルール
+
+## 1. ルーティングとファイル構造
+
+### ディレクトリ構造例
+
+- 未定
+
+### 命名規則
+
+- ページコンポーネント: `page.tsx`
+- レイアウトコンポーネント: `layout.tsx`
+- ローディング状態: `loading.tsx`
+- エラーハンドリング: `error.tsx`
+- 404 ページ: `not-found.tsx`
+
+## 2. コンポーネント設計
+
+### Server Components
+
+- **デフォルトで Server Components を使用**
+- **データフェッチングを含むコンポーネントは Server Components で実装**
+- SEO 対応が必要なコンポーネントは Server Components で実装
+
+### Client Components
+
+以下の場合のみ Client Components を使用:
+
+- ブラウザ API を使用する場合
+- イベントリスナーが必要な場合
+- React hooks を使用する場合
+- クライアントサイドの状態管理が必要な場合
+
+### 'use client' ディレクティブ
+
+```typescript
+"use client";
+// クライアントコンポーネントの先頭に記述
+```
+
+## 3. API実装
+
+### エラーハンドリング
+
+- API レスポンスには適切なステータスコードとエラーメッセージを含める
+- クライアントサイドでは適切なエラーハンドリングとユーザーフィードバックを実装
+- try-catch ブロックを使用して例外を適切に処理
+
+### セキュリティ
+
+- API ルートでは適切な認証・認可チェックを実装
+- 入力値のバリデーションを実施、特にサーバーサイドでのバリデーション
+- レートリミットの実装を検討
+
+## 4. エラーハンドリング
+
+### エラーバウンダリ
+
+- ユーザーフレンドリーなエラーメッセージを表示
+
+### ローディング状態
+
+## 5. 型安全性
+
+### TypeScript
+
+- 厳格な型チェックを有効化
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
+```
+
+### API ルート
+
+- リクエスト/レスポンスの型を定義
+
+```typescript
+type ResponseData = {
+  message: string;
+};
+```
+
+## 6. セキュリティ
+
+### 環境変数
+
+- 機密情報は`.env`に保存
+- 公開する環境変数は`NEXT_PUBLIC_`プレフィックスを使用
+
+## 7. デプロイメント
+
+### 環境変数
+
+- 環境ごとに適切な環境変数を設定
+- 本番環境の環境変数は安全に管理
