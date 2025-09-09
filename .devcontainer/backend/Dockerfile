@@ -25,8 +25,14 @@ COPY .devcontainer/backend/pyproject.toml .devcontainer/backend/poetry.lock /bac
 RUN python -m pip install --upgrade pip && pip install poetry
 RUN pip install gunicorn
 
+ARG POETRY_WITH=""
+ARG POETRY_WITHOUT="doc"
+
 RUN poetry config virtualenvs.create false
-RUN if [ -f pyproject.toml ]; then poetry install --no-interaction --no-ansi --without dev,doc --no-root; fi
+RUN poetry install --no-interaction --no-ansi \
+    $( [ -n "$POETRY_WITH" ] && echo --with "$POETRY_WITH" ) \
+    $( [ -n "$POETRY_WITHOUT" ] && echo --without "$POETRY_WITHOUT" ) \
+    --no-root
 
 COPY backend/src /backend/src
 

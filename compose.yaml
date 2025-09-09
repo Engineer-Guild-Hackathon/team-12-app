@@ -18,6 +18,8 @@ services:
       context: .
       dockerfile: .devcontainer/backend/Dockerfile
     container_name: back-server
+    env_file:
+      - gc.env
     ports:
       - "5000:5000"
     tty: true
