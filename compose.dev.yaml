@@ -12,6 +12,11 @@ services:
       - web-node-modules:/app/node_modules
 
   back-server:
+    build:
+      context: .
+      dockerfile: .devcontainer/backend/Dockerfile
+      args:
+        POETRY_WITH: dev
     environment:
       - FLASK_ENV=development
     volumes:
