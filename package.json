@@ -1,0 +1,18 @@
+{
+    "name": "repo-tooling",
+    "private": true,
+    "devDependencies": {
+        "husky": "^9.1.7",
+        "lint-staged": "^15.5.2",
+        "prettier": "^3.6.2"
+    },
+    "lint-staged": {
+        "frontend/**/*.{js,ts,tsx}": [
+            "eslint --cwd frontend --fix",
+            "prettier --write --ignore-unknown"
+        ]
+    },
+    "scripts": {
+        "prepare": "husky"
+    }
+}

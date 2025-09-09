@@ -106,6 +106,32 @@ docker compose -f compose.yml -f compose.prod.yml down
 ```
 再度、サーバを作成・起動する場合は、「**4. 実行**」から同じ手順を進めてください。
 
+---
 
+## 開発ツールのセットアップ
 
+### Husky、lint-staged、Prettierのインストール
+
+開発時のコード品質を保つため、以下のツールをインストールしてください。
+
+- **依存関係のインストールとHuskyの有効化**
+```bash
+# ルートディレクトリで実行
+npm i -D husky lint-staged prettier
+```
+
+- うまくいかない場合は実行権限を付与
+```bash
+chmod +x node_modules/.bin/lint-staged
+```
+
+#### 動作確認
+- **コミット前の自動チェック**: コミット時に自動でESLintとPrettierが実行されます
+- **フロントエンド**: JavaScript/TypeScriptファイルのリント・フォーマット
+- **バックエンド**: PythonファイルのRuffによるリント・フォーマット
+
+#### 注意事項
+- これらのツールは**ホスト環境**で動作します
+- Dockerコンテナ内では実行されません。gitの操作をするときはコンテナ外で行ってください。
+- 初回コミット時に自動でセットアップされます
 
