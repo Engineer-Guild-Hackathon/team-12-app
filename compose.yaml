@@ -27,13 +27,13 @@ services:
     image: postgres:16-alpine
     container_name: postgre_db
     volumes:
-      - ./backend/data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    environment:
-      # 仮設定
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydatabase
+    env_file:
+      - postgres.env
     tty: true
     restart: unless-stopped
+
+volumes:
+  postgres_data:
