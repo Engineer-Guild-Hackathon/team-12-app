@@ -12,6 +12,14 @@ ENV LANG=ja_JP.UTF-8 \
 
 WORKDIR /backend
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        g++ \
+        python3-dev \
+        pkg-config && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY .devcontainer/backend/pyproject.toml .devcontainer/backend/poetry.lock /backend/
 
 RUN python -m pip install --upgrade pip && pip install poetry
