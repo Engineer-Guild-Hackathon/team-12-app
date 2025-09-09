@@ -10,6 +10,10 @@
         "frontend/**/*.{js,ts,tsx}": [
             "eslint --cwd frontend --fix",
             "prettier --write --ignore-unknown"
+        ],
+        "backend/**/*.py": [
+            "ruff check --fix",
+            "ruff format"
         ]
     },
     "scripts": {

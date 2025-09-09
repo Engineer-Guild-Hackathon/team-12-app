@@ -1,4 +1,5 @@
 .DS_Store
 backend/data/*
 .env
+.venv/
 **/node_modules/

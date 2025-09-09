@@ -110,27 +110,40 @@ docker compose -f compose.yml -f compose.prod.yml down
 
 ## 開発ツールのセットアップ
 
-### Husky、lint-staged、Prettierのインストール
+### フォーマッター等のインストール
 
-開発時のコード品質を保つため、以下のツールをインストールしてください。
+開発時のコード品質を保つため、
+- Husky
+- lint-staged
+- Prettier
+- Ruff
+をインストールしてください。
 
-- **依存関係のインストールとHuskyの有効化**
+#### **1. 依存関係のインストールとHuskyの有効化**
 ```bash
 # ルートディレクトリで実行
 npm i -D husky lint-staged prettier
 ```
 
-- うまくいかない場合は実行権限を付与
+- コミットできない場合は実行権限を付与
 ```bash
 chmod +x node_modules/.bin/lint-staged
 ```
 
-#### 動作確認
+#### **2. python仮想環境の有効化とRuffのインストール**
+```bash
+# ルートディレクトリで実行
+python3 -m venv .venv
+source .venv/bin/activate
+pip install ruff
+```
+
+#### 3. 動作確認
 - **コミット前の自動チェック**: コミット時に自動でESLintとPrettierが実行されます
 - **フロントエンド**: JavaScript/TypeScriptファイルのリント・フォーマット
 - **バックエンド**: PythonファイルのRuffによるリント・フォーマット
 
-#### 注意事項
+#### 4. 注意事項
 - これらのツールは**ホスト環境**で動作します
 - Dockerコンテナ内では実行されません。gitの操作をするときはコンテナ外で行ってください。
 - 初回コミット時に自動でセットアップされます
