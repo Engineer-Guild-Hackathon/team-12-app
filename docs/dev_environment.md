@@ -43,6 +43,69 @@
 }
 ```
 
+### 0-3. Google Cloud CLI のインストール
+#### macOS (Apple Silicon / ARM)の場合
+1. Google Cloud CLI のアーカイブをダウンロード
+```bash
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-darwin-arm.tar.gz
+```
+2. ダウンロードしたアーカイブを展開
+```bash
+tar -xf google-cloud-cli-darwin-arm.tar.gz
+```
+3. インストールスクリプトを実行
+```bash
+./google-cloud-sdk/install.sh
+```
+4. シェルを再起動
+```bash
+source ~/.zshrc
+```
+5. 初期化 (アカウント認証・プロジェクト設定など)  
+ブラウザに移動し、Googleアカウントへのログインが求められます。
+```bash
+./google-cloud-sdk/bin/gcloud init
+```
+6. ADC (Application Default Credentials) の生成
+```bash
+gcloud auth application-default login
+```
+7. ADC のパスを .env に書き出す  
+プロジェクト (`team-12-app`) のルート直下に移動して、.envに書き出してください。
+```bash
+echo "ADC_JSON=$HOME/.config/gcloud/application_default_credentials.json" >> .env
+```
+
+#### Windows (PowerShell)
+1. PowerShell を管理者権限で開く
+2. 以下のコマンドを実行し、インストーラをダウンロード＆実行
+
+または、[Google Cloud SDK インストーラ](https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe?hl=ja)をダウンロード
+```shell
+Invoke-WebRequest "https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe" -OutFile "GoogleCloudSDKInstaller.exe"
+Start-Process ".\GoogleCloudSDKInstaller.exe"
+```
+3. インストーラの指示に従ってインストールを完了する
+4. インストール完了後、PowerShell を再起動して gcloud init を実行  
+ブラウザに移動し、Googleアカウントへのログインが求められます。
+```shell
+gcloud init
+```
+✅ インストーラで「パスを通す」オプションを選択すると、再起動後すぐに gcloud コマンドが利用できるようになります。
+
+5. ADC (Application Default Credentials) の生成
+```shell
+gcloud auth application-default login
+```
+6. ADC のパスを gcloud.adc.env に書き出す (PowerShell)  
+プロジェクト (`team-12-app`) のルート直下に移動して、`.env`に書き出してください。
+```shell
+"ADC_JSON=$env:APPDATA\gcloud\application_default_credentials.json" >> gcloud.adc.env
+```
+
+- 詳しいインストールの説明はこちらから：[gcloud CLI をインストールする | Google Cloud SDK](https://cloud.google.com/sdk/docs/install?hl=ja#windows)
+
+
 ## 1. リモートリポジトリをクローン
 以下のコマンドを実行して，リモートリポジトリをローカル環境にクローンする。
 ```bash
@@ -50,7 +113,7 @@ $ git clone https://github.com/Engineer-Guild-Hackathon/team-12-app.git
 ```
 
 ## 2. 開発コンテナを作成して立ち上げる
-VSCodeの「コマンドパレット」を F1キー（または**Windows／Linux**では **`Ctrl＋Shift＋P`**，**macOS**では **`Command＋Shift＋P`**）で立ち上げ，以下のコマンドを入力します。
+VSCodeの「コマンドパレット」を F1キー(または**Windows／Linux**では **`Ctrl＋Shift＋P`**，**macOS**では **`Command＋Shift＋P`**) で立ち上げ，以下のコマンドを入力します。
 
 (初回は必ずネットワーク環境下で実行してください。)
 ```bash

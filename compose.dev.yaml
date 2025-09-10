@@ -20,7 +20,7 @@ services:
     environment:
       - FLASK_ENV=development
     volumes:
-      - ./backend/src:/backend/src
+      - ./backend:/backend
 
 volumes:
   web-node-modules:
