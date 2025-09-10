@@ -1,7 +1,9 @@
 from flask import Flask
+from routes.img_analyze import img_analyze_bp
 
 app = Flask(__name__)
 
+app.register_blueprint(img_analyze_bp)
 
 @app.route("/")
 def hello():
