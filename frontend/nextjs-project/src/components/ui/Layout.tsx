@@ -2,18 +2,18 @@
 
 import { Container } from "@mui/material";
 import React from "react";
-
-const MOBILE_MAX_WIDTH = 500;
+import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Container
       maxWidth={false}
+      disableGutters
       sx={{
         maxWidth: `${MOBILE_MAX_WIDTH}px`,
         margin: "0 auto",
         padding: 0,
-        backgroundColor: "#ffffff",
+        backgroundColor: "kinako.100",
         minHeight: "100vh",
       }}
     >

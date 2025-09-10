@@ -1,4 +1,5 @@
 .DS_Store
 backend/data/
 .env
-gc.env
+gcloud.env
+__pycache__

@@ -5,7 +5,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 import CssBaseline from "@mui/material/CssBaseline";
-import Layout from "@/components/Layout";
+import Layout from "@/components/ui/Layout";
 
 const yomogi = Yomogi({
   weight: ["400"],
