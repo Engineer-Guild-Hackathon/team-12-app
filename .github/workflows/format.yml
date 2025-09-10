@@ -1,56 +1,46 @@
-name: Lint (ESLint & Prettier)
-
+name: CI
 on:
   push:
     branches: [ "main" ]
   pull_request:
     # draft PR は除く全PR
-    types: [ opened, reopened, ready_for_review ]
+    types: [ opened, synchronize, reopened, ready_for_review ]
     branches: [ "**" ]
 
 jobs:
   lint:
-    # Draft PR はスキップ
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/ci_template.yml
+    with:
+      workdir: "frontend/nextjs-project"
+      cache_lockfiles: |
+        frontend/nextjs-project/package-lock.json
+      run: "npm run lint"
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-          cache-dependency-path: |
-            frontend/package-lock.json
-            # package-lock.json
-
-      - name: Install deps
-        working-directory: frontend/nextjs-project
-        run: npm ci
-
-      # Prettier は差分があれば失敗させる（--check）
-      - name: Prettier check
-        working-directory: frontend/nextjs-project
-        run: npm run prettier:check
-
-      # ESLint チェック（警告は失敗とみなさない）
-      - name: ESLint
-        working-directory: frontend/nextjs-project
-        run: npm run lint
-
-
-      # --- ここから後続処理は用途に応じて選択（最小CIなら不要） ---
-      # A) TypeScript型チェック（型崩れ検知だけしたい場合）
-      # - name: Type check (tsc)
-      #   run: npx tsc --noEmit
-
-      # B) テスト実行（Jest/Vitest など、テストがある場合）
-      # - name: Test
-      #   run: npm test --silent
-
-      # C) 本番ビルドが通るかだけ確認（CDは別フローに）
-      # - name: Build (sanity check)
-      #   run: npm run build
-      # ---------------------------------------------------------
+  prettier:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    uses: ./.github/workflows/ci_template.yml
+    with:
+      workdir: "frontend/nextjs-project"
+      cache_lockfiles: |
+        frontend/nextjs-project/package-lock.json
+      run: "npm run prettier:check"
+  
+  build:
+    needs: [lint, prettier]
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    uses: ./.github/workflows/ci_template.yml
+    with:
+      workdir: "frontend/nextjs-project"
+      cache_lockfiles: |
+        frontend/nextjs-project/package-lock.json
+      run: "npm run build"
+  
+  # test:
+  #   needs: [lint, prettier, build]
+  #   uses: ./.github/workflows/ci_template.yml
+  #   with:
+  #     workdir: "frontend/nextjs-project"
+  #     cache_lockfiles: |
+  #       frontend/nextjs-project/package-lock.json
+  #     run: "npm run test"
