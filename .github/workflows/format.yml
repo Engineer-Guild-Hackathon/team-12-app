@@ -7,6 +7,15 @@ on:
     types: [ opened, synchronize, reopened, ready_for_review ]
     branches: [ "**" ]
 
+# lint, prettier, buildでは書き換えを行わないため権限を絞る
+permissions:
+  contents: read
+
+# CIでは高速動作のために古いジョブをキャンセルする
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
