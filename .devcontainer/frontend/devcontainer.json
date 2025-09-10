@@ -17,7 +17,20 @@
             "formulahendry.auto-rename-tag",             // タグ名の自動リネーム
             "styled-components.vscode-styled-components",// styled-components 用シンタックス
             "yoavbls.pretty-ts-errors"                   // TypeScript エラーメッセージ改善
-            ]
+            ],
+            "settings": {
+                // TS/JS で Emmet を有効化
+                "emmet.includeLanguages": {
+                    "javascript": "javascriptreact",
+                    "typescript": "typescriptreact"
+                },
+                // Tab で展開（必要なら）
+                "emmet.triggerExpansionOnTab": true,
+                // JSX で補完を出すための推奨（文字列内でも補完を出す）
+                "editor.quickSuggestions": {
+                    "strings": true
+                }
+            }
         }
     }
 }
