@@ -1,63 +1,22 @@
 <!doctype html>
-<html>
+<html lang="ja">
 <head>
   <meta charset="utf-8" />
-  <title>Uploader Test</title>
+  <title>Image Test</title>
 </head>
 <body>
-  <h1>Uploader Test</h1>
-  <form id="uploadForm">
-    <input type="file" id="fileInput" name="image" accept="image/*" />
-    <button type="submit">Upload</button>
-  </form>
+  <h1>Image Test</h1>
 
-  <h2>Result</h2>
-  <pre id="result"></pre>
-  <div id="previewArea"></div>
+    {% if message and category %}
+      <div class="message-box {{ category }}">
+        <p>{{ message | safe }}</p>
+      </div>
+    {% endif %}
 
-  <script>
-    const form = document.getElementById('uploadForm');
-    const resultEl = document.getElementById('result');
-    const previewArea = document.getElementById('previewArea');
-
-    form.addEventListener('submit', async (ev) => {
-      ev.preventDefault();
-      resultEl.textContent = 'Uploading...';
-      previewArea.innerHTML = '';
-
-      const fileInput = document.getElementById('fileInput');
-      if (!fileInput.files.length) {
-        resultEl.textContent = 'No file selected';
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('image', fileInput.files[0]);
-
-      try {
-        const resp = await fetch('/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const json = await resp.json();
-        resultEl.textContent = JSON.stringify(json, null, 2);
-
-        if (json.data_url) {
-          const img = document.createElement('img');
-          img.src = json.data_url;
-          img.style.maxWidth = '80%';
-          previewArea.appendChild(img);
-        } else if (json.url) {
-          const img = document.createElement('img');
-          // json.url は /uploads/<filename> の相対パス
-          img.src = json.url;
-          img.style.maxWidth = '80%';
-          previewArea.appendChild(img);
-        }
-      } catch (err) {
-        resultEl.textContent = 'Error: ' + err;
-      }
-    });
-  </script>
+    <h2>1. 画像を保存する (SaveImage)</h2>
+    <form action="/images" method="post" enctype="multipart/form-data">
+        <input type="file" name="image_file" required>
+        <button type="submit">アップロード</button>
+    </form>
 </body>
 </html>
