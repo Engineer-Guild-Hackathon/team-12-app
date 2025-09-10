@@ -1,8 +1,6 @@
-'use client';
-
-import { Box, IconButton, SvgIcon, Toolbar, Typography } from '@mui/material';
-import Link from 'next/link';
-import { IoLeaf, IoFilterOutline } from 'react-icons/io5';
+import { Box, IconButton, SvgIcon, Toolbar, Typography } from "@mui/material";
+import Link from "next/link";
+import { IoLeaf, IoFilterOutline } from "react-icons/io5";
 
 export default function HeaderTop() {
   return (
@@ -16,11 +14,11 @@ export default function HeaderTop() {
         href="/"
         sx={{
           flexGrow: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          textDecoration: 'none',
-          color: 'inherit',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textDecoration: "none",
+          color: "inherit",
         }}
       >
         <SvgIcon sx={{ mr: 1.5 }}>

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Container } from '@mui/material';
-import React from 'react';
-import { MOBILE_MAX_WIDTH } from '@/constants/styles';
+import { Container } from "@mui/material";
+import React from "react";
+import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -11,10 +11,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       disableGutters
       sx={{
         maxWidth: `${MOBILE_MAX_WIDTH}px`,
-        margin: '0 auto',
+        margin: "0 auto",
         padding: 0,
-        backgroundColor: '#ffffff',
-        minHeight: '100vh',
+        backgroundColor: "#ffffff",
+        minHeight: "100vh",
       }}
     >
       {children}
