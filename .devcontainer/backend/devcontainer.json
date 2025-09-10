@@ -12,7 +12,8 @@
             "ms-ceintl.vscode-language-pack-ja",
             "ms-python.black-formatter",
             "samuelcolvin.jinjahtml",
-            "tamasefe.even-better-toml"
+            "tamasefe.even-better-toml",
+            "charliermarsh.ruff"
             ]
         }
     }
