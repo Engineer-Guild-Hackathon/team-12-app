@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <Box sx={{ backgroundColor: 'kinako.100'}}>
+    <Box sx={{ backgroundColor: "kinako.100" }}>
       <nav>
         <ul>
           <li>

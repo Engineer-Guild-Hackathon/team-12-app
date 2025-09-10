@@ -1,0 +1,36 @@
+name: ci-template
+on:
+  workflow_call:
+    inputs:
+      workdir:
+        required: true
+        type: string
+      cache_lockfiles:
+        required: true
+        type: string   # 改行区切りで複数渡せる
+      run:
+        required: true
+        type: string   # 実行するコマンド
+
+jobs:
+  run-task:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.workdir }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: ${{ inputs.cache_lockfiles }}
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run task
+        run: ${{ inputs.run }}
