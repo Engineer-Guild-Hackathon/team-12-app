@@ -1,91 +1,135 @@
+import io
 import os
-from uuid import uuid4
-from werkzeug.utils import secure_filename
+import uuid
+import hashlib
+import mimetypes
+from datetime import timedelta
 
-class Uploader:
-    """
-    ファイル保存（画像）を担当するクラス。
-    - save(file_storage): FileStorage を受け取り、UPLOAD_DIR に保存して保存名を返す
-    - make_filename(original_name): 保存用に UUID ベースの安全な basename を生成
-    - file_path(filename): 保存先の絶対パスを返す
-    """
+import sqlalchemy as sa
+from sqlalchemy.orm import sessionmaker, declarative_base
+from google.cloud import storage
+from google.cloud.sql.connector import Connector
 
-    def __init__(self, upload_dir: str = "uploads", allowed_exts=None, max_bytes: int = 20 * 1024 * 1024):
-        self.upload_dir = os.path.abspath(upload_dir)
-        os.makedirs(self.upload_dir, exist_ok=True)
-        self.allowed_exts = set(x.lower() for x in (allowed_exts or {"png", "jpg", "jpeg", "gif", "webp"}))
-        self.max_bytes = max_bytes
+# ----------------------------------
+# 1. 設定 (DB, GCS, Model)
+# ----------------------------------
 
-    def _ext_allowed(self, filename: str) -> bool:
-        if not filename or "." not in filename:
-            return False
-        ext = filename.rsplit(".", 1)[1].lower()
-        return ext in self.allowed_exts
+# --- 環境変数の読み込み ---
+PROJECT  = os.environ.get("GCP_PROJECT", "")
+REGION   = os.environ.get("CLOUDSQL_REGION", "")
+INSTANCE = os.environ.get("CLOUDSQL_INSTANCE", "")
+DB_NAME  = os.environ.get("DB_NAME", "")
+DB_USER  = os.environ.get("DB_USER", "")
+DB_PASS  = os.environ.get("DB_PASSWORD")
+GCS_BUCKET = os.environ.get("GCS_BUCKET", "")
 
-    def make_filename(self, original_name: str) -> str:
+# --- DB接続 (Cloud SQL Python Connector) ---
+try:
+    connector = Connector()
+    def getconn():
+        return connector.connect(
+            f"{PROJECT}:{REGION}:{INSTANCE}", "pg8000",
+            user=DB_USER, password=DB_PASS, db=DB_NAME,
+        )
+    engine = sa.create_engine("postgresql+pg8000://", creator=getconn, pool_pre_ping=True)
+    SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
+    Base = declarative_base()
+except Exception as e:
+    # 環境変数が設定されていない場合などのエラーハンドリング
+    print(f"ERROR: Failed to initialize database connection: {e}")
+    engine = None
+    SessionLocal = None
+    Base = object # declarative_base() が失敗した場合のフォールバック
+
+# --- DBモデル定義 ---
+if Base is not object:
+    class Image(Base):
+        __tablename__ = "images"
+        img_id      = sa.Column(sa.Uuid, primary_key=True)
+        gcs_uri     = sa.Column(sa.Text, nullable=False)
+        mime_type   = sa.Column(sa.Text, nullable=False)
+        size_bytes  = sa.Column(sa.BigInteger, nullable=False)
+        sha256_hex  = sa.Column(sa.String(64), nullable=False)
+        status      = sa.Column(sa.Text, nullable=False)
+        created_at  = sa.Column(sa.DateTime(timezone=True), server_default=sa.text("now()"))
+        updated_at  = sa.Column(sa.DateTime(timezone=True), server_default=sa.text("now()"))
+
+# --- GCSクライアント ---
+try:
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(GCS_BUCKET)
+except Exception as e:
+    print(f"ERROR: Failed to initialize GCS client: {e}")
+    bucket = None
+
+# ----------------------------------
+# 2. ロジッククラスの定義
+# ----------------------------------
+
+class SaveImage:
+    """画像の保存処理を行うクラス"""
+    def __init__(self, file_storage):
         """
-        original_name から安全な保存名（UUID + 拡張子）を作る。
-        例: 'f3b2a1c4e5d6f7a8b9c0d1e2f3a4b5c6.jpg'
+        Args:
+            file_storage (werkzeug.datastructures.FileStorage): Flaskのrequest.filesから取得したファイルオブジェクト
         """
-        ext = ""
-        if original_name and "." in original_name:
-            ext = "." + original_name.rsplit(".", 1)[1].lower()
-        return f"{uuid4().hex}{ext}"
+        self.file = file_storage
 
-    def file_path(self, filename: str) -> str:
-        """
-        保存名から絶対パスを返す（path traversal 対策として upload_dir 配下であることを確認）。
-        """
-        candidate = os.path.abspath(os.path.join(self.upload_dir, secure_filename(filename)))
-        if not candidate.startswith(self.upload_dir + os.sep) and candidate != self.upload_dir:
-            raise ValueError("Invalid filename/path")
-        return candidate
-    
-    def save(self, file_storage):
-        """
-        FileStorage を受け取り保存する。
-        戻り値（dict）:
-          {
-            "ok": True/False,
-            "reason": "..." (エラー時),
-            "filename": "<保存名>",
-            "original_name": "<元のファイル名>",
-            "size": int,   # bytes
-            "mime_type": "image/jpeg"
-          }
-        """
-        if file_storage is None:
-            return {"ok": False, "reason": "no file provided"}
+    def _guess_ext(self, mime_type: str) -> str:
+        ext = mimetypes.guess_extension(mime_type) or ""
+        return ".jpg" if ext in (".jpe",) else ext
 
-        original_name = getattr(file_storage, "filename", "") or ""
-        if original_name == "":
-            return {"ok": False, "reason": "empty filename"}
+    def execute(self):
+        """保存処理を実行し、結果とHTTPステータスコードを返す"""
+        data = self.file.read()
+        if not data:
+            return {"error": "empty file"}, 400
 
-        # 拡張子チェック
-        if not self._ext_allowed(original_name):
-            return {"ok": False, "reason": "file extension not allowed"}
+        mime_type = self.file.mimetype or "application/octet-stream"
+        if not mime_type.startswith("image/"):
+            return {"error": "not an image"}, 400
 
-        # サイズチェック（werkzeug の limit とは別にここでチェック）
-        file_storage.stream.seek(0, os.SEEK_END)
-        size = file_storage.stream.tell()
-        file_storage.stream.seek(0)
+        size_bytes = len(data)
+        sha256_hex = hashlib.sha256(data).hexdigest()
+        img_id = uuid.uuid4()
+        ext = self._guess_ext(mime_type)
+        object_name = f"images/{img_id}{ext}"
+        gcs_uri = f"gs://{GCS_BUCKET}/{object_name}"
 
-        if size > self.max_bytes:
-            return {"ok": False, "reason": f"file too large ({size} bytes)"}
-
-        save_name = self.make_filename(original_name)
-        path = self.file_path(save_name)
-
+        db = SessionLocal()
         try:
-            # werkzeug FileStorage.save を使うとストリームを直接書き出せる
-            file_storage.save(path)
-            actual_size = os.path.getsize(path)
+            # 1. DBにpending状態で先行して書き込む
+            db_img = Image(
+                img_id=img_id, gcs_uri=gcs_uri, mime_type=mime_type,
+                size_bytes=size_bytes, sha256_hex=sha256_hex, status="pending",
+            )
+            db.add(db_img)
+            db.commit()
+
+            # 2. GCSへアップロード
+            blob = bucket.blob(object_name)
+            blob.upload_from_file(io.BytesIO(data), content_type=mime_type)
+            
+            # 3. DBのステータスをstoredに更新
+            db.query(Image).filter_by(img_id=img_id).update({"status": "stored"})
+            db.commit()
+
             return {
-                "ok": True,
-                "filename": save_name,
-                "original_name": original_name,
-                "size": actual_size,
-                "mime_type": getattr(file_storage, "mimetype", None)
-            }
+                "img_id": str(img_id), "gcs_uri": gcs_uri, "status": "stored"
+            }, 201
+
         except Exception as e:
-            return {"ok": False, "reason": f"failed to save: {e}"}
+            db.rollback()
+            # エラーが発生した場合、可能であればステータスをfailedに更新
+            try:
+                # img_idが確定している場合のみ更新
+                if 'img_id' in locals() and db.query(Image).filter_by(img_id=img_id).first():
+                    db.query(Image).filter_by(img_id=img_id).update({"status": "failed"})
+                    db.commit()
+            except Exception as update_err:
+                db.rollback()
+                print(f"Failed to update status to 'failed': {update_err}")
+
+            return {"error": f"an error occurred: {e}", "img_id": str(img_id) if 'img_id' in locals() else None}, 500
+        finally:
+            db.close()
