@@ -50,6 +50,9 @@ const theme = createTheme({
       '900': '#000000',
       main: '#FFFFFF',
     },
+    background: {
+      default: '#CCD6A6',
+    },
   },
 });
 
