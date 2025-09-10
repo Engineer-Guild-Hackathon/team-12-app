@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         maxWidth: `${MOBILE_MAX_WIDTH}px`,
         margin: "0 auto",
         padding: 0,
-        backgroundColor: "#ffffff",
+        backgroundColor: "kinako.100",
         minHeight: "100vh",
       }}
     >
