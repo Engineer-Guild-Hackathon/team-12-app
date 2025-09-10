@@ -40,6 +40,10 @@ export default function LoginButton() {
         gap: 1,
         boxShadow: "none",
         textTransform: "none",
+        "&:hover": {
+          transform: "translateY(-3px) scale(1.02)",
+          boxShadow: "none",
+        },
       }}
     >
       <Typography fontSize={20}>はじめる</Typography>

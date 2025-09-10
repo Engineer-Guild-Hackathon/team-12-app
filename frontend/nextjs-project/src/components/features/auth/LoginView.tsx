@@ -14,7 +14,7 @@ export default function LoginView() {
         alignItems: "center",
         minHeight: "100vh",
         paddingTop: "240px",
-        px: "10%",
+        px: "12%",
       }}
     >
       <Box sx={{ mb: "24px" }}>
@@ -22,7 +22,13 @@ export default function LoginView() {
       </Box>
       <Typography
         variant="h3"
-        sx={{ fontSize: 20, color: "kinako.800", mt: 2, textAlign: "center" }}
+        sx={{
+          fontSize: 20,
+          color: "kinako.800",
+          mt: 2,
+          textAlign: "center",
+          lineHeight: 1.8,
+        }}
       >
         道端に光る「どうして？」を
         <br />
