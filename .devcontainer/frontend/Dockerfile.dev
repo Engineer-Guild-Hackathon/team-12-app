@@ -11,4 +11,3 @@ COPY frontend/nextjs-project ./
 
 # 開発サーバー起動
 EXPOSE 3000
-CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0", "-p", "3000"]

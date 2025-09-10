@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import { Yomogi } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '../theme';
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../theme";
 import CssBaseline from "@mui/material/CssBaseline";
+import Layout from "@/components/Layout";
 
 const yomogi = Yomogi({
-  weight: ['400'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-yomogi',
+  weight: ["400"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-yomogi",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            {children} 
+            <Layout>{children}</Layout>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

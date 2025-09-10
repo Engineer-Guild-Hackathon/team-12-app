@@ -1,0 +1,55 @@
+name: CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    # draft PR は除く全PR
+    types: [ opened, synchronize, reopened, ready_for_review ]
+    branches: [ "**" ]
+
+# lint, prettier, buildでは書き換えを行わないため権限を絞る
+permissions:
+  contents: read
+
+# CIでは高速動作のために古いジョブをキャンセルする
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    uses: ./.github/workflows/ci_template.yml
+    with:
+      workdir: "frontend/nextjs-project"
+      cache_lockfiles: |
+        frontend/nextjs-project/package-lock.json
+      run: "npm run lint"
+
+  prettier:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    uses: ./.github/workflows/ci_template.yml
+    with:
+      workdir: "frontend/nextjs-project"
+      cache_lockfiles: |
+        frontend/nextjs-project/package-lock.json
+      run: "npm run prettier:check"
+  
+  build:
+    needs: [lint, prettier]
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    uses: ./.github/workflows/ci_template.yml
+    with:
+      workdir: "frontend/nextjs-project"
+      cache_lockfiles: |
+        frontend/nextjs-project/package-lock.json
+      run: "npm run build"
+  
+  # test:
+  #   needs: [lint, prettier, build]
+  #   uses: ./.github/workflows/ci_template.yml
+  #   with:
+  #     workdir: "frontend/nextjs-project"
+  #     cache_lockfiles: |
+  #       frontend/nextjs-project/package-lock.json
+  #     run: "npm run test"
