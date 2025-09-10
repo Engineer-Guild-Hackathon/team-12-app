@@ -103,6 +103,57 @@ gcloud auth application-default login
 "ADC_JSON=$env:APPDATA\gcloud\application_default_credentials.json" >> gcloud.adc.env
 ```
 
+#### Ubuntu（WSL）
+1. Ubuntuが最新のLTSであることを前提としてUbuntuを起動して以下の作業を行ってください。
+その他のバージョンの場合は、下部の公式ドキュメントを参照してください。
+
+2. 必要なパッケージを更新し、`apt-transport-https` と `curl` をインストール
+```bash
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates gnupg curl
+```
+
+3. Google Cloud 公開鍵をインポート
+```bash
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+```
+
+4. gcloud CLI の配布 URI をパッケージ ソースとして追加
+```bash
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+```
+   > **注:** `/etc/apt/sources.list.d/google-cloud-sdk.list` で cloud-sdk リポジトリのエントリが重複していないことを確認してください。
+
+5. gcloud CLI を更新してインストール
+```bash
+sudo apt-get update && sudo apt-get install google-cloud-cli
+```
+
+6. インストール完了後、ubuntuを再起動して gcloud init を実行 
+ターミナルで表示されたURLのブラウザに移動し、Googleアカウントへのログインが求められます。
+※ `--console-only`を必ず用いて実行してください。
+```bash
+gcloud init --console-only
+```
+
+7. ログイン完了後、ブラウザ画面下部の認証コードをターミナルにペーストする
+
+8. 用いるプロジェクト、地域とゾーンの設定が要求される。ターミナルの指示に従い設定する。地域は `asia-northeast-1` にすること
+
+9. ADC (Application Default Credentials) の生成
+```bash
+gcloud auth application-default login --no-launch-browser
+```
+
+10. 6~7と同様に、URLからログインし、認証コードをターミナルにペーストする。
+
+11. ADC のパスを .env に書き出す  
+プロジェクト (`team-12-app`) のルート直下に移動して、.envに書き出してください。
+```bash
+echo "ADC_JSON=$HOME/.config/gcloud/application_default_credentials.json" >> .env
+```
+（WSLの部分は鈴木が記述しました。こちらの疑問点は鈴木に質問してください。）
+
 - 詳しいインストールの説明はこちらから：[gcloud CLI をインストールする | Google Cloud SDK](https://cloud.google.com/sdk/docs/install?hl=ja#windows)
 
 
