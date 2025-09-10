@@ -20,7 +20,7 @@ RUN apt-get update && \
         pkg-config && \
     rm -rf /var/lib/apt/lists/*
 
-COPY .devcontainer/backend/pyproject.toml .devcontainer/backend/poetry.lock /backend/
+COPY backend/pyproject.toml backend/poetry.lock ./
 
 RUN python -m pip install --upgrade pip && pip install poetry
 RUN pip install gunicorn
@@ -34,8 +34,6 @@ RUN poetry install --no-interaction --no-ansi \
     $( [ -n "$POETRY_WITHOUT" ] && echo --without "$POETRY_WITHOUT" ) \
     --no-root
 
-COPY backend/src /backend/src
-
-WORKDIR /backend/src
+COPY backend/ ./
 
 EXPOSE 5000
