@@ -16,7 +16,7 @@ def _bad_request(msg: str, detail: str | None = None) -> tuple[Any, int]:
     return jsonify(payload), 400
 
 
-@image_bp.route("/images", methods=["POST"])
+@image_bp.route("/api/images", methods=["POST"])
 def save_image():
     """画像を新規アップロード"""
     if "image_file" not in request.files:
@@ -47,7 +47,7 @@ def save_image():
         return jsonify({"error": "予期せぬエラーが発生しました", "detail": str(e)}), 500
 
 
-@image_bp.route("/images/<uuid:img_id>", methods=["GET"])
+@image_bp.route("/api/images/<uuid:img_id>", methods=["GET"])
 def get_image(img_id: uuid.UUID):
     """img_id(UUID)で画像情報（署名付きURL含む）を1件取得"""
     try:
@@ -59,7 +59,7 @@ def get_image(img_id: uuid.UUID):
         return jsonify({"error": "サービス初期化エラー", "detail": str(e)}), 503
 
 
-@image_bp.route("/images/<uuid:img_id>", methods=["DELETE"])
+@image_bp.route("/api/images/<uuid:img_id>", methods=["DELETE"])
 def delete_image(img_id: uuid.UUID):
     """画像を削除"""
     try:
