@@ -65,19 +65,15 @@ export default function SignupForm() {
           pb: "10px",
           borderBottom: "1px solid",
           borderColor: "kinako.700",
+          color: "yomogi.600",
         }}
       >
-        <Box
-          sx={{ color: "yomogi.600", display: "flex", alignItems: "center" }}
-        >
-          <PiPlant size={24} />
-        </Box>
+        <PiPlant size={24} />
         <Typography
           sx={{
             fontSize: 24,
             color: "kinako.800",
-            position: "relative",
-            top: "-1px",
+            lineHeight: 1.2,
           }}
         >
           新規登録
