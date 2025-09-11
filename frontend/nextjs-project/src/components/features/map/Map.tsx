@@ -3,8 +3,20 @@
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
-import ReactDOMServer from "react-dom/server";
-import CustomMarkerIcon from "./CustomMarkerIcon";
+import { useEffect } from "react";
+import { useMap } from "react-leaflet";
+import RecenterButton from "./RecenterButton";
+import { useMapControl } from "@/hooks/useMapControl";
+import { createCustomIcon } from "@/utils/createCustomIcon";
+
+// マップインスタンスを取得するための、目に見えないコンポーネント
+function MapController({ setMap }: { setMap: (map: L.Map) => void }) {
+  const map = useMap();
+  useEffect(() => {
+    setMap(map);
+  }, [map, setMap]);
+  return null;
+}
 
 // 北海道大学内の、ピンポイントで分かりやすいランドマークのデータ
 export const discoveries = [
@@ -23,23 +35,15 @@ export const discoveries = [
   },
 ];
 
-// 2. カスタムマーカーのアイコンを生成する関数
-const createCustomIcon = () => {
-  return L.divIcon({
-    html: ReactDOMServer.renderToString(<CustomMarkerIcon />),
-    className: "custom-marker-icon", // スタイル調整用のクラス名
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-    popupAnchor: [0, -40],
-  });
-};
-
 export default function Map() {
-  const initialPosition: LatLngExpression = [43.064, 141.35];
+  const { position, isLoading, setMap, handleRecenter } = useMapControl();
+
+  if (isLoading) {
+    return <p>現在地を取得しています...</p>;
+  }
 
   return (
     <>
-      {/* 3. divIconのデフォルトスタイルを上書きするためのCSS */}
       <style>{`
         .custom-marker-icon {
           background: none;
@@ -47,16 +51,22 @@ export default function Map() {
         }
       `}</style>
       <MapContainer
-        center={initialPosition}
-        zoom={15}
+        center={position}
+        zoom={17}
         style={{ height: "100%", width: "100%" }}
+        zoomControl={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {/* 4. 発見データをループしてカスタムマーカーを表示 */}
+        {/* 現在地のマーカー */}
+        <Marker key={0} position={position} icon={createCustomIcon()}>
+          <Popup>現在地</Popup>
+        </Marker>
+
+        {/* 発見データをループしてカスタムマーカーを表示 */}
         {discoveries.map((discovery) => (
           <Marker
             key={discovery.id}
@@ -66,6 +76,9 @@ export default function Map() {
             <Popup>{discovery.title}</Popup>
           </Marker>
         ))}
+
+        <MapController setMap={setMap} />
+        <RecenterButton onClick={handleRecenter} />
       </MapContainer>
     </>
   );

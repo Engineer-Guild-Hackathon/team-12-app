@@ -2,7 +2,7 @@
     "name": "back-server",
     "dockerComposeFile": ["../../compose.yaml", "../../compose.dev.yaml"],
     "service": "back-server",
-    "workspaceFolder": "/backend/src",
+    "workspaceFolder": "/backend",
     "customizations": {
         "vscode": {
             "extensions": [

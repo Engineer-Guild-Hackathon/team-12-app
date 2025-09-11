@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Post フォーム</title>
+    <style>
+    body { font-family: sans-serif; margin: 2em; }
+    form { margin-bottom: 2em; }
+    .post { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; border-radius: 6px; }
+    .meta { color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>新しい Post を送信</h1>
+
+    <form method="post" action="/posts">
+        <label for="post_id">Post ID (UUID):</label><br>
+        <input type="text" id="post_id" name="post_id" required><br><br>
+
+        <label for="user_id">User ID (UUID):</label><br>
+        <input type="text" id="user_id" name="user_id" required><br><br>
+
+        <label for="img_id">Image ID (UUID):</label><br>
+        <input type="text" id="img_id" name="img_id" required><br><br>
+
+        <label for="question">Question:</label><br>
+        <input type="text" id="question" name="question" required><br><br>
+
+        <label for="answer">Answer:</label><br>
+        <input type="text" id="answer" name="answer" required><br><br>
+
+        <label for="toi">TOI:</label><br>
+        <input type="text" id="toi" name="toi" required><br><br>
+
+        <label for="location">Location:</label><br>
+        <input type="text" id="location" name="location" required><br><br>
+
+        <button type="submit">送信</button>
+    </form>
+
+    <h2>投稿一覧（現在時刻から15分より前のもの）</h2>
+    {% if posts %}
+        {% for p in posts %}
+            <div class="post">
+            <div class="meta">
+                <b>Post ID:</b> {{ p.post_id }}<br>
+                <b>User ID:</b> {{ p.user_id }}<br>
+                <b>Image ID:</b> {{ p.img_id }}<br>
+            </div>
+            <p><b>Question:</b> {{ p.question }}</p>
+            <p><b>Answer:</b> {{ p.answer }}</p>
+            <p><b>TOI:</b> {{ p.toi }}</p>
+            <p><b>Location:</b> {{ p.location }}</p>
+            <div class="meta">
+                <b>Date:</b> {{ p.date }}<br>
+                <b>Updated:</b> {{ p.updated_at }}
+            </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>15分以上前の投稿はまだありません。</p>
+    {% endif %}
+    </body>
+</html>
