@@ -5,12 +5,10 @@ import { useRouter } from "next/navigation";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { PiPlant } from "react-icons/pi";
 import { FaDiamond } from "react-icons/fa6";
-import { useTheme } from "@mui/material/styles";
 
 export default function SignupForm() {
   const router = useRouter();
   const [username, setUsername] = useState("");
-  const theme = useTheme();
 
   const handleSignUp = async () => {
     if (username.trim() === "") {
@@ -47,14 +45,11 @@ export default function SignupForm() {
           pr: "24px",
           pb: "10px",
           borderBottom: "1px solid",
+          color: "yomogi.600",
           borderColor: "kinako.700",
         }}
       >
-        <PiPlant
-          color={theme.palette.yomogi[600]}
-          size={24}
-          style={{ marginTop: "4px" }}
-        />
+        <PiPlant size={24} style={{ marginTop: "4px" }} />
         <Typography sx={{ fontSize: 24, color: "kinako.800" }}>
           新規登録
         </Typography>
@@ -63,10 +58,16 @@ export default function SignupForm() {
       {/* ユーザー名入力部分 */}
       <Box sx={{ width: "100%", alignItems: "center", mb: "80px" }}>
         <Box
-          sx={{ display: "flex", alignItems: "center", gap: "6px", mb: "12px" }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            mb: "12px",
+            color: "yomogi.600",
+          }}
         >
-          <FaDiamond color={theme.palette.yomogi[600]} size={16} />
-          <Typography>アカウント名</Typography>
+          <FaDiamond size={16} />
+          <Typography sx={{ color: "kinako.900" }}>アカウント名</Typography>
         </Box>
         <TextField
           fullWidth
