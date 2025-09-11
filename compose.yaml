@@ -19,23 +19,12 @@ services:
       dockerfile: .devcontainer/backend/Dockerfile
     container_name: back-server
     env_file:
-      - gc.env
+      - gcloud.env
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/adc.json
+    volumes:
+      - "${ADC_JSON}:/var/secrets/adc.json:ro"
     ports:
       - "5000:5000"
     tty: true
     restart: unless-stopped
-
-  postgre_db:
-    image: postgres:16-alpine
-    container_name: postgre_db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    env_file:
-      - postgres.env
-    tty: true
-    restart: unless-stopped
-
-volumes:
-  postgres_data:

@@ -1,22 +1,16 @@
 import os
+import re
+
 
 def test_env_variables_exist():
-    keys = [
-        "GCP_PROJECT",
-        "CLOUDSQL_REGION",
-        "CLOUDSQL_INSTANCE",
-        "DB_NAME",
-        "DB_USER",
-        "DB_PASSWORD",
-        "GCS_BUCKET",
-    ]
+    required = {
+        "GCP_PROJECT": r"^[a-z][a-z0-9-]+:[a-z0-9-]+:[a-z0-9-]+$",
+        "DB_NAME": r"^\w+$",
+        "DB_USER": r"^\w+$",
+        "GCS_BUCKET": r"^[a-z0-9][a-z0-9._-]{1,61}[a-z0-9]$",
+    }
 
-    for key in keys:
-        value = os.environ.get(key)
-        assert value is not None, f"{key} が設定されていません"
-
-def test_db_password_hidden():
-    password = os.environ.get("DB_PASSWORD")
-    # 文字列としては存在しているが直接ログには出さない
-    assert password is not None
-    assert len(password) >= 8  # 最低限の強度チェック
+    for key, pattern in required.items():
+        value = os.getenv(key)
+        assert value, f"{key} が未設定です"
+        assert re.match(pattern, value), f"{key} の値が不正です: {value}"
