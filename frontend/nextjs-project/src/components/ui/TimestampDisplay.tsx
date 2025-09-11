@@ -4,12 +4,23 @@ import React from "react";
 interface TimestampDisplayProps {
   icon: React.ReactNode;
   formattedDate: string;
+  variant?: "default" | "transparent";
 }
 
 export default function TimestampDisplay({
   icon,
   formattedDate,
+  variant = "default",
 }: TimestampDisplayProps) {
+  const textStyles =
+    variant === "transparent"
+      ? {
+          color: "white",
+        }
+      : {
+          color: "kinako.900",
+        };
+
   return (
     <Stack
       direction="row"
@@ -21,7 +32,10 @@ export default function TimestampDisplay({
         color: "tamago.600",
       }}
     >
-      <Typography variant="body2" sx={{ fontSize: 20, color: "kinako.900" }}>
+      <Typography
+        variant="body2"
+        sx={{ fontSize: 20, lineHeight: 1, ...textStyles }}
+      >
         {formattedDate}
       </Typography>
       {icon}

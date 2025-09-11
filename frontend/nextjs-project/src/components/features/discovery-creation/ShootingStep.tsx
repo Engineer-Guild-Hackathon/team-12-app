@@ -4,7 +4,8 @@ import { Box, Fab } from "@mui/material";
 import React, { useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 import CameraFrame from "@/components/ui/CameraFrame";
-import BackButton from "@/components/ui/BackButton";
+import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
+import { formatTimestampForClient } from "@/utils/formatDate";
 
 interface ShootingStepProps {
   onNext: (photoDataUrl: string) => void;
@@ -17,6 +18,9 @@ const videoConstraints = {
 
 export default function ShootingStep({ onNext, onCancel }: ShootingStepProps) {
   const webcamRef = useRef<Webcam>(null);
+
+  const now = new Date();
+  const { iconName, formattedDate } = formatTimestampForClient(now);
 
   const handleTakePhotoAndProceed = useCallback(() => {
     if (webcamRef.current) {
@@ -37,15 +41,11 @@ export default function ShootingStep({ onNext, onCancel }: ShootingStepProps) {
         position: "relative",
       }}
     >
-      <BackButton
-        onClick={onCancel}
-        sx={{
-          position: "absolute",
-          top: 16,
-          left: 0,
-          color: "gray.100",
-          zIndex: 10,
-        }}
+      <DiscoveryHeader
+        iconName={iconName}
+        formattedDate={formattedDate}
+        variant="transparent"
+        onBackClick={onCancel}
       />
 
       <Box
