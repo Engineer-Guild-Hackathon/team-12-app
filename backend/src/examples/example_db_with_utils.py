@@ -1,5 +1,4 @@
 import sqlalchemy as sa
-
 from src.utils.db.cloudsql import connect_db, disconnect_db
 
 

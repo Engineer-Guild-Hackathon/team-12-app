@@ -4,7 +4,6 @@ from typing import Any, Dict, List, Optional
 
 import sqlalchemy as sa
 from sqlalchemy.orm import declarative_base
-
 from src.utils.db.cloudsql import connect_db, disconnect_db
 
 # --- DB接続初期化 ---

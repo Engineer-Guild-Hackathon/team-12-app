@@ -4,7 +4,6 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict
 
 from flask import Blueprint, jsonify, request
-
 from src.services.post.post import PostService
 
 post_bp = Blueprint("post_bp", __name__)
