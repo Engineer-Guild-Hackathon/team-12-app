@@ -15,7 +15,7 @@ except IndexError:
 
 # --- services のインポート ---
 try:
-    from services.images.image import SaveImage
+    from services.image.image import SaveImage
 except ImportError as e:
     print(f"ERROR: Failed to import SaveImage class: {e}")
     sys.exit(1)
