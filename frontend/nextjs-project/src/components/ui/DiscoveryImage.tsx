@@ -1,3 +1,4 @@
+import { DISCOVERY_IMAGE_HEIGHT } from "@/constants/styles";
 import { Box } from "@mui/material";
 import Image, { StaticImageData } from "next/image";
 
@@ -11,7 +12,7 @@ export default function DiscoveryImage({ src, alt }: DiscoveryImageProps) {
     <Box
       sx={{
         width: "100%",
-        height: "300px",
+        height: `${DISCOVERY_IMAGE_HEIGHT}px`,
         position: "relative",
         overflow: "hidden",
         borderRadius: 4,
