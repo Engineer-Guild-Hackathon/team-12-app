@@ -1,0 +1,27 @@
+/**
+ * postsテーブルのレコード一件分を表す型定義
+ */
+export interface Post {
+  /** 投稿の一意なID (UUID) */
+  post_id: string;
+  /** 投稿したユーザーのID (UUID) */
+  user_id: string;
+  /** 投稿された画像のID (UUID) */
+  img_id: string;
+  /** AIに投げかけた質問文 */
+  question: string;
+  /** AIからの回答文 */
+  answer: string;
+  /** アプリから提供された「問い」 (もしあれば) */
+  target: string;
+  toi: string;
+  location: string;
+  /** 緯度 (数値) */
+  latitude: number;
+  /** 経度 (数値) */
+  longitude: number;
+  /** 投稿日時 (ISO 8601形式の文字列) */
+  date: string;
+  /** 更新日時 (ISO 8601形式の文字列) */
+  updated_at: string;
+}
