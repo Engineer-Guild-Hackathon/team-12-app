@@ -1,14 +1,13 @@
+import hashlib
 import io
+import mimetypes
 import os
 import uuid
-import hashlib
-import mimetypes
-from datetime import timedelta
 
 import sqlalchemy as sa
-from sqlalchemy.orm import sessionmaker, declarative_base
 from google.cloud import storage
 from google.cloud.sql.connector import Connector
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 # ----------------------------------
 # 1. 設定 (DB, GCS, Model)
@@ -109,7 +108,7 @@ class SaveImage:
             # 2. GCSへアップロード
             blob = bucket.blob(object_name)
             blob.upload_from_file(io.BytesIO(data), content_type=mime_type)
-            
+
             # 3. DBのステータスをstoredに更新
             db.query(Image).filter_by(img_id=img_id).update({"status": "stored"})
             db.commit()

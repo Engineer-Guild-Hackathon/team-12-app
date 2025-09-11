@@ -1,7 +1,8 @@
+import os
 import sys
 from pathlib import Path
-from flask import Flask, request, render_template
-import os
+
+from flask import Flask, render_template, request
 
 # --- パス設定 ---
 try:
@@ -34,7 +35,7 @@ def save_file():
         message = 'ファイルが選択されていません。'
         category = 'error'
         return render_template('image_test.html', message=message, category=category)
-    
+
     file = request.files['image_file']
 
     try:
