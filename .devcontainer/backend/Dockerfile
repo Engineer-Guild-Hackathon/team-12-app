@@ -1,4 +1,5 @@
 FROM python:3.12-slim
+ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && \
@@ -17,7 +18,12 @@ RUN apt-get update && \
         build-essential \
         g++ \
         python3-dev \
-        pkg-config && \
+        pkg-config \
+        # ★ python-magic が必要とする OS 依存ライブラリ
+        libmagic1 \
+        libmagic-dev && \
+        # （必要に応じて file コマンドも）
+        # file && \
     rm -rf /var/lib/apt/lists/*
 
 COPY backend/pyproject.toml backend/poetry.lock ./
@@ -36,4 +42,6 @@ RUN poetry install --no-interaction --no-ansi \
 
 COPY backend/ ./
 
+# 既存APIが5000、example_img_analyze.pyは5002を使用
 EXPOSE 5000
+EXPOSE 5002
