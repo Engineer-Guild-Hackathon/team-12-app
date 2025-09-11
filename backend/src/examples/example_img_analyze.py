@@ -15,16 +15,15 @@ import logging
 import uuid
 from typing import Any, Dict
 
-from flask import Flask, jsonify, redirect, render_template_string, request, url_for
-from werkzeug.exceptions import BadRequest
+from flask import Flask, jsonify, render_template_string, request
 
 # 既存ルート（/health, /ready, /v1/analyze）を流用
-from services.routes.img_analyze_route import img_analyze_bp  # NOTE: your module path may be src.routes... adjust if needed
+from src.routes.img_analyze_route import img_analyze_bp
 
 # 直接関数を呼び出す（フォームPOSTで即AIを叩く用途）
-from services.ai.analyze import analyze  # returns Dict[str, str]
-from utils.config import CONFIG
-
+from src.services.ai.analyze import analyze  # returns Dict[str, str]
+from src.utils.config import CONFIG
+from werkzeug.exceptions import BadRequest
 
 app = Flask(__name__, template_folder="template")
 app.secret_key = "dev"  # 本番では安全な値に
@@ -32,6 +31,7 @@ app.logger.setLevel(logging.INFO)
 
 # Blueprint 登録（APIとして /health /ready /v1/analyze を有効化）
 app.register_blueprint(img_analyze_bp, url_prefix="")
+
 
 # 簡易フォーム（example_post.py に倣い、サーバ側で初期値を用意）
 def _default_form_values() -> Dict[str, Any]:

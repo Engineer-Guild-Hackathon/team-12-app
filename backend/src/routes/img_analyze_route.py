@@ -1,8 +1,7 @@
 from flask import Blueprint, jsonify, request
+from src.services.ai.analyze import analyze
+from src.utils.config import CONFIG
 from werkzeug.exceptions import BadRequest
-
-from services.ai.analyze import analyze
-from utils.config import CONFIG
 
 img_analyze_bp = Blueprint("img_analyze", __name__)
 

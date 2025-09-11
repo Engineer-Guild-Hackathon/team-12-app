@@ -18,7 +18,7 @@ magic.from_buffer = _from_buffer
 sys.modules["magic"] = magic
 # -----------------------------------
 
-import utils.image_processing as mod  # noqa: E402
+import src.utils.image_processing as mod  # noqa: E402
 
 
 def _png_bytes(w=800, h=600) -> bytes:

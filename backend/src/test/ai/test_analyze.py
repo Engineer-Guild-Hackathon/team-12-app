@@ -18,7 +18,7 @@ magic.from_buffer = _from_buffer
 sys.modules["magic"] = magic
 # ---------------------------------------------
 
-import services.ai.analyze as analyze_mod  # noqa: E402  ← magicスタブの後でimport
+import src.services.ai.analyze as analyze_mod  # noqa: E402  ← magicスタブの後でimport
 
 
 class _GeminiSpy:

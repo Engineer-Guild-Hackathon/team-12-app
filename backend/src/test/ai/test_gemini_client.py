@@ -1,10 +1,9 @@
 import io
 
 import pytest
+import src.services.ai.gemini_client as gemini_client
 from PIL import Image
 from werkzeug.datastructures import FileStorage
-
-import services.ai.gemini_client as gemini_client
 
 
 def _png_bytes() -> bytes:

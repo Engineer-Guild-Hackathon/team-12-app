@@ -6,12 +6,11 @@ from typing import Any, Dict
 
 import httpx
 from google import genai
+from src.services.ai.gemini_client import gemini
+from src.utils.config import CONFIG
+from src.utils.image_processing import downscale_to_jpeg, sniff_mime
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest
-
-from services.ai.gemini_client import gemini
-from utils.config import CONFIG
-from utils.image_processing import downscale_to_jpeg, sniff_mime
 
 
 # TODO:Dos攻撃等任意URLアクセス対策（IP制限、リクエスト数制限等）

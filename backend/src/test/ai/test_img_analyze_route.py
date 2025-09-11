@@ -3,12 +3,11 @@ import sys
 import types
 
 import pytest
+import src.services.ai.analyze as analyze_mod
 from flask import Flask
 from PIL import Image
+from src.routes.img_analyze_route import img_analyze_bp
 from werkzeug.datastructures import FileStorage
-
-import services.ai.analyze as analyze_mod  # ← 追加
-from routes.img_analyze_route import img_analyze_bp
 
 # --- magic をテスト時だけダミー化 ---
 magic = types.ModuleType("magic")

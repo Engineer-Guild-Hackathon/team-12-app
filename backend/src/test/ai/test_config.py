@@ -2,8 +2,7 @@
 import importlib
 
 import pytest
-
-import utils.config as config
+import src.utils.config as config
 
 
 def test_config_importable():
@@ -23,7 +22,7 @@ def test_config_env_overrides(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("HTTP_TIMEOUT", "7.5")
 
     # 再読込して反映を確認（実装によっては反映しない場合もある）
-    import utils.config as cfg
+    import src.utils.config as cfg
     importlib.reload(cfg)
 
     # GEMINI_API_KEY
