@@ -1,6 +1,8 @@
 import io
-from PIL import Image
+
 import magic
+from PIL import Image
+
 
 def sniff_mime(raw: bytes) -> str:
     mime = magic.from_buffer(raw, mime=True)

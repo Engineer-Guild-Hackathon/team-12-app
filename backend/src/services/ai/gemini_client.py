@@ -1,9 +1,12 @@
 from __future__ import annotations
+
+import base64
+
 from google import genai
 from google.genai import types
-from utils.config import CONFIG
-import base64
 from werkzeug.datastructures import FileStorage
+
+from utils.config import CONFIG
 
 
 # 単純ラッパ：bytes(JPEG) + prompt を投げて text を返す

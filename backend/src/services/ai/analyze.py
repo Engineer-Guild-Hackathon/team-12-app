@@ -1,14 +1,18 @@
 from __future__ import annotations
-from google import genai
-import httpx
+
 import base64
 import io
+from typing import Any, Dict
+
+import httpx
+from google import genai
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest
+
 from services.ai.gemini_client import gemini
 from utils.config import CONFIG
 from utils.image_processing import downscale_to_jpeg, sniff_mime
-from typing import Dict, Any
+
 
 # TODO:Dos攻撃等任意URLアクセス対策（IP制限、リクエスト数制限等）
 def _fetch_image_bytes(url: str) -> bytes:
@@ -42,6 +46,7 @@ def _parse_answer_to_dict(answer: str) -> Dict[str, str]:
     { "title": str, "discovery": str, "question": str } のdictに変換する。
     """
     import json
+
     from werkzeug.exceptions import BadRequest
 
     try:

@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -11,7 +12,7 @@ class _Config:
 
     # 入力制限
     # Geminiは20MBまでbase64許容だが念のため15MB
-    B64_MAX_IMAGE_BYTES: int = int(os.getenv("B64_MAX_IMAGE_BYTES", "15000000")) 
+    B64_MAX_IMAGE_BYTES: int = int(os.getenv("B64_MAX_IMAGE_BYTES", "15000000"))
     MAX_IMAGE_LONG_EDGE: int = int(os.getenv("MAX_IMAGE_LONG_EDGE", "1600"))
 
     # HTTP

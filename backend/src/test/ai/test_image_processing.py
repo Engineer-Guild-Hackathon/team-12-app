@@ -1,9 +1,24 @@
 import io
+import sys
+import types
+
 # import importlib
 import pytest
 from PIL import Image
 
-import utils.image_processing as mod
+# --- magic をテスト時だけダミー化 ---
+magic = types.ModuleType("magic")
+
+
+def _from_buffer(b, mime=True):
+    return "image/png"  # 画像として扱わせる
+
+
+magic.from_buffer = _from_buffer
+sys.modules["magic"] = magic
+# -----------------------------------
+
+import utils.image_processing as mod  # noqa: E402
 
 
 def _png_bytes(w=800, h=600) -> bytes:

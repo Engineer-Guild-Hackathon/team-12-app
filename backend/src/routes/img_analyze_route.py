@@ -1,5 +1,6 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify, request
 from werkzeug.exceptions import BadRequest
+
 from services.ai.analyze import analyze
 from utils.config import CONFIG
 

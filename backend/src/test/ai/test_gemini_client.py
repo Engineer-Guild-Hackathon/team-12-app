@@ -1,4 +1,5 @@
 import io
+
 import pytest
 from PIL import Image
 from werkzeug.datastructures import FileStorage
@@ -29,14 +30,19 @@ def test_gemini_client_is_mockable(monkeypatch: pytest.MonkeyPatch):
       - gemini_client.gemini を差し替え可能であること
       - generate_b64 / generate_fileStorage の形で呼び出せること
     """
+
     class _Spy:
         def __init__(self):
             self.b64 = False
             self.files = False
+
         def generate_b64(self, image_jpeg_bytes: bytes, prompt: str) -> str:
-            self.b64 = True; return "OK_B64"
+            self.b64 = True
+            return "OK_B64"
+
         def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
-            self.files = True; return "OK_FILES"
+            self.files = True
+            return "OK_FILES"
 
     spy = _Spy()
     monkeypatch.setattr(gemini_client, "gemini", spy, raising=False)
