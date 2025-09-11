@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>Image API Test Page</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { background-color: #f9f9f9; border: 1px solid #ddd; padding: 1.5em; margin-bottom: 2em; border-radius: 8px; }
+        .test-section h2 { margin-top: 0; }
+        input[type="text"] { width: 95%; padding: 8px; margin-bottom: 10px; font-family: monospace; }
+        button { padding: 0.6em 1.2em; border-radius: 4px; border: none; cursor: pointer; background-color: #007bff; color: white; }
+        button:hover { background-color: #0056b3; }
+        
+        /* 結果表示用のスタイル */
+        .result-area { border-top: 2px solid #007bff; margin-top: 1.5em; padding-top: 1.5em; }
+        .result-preview img { max-width: 100%; border-radius: 4px; border: 1px solid #ddd; margin-bottom: 1em; }
+        .result-details { font-family: monospace; background: #2d2d2d; color: #f0f0f0; padding: 1em; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; }
+        .error-msg { color: #d8000c; background-color: #ffbaba; border: 1px solid; padding: 1em; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image API Test Page</h1>
+        <p>各フォームの操作は、ページを再読み込みせずにJavaScript(fetch API)で実行されます。</p>
+
+        <!-- 1. 画像アップロード -->
+        <div class="test-section">
+            <h2>1. 画像をアップロード (POST /api/images)</h2>
+            <form id="saveImageForm">
+                <input type="file" name="image_file" accept="image/*" required>
+                <button type="submit">アップロード</button>
+            </form>
+        </div>
+
+        <!-- 2. 画像情報を取得 -->
+        <div class="test-section">
+            <h2>2. 画像情報を取得 (GET /api/images/&lt;uuid&gt;)</h2>
+            <form id="getImageForm">
+                <label for="img_id_to_get">Image ID (UUID):</label>
+                <input type="text" id="img_id_to_get" name="img_id" placeholder="アップロード後に表示されたIDを貼り付け" required>
+                <button type="submit">表示</button>
+            </form>
+            <!-- 取得結果はここに動的に挿入されます -->
+            <div id="getResultArea"></div>
+        </div>
+
+        <!-- 3. 画像を削除 -->
+        <div class="test-section">
+            <h2>3. 画像を削除 (DELETE /api/images/&lt;uuid&gt;)</h2>
+            <form id="deleteImageForm">
+                <label for="img_id_to_delete">Image ID (UUID):</label>
+                <input type="text" id="img_id_to_delete" name="img_id" placeholder="IDを貼り付け" required>
+                <button type="submit" style="background-color: #d9534f;">削除</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. 画像保存 (POST) ---
+        document.getElementById("saveImageForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const formData = new FormData(form);
+
+            try {
+                const resp = await fetch("/api/images", {
+                    method: "POST",
+                    body: formData, // ファイル送信なのでJSON.stringifyは不要
+                });
+
+                const data = await resp.json().catch(() => ({}));
+                if (resp.ok) {
+                    const imgId = data.image?.img_id;
+                    alert("アップロード成功！\nImage ID: " + imgId);
+                    // 成功したら、取得・削除フォームにIDを自動入力
+                    document.getElementById("img_id_to_get").value = imgId;
+                    document.getElementById("img_id_to_delete").value = imgId;
+                    form.reset();
+                } else {
+                    alert("アップロード失敗: " + (data.error || data.detail || resp.statusText));
+                }
+            } catch (err) {
+                alert("通信エラー: " + err);
+            }
+        });
+
+        // --- 2. 画像取得 (GET) ---
+        document.getElementById("getImageForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const imgId = document.getElementById("img_id_to_get").value;
+            const resultArea = document.getElementById("getResultArea");
+            resultArea.innerHTML = "<p>取得中...</p>"; // ローディング表示
+
+            try {
+                const resp = await fetch(`/api/images/${imgId}`);
+                const data = await resp.json().catch(() => ({}));
+
+                if (resp.ok) {
+                    const img = data.image;
+                    // 結果を整形して表示
+                    resultArea.innerHTML = `
+                        <div class="result-area">
+                            <h3>取得結果:</h3>
+                            <div class="result-preview">
+                                <p><b>画像プレビュー:</b></p>
+                                <a href="${img.signed_url}" target="_blank" title="新しいタブで画像を開く">
+                                    <img src="${img.signed_url}" alt="Image Preview">
+                                </a>
+                            </div>
+                            <p><b>APIレスポンス (JSON):</b></p>
+                            <pre class="result-details">${JSON.stringify(img, null, 4)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultArea.innerHTML = `<p class="error-msg">取得失敗: ${data.error || data.detail || resp.statusText}</p>`;
+                }
+            } catch (err) {
+                resultArea.innerHTML = `<p class="error-msg">通信エラー: ${err}</p>`;
+            }
+        });
+
+        // --- 3. 画像削除 (DELETE) ---
+        document.getElementById("deleteImageForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const imgId = document.getElementById("img_id_to_delete").value;
+            if (!confirm(`本当にこの画像を削除しますか？\nID: ${imgId}`)) return;
+
+            try {
+                const resp = await fetch(`/api/images/${imgId}`, { method: "DELETE" });
+                if (resp.ok) {
+                    alert(`画像が削除されました (ID: ${imgId})`);
+                    // フォームをクリア
+                    document.getElementById("img_id_to_delete").value = '';
+                    // 取得結果もクリア
+                    if (document.getElementById("img_id_to_get").value === imgId) {
+                        document.getElementById("getResultArea").innerHTML = '';
+                        document.getElementById("img_id_to_get").value = '';
+                    }
+                } else {
+                    const data = await resp.json().catch(() => ({}));
+                    alert(`削除失敗: ${data.error || data.detail || resp.statusText}`);
+                }
+            } catch (err) {
+                alert("通信エラー: " + err);
+            }
+        });
+    </script>
+</body>
+</html>
+
