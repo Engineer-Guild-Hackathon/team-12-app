@@ -1,24 +1,9 @@
 import io
-import sys
-import types
 
 import pytest
+import src.services.ai.analyze as analyze_mod
 from PIL import Image
 from werkzeug.datastructures import FileStorage
-
-# --- magic を先にダミー化（ここが最重要） ---
-magic = types.ModuleType("magic")
-
-
-def _from_buffer(b, mime=True):
-    return "image/png"
-
-
-magic.from_buffer = _from_buffer
-sys.modules["magic"] = magic
-# ---------------------------------------------
-
-import src.services.ai.analyze as analyze_mod  # noqa: E402  ← magicスタブの後でimport
 
 
 class _GeminiSpy:

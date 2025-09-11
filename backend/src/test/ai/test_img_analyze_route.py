@@ -1,6 +1,4 @@
 import io
-import sys
-import types
 
 import pytest
 import src.services.ai.analyze as analyze_mod
@@ -8,18 +6,6 @@ from flask import Flask
 from PIL import Image
 from src.routes.img_analyze_route import img_analyze_bp
 from werkzeug.datastructures import FileStorage
-
-# --- magic をテスト時だけダミー化 ---
-magic = types.ModuleType("magic")
-
-
-def _from_buffer(b, mime=True):
-    return "image/png"  # 画像として扱わせる
-
-
-magic.from_buffer = _from_buffer
-sys.modules["magic"] = magic
-# -----------------------------------
 
 
 class _GeminiSpy:
