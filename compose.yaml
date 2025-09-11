@@ -18,10 +18,12 @@ services:
       context: .
       dockerfile: .devcontainer/backend/Dockerfile
     container_name: back-server
+    working_dir: /backend
     env_file:
       - gcloud.env
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/adc.json
+      PYTHONPATH: /backend
     volumes:
       - "${ADC_JSON}:/var/secrets/adc.json:ro"
     ports:

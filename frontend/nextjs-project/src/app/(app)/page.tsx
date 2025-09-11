@@ -1,27 +1,32 @@
-import { Box } from "@mui/material";
-import Link from "next/link";
+"use client";
 
-export default function Home() {
+import { Box } from "@mui/material";
+import dynamic from "next/dynamic";
+import { useMemo } from "react";
+
+export default function HomePage() {
+  // Mapコンポーネントを動的にインポートし、サーバーサイドレンダリングを無効化
+  const Map = useMemo(
+    () =>
+      dynamic(() => import("@/components/features/map/Map"), {
+        loading: () => <p>地図を読み込んでいます...</p>,
+        ssr: false,
+      }),
+    [],
+  );
+
   return (
-    <Box sx={{ backgroundColor: "kinako.100" }}>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/list">一覧ページへ</Link>
-          </li>
-          <li>
-            <Link href="/login">ログインページへ</Link>
-          </li>
-          <li>
-            <Link href="/signup">新規登録ページへ</Link>
-          </li>
-          <li>
-            <Link href="/discoveries/hokkaido-university-poplar-avenue">
-              発見詳細ページへ
-            </Link>
-          </li>
-        </ul>
-      </nav>
+    <Box sx={{ height: "100%", width: "100%", position: "relative" }}>
+      {/* このBoxが地図コンテナの親となり、高さを決定する */}
+      <Box sx={{ height: "calc(100vh - 172px)", width: "100%" }}>
+        {/* 172px = ヘッダー(64px) + フッター(108px) の高さ */}
+        <Map />
+      </Box>
+
+      {/* 必要であれば、地図の上にUIを重ねて表示することも可能 */}
+      {/* <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1000 }}>
+        <Typography>地図上のUI</Typography>
+      </Box> */}
     </Box>
   );
 }
