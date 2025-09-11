@@ -1,64 +1,154 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Post フォーム</title>
     <style>
-    body { font-family: sans-serif; margin: 2em; }
-    form { margin-bottom: 2em; }
-    .post { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; border-radius: 6px; }
-    .meta { color: #666; font-size: 0.9em; }
+        body { font-family: sans-serif; margin: 2em; }
+        form { margin-bottom: 2em; }
+        .post { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em; border-radius: 6px; }
+        .meta { color: #666; font-size: 0.9em; }
+        label { display:block; margin-top: .6em; }
+        input[type="text"], input[type="number"] { width: 32em; max-width: 100%; }
     </style>
 </head>
 <body>
-    <h1>新しい Post を送信</h1>
-
-    <form method="post" action="/posts">
-        <label for="post_id">Post ID (UUID):</label><br>
-        <input type="text" id="post_id" name="post_id" required><br><br>
-
-        <label for="user_id">User ID (UUID):</label><br>
-        <input type="text" id="user_id" name="user_id" required><br><br>
-
-        <label for="img_id">Image ID (UUID):</label><br>
-        <input type="text" id="img_id" name="img_id" required><br><br>
-
-        <label for="question">Question:</label><br>
-        <input type="text" id="question" name="question" required><br><br>
-
-        <label for="answer">Answer:</label><br>
-        <input type="text" id="answer" name="answer" required><br><br>
-
-        <label for="toi">TOI:</label><br>
-        <input type="text" id="toi" name="toi" required><br><br>
-
-        <label for="location">Location:</label><br>
-        <input type="text" id="location" name="location" required><br><br>
-
-        <button type="submit">送信</button>
-    </form>
-
     <h2>投稿一覧（現在時刻から15分より前のもの）</h2>
     {% if posts %}
         {% for p in posts %}
-            <div class="post">
+        <div class="post">
             <div class="meta">
-                <b>Post ID:</b> {{ p.post_id }}<br>
-                <b>User ID:</b> {{ p.user_id }}<br>
-                <b>Image ID:</b> {{ p.img_id }}<br>
+            <b>"post_id":</b> "{{ p.post_id }}"<br />
+            <b>"user_id":</b> "{{ p.user_id }}"<br />
+            <b>"img_id":</b> "{{ p.img_id }}"<br />
             </div>
-            <p><b>Question:</b> {{ p.question }}</p>
-            <p><b>Answer:</b> {{ p.answer }}</p>
-            <p><b>TOI:</b> {{ p.toi }}</p>
-            <p><b>Location:</b> {{ p.location }}</p>
+            <p><b>"question":</b> "{{ p.question }}"</p>
+            <p><b>"target":</b> "{{ p.target }}"</p>
+            <p><b>"answer":</b> "{{ p.answer }}"</p>
+            <p><b>"toi":</b> "{{ p.toi }}"</p>
+            <p><b>"location":</b> "{{ p.location }}"</p>
+            <p><b>"latitude":</b> {{ p.latitude }}</p>
+            <p><b>"longitude":</b> {{ p.longitude }}</p>
             <div class="meta">
-                <b>Date:</b> {{ p.date }}<br>
-                <b>Updated:</b> {{ p.updated_at }}
+            <b>"date":</b> "{{ p.date }}"<br />
+            <b>"updated_at":</b> "{{ p.updated_at }}"
             </div>
-            </div>
+        </div>
         {% endfor %}
     {% else %}
         <p>15分以上前の投稿はまだありません。</p>
     {% endif %}
-    </body>
+    
+    <h1>新しい投稿をデータベースに登録</h1>
+    <form id="createForm">
+        <!-- ID類（必要なら hidden にしてUIから隠してもOK） -->
+        <label for="user_id">user_id (UUID):</label>
+        <input type="text" id="user_id" name="user_id" value="{{ form.user_id }}" required />
+
+        <label for="img_id">img_id (UUID):</label>
+        <input type="text" id="img_id" name="img_id" value="{{ form.img_id }}" required />
+
+        <label for="question">question:</label>
+        <input type="text" id="question" name="question" value="{{ form.question }}" required />
+
+        <label for="target">target:</label>
+        <input type="text" id="target" name="target" value="{{ form.target }}" required />
+
+        <label for="answer">answer:</label>
+        <input type="text" id="answer" name="answer" value="{{ form.answer }}" required />
+
+        <label for="toi">toi:</label>
+        <input type="text" id="toi" name="toi" value="{{ form.toi }}" required />
+
+        <label for="latitude">latitute(緯度):</label>
+        <input type="number" id="latitude" name="latitude" value="{{ form.latitude }}" step="0.000001" min="-90" max="90" required />
+
+        <label for="longitude">longetude (経度):</label>
+        <input type="number" id="longitude" name="longitude" value="{{ form.longitude }}" step="0.000001" min="-180" max="180" required />
+
+        <div style="margin-top: 1em;">
+            <button type="submit">登録</button>
+        </div>
+    </form>
+    
+    <h1>特定の投稿の削除</h1>
+    <form id="deleteForm">
+        <label for="post_id">Post ID:</label>
+        <input type="text" id="post_id" name="post_id" required />
+        <div style="margin-top: 1em;">
+            <button type="submit">削除</button>
+        </div>
+    </form>
+
+    <script>
+        // --- 登録（POST）: ページ遷移なしで処理 ---
+        document.getElementById("createForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = e.currentTarget;
+        const fd = new FormData(form);
+
+        // JSON 化（数値は型を明確に）
+        const payload = {
+            user_id:  fd.get("user_id"),
+            img_id:   fd.get("img_id"),
+            question: fd.get("question"),
+            target:   fd.get("target"),
+            answer:   fd.get("answer"),
+            toi:      fd.get("toi"),
+            location: fd.get("location"),
+            latitude: Number(fd.get("latitude")),
+            longitude:Number(fd.get("longitude")),
+        };
+
+        try {
+            const resp = await fetch("/api/posts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+            });
+
+            const data = await resp.json().catch(() => ({}));
+
+            if (resp.ok) {
+            alert("投稿を登録しました");
+
+            // フォームをリセット（必要に応じて初期値へ戻す）
+            form.reset();
+            } else {
+            const msg = (data && (data.error || data.detail)) || resp.statusText;
+            alert("登録に失敗しました: " + msg);
+            }
+        } catch (err) {
+            alert("通信エラー: " + err);
+        }
+        });
+
+        // --- 削除（DELETE）: 既存の実装そのまま ---
+        document.getElementById("deleteForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const postId = document.getElementById("post_id").value;
+
+        try {
+            const resp = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+            if (resp.ok) {
+            alert("投稿が削除されました (post_id: " + postId + ")");
+            // 画面上から該当postを消す（簡易版）
+            const cards = document.querySelectorAll(".post");
+            for (const el of cards) {
+                if (el.innerText.includes(postId)) {
+                el.remove();
+                break;
+                }
+            }
+            } else {
+            const error = await resp.json().catch(() => ({}));
+            alert("削除に失敗しました: " + (error.error || resp.statusText));
+            }
+        } catch (err) {
+            alert("通信エラー: " + err);
+        }
+        });
+    </script>
+</body>
 </html>

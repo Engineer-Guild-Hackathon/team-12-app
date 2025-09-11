@@ -16,15 +16,24 @@ if Base is object:
 
 class Post(Base):
     __tablename__ = "posts"
+
     post_id = sa.Column(sa.Uuid, primary_key=True)
     user_id = sa.Column(sa.Uuid, nullable=False)
     img_id = sa.Column(sa.Uuid, nullable=False)
+
     question = sa.Column(sa.Text, nullable=False)
+    target = sa.Column(sa.Text, nullable=False)
     answer = sa.Column(sa.Text, nullable=False)
     toi = sa.Column(sa.Text, nullable=False)
     location = sa.Column(sa.Text, nullable=False)
+
+    latitude = sa.Column(sa.Float, nullable=False)
+    longitude = sa.Column(sa.Float, nullable=False)
+
     date = sa.Column(
-        sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False
+        sa.TIMESTAMP(timezone=True),
+        server_default=sa.func.now(),
+        nullable=False,
     )
     updated_at = sa.Column(
         sa.TIMESTAMP(timezone=True),
@@ -35,7 +44,7 @@ class Post(Base):
 
 
 class PostService:
-    """Post を Cloud SQL に保存・取得するサービスクラス"""
+    """Post を Cloud SQL に保存・取得・削除をするサービスクラス"""
 
     @staticmethod
     def create_post(
@@ -43,9 +52,12 @@ class PostService:
         user_id: uuid.UUID,
         img_id: uuid.UUID,
         question: str,
+        target: str,
         answer: str,
         toi: str,
         location: str,
+        latitude: float,
+        longitude: float,
     ) -> Optional[Dict[str, Any]]:
         """新しい Post を保存し、作成結果を返す"""
         if SessionLocal is None or engine is None:
@@ -58,9 +70,12 @@ class PostService:
                     user_id=user_id,
                     img_id=img_id,
                     question=question,
+                    target=target,
                     answer=answer,
                     toi=toi,
                     location=location,
+                    latitude=latitude,
+                    longitude=longitude,
                 )
                 session.add(post)
                 session.commit()
@@ -71,9 +86,12 @@ class PostService:
                     "user_id": str(post.user_id),
                     "img_id": str(post.img_id),
                     "question": post.question,
+                    "target": post.target,
                     "answer": post.answer,
                     "toi": post.toi,
                     "location": post.location,
+                    "latitude": post.latitude,
+                    "longitude": post.longitude,
                     "date": post.date.isoformat() if post.date else None,
                     "updated_at": post.updated_at.isoformat()
                     if post.updated_at
@@ -100,9 +118,12 @@ class PostService:
                 "user_id": str(post.user_id),
                 "img_id": str(post.img_id),
                 "question": post.question,
+                "target": post.target,
                 "answer": post.answer,
                 "toi": post.toi,
                 "location": post.location,
+                "latitude": post.latitude,
+                "longitude": post.longitude,
                 "date": post.date.isoformat() if post.date else None,
                 "updated_at": post.updated_at.isoformat() if post.updated_at else None,
             }
@@ -127,9 +148,12 @@ class PostService:
                     "user_id": str(p.user_id),
                     "img_id": str(p.img_id),
                     "question": p.question,
+                    "target": p.target,
                     "answer": p.answer,
                     "toi": p.toi,
                     "location": p.location,
+                    "latitude": p.latitude,
+                    "longitude": p.longitude,
                     "date": p.date.isoformat() if p.date else None,
                     "updated_at": p.updated_at.isoformat() if p.updated_at else None,
                 }
@@ -137,10 +161,11 @@ class PostService:
             ]
 
     @staticmethod
-    def list_posts_before(cutoff: datetime) -> List[Dict[str, Any]]:
+    def list_posts_before(cutoff: datetime.datetime) -> List[Dict[str, Any]]:
         """指定した日時より前に作成された投稿を返す"""
         if SessionLocal is None or engine is None:
             raise RuntimeError("Database is not initialized")
+
         with SessionLocal() as session:
             rows = (
                 session.query(Post)
@@ -154,9 +179,12 @@ class PostService:
                     "user_id": str(p.user_id),
                     "img_id": str(p.img_id),
                     "question": p.question,
+                    "target": p.target,
                     "answer": p.answer,
                     "toi": p.toi,
                     "location": p.location,
+                    "latitude": p.latitude,
+                    "longitude": p.longitude,
                     "date": p.date.isoformat() if p.date else None,
                     "updated_at": p.updated_at.isoformat() if p.updated_at else None,
                 }
@@ -168,6 +196,7 @@ class PostService:
         """投稿を削除。成功したら True, 存在しなければ False"""
         if SessionLocal is None or engine is None:
             raise RuntimeError("Database is not initialized")
+
         with SessionLocal() as session:
             post = session.get(Post, post_id)
             if not post:
