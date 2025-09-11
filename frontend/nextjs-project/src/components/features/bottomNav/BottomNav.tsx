@@ -2,7 +2,7 @@
 
 "use client";
 
-import { MOBILE_MAX_WIDTH } from "@/constants/styles";
+import { MOBILE_MAX_WIDTH, BOTTOM_NAV_HEIGHT } from "@/constants/styles";
 import { BottomNavigation, Box } from "@mui/material";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -27,6 +27,7 @@ export default function BottomNav() {
         bottom: 0,
         left: "50%",
         transform: "translateX(-50%)",
+        zIndex: (theme) => theme.zIndex.appBar,
       }}
     >
       <BottomNavigation
@@ -36,7 +37,7 @@ export default function BottomNav() {
           borderTop: "1px solid",
           borderColor: "kinako.300",
           backgroundColor: "kinako.100",
-          height: 108,
+          height: `${BOTTOM_NAV_HEIGHT}px`,
           px: 3,
         }}
       >
