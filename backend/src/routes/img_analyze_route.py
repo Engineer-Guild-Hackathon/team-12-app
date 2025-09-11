@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from src.services.ai.analyze import analyze
+from src.services.ai.analyze import AnalyzeService
 from src.utils.config import CONFIG
 from werkzeug.exceptions import BadRequest
 
@@ -34,7 +34,7 @@ def post_analyze():
         raise BadRequest("file or image_url is required")
 
     try:
-        answer = analyze(file=file, image_url=image_url, question=question)
+        answer = AnalyzeService.analyze(file=file, image_url=image_url, question=question)
         return jsonify({"answer": answer}), 200
     except BadRequest as e:
         # 400/413などの入力系

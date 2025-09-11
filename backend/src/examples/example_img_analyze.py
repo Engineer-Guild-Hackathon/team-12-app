@@ -21,7 +21,7 @@ from flask import Flask, jsonify, render_template_string, request
 from src.routes.img_analyze_route import img_analyze_bp
 
 # 直接関数を呼び出す（フォームPOSTで即AIを叩く用途）
-from src.services.ai.analyze import analyze  # returns Dict[str, str]
+from src.services.ai.analyze import AnalyzeService
 from src.utils.config import CONFIG
 from werkzeug.exceptions import BadRequest
 
@@ -132,7 +132,7 @@ def index():
 @app.post("/analyze")
 def analyze_form():
     """
-    フォーム POST → 直接 services.ai.analyze.analyze(...) を呼ぶ。
+    フォーム POST → 直接 AnalyzeService.analyze(...) を呼ぶ。
     画像は file / image_url のどちらか必須。
     """
     file = request.files.get("file")
@@ -143,7 +143,7 @@ def analyze_form():
         raise BadRequest("file or image_url is required")
 
     try:
-        parsed = analyze(file=file, image_url=image_url, question=question)
+        parsed = AnalyzeService.analyze(file=file, image_url=image_url, question=question)
         # parsed は {"title": str, "discovery": str, "question": str}
         return render_template_string(
             INDEX_HTML,
@@ -190,7 +190,7 @@ def local_analyze():
     question = request.form.get("question") or None
     if not file and not image_url:
         raise BadRequest("file or image_url is required")
-    parsed = analyze(file=file, image_url=image_url, question=question)
+    parsed = AnalyzeService.analyze(file=file, image_url=image_url, question=question)
     return jsonify(parsed), 200
 
 
