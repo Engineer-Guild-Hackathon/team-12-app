@@ -6,11 +6,12 @@ services:
     tty: true
     environment:
       NODE_ENV: "production"
-    healthcheck:
-      test: ['CMD-SHELL', 'node -e "fetch(\"http://localhost:3000\").then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"']
-      interval: 10s
-      timeout: 3s
+    hhealthcheck:
+      test: ['CMD-SHELL', 'wget -q -T 5 -O - http://localhost:3000/ > /dev/null 2>&1 || exit 1']
+      interval: 15s
+      timeout: 5s
       retries: 5
+      start_period: 30s
     restart: unless-stopped
 
   back-server:

@@ -6,6 +6,7 @@ services:
       dockerfile: .devcontainer/frontend/Dockerfile.prod
     environment:
       NODE_ENV: "production"
+
   back-server:
     environment:
       - FLASK_ENV=production
