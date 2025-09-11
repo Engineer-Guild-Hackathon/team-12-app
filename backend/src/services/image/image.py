@@ -16,11 +16,16 @@ engine, SessionLocal, Base, connector = connect_db()
 
 # --- GCSクライアントを初期化 ---
 GCS_BUCKET = os.environ.get("GCS_BUCKET")
+GCP_PROJECT = os.environ.get("GCP_PROJECT")
 try:
     if not GCS_BUCKET:
         raise ValueError("GCS_BUCKET environment variable is not set.")
-    storage_client = storage.Client()
+    if not GCP_PROJECT:
+        raise ValueError("GCP_PROJECT environment variable is not set for GCS.")
+
+    storage_client = storage.Client(project=GCP_PROJECT)
     bucket = storage_client.bucket(GCS_BUCKET)
+
 except Exception as e:
     print(f"ERROR: Failed to initialize GCS client: {e}")
     storage_client = None
