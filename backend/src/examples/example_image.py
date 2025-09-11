@@ -1,68 +1,106 @@
+import logging
 import os
-import sys
-from pathlib import Path
+import uuid
 
-from flask import Flask, render_template, request
+import requests
+from flask import Flask, flash, redirect, render_template, request, url_for
 
-# --- パス設定 ---
-try:
-    BASE_DIR = Path(__file__).resolve().parents[1]
-    sys.path.insert(0, str(BASE_DIR))
-    print(f"Added to Python path: {BASE_DIR}")
-except IndexError:
-    print("ERROR: Could not determine base directory.")
-    sys.exit(1)
+from src.routes.image_route import image_bp
 
-# --- services のインポート ---
-try:
-    from services.image.image import SaveImage
-except ImportError as e:
-    print(f"ERROR: Failed to import SaveImage class: {e}")
-    sys.exit(1)
+app = Flask(__name__, template_folder="template")
+app.secret_key = "dev-image"  # 本番では安全な値に
+app.logger.setLevel(logging.INFO)
 
-app = Flask(__name__, template_folder=str(BASE_DIR / "examples" / "template"))
+# Blueprint 登録（/images, /images/<img_id> などが有効化される）
+app.register_blueprint(image_bp, url_prefix="")
 
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
     return render_template("example_image.html")
 
 
-@app.route("/images", methods=["POST"])
-def save_file():
-    message = None
-    category = None
-
-    if "image_file" not in request.files or request.files["image_file"].filename == "":
-        message = "ファイルが選択されていません。"
-        category = "error"
-        return render_template("example_image.html", message=message, category=category)
+# --- テストフォームのアクションを処理するプロキシルート群 ---
+@app.route("/proxy/save_image", methods=["POST"])
+def proxy_save_image():
+    """HTMLフォームからファイルを受け取り、POST /images APIを叩く"""
+    if "image_file" not in request.files:
+        flash("ファイルが選択されていません。", "error")
+        return redirect(url_for("index"))
 
     file = request.files["image_file"]
+    api_url = request.url_root + "images"
+    try:
+        files = {"image_file": (file.filename, file.read(), file.mimetype)}
+        resp = requests.post(api_url, files=files, timeout=20)
+
+        if resp.ok:
+            data = resp.json().get("image", {})
+            msg = f"アップロード成功！\nImage ID: {data.get('img_id')}\nPresigned URL: {data.get('presigned_url')}"
+            flash(msg, "success")
+        else:
+            flash(f"アップロード失敗: {resp.status_code} {resp.text}", "error")
+
+    except requests.exceptions.RequestException as e:
+        flash(f"API呼び出しエラー: {e}", "error")
+
+    return redirect(url_for("index"))
+
+
+@app.route("/proxy/get_image", methods=["GET"])
+def proxy_get_image():
+    """フォームからIDを受け取り、GET /images/<uuid> APIを叩く"""
+    img_id_str = request.args.get("img_id")
+    if not img_id_str:
+        flash("Image IDが入力されていません。", "error")
+        return redirect(url_for("index"))
 
     try:
-        saver = SaveImage(file)
-        result, status_code = saver.execute()
+        uuid.UUID(img_id_str)  # UUID形式か簡易チェック
+    except ValueError:
+        flash(f"無効なUUID形式です: {img_id_str}", "error")
+        return redirect(url_for("index"))
 
-        if status_code < 400:
-            category = "success"
-            message = f"アップロード成功！\n\nレスポンス:\n{result}"
+    api_url = request.url_root + f"images/{img_id_str}"
+    try:
+        resp = requests.get(api_url, timeout=10)
+        if resp.ok:
+            flash(f"取得成功:\n{resp.json()}", "info")
         else:
-            category = "error"
-            message = f"アップロード失敗！\n\nレスポンス:\n{result}"
+            flash(f"取得失敗: {resp.status_code} {resp.text}", "error")
+    except requests.exceptions.RequestException as e:
+        flash(f"API呼び出しエラー: {e}", "error")
 
-    except Exception as e:
-        category = "error"
-        message = f"予期せぬエラーが発生しました:\n{e}"
+    return redirect(url_for("index"))
 
-    return render_template("example_image.html", message=message, category=category)
+
+@app.route("/proxy/delete_image", methods=["POST"])
+def proxy_delete_image():
+    """フォームからIDを受け取り、DELETE /images/<uuid> APIを叩く"""
+    img_id_str = request.form.get("img_id")
+    if not img_id_str:
+        flash("Image IDが入力されていません。", "error")
+        return redirect(url_for("index"))
+
+    try:
+        uuid.UUID(img_id_str)
+    except ValueError:
+        flash(f"無効なUUID形式です: {img_id_str}", "error")
+        return redirect(url_for("index"))
+
+    api_url = request.url_root + f"images/{img_id_str}"
+    try:
+        resp = requests.delete(api_url, timeout=10)
+        if resp.ok:
+            flash(f"削除成功: {resp.json()}", "success")
+        else:
+            flash(f"削除失敗: {resp.status_code} {resp.text}", "error")
+    except requests.exceptions.RequestException as e:
+        flash(f"API呼び出しエラー: {e}", "error")
+
+    return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
-    required_vars = ["GCP_PROJECT", "CLOUDSQL_REGION", "CLOUDSQL_INSTANCE", "DB_NAME", "DB_USER", "GCS_BUCKET"]
-    if not all(os.environ.get(v) for v in required_vars):
-        missing = [v for v in required_vars if not os.environ.get(v)]
-        print(f"ERROR: Missing required environment variables: {', '.join(missing)}")
-        sys.exit(1)
-
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port, debug=True, threaded=True)
