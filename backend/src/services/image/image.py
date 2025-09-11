@@ -17,24 +17,35 @@ engine, SessionLocal, Base, connector = connect_db()
 
 # --- GCSクライアントを初期化 ---
 GCS_BUCKET = os.environ.get("GCS_BUCKET")
+GCP_PROJECT = os.environ.get("GCP_PROJECT")
 SERVICE_ACCOUNT_CREDENTIALS = os.environ.get("SERVICE_ACCOUNT_CREDENTIALS")
+
+# クライアント1: 一般操作用 (Application Default Credentialsを使用)
 try:
     if not GCS_BUCKET:
         raise ValueError("GCS_BUCKET environment variable is not set.")
+    if not GCP_PROJECT:
+        raise ValueError("GCP_PROJECT environment variable is not set.")
+    adc_storage_client = storage.Client(project=GCP_PROJECT)
+    adc_bucket = adc_storage_client.bucket(GCS_BUCKET)
+except Exception as e:
+    print(f"ERROR: Failed to initialize ADC GCS client: {e}")
+    adc_storage_client = None
+    adc_bucket = None
+
+# クライアント2: 署名付きURL生成専用 (サービスアカウントを使用)
+try:
     if not SERVICE_ACCOUNT_CREDENTIALS:
         raise ValueError("SERVICE_ACCOUNT_CREDENTIALS environment variable is not set.")
-
-    credentials = service_account.Credentials.from_service_account_file(
+    sa_credentials = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_CREDENTIALS,
     )
-
-    storage_client = storage.Client(credentials=credentials, project=credentials.project_id)
-    bucket = storage_client.bucket(GCS_BUCKET)
-
+    sa_storage_client = storage.Client(credentials=sa_credentials, project=sa_credentials.project_id)
+    sa_bucket = sa_storage_client.bucket(GCS_BUCKET)
 except Exception as e:
-    print(f"ERROR: Failed to initialize GCS client: {e}")
-    storage_client = None
-    bucket = None
+    print(f"ERROR: Failed to initialize SA GCS client for signing: {e}")
+    sa_storage_client = None
+    sa_bucket = None
 
 # モデル定義だけは可能にしておく（DB接続失敗時のクラッシュ防止）
 if Base is object:
@@ -73,7 +84,7 @@ class ImageService:
         mime_type: str,
     ) -> Optional[Dict[str, Any]]:
         """新しい Image をGCSとDBに保存し、作成結果を返す。"""
-        if SessionLocal is None or bucket is None:
+        if SessionLocal is None or adc_bucket is None:
             raise RuntimeError("Database or GCS is not initialized")
 
         img_id = uuid.uuid4()
@@ -98,7 +109,7 @@ class ImageService:
                 session.commit()
 
                 # 2. GCSへファイルをアップロード
-                blob = bucket.blob(object_name)
+                blob = adc_bucket.blob(object_name)
                 blob.upload_from_string(file_data, content_type=mime_type)
 
                 # 3. DBのステータスを 'stored' に更新
@@ -131,7 +142,7 @@ class ImageService:
     @staticmethod
     def get_image(img_id: uuid.UUID) -> Optional[Dict[str, Any]]:
         """img_id で Image を1件取得し、GCSの署名付きURLも生成して返す"""
-        if SessionLocal is None or bucket is None:
+        if SessionLocal is None or sa_bucket is None:
             raise RuntimeError("Database or GCS is not initialized")
 
         with SessionLocal() as session:
@@ -141,10 +152,10 @@ class ImageService:
 
             # GCSオブジェクト名を取得
             object_name = image.gcs_uri.replace(f"gs://{GCS_BUCKET}/", "")
-            blob = bucket.blob(object_name)
+            blob = sa_bucket.blob(object_name)
 
             # 15分間有効なダウンロード用URLを生成
-            presigned_url = blob.generate_signed_url(
+            signed_url = blob.generate_signed_url(
                 version="v4",
                 expiration=datetime.timedelta(minutes=15),
                 method="GET",
@@ -156,7 +167,7 @@ class ImageService:
                 "mime_type": image.mime_type,
                 "size_bytes": image.size_bytes,
                 "status": image.status,
-                "presigned_url": presigned_url,  # 署名付きURLを追加
+                "signed_url": signed_url,  # 署名付きURLを追加
                 "created_at": image.created_at.isoformat(),
             }
 
@@ -166,7 +177,7 @@ class ImageService:
         GCS上のファイルとDBのレコードの両方を削除する。
         成功したら True, 存在しなければ False を返す。
         """
-        if SessionLocal is None or bucket is None:
+        if SessionLocal is None or adc_bucket is None:
             raise RuntimeError("Database or GCS is not initialized")
 
         with SessionLocal() as session:
@@ -178,7 +189,7 @@ class ImageService:
                 # 1. GCSからファイルを削除
                 try:
                     object_name = image.gcs_uri.replace(f"gs://{GCS_BUCKET}/", "")
-                    blob = bucket.blob(object_name)
+                    blob = adc_bucket.blob(object_name)
                     blob.delete()
                 except Exception as gcs_err:
                     print(f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}")

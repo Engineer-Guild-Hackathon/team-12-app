@@ -23,13 +23,13 @@ def index():
 # --- テストフォームのアクションを処理するプロキシルート群 ---
 @app.route("/proxy/save_image", methods=["POST"])
 def proxy_save_image():
-    """HTMLフォームからファイルを受け取り、POST /images APIを叩く"""
+    """HTMLフォームからファイルを受け取り、POST api/images APIを叩く"""
     if "image_file" not in request.files:
         flash("ファイルが選択されていません。", "error")
         return redirect(url_for("index"))
 
     file = request.files["image_file"]
-    api_url = request.url_root + "images"
+    api_url = request.url_root + "api/images"
     try:
         files = {"image_file": (file.filename, file.read(), file.mimetype)}
         resp = requests.post(api_url, files=files, timeout=20)
@@ -49,7 +49,7 @@ def proxy_save_image():
 
 @app.route("/proxy/get_image", methods=["GET"])
 def proxy_get_image():
-    """フォームからIDを受け取り、GET /images/<uuid> APIを叩く"""
+    """フォームからIDを受け取り、GET api/images/<uuid> APIを叩く"""
     img_id_str = request.args.get("img_id")
     if not img_id_str:
         flash("Image IDが入力されていません。", "error")
@@ -61,7 +61,7 @@ def proxy_get_image():
         flash(f"無効なUUID形式です: {img_id_str}", "error")
         return redirect(url_for("index"))
 
-    api_url = request.url_root + f"images/{img_id_str}"
+    api_url = request.url_root + f"api/images/{img_id_str}"
     try:
         resp = requests.get(api_url, timeout=10)
         if resp.ok:
@@ -76,7 +76,7 @@ def proxy_get_image():
 
 @app.route("/proxy/delete_image", methods=["POST"])
 def proxy_delete_image():
-    """フォームからIDを受け取り、DELETE /images/<uuid> APIを叩く"""
+    """フォームからIDを受け取り、DELETE api/images/<uuid> APIを叩く"""
     img_id_str = request.form.get("img_id")
     if not img_id_str:
         flash("Image IDが入力されていません。", "error")
@@ -88,7 +88,7 @@ def proxy_delete_image():
         flash(f"無効なUUID形式です: {img_id_str}", "error")
         return redirect(url_for("index"))
 
-    api_url = request.url_root + f"images/{img_id_str}"
+    api_url = request.url_root + f"api/images/{img_id_str}"
     try:
         resp = requests.delete(api_url, timeout=10)
         if resp.ok:
