@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from "next/navigation";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Box,
   Typography,
@@ -27,11 +27,11 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting },
   } = useForm<FormInputs>({
-    mode: 'onChange' // 入力中にバリデーションを実行
+    mode: "onChange", // 入力中にバリデーションを実行
   });
- 
+
   // バリデーション成功時に実行される関数
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     console.log("ユーザー登録中...", data);
@@ -48,36 +48,57 @@ export default function SignupForm() {
       sx={{
         paddingTop: "100px",
         px: "10%",
-        width: '100%',
+        width: "100%",
         maxWidth: 400,
-        mx: 'auto',
+        mx: "auto",
       }}
     >
       {/* ヘッダー部分 */}
-      <Box sx={{
-        display: "flex", alignItems: "center", gap: "10px", width: "100%",
-        justifyContent: "center", pr: "24px", pb: "10px",
-        borderBottom: "1px solid", borderColor: "kinako.700",
-      }}>
-        <Box sx={{ color: 'yomogi.600', display: 'flex', alignItems: 'center' }}>
-          <PiPlant size={24}/>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          width: "100%",
+          justifyContent: "center",
+          pr: "24px",
+          pb: "10px",
+          borderBottom: "1px solid",
+          borderColor: "kinako.700",
+        }}
+      >
+        <Box
+          sx={{ color: "yomogi.600", display: "flex", alignItems: "center" }}
+        >
+          <PiPlant size={24} />
         </Box>
-        <Typography sx={{ fontSize: 24, color: "kinako.800", position: 'relative', top: '-1px' }}>
+        <Typography
+          sx={{
+            fontSize: 24,
+            color: "kinako.800",
+            position: "relative",
+            top: "-1px",
+          }}
+        >
           新規登録
         </Typography>
       </Box>
 
       {/* ユーザー名入力部分 */}
-      <Box sx={{ width: "100%"}}>
+      <Box sx={{ width: "100%" }}>
         <Box
           component="label"
           htmlFor="username-input"
           sx={{
-            display: "flex", alignItems: "center", gap: "6px", mb: "12px",
-            color: "yomogi.600", cursor: 'pointer'
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            mb: "12px",
+            color: "yomogi.600",
+            cursor: "pointer",
           }}
         >
-          <FaDiamond size={16}/>
+          <FaDiamond size={16} />
           <Typography sx={{ color: "kinako.900" }}>アカウント名</Typography>
         </Box>
 
@@ -87,23 +108,23 @@ export default function SignupForm() {
             fullWidth
             placeholder="名前を入力してください"
             {...register("username", {
-              required: 'アカウント名は入力必須です',
+              required: "アカウント名は入力必須です",
               maxLength: {
                 value: 8,
-                message: '8文字以内で入力してください'
+                message: "8文字以内で入力してください",
               },
               pattern: {
                 value: /^[^\x01-\x7E\xA1-\xDF]+$/,
-                message: '全角文字で入力してください'
+                message: "全角文字で入力してください",
               },
               validate: (value) =>
-                value.trim() !== '' || '空白文字のみの入力はできません'
+                value.trim() !== "" || "空白文字のみの入力はできません",
             })}
             sx={{
               borderRadius: "8px",
-              backgroundColor: 'gray.100',
-              '& .MuiOutlinedInput-notchedOutline': {
-                border: 'none',
+              backgroundColor: "gray.100",
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: "none",
               },
             }}
           />
@@ -119,8 +140,14 @@ export default function SignupForm() {
         variant="contained"
         disabled={isSubmitting}
         sx={{
-          borderRadius: 200, backgroundColor: "kinako.900", color: "gray.100",
-          py: 1.6, boxShadow: "none", textTransform: "none", width: '80%', alignSelf: 'center',
+          borderRadius: 200,
+          backgroundColor: "kinako.900",
+          color: "gray.100",
+          py: 1.6,
+          boxShadow: "none",
+          textTransform: "none",
+          width: "80%",
+          alignSelf: "center",
           "&:hover": {
             transform: "translateY(-3px) scale(1.02)",
             boxShadow: "none",
@@ -128,8 +155,12 @@ export default function SignupForm() {
           },
         }}
       >
-        {isSubmitting && <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />}
-        <Typography fontSize={20}>{isSubmitting ? "登録中..." : "登録"}</Typography>
+        {isSubmitting && (
+          <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />
+        )}
+        <Typography fontSize={20}>
+          {isSubmitting ? "登録中..." : "登録"}
+        </Typography>
       </Button>
     </Stack>
   );
