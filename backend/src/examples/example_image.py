@@ -22,40 +22,43 @@ except ImportError as e:
 
 app = Flask(__name__, template_folder=str(BASE_DIR / "examples" / "template"))
 
-@app.route('/')
-def index():
-    return render_template('example_image.html')
 
-@app.route('/images', methods=['POST'])
+@app.route("/")
+def index():
+    return render_template("example_image.html")
+
+
+@app.route("/images", methods=["POST"])
 def save_file():
     message = None
     category = None
 
-    if 'image_file' not in request.files or request.files['image_file'].filename == '':
-        message = 'ファイルが選択されていません。'
-        category = 'error'
-        return render_template('example_image.html', message=message, category=category)
+    if "image_file" not in request.files or request.files["image_file"].filename == "":
+        message = "ファイルが選択されていません。"
+        category = "error"
+        return render_template("example_image.html", message=message, category=category)
 
-    file = request.files['image_file']
+    file = request.files["image_file"]
 
     try:
         saver = SaveImage(file)
         result, status_code = saver.execute()
 
         if status_code < 400:
-            category = 'success'
+            category = "success"
             message = f"アップロード成功！\n\nレスポンス:\n{result}"
         else:
-            category = 'error'
+            category = "error"
             message = f"アップロード失敗！\n\nレスポンス:\n{result}"
 
     except Exception as e:
-        category = 'error'
+        category = "error"
         message = f"予期せぬエラーが発生しました:\n{e}"
 
-    return render_template('example_image.html', message=message, category=category)
+    return render_template("example_image.html", message=message, category=category)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     required_vars = ["GCP_PROJECT", "CLOUDSQL_REGION", "CLOUDSQL_INSTANCE", "DB_NAME", "DB_USER", "GCS_BUCKET"]
     if not all(os.environ.get(v) for v in required_vars):
         missing = [v for v in required_vars if not os.environ.get(v)]
