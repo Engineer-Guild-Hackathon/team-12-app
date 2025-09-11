@@ -1,5 +1,5 @@
-import { Box } from "@mui/material";
+import SignupForm from "@/components/features/auth/SignupForm";
 
-export default function Signup() {
-  return <Box>signup ページ</Box>;
+export default function SignupPage() {
+  return <SignupForm />;
 }
