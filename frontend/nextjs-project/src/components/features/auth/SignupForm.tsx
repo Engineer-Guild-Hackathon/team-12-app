@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Box,
   Typography,
@@ -111,7 +111,7 @@ export default function SignupForm() {
               },
               pattern: {
                 value: /^[^<>"]+$/,
-                message: '入力できない記号が含まれています',
+                message: "入力できない記号が含まれています",
               },
               validate: (value: string) =>
                 value.trim() !== "" || "空白文字のみの入力はできません",
