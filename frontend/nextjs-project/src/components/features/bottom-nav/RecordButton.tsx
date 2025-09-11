@@ -1,18 +1,19 @@
 "use client";
 
+import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import { BottomNavigationAction, Box, Stack, Typography } from "@mui/material";
 import React from "react";
 import { PiCamera } from "react-icons/pi";
 
 export default function RecordButton() {
-  const handleRecordClick = () => {
-    alert("「きろく」タスクを開始します！");
-  };
+  const startCreation = useDiscoveryCreationStore(
+    (state) => state.startCreation,
+  );
 
   return (
     <BottomNavigationAction
       disableRipple
-      onClick={handleRecordClick}
+      onClick={startCreation}
       icon={
         <Box
           sx={{
