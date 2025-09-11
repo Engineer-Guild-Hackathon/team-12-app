@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { PiPlant } from "react-icons/pi";
 import { FaDiamond } from "react-icons/fa6";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function SignupForm() {
   };
 
   return (
-    <Box 
+    <Box
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -33,17 +33,28 @@ export default function SignupForm() {
         minHeight: "100vh",
         paddingTop: "100px",
         px: "10%",
-      }}>
-
+      }}
+    >
       {/* ヘッダー部分 */}
       <Box
-        sx={{ 
-          display: "flex", alignItems: "center", gap: "10px", mb: "40px",
-          width: "100%", justifyContent: "center", pr: "24px", pb: "10px",
-          borderBottom: "1px solid", borderColor: "kinako.700",
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          mb: "40px",
+          width: "100%",
+          justifyContent: "center",
+          pr: "24px",
+          pb: "10px",
+          borderBottom: "1px solid",
+          borderColor: "kinako.700",
         }}
       >
-        <PiPlant color={theme.palette.yomogi[600]} size={24} style={{ marginTop: '4px' }} />
+        <PiPlant
+          color={theme.palette.yomogi[600]}
+          size={24}
+          style={{ marginTop: "4px" }}
+        />
         <Typography sx={{ fontSize: 24, color: "kinako.800" }}>
           新規登録
         </Typography>
@@ -51,8 +62,10 @@ export default function SignupForm() {
 
       {/* ユーザー名入力部分 */}
       <Box sx={{ width: "100%", alignItems: "center", mb: "80px" }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: "6px", mb: "12px" }}>
-          <FaDiamond color={theme.palette.yomogi[600]} size={16}/>
+        <Box
+          sx={{ display: "flex", alignItems: "center", gap: "6px", mb: "12px" }}
+        >
+          <FaDiamond color={theme.palette.yomogi[600]} size={16} />
           <Typography>アカウント名</Typography>
         </Box>
         <TextField
@@ -63,17 +76,17 @@ export default function SignupForm() {
           onChange={(e) => setUsername(e.target.value)}
           sx={{
             borderRadius: "8px",
-            backgroundColor: 'gray.100',
+            backgroundColor: "gray.100",
             mb: "8px",
-            '& .MuiOutlinedInput-root': {
-              '&.Mui-focused': { boxShadow: 'none' },
-              '& fieldset': { border: 'none' },
-              '&:hover fieldset': { border: 'none' },
-              '&.Mui-focused fieldset': { border: 'none' },
-              '& .MuiOutlinedInput-input': {
-                height: '64px',
-                padding: '0 12px',
-                boxSizing: 'border-box',
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused": { boxShadow: "none" },
+              "& fieldset": { border: "none" },
+              "&:hover fieldset": { border: "none" },
+              "&.Mui-focused fieldset": { border: "none" },
+              "& .MuiOutlinedInput-input": {
+                height: "64px",
+                padding: "0 12px",
+                boxSizing: "border-box",
               },
             },
           }}
