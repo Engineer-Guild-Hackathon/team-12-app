@@ -27,6 +27,6 @@ services:
     volumes:
       - "${ADC_JSON}:/var/secrets/adc.json:ro"
     ports:
-      - "5000:5000"
+      - "5001:5000"
     tty: true
     restart: unless-stopped
