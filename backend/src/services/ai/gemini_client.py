@@ -19,6 +19,27 @@ class GeminiClient:
         self._client = genai.Client(api_key=api_key)
         self._model_name = model_name
 
+        # --- 構造化出力（JSON強制）の設定を試みる ---
+        self._gencfg_json = None  # 例外キャッチのため
+        try:
+            JSON_SCHEMA = types.Schema(
+                type=types.Type.OBJECT,
+                properties={
+                    "title": types.Schema(type=types.Type.STRING),
+                    "discovery": types.Schema(type=types.Type.STRING),
+                    "question": types.Schema(type=types.Type.STRING),
+                },
+                required=["title", "discovery", "question"],
+            )
+            self._gencfg_json = types.GenerateContentConfig(
+                response_mime_type="application/json",
+                response_schema=JSON_SCHEMA,
+            )
+        except Exception:
+            # この例外は想定していない
+            # 古いSDKなどで未対応の場合はプロンプトのみで運用（_build_prompt がJSONを強制）
+            self._gencfg_json = None
+
     def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
         """
         FileStorage(Flask/Werkzeug) を一時保存なしでメモリ読み込み → Part.from_bytes で渡す
@@ -34,9 +55,13 @@ class GeminiClient:
         mime = getattr(image_jpeg_file, "mimetype", None) or "image/jpeg"
 
         image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime)
+        kwargs = {}
+        if self._gencfg_json is not None:
+            kwargs["config"] = self._gencfg_json
         resp = self._client.models.generate_content(
             model=self._model_name,
             contents=[image_part, prompt],
+            **kwargs,
         )
         text = getattr(resp, "text", None)
         return text or str(resp)
@@ -47,9 +72,13 @@ class GeminiClient:
         """
         image_bytes = base64.b64decode(image_jpeg_b64)
         image_part = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
+        kwargs = {}
+        if self._gencfg_json is not None:
+            kwargs["config"] = self._gencfg_json
         resp = self._client.models.generate_content(
             model=self._model_name,
             contents=[image_part, prompt],
+            **kwargs,
         )
         text = getattr(resp, "text", None)
         return text or str(resp)

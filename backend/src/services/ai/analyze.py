@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 import httpx
 from google import genai
+from google.genai import types
 from src.services.ai.gemini_client import gemini
 from src.utils.config import CONFIG
 from src.utils.image_processing import downscale_to_jpeg, sniff_mime
@@ -24,20 +25,30 @@ def _fetch_image_bytes(url: str) -> bytes:
     except httpx.TimeoutException:
         raise TimeoutError("image_url fetch timeout")
 
-# TODO: 【重要】オブジェクトで受け取れるようにする
+
 def _build_prompt(question: str | None) -> str:
+    """
+    モデルに「厳密にJSONのみ」を返させるプロンプト。
+    _parse_answer_to_dict で期待する {title, discovery, question} の形に合わせる。
+    """
     base = (
-        "この画像に写っている物体を分析して、以下のマークダウンで回答してください。\n\n"
-        "## 検知した物体の名前\n"
-        "[物体の名前]\n\n"
-        "## はっけん\n"
-        "[物体の詳細な説明、特徴、生態、用途などを含む]\n\n"
-        "## 問い\n"
-        "[その物体に関する興味深い質問を1つ]"
+        "あなたは画像の内容を日本語で説明するアシスタントです。以下のJSONスキーマに厳密に従い、"
+        "出力は JSON のみ（前後の説明文・コードフェンス・Markdown見出しなど一切禁止）で返してください。\n\n"
+        "出力フォーマット（例）:\n"
+        "{\n"
+        '  "title": "検知した物体の名前（簡潔に1つ）",\n'
+        '  "discovery": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",\n'
+        '  "question": "その物体に関する興味深い問いを1つ（日本語）"\n'
+        "}\n\n"
+        "制約:\n"
+        "- フィールド名は必ず title / discovery / question。\n"
+        "- すべて文字列。改行はそのまま文字列内に含めてよい。\n"
+        "- JSON以外のテキスト・コードブロック・Markdown記法は禁止。\n"
     )
     if question:
-        base += f"\n\n補助質問: {question}"
+        base += f"\n補助質問（考慮してよいが、出力は上記JSONのみ）: {question}\n"
     return base
+
 
 def _parse_answer_to_dict(answer: str) -> Dict[str, str]:
     """
@@ -65,9 +76,8 @@ def _parse_answer_to_dict(answer: str) -> Dict[str, str]:
 
     return obj
 
-def _gemini_request_by_base64(
-    raw: bytes | Any, prompt: str
-) -> Dict[str, str]:
+
+def _gemini_request_by_base64(raw: bytes | Any, prompt: str) -> Dict[str, str]:
     # 3) 縮小＆JPEG化
     jpeg_bytes = downscale_to_jpeg(raw, max_long_edge=CONFIG.MAX_IMAGE_LONG_EDGE)
 
@@ -78,13 +88,33 @@ def _gemini_request_by_base64(
     answer = gemini.generate_b64(jpeg_b64, prompt)
     return _parse_answer_to_dict(answer)
 
-def _gemini_request_by_filesAPI(
-    file: FileStorage, raw: bytes | Any, prompt: str
-) -> Dict[str, str]:
+
+def _gemini_request_by_filesAPI(file: FileStorage, raw: bytes | Any, prompt: str) -> Dict[str, str]:
     # FileStorage が来ているならそのまま stream を使う（再利用のためにシーク）
+
     client = genai.Client()
     display_name = getattr(file, "filename", None) or "uploaded_image"
     mime_type = getattr(file, "mimetype", None) or "image/jpeg"
+
+    # ---- 構造化出力（JSON強制）設定 ----
+    # ここでも GeminiClient と同等のスキーマを付与して、常に JSON を返させる
+    try:
+        JSON_SCHEMA = types.Schema(
+            type=types.Type.OBJECT,
+            properties={
+                "title": types.Schema(type=types.Type.STRING),
+                "discovery": types.Schema(type=types.Type.STRING),
+                "question": types.Schema(type=types.Type.STRING),
+            },
+            required=["title", "discovery", "question"],
+        )
+        GENCFG_JSON = types.GenerateContentConfig(
+            response_mime_type="application/json",
+            response_schema=JSON_SCHEMA,
+        )
+    except Exception:
+        # 古い SDK 等で未対応の場合は None にしてプロンプトのみで運用
+        GENCFG_JSON = None
 
     if isinstance(file, FileStorage):
         # すでに file.read() 済みなので、stream を先頭に戻してアップロード
@@ -103,16 +133,19 @@ def _gemini_request_by_filesAPI(
         display_name=display_name,
         mime_type=mime_type,
     )
+    kwargs = {}
+    if GENCFG_JSON is not None:
+        kwargs["config"] = GENCFG_JSON
     response = client.models.generate_content(
         model=CONFIG.GEMINI_MODEL,
         contents=[uploaded_file, prompt],
+        **kwargs,
     )
     answer = getattr(response, "text", "") or ""
     return _parse_answer_to_dict(answer)
 
-def analyze(
-    file: FileStorage | None, image_url: str | None, question: str | None
-) -> Dict[str, str]:
+
+def analyze(file: FileStorage | None, image_url: str | None, question: str | None) -> Dict[str, str]:
     # 1) 画像バイトの入手
     if file is not None:
         raw = file.read()
