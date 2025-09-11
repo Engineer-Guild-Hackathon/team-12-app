@@ -1,22 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <title>Image Test</title>
+    <meta charset="UTF-8">
+    <title>Image API Test Page</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; line-height: 1.6; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .test-section { background-color: #f9f9f9; border: 1px solid #ddd; padding: 1.5em; margin-bottom: 2em; border-radius: 8px; }
+        .test-section h2 { margin-top: 0; }
+        .flash { padding: 1em; margin-bottom: 1em; border-radius: 5px; border: 1px solid; white-space: pre-wrap; word-wrap: break-word; }
+        .flash.error { background-color: #ffe0e0; border-color: #c0a0a0; }
+        .flash.success { background-color: #e0ffe0; border-color: #a0c0a0; }
+        .flash.info { background-color: #e0f0ff; border-color: #a0c0d0; }
+        input[type="text"] { width: 95%; padding: 8px; margin-bottom: 10px; font-family: monospace; }
+        button { padding: 0.6em 1.2em; border-radius: 4px; border: none; cursor: pointer; }
+    </style>
 </head>
 <body>
-  <h1>Image Test</h1>
+    <div class="container">
+        <h1>Image API Test Page</h1>
 
-    {% if message and category %}
-      <div class="message-box {{ category }}">
-        <p>{{ message | safe }}</p>
-      </div>
-    {% endif %}
+        <!-- Flashメッセージ表示エリア -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-    <h2>1. 画像を保存する (SaveImage)</h2>
-    <form action="/images" method="post" enctype="multipart/form-data">
-        <input type="file" name="image_file" required>
-        <button type="submit">アップロード</button>
-    </form>
+        <!-- 1. 画像アップロード -->
+        <div class="test-section">
+            <h2>1. 画像をアップロード (POST /images)</h2>
+            <form method="post" action="/proxy/save_image" enctype="multipart/form-data">
+                <input type="file" name="image_file" accept="image/*" required>
+                <button type="submit">アップロード</button>
+            </form>
+        </div>
+
+        <!-- 2. 画像情報を取得 -->
+        <div class="test-section">
+            <h2>2. 画像情報を取得 (GET /images/&lt;uuid&gt;)</h2>
+            <form method="get" action="/proxy/get_image">
+                <label for="img_id_to_get">Image ID (UUID):</label>
+                <input type="text" id="img_id_to_get" name="img_id" placeholder="アップロード後に表示されたIDを貼り付け" required>
+                <button type="submit">取得</button>
+            </form>
+        </div>
+
+        <!-- 3. 画像を削除 -->
+        <div class="test-section">
+            <h2>3. 画像を削除 (DELETE /images/&lt;uuid&gt;)</h2>
+            <form method="post" action="/proxy/delete_image">
+                <label for="img_id_to_delete">Image ID (UUID):</label>
+                <input type="text" id="img_id_to_delete" name="img_id" placeholder="アップロード後に表示されたIDを貼り付け" required>
+                <button type="submit" onclick="return confirm('本当にこの画像を削除しますか？');">削除</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
+
