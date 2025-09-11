@@ -3,3 +3,4 @@ backend/data/
 .env
 gcloud.env
 __pycache__
+service_account.json
