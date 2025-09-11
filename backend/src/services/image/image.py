@@ -7,6 +7,7 @@ from typing import Any, Dict, Optional
 
 import sqlalchemy as sa
 from google.cloud import storage
+from google.oauth2 import service_account
 from sqlalchemy.orm import declarative_base
 
 from src.utils.db.cloudsql import connect_db, disconnect_db
@@ -16,14 +17,18 @@ engine, SessionLocal, Base, connector = connect_db()
 
 # --- GCSクライアントを初期化 ---
 GCS_BUCKET = os.environ.get("GCS_BUCKET")
-GCP_PROJECT = os.environ.get("GCP_PROJECT")
+SERVICE_ACCOUNT_CREDENTIALS = os.environ.get("SERVICE_ACCOUNT_CREDENTIALS")
 try:
     if not GCS_BUCKET:
         raise ValueError("GCS_BUCKET environment variable is not set.")
-    if not GCP_PROJECT:
-        raise ValueError("GCP_PROJECT environment variable is not set for GCS.")
+    if not SERVICE_ACCOUNT_CREDENTIALS:
+        raise ValueError("SERVICE_ACCOUNT_CREDENTIALS environment variable is not set.")
 
-    storage_client = storage.Client(project=GCP_PROJECT)
+    credentials = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_CREDENTIALS,
+    )
+
+    storage_client = storage.Client(credentials=credentials, project=credentials.project_id)
     bucket = storage_client.bucket(GCS_BUCKET)
 
 except Exception as e:
