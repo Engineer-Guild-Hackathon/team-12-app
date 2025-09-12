@@ -6,6 +6,7 @@ from typing import Any, Dict
 from flask import Blueprint, jsonify, request
 from geopy.geocoders import Nominatim
 
+from src.services.image.image import ImageService
 from src.services.post.post import PostService
 
 post_bp = Blueprint("post_bp", __name__)
@@ -216,9 +217,43 @@ def list_recent_posts():
 def delete_post(post_id: uuid.UUID):
     """投稿を削除"""
     try:
-        deleted = PostService.delete_post(post_id)
-        if not deleted:
+        # 1. 投稿からimg_idを取得
+        post = PostService.get_post(post_id)
+        if post is None:
             return jsonify({"error": "指定された投稿は存在しません"}), 404
-        return jsonify({"status": "deleted", "post_id": str(post_id)}), 200
+
+        img_id_str = post.get("img_id")
+        img_id = None
+        try:
+            img_id = uuid.UUID(img_id_str) if img_id_str else None
+        except Exception:
+            img_id = None  # 不正値は画像削除スキップ
+
+        # 2. 投稿を削除
+        deleted_post = PostService.delete_post(post_id)
+        if not deleted_post:
+            return jsonify({"error": "投稿の削除に失敗しました"}), 500
+
+        # 3. 画像を削除（失敗しても投稿削除は成功のまま）
+        image_deleted = None
+        image_delete_error = None
+        if img_id is not None:
+            try:
+                image_deleted = ImageService.delete_image(img_id)
+            except Exception as e:
+                image_deleted = False
+                image_delete_error = str(e)
+
+        # 4. 結果を返却
+        payload = {
+            "status": "deleted",
+            "post_id": str(post_id),
+            "image_deleted": bool(image_deleted) if image_deleted is not None else None,
+        }
+
+        if image_delete_error:
+            payload["image_delete_error"] = image_delete_error
+
+        return jsonify(payload), 200
     except RuntimeError as e:
         return jsonify({"error": "DB初期化エラー", "detail": str(e)}), 503
