@@ -3,12 +3,10 @@ from __future__ import annotations
 import base64
 import io
 import json
-
 import unicodedata
 from typing import Any, Dict
 from urllib.parse import unquote
 
-import httpx
 from google import genai
 from google.cloud import storage
 from google.genai import types
@@ -67,28 +65,17 @@ class AnalyzeService:
     def _fetch_image_bytes(url: str) -> bytes:
         """
         URLから画像データを取得する
-
         Args:
             url: 画像のURL
-
         Returns:
             画像のバイトデータ
-
         Raises:
             BadRequest: HTTPエラー
             TimeoutError: タイムアウト
         """
-        # TODO: DoS攻撃等任意URLアクセス対策（IP制限、リクエスト数制限等）
-        try:
-            with httpx.Client(timeout=CONFIG.HTTP_TIMEOUT, follow_redirects=True) as client:
-                r = client.get(url)
-                if r.status_code != 200:
-                    raise BadRequest("画像URLからの取得に失敗しました")
-                if not r.content:
-                    raise BadRequest("画像URLから取得したデータが空です（0 byte）")
-                return r.content
-        except httpx.TimeoutException:
-            raise TimeoutError("画像URLの取得がタイムアウトしました")
+        if not url.startswith("gs://"):
+            raise BadRequest("対応していないURLです。gs:// 形式のGCS URLのみ対応しています。")
+        return AnalyzeService._fetch_gcs_bytes(url)
 
     @staticmethod
     def _fetch_gcs_bytes(gs_url: str) -> bytes:
@@ -126,7 +113,6 @@ class AnalyzeService:
             raise BadRequest("GCSから空データを受信しました")
 
         return data
-
 
     @staticmethod
     def _build_prompt(question: str | None) -> str:
