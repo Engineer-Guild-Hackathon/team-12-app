@@ -31,7 +31,7 @@ def create_app() -> Flask:
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5002))
+    port = int(os.environ.get("PORT", 5001))
     app = create_app()
     # APIを同一プロセスで叩く必要は無いので、threaded は任意
     app.run(host="0.0.0.0", port=port, debug=True)
