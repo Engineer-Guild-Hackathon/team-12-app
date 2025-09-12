@@ -52,6 +52,8 @@ export const useReviewingStep = (params: UseReviewingStep) => {
 
       const { post_id } = await createPost(payload);
       nextStep();
+      // ここまで画面全体のローディングを入れたい
+      // TODO: ローディング終了処理
       router.push(`/discoveries/${post_id}`);
     } catch (e) {
       console.error(e);

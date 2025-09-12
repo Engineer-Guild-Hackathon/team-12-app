@@ -1,7 +1,6 @@
 "use client";
 
 import { Box, Typography, CircularProgress, Stack } from "@mui/material";
-import { mockPosts } from "@/data/mockPosts";
 import React, { useEffect, useState } from "react";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
