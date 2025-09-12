@@ -25,7 +25,7 @@ def create_app() -> Flask:
         テスト用のHTMLページを返すだけ。
         ページ内のスクリプトが fetch で /v1/analyze を呼び出す。
         """
-        return render_template("example_img_analyze.html")
+        return render_template("example_image_analyze.html")
 
     return app
 
