@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 type FilterState = {
   sort: string;
@@ -7,7 +7,7 @@ type FilterState = {
 
 export const useFilterStore = create<FilterState>((set) => ({
   // デフォルトの並び順
-  sort: 'newest',
+  sort: "newest",
   // 並び順を更新するためのアクション
   setSort: (newSort) => set({ sort: newSort }),
 }));

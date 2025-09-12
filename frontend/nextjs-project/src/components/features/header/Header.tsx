@@ -35,7 +35,7 @@ export default function Header({ onFilterClick }: HeaderProps) {
         gap: "12px",
       }}
     >
-      <HeaderTop onFilterClick={onFilterClick}/>
+      <HeaderTop onFilterClick={onFilterClick} />
       {showTabs && <HeaderTabs />}
     </AppBar>
   );

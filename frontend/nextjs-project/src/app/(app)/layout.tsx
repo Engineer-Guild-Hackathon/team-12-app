@@ -1,7 +1,7 @@
 "use client";
 
 import { Box } from "@mui/material";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { HEADER_HEIGHT, BOTTOM_NAV_HEIGHT } from "@/constants/styles";
 import { useFilterStore } from "@/stores/filterStore";
@@ -17,7 +17,6 @@ const sortOptions = [
   { value: "nearest", label: "近い順" },
   { value: "newest", label: "新しい順" },
   { value: "oldest", label: "古い順" },
-
 ];
 const scopeOptions = [
   { value: "all", label: "全員" },
@@ -68,7 +67,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Header onFilterClick={isFilterEnabled ? () => setIsFilterDrawerOpen(true) : undefined} />
+      <Header
+        onFilterClick={
+          isFilterEnabled ? () => setIsFilterDrawerOpen(true) : undefined
+        }
+      />
       {/* メインコンテンツ */}
       <Box
         component="main"
@@ -96,7 +99,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         onScopeChange={handleScopeChange}
         scopeOptions={scopeOptions}
       />
-
     </>
   );
 }
