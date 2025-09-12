@@ -9,7 +9,6 @@ import {
   BOTTOM_NAV_HEIGHT_FOR_BROWSER,
   HEADER_HEIGHT_FOR_BROWSER,
 } from "@/constants/styles";
-import Header from "@/components/features/header/Header";
 import BottomNav from "@/components/features/bottom-nav/BottomNav";
 import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import DiscoveryCreationFlow from "@/components/features/discovery-creation/DiscoveryCreationFlow";
