@@ -33,9 +33,7 @@ class FakeQuery:
 
 
 class FakeSession:
-    def __init__(
-        self, *, get_returns=None, query_rows=None, should_fail_on_commit=False
-    ):
+    def __init__(self, *, get_returns=None, query_rows=None, should_fail_on_commit=False):
         self.added = []
         self.committed = False
         self.refreshed = False
@@ -181,9 +179,7 @@ def test_get_post_found(patch_session_engine, sample_payload):
         date=dt.datetime.now(dt.timezone.utc),
         updated_at=dt.datetime.now(dt.timezone.utc),
     )
-    patch_session_engine.factory = lambda: FakeSession(
-        get_returns={sample_payload["post_id"]: found}
-    )
+    patch_session_engine.factory = lambda: FakeSession(get_returns={sample_payload["post_id"]: found})
     got = PostService.get_post(sample_payload["post_id"])
     assert got is not None
     assert got["post_id"] == str(sample_payload["post_id"])
@@ -277,9 +273,7 @@ def test_list_posts_raises_when_session_not_ready(monkeypatch):
 # ----------------------------
 def test_delete_post_true(patch_session_engine, sample_payload):
     existing = SimpleNamespace()
-    patch_session_engine.factory = lambda: FakeSession(
-        get_returns={sample_payload["post_id"]: existing}
-    )
+    patch_session_engine.factory = lambda: FakeSession(get_returns={sample_payload["post_id"]: existing})
     ok = PostService.delete_post(sample_payload["post_id"])
     assert ok is True
 
