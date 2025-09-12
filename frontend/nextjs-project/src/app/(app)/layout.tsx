@@ -40,7 +40,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const params = new URLSearchParams(searchParams.toString());
     params.set("scope", scopeValue);
     router.push(`${pathname}?${params.toString()}`);
-    setIsFilterDrawerOpen(false);
   };
 
   const isSortEnabled = pathname === "/list";
@@ -49,7 +48,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", sortValue);
     router.push(`${pathname}?${params.toString()}`);
-    setIsFilterDrawerOpen(false);
   };
 
   if (currentStep) {
