@@ -1,13 +1,19 @@
+"use client";
+
 import { AppBar } from "@mui/material";
 import { MOBILE_MAX_WIDTH, HEADER_HEIGHT } from "@/constants/styles";
 import HeaderTop from "./HeaderTop";
 import HeaderTabs from "./HeaderTabs";
+import { usePathname } from "next/navigation";
 
 type HeaderProps = {
   onFilterClick?: () => void;
 };
 
 export default function Header({ onFilterClick }: HeaderProps) {
+  const pathname = usePathname();
+  const showTabs = pathname === "/" || pathname === "/list";
+
   return (
     <AppBar
       position="fixed"
@@ -30,7 +36,7 @@ export default function Header({ onFilterClick }: HeaderProps) {
       }}
     >
       <HeaderTop onFilterClick={onFilterClick}/>
-      <HeaderTabs />
+      {showTabs && <HeaderTabs />}
     </AppBar>
   );
 }

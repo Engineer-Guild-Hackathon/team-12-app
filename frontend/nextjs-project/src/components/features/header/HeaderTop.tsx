@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, IconButton, SvgIcon, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
 import { IoLeaf, IoFilterOutline } from "react-icons/io5";
