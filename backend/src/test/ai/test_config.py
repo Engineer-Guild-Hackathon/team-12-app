@@ -13,8 +13,8 @@ def test_config_importable():
 def test_config_env_overrides(monkeypatch: pytest.MonkeyPatch):
     """
     よくある構成を想定：
-      - 環境変数 GEMINI_API_KEY を読む
-      - B64_MAX_IMAGE_BYTES / HTTP_TIMEOUT を設定 or 参照
+        - 環境変数 GEMINI_API_KEY を読む
+        - B64_MAX_IMAGE_BYTES / HTTP_TIMEOUT を設定 or 参照
     モジュールの仕様が異なる場合は、存在しない属性の検証はスキップ。
     """
     monkeypatch.setenv("GEMINI_API_KEY", "dummy-key-xyz")
@@ -23,6 +23,7 @@ def test_config_env_overrides(monkeypatch: pytest.MonkeyPatch):
 
     # 再読込して反映を確認（実装によっては反映しない場合もある）
     import src.utils.config as cfg
+
     importlib.reload(cfg)
 
     # GEMINI_API_KEY

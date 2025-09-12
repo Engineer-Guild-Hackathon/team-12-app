@@ -8,6 +8,7 @@ def sniff_mime(raw: bytes) -> str:
     mime = magic.from_buffer(raw, mime=True)
     return mime or "application/octet-stream"
 
+
 def downscale_to_jpeg(raw: bytes, max_long_edge: int = 1600, quality: int = 90) -> bytes:
     """
     任意の画像バイトを長辺 max_long_edge に収めつつ JPEG に再エンコードして返す。

@@ -41,7 +41,10 @@ def test_analyze_calls_gemini_via_b64(monkeypatch: pytest.MonkeyPatch):
 
     # Base64 経路を確実に踏ませるため閾値を十分大きく
     from dataclasses import replace
-    monkeypatch.setattr(analyze_mod, "CONFIG", replace(analyze_mod.CONFIG, B64_MAX_IMAGE_BYTES=10_000_000), raising=False)
+
+    monkeypatch.setattr(
+        analyze_mod, "CONFIG", replace(analyze_mod.CONFIG, B64_MAX_IMAGE_BYTES=10_000_000), raising=False
+    )
 
     # gemini をスパイに差し替え
     spy = _GeminiSpy()
@@ -92,6 +95,7 @@ def test_analyze_calls_gemini_via_files_when_threshold_low(monkeypatch: pytest.M
     # Files 経路を確実に踏ませるため：
     # 1) B64 閾値を極小に
     from dataclasses import replace
+
     monkeypatch.setattr(analyze_mod, "CONFIG", replace(analyze_mod.CONFIG, B64_MAX_IMAGE_BYTES=1), raising=False)
     # 2) JPEG化後のサイズを巨大に（現在の実装は downscale_to_jpeg(raw, max_long_edge)）
     monkeypatch.setattr(
