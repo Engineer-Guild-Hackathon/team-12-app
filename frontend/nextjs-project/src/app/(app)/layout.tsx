@@ -13,14 +13,15 @@ import FilterDrawer from "@/components/features/filter/FilterDrawer";
 
 // 選択肢の定義
 const sortOptions = [
-  { value: "newest", label: "新しい順" },
-  { value: "nearest", label: "近い順" },
-  { value: "oldest", label: "古い順" },
   { value: "recommended", label: "おすすめ順" },
+  { value: "nearest", label: "近い順" },
+  { value: "newest", label: "新しい順" },
+  { value: "oldest", label: "古い順" },
+
 ];
 const scopeOptions = [
-  { value: "all", label: "全員の投稿" },
-  { value: "mine", label: "自分の投稿のみ" },
+  { value: "all", label: "全員" },
+  { value: "mine", label: "自分" },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

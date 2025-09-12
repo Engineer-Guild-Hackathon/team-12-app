@@ -33,8 +33,9 @@ export default function FilterDrawer({
 
   // ボタンの共通スタイル
   const buttonSx = {
-    borderRadius: '8px',
+    borderRadius: 1,
     border: 'none',
+    py: 1.5,
 
     '&.MuiButton-outlined': { // 非選択中のスタイル
       backgroundColor: 'kinako.100',
@@ -54,9 +55,22 @@ export default function FilterDrawer({
     >
       <Box sx={{ p: 2 }}>
         {/* ヘッダー */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-          <Typography sx={{fontSize: '20'}}>フィルター</Typography>
-          <PiXBold size={24} onClick={onClose} style={{ cursor: 'pointer' }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+          {/* 左側にアイコンと同じ幅のスペーサーを配置 */}
+          <Box sx={{ width: 24 }} />
+
+          {/* flex: 1 と textAlign: 'center' で中央寄せを実現 */}
+          <Typography sx={{ flex: 1, textAlign: 'center', fontSize: '20' }}>
+            フィルター
+          </Typography>
+
+          {/* colorプロパティでアイコンの色を変更 */}
+          <PiXBold
+            size={24}
+            color="yomogi.900" 
+            onClick={onClose}
+            style={{ cursor: 'pointer' }}
+          />
         </Box>
         <Divider sx={{ mb: 2 }}/>
 
@@ -65,9 +79,10 @@ export default function FilterDrawer({
           {isSortEnabled && (
             <Box>
               <Typography sx={{ mb: 1.5, fontSize: '18'}}>並び替え</Typography>
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1 }}>
                 {sortOptions.map(opt => (
-                  <Button key={opt.value} sx={buttonSx}
+                  <Button key={opt.value}
+                    sx={buttonSx}
                     variant={currentSort === opt.value ? 'contained' : 'outlined'}
                     onClick={() => onSortChange(opt.value)}
                   >{opt.label}</Button>
@@ -81,7 +96,8 @@ export default function FilterDrawer({
             <Typography sx={{ mb: 1.5, fontSize: '18' }}>はっけんした人</Typography>
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
               {scopeOptions.map(opt => (
-                <Button key={opt.value} sx={buttonSx}
+                <Button key={opt.value}
+                  sx={{ ...buttonSx, flex: 1 }}
                   variant={currentScope === opt.value ? 'contained' : 'outlined'}
                   onClick={() => onScopeChange(opt.value)}
                 >{opt.label}</Button>
