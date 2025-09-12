@@ -1,18 +1,34 @@
 "use client";
 
-import { Box, IconButton, SvgIcon, Toolbar, Typography } from "@mui/material";
+import { Box, IconButton, SvgIcon, Typography } from "@mui/material";
 import Link from "next/link";
 import { IoLeaf, IoFilterOutline } from "react-icons/io5";
+import { HEADER_HEIGHT, HEADER_HEIGHT_FOR_BROWSER } from "@/constants/styles";
+import { useIsPWA } from "@/hooks/useIsPWA";
 
 type HeaderTopProps = {
   onFilterClick?: () => void;
+  title?: string;
+  icon?: React.ReactNode;
 };
 
-export default function HeaderTop({ onFilterClick }: HeaderTopProps) {
+export default function HeaderTop({
+  onFilterClick,
+  title = "はっけん",
+  icon = <IoLeaf />,
+}: HeaderTopProps) {
+  const isPWA = useIsPWA();
+  const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
+
   return (
-    <Toolbar disableGutters sx={{ px: 1 }}>
-      {/* 左側の見えないスペーサー */}
-      <Box sx={{ width: 40 }} />
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        height: `${headerHeight - 48}px`,
+      }}
+    >
+      {onFilterClick && <Box sx={{ width: 40 }} />}
 
       {/* 中央のロゴとタイトル */}
       <Box
@@ -27,11 +43,9 @@ export default function HeaderTop({ onFilterClick }: HeaderTopProps) {
           color: "inherit",
         }}
       >
-        <SvgIcon sx={{ mr: 1.5 }}>
-          <IoLeaf />
-        </SvgIcon>
+        <SvgIcon sx={{ mr: 1.5 }}>{icon}</SvgIcon>
         <Typography variant="h6" component="div">
-          はっけん
+          {title}
         </Typography>
       </Box>
 
@@ -43,6 +57,6 @@ export default function HeaderTop({ onFilterClick }: HeaderTopProps) {
           </SvgIcon>
         </IconButton>
       )}
-    </Toolbar>
+    </Box>
   );
 }

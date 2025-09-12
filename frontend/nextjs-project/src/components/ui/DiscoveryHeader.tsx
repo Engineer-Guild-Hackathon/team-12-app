@@ -31,6 +31,7 @@ export default function DiscoveryHeader({
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
     : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
+  const pyStyle = isPWA ? 2.5 : 1;
 
   const iconComponent = getIconComponent(iconName);
 
@@ -41,7 +42,7 @@ export default function DiscoveryHeader({
         display: "flex",
         alignItems: "flex-end",
         px: 1,
-        py: 2.5,
+        py: pyStyle,
         width: "100%",
         maxWidth: `${MOBILE_MAX_WIDTH}px`,
         height: `${discoveryHeaderHeight}px`,

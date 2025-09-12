@@ -59,7 +59,7 @@ export default function BottomNav() {
         <RecordButton />
         <NavActionButton
           label="せってい"
-          href="/mypage"
+          href="/setting"
           activeIcon={<IoPerson size={32} />}
           inactiveIcon={<IoPersonOutline size={32} />}
         />

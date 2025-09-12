@@ -25,7 +25,7 @@ export default function DiscoveryImage({ src, alt }: DiscoveryImageProps) {
         style={{
           objectFit: "cover",
         }}
-        sizes="(max-width: 500px) 100vw"
+        sizes="(max-width: 500px) 100svw"
       />
     </Box>
   );

@@ -10,6 +10,7 @@ import HeaderTop from "./HeaderTop";
 import HeaderTabs from "./HeaderTabs";
 import { usePathname } from "next/navigation";
 import { useIsPWA } from "@/hooks/useIsPWA";
+import { IoPerson } from "react-icons/io5";
 
 type HeaderProps = {
   onFilterClick?: () => void;
@@ -20,7 +21,16 @@ export default function Header({ onFilterClick }: HeaderProps) {
   const showTabs = pathname === "/" || pathname === "/list";
   const isPWA = useIsPWA();
   const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
-  const gapStyle = isPWA ? "12px" : "0px";
+
+  let headerTitle: string;
+  let headerIcon: React.ReactNode;
+
+  if (pathname === "/setting") {
+    headerTitle = "せってい";
+    headerIcon = <IoPerson />;
+  } else {
+    headerTitle = "はっけん";
+  }
 
   return (
     <AppBar
@@ -40,10 +50,13 @@ export default function Header({ onFilterClick }: HeaderProps) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end",
-        gap: { gapStyle },
       }}
     >
-      <HeaderTop onFilterClick={onFilterClick} />
+      <HeaderTop
+        onFilterClick={onFilterClick}
+        title={headerTitle}
+        icon={headerIcon}
+      />
       {showTabs && <HeaderTabs />}
     </AppBar>
   );
