@@ -30,7 +30,11 @@ export default function HomePage() {
 
   return (
     <Box sx={{ height: "100%", width: "100%", position: "relative" }}>
-      <Map posts={mockPosts} onMarkerClick={handleMarkerClick} />
+      <Map
+        posts={mockPosts}
+        onMarkerClick={handleMarkerClick}
+        selectedPost={selectedPost}
+      />
 
       <DiscoveryCardModal
         post={selectedPost}

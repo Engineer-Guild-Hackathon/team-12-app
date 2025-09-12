@@ -1,17 +1,18 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { useMapControl } from "@/hooks/useMapControl";
-import { createCustomIcon } from "@/utils/createCustomIcon";
 import { Post } from "@/types/post";
 import RecenterButton from "./RecenterButton";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
+import PostMarker from "./PostMarker";
 
 interface MapProps {
   posts: Post[];
   onMarkerClick: (post: Post) => void;
+  selectedPost: Post | null;
 }
 
 // マップインスタンスを取得するための、目に見えないコンポーネント
@@ -23,7 +24,7 @@ function MapController({ setMap }: { setMap: (map: L.Map) => void }) {
   return null;
 }
 
-export default function Map({ posts, onMarkerClick }: MapProps) {
+export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
   const { position, setMap, isLoading, handleRecenter } = useMapControl();
 
   if (isLoading) {
@@ -45,13 +46,11 @@ export default function Map({ posts, onMarkerClick }: MapProps) {
         />
 
         {posts.map((post) => (
-          <Marker
+          <PostMarker
             key={post.post_id}
-            position={[post.latitude, post.longitude]}
-            icon={createCustomIcon()}
-            eventHandlers={{
-              click: () => onMarkerClick(post),
-            }}
+            post={post}
+            isSelected={selectedPost?.post_id === post.post_id}
+            onMarkerClick={onMarkerClick}
           />
         ))}
 
