@@ -42,6 +42,4 @@ RUN poetry install --no-interaction --no-ansi \
 
 COPY backend/ ./
 
-# 既存APIが5000、example_img_analyze.pyは5002を使用
 EXPOSE 5000
-EXPOSE 5002
