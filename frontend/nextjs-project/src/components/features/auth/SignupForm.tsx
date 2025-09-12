@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Box,
   Typography,
@@ -33,7 +33,7 @@ export default function SignupForm() {
   });
 
   // バリデーション成功時に実行される関数
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  const onSubmit = async (data: FormInputs) => {
     console.log("ユーザー登録中...", data);
     await new Promise((resolve) => setTimeout(resolve, 1500));
     console.log("登録完了:", data.username);
@@ -106,14 +106,14 @@ export default function SignupForm() {
             {...register("username", {
               required: "アカウント名は入力必須です",
               maxLength: {
-                value: 8,
-                message: "8文字以内で入力してください",
+                value: 10,
+                message: "10文字以内で入力してください",
               },
               pattern: {
-                value: /^[^\x01-\x7E\xA1-\xDF]+$/,
-                message: "全角文字で入力してください",
+                value: /^[^<>"]+$/,
+                message: "入力できない記号が含まれています",
               },
-              validate: (value) =>
+              validate: (value: string) =>
                 value.trim() !== "" || "空白文字のみの入力はできません",
             })}
             sx={{
@@ -125,7 +125,7 @@ export default function SignupForm() {
             }}
           />
           <FormHelperText sx={{ marginLeft: 0 }}>
-            {errors.username?.message || "※全角8文字まで入力できます"}
+            {errors.username?.message || "※10文字まで入力できます"}
           </FormHelperText>
         </FormControl>
       </Box>
