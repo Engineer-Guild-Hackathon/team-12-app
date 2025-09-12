@@ -22,7 +22,7 @@ class _Config:
     HTTP_TIMEOUT: float = float(os.getenv("HTTP_TIMEOUT", "20.0"))
 
     # CORS等（必要なら app.py 側で使用）
-    ALLOWED_ORIGINS: list[str] = tuple(
+    ALLOWED_ORIGINS: list[str] = list(
         o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
     )
 
