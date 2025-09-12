@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>Post with Image Workflow</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; line-height: 1.6; }
+        .container { max-width: 700px; margin: 0 auto; }
+        .section { background-color: #f9f9f9; border: 1px solid #ddd; padding: 1.5em; margin-bottom: 2em; border-radius: 8px; }
+        .section h2 { margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 0.5em; }
+        label { display: block; margin-top: .8em; font-weight: bold; }
+        input[type="text"], input[type="number"] { width: 95%; padding: 8px; }
+        button { padding: 0.8em 1.5em; border-radius: 4px; border: none; cursor: pointer; background-color: #007bff; color: white; font-size: 1em; }
+        .post-card { border: 1px solid #ccc; padding: 1.5em; border-radius: 8px; margin-top: 1em; }
+        .post-card img { max-width: 100%; border-radius: 4px; margin-bottom: 1em; }
+        .meta { color: #666; font-size: 0.9em; word-break: break-all; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Post with Image Workflow</h1>
+
+        <!-- STEP 1: 画像アップロードフォーム -->
+        <!-- post_formが渡されていない場合、または強制的に表示する場合に表示 -->
+        <div id="imageUploadSection" class="section {% if post_form %}hidden{% endif %}">
+            <h2>Step 1: 画像をアップロード</h2>
+            <form method="post" action="/upload-image-for-post" enctype="multipart/form-data">
+                <input type="file" name="image_file" accept="image/*" required>
+                <br><br>
+                <button type="submit">画像をアップロードして投稿作成へ</button>
+            </form>
+        </div>
+
+        <!-- STEP 2: 投稿作成フォーム -->
+        <!-- Pythonサーバーからpost_formが渡された場合にのみ表示 -->
+        {% if post_form %}
+        <div id="postCreateSection" class="section">
+            <h2>Step 2: 投稿内容を作成(自動入力)</h2>
+            <form id="createPostForm">
+                <label for="img_id">img_id (UUID):</label>
+                <input type="text" id="img_id" name="img_id" value="{{ post_form.img_id }}" readonly style="background:#eee;">
+
+                <label for="user_id">user_id (UUID):</label>
+                <input type="text" id="user_id" name="user_id" value="{{ post_form.user_id }}" required />
+                
+                <label for="question">question:</label>
+                <input type="text" id="question" name="question" value="{{ post_form.question }}" required />
+
+                <label for="target">target:</label>
+                <input type="text" id="target" name="target" value="{{ post_form.target }}" required />
+
+                <label for="answer">answer:</label>
+                <input type="text" id="answer" name="answer" value="{{ post_form.answer }}" required />
+
+                <label for="toi">toi:</label>
+                <input type="text" id="toi" name="toi" value="{{ post_form.toi }}" required />
+
+                <label for="latitude">latitude(緯度):</label>
+                <input type="number" id="latitude" name="latitude" value="{{ post_form.latitude }}" step="0.000001" min="-90" max="90" required />
+
+                <label for="longitude">longitude(経度):</label>
+                <input type="number" id="longitude" name="longitude" value="{{ post_form.longitude }}" step="0.000001" min="-180" max="180" required />
+
+                <div style="margin-top: 1em;">
+                    <button type="submit">投稿を作成 (Step 3)</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- STEP 3 & 4: 結果表示エリア -->
+        <div id="resultSection" class="section hidden">
+            <h2>Step 4: 作成された投稿</h2>
+            <div id="postResultCard"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- 投稿作成 (POST /api/posts) ---
+        const createForm = document.getElementById("createPostForm");
+        if (createForm) {
+            createForm.addEventListener("submit", async function (e) {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const fd = new FormData(form);
+                const payload = {
+                    user_id: fd.get("user_id"),
+                    img_id: fd.get("img_id"),
+                    question: fd.get("question"),
+                    target: fd.get("target"),
+                    answer: fd.get("answer"),
+                    toi: fd.get("toi"),
+                    latitude: Number(fd.get("latitude")),
+                    longitude: Number(fd.get("longitude")),
+                };
+
+                try {
+                    // Step 3: Post APIを叩く
+                    const postResp = await fetch("/api/posts", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload),
+                    });
+
+                    const postData = await postResp.json().catch(() => ({}));
+                    if (!postResp.ok) {
+                        throw new Error("投稿作成失敗: " + (postData.error || postData.detail));
+                    }
+                    
+                    const createdPost = postData.post;
+                    alert("投稿を作成しました！\nPost ID: " + createdPost.post_id);
+
+                    // Step 4: 作成された投稿と画像の両方の情報を取得して表示
+                    await displayPostAndImage(createdPost.post_id, createdPost.img_id);
+
+                    // フォームを隠す
+                    document.getElementById("postCreateSection").classList.add("hidden");
+
+                } catch (err) {
+                    alert("エラー: " + err);
+                }
+            });
+        }
+        
+        // --- 投稿と画像を表示する関数 ---
+        async function displayPostAndImage(postId, imgId) {
+            const resultSection = document.getElementById("resultSection");
+            const resultCard = document.getElementById("postResultCard");
+            resultSection.classList.remove("hidden");
+            resultCard.innerHTML = "<p>投稿と画像情報を取得中...</p>";
+
+            try {
+                // 並行してAPIを呼び出す
+                const [postResp, imageResp] = await Promise.all([
+                    fetch(`/api/posts/${postId}`),
+                    fetch(`/api/images/${imgId}`)
+                ]);
+
+                if (!postResp.ok || !imageResp.ok) {
+                    throw new Error("投稿または画像の取得に失敗しました。");
+                }
+
+                const postData = await postResp.json();
+                const imageData = await imageResp.json();
+                const post = postData.post;
+                const image = imageData.image;
+
+                resultCard.innerHTML = `
+                    <div class="post-card">
+                        <img src="${image.signed_url}" alt="投稿画像">
+                        <div class="meta">
+                            <b>post_id:</b> ${post.post_id}<br>
+                            <b>img_id:</b> ${post.img_id}<br>
+                        </div>
+                        <p><b>question:</b> ${post.question}</p>
+                        <p><b>location:</b> ${post.location}</p>
+                        <div style="margin-top: 1em;">
+                            <button id="deleteButton" style="background-color: #d9534f;">この投稿と画像を削除 (Step 5)</button>
+                        </div>
+                    </div>
+                `;
+                
+                // 動的に作成した削除ボタンにイベントリスナーを追加
+                document.getElementById("deleteButton").addEventListener("click", () => {
+                    deletePostAndImage(post.post_id, post.img_id);
+                });
+
+            } catch(err) {
+                resultCard.innerHTML = `<p style="color:red;">表示エラー: ${err}</p>`;
+            }
+        }
+        
+        // --- 投稿と画像を削除する関数 ---
+        async function deletePostAndImage(postId, imgId) {
+            if (!confirm(`以下の投稿と画像を削除しますか？\nPost ID: ${postId}\nImage ID: ${imgId}`)) return;
+
+            try {
+                // 並行して削除APIを呼び出す
+                const [postResp, imageResp] = await Promise.all([
+                    fetch(`/api/posts/${postId}`, { method: 'DELETE' }),
+                    fetch(`/api/images/${imgId}`, { method: 'DELETE' })
+                ]);
+                
+                if (!postResp.ok || !imageResp.ok) {
+                    throw new Error("投稿または画像の削除に失敗しました。");
+                }
+                
+                alert("投稿と画像が正常に削除されました。");
+                // 結果表示エリアを隠す
+                document.getElementById("resultSection").classList.add("hidden");
+                // 画像アップロードフォームを再表示
+                document.getElementById("imageUploadSection").classList.remove("hidden");
+
+            } catch(err) {
+                alert(`削除エラー: ${err}`);
+            }
+        }
+    </script>
+</body>
+</html>
