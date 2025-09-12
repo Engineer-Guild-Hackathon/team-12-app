@@ -23,9 +23,7 @@ def access_secret_version(project_id, secret_id, version_id):
 
 
 # Secret Managerから取得したパスワードを使用してDB接続を行う
-secret_password = access_secret_version(
-    project_id=PROJECT_ID, secret_id=SECRET_ID, version_id=VERSION_ID
-)
+secret_password = access_secret_version(project_id=PROJECT_ID, secret_id=SECRET_ID, version_id=VERSION_ID)
 
 
 def getconn():

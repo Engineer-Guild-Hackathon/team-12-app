@@ -2,7 +2,6 @@ import uuid
 from typing import Any, Dict
 
 from flask import Blueprint, jsonify, request
-
 from src.services.image.image import ImageService
 
 image_bp = Blueprint("image_bp", __name__)
@@ -53,9 +52,7 @@ def get_image(img_id: uuid.UUID):
     try:
         image = ImageService.get_image(img_id)
         if image is None:
-            return jsonify(
-                {"error": "指定された画像は存在しないか、保存処理に失敗しています"}
-            ), 404
+            return jsonify({"error": "指定された画像は存在しないか、保存処理に失敗しています"}), 404
         return jsonify({"image": image}), 200
     except RuntimeError as e:
         return jsonify({"error": "サービス初期化エラー", "detail": str(e)}), 503

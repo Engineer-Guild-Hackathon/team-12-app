@@ -47,9 +47,7 @@ def _make_connection_creator(
     return getconn, connector
 
 
-def connect_db() -> Tuple[
-    Optional[Engine], Optional[sessionmaker], object, Optional[Connector]
-]:
+def connect_db() -> Tuple[Optional[Engine], Optional[sessionmaker], object, Optional[Connector]]:
     """
     Cloud SQL への接続を初期化して返す。
     成功時: (engine, SessionLocal, Base, connector)
@@ -67,9 +65,7 @@ def connect_db() -> Tuple[
 
         db_password = _access_secret_version(project_id, secret_id, version_id)
 
-        creator, connector = _make_connection_creator(
-            gcp_project, db_name, db_user, db_password
-        )
+        creator, connector = _make_connection_creator(gcp_project, db_name, db_user, db_password)
 
         engine = sa.create_engine(
             "postgresql+pg8000://",

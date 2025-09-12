@@ -4,12 +4,11 @@ import uuid
 
 import requests
 from flask import Flask, flash, redirect, render_template, request, url_for
-
 from src.routes.image_route import image_bp
 from src.routes.post_route import post_bp
 
 app = Flask(__name__, template_folder="template")
-app.secret_key = "dev-post-with-image-secret" # 本番では安全な値に
+app.secret_key = "dev-post-with-image-secret"  # 本番では安全な値に
 app.logger.setLevel(logging.INFO)
 
 # Blueprint 登録（/images, /posts の両方が有効化される）

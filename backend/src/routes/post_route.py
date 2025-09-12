@@ -5,7 +5,6 @@ from typing import Any, Dict
 
 from flask import Blueprint, jsonify, request
 from geopy.geocoders import Nominatim
-
 from src.services.image.image import ImageService
 from src.services.post.post import PostService
 
@@ -206,9 +205,7 @@ def list_recent_posts():
         now = datetime.now(timezone.utc)
         cutoff = now - timedelta(minutes=15)
         posts = PostService.list_posts_before(cutoff)
-        return jsonify(
-            {"posts": posts, "before": cutoff.isoformat(), "now": now.isoformat()}
-        ), 200
+        return jsonify({"posts": posts, "before": cutoff.isoformat(), "now": now.isoformat()}), 200
     except RuntimeError as e:
         return jsonify({"error": "DB初期化エラー", "detail": str(e)}), 503
 

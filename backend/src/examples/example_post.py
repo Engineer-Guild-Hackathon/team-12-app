@@ -3,7 +3,6 @@ import uuid
 
 import requests
 from flask import Flask, render_template, request
-
 from src.routes.post_route import post_bp
 
 app = Flask(__name__, template_folder="template")
@@ -52,9 +51,7 @@ def index():
             payload = resp.json()
             posts = payload.get("posts", [])
         else:
-            app.logger.error(
-                "GET /posts/recent failed: %s %s", resp.status_code, resp.text
-            )
+            app.logger.error("GET /posts/recent failed: %s %s", resp.status_code, resp.text)
     except Exception as e:
         app.logger.exception("Failed to call /api/posts/recent: %s", e)
 
