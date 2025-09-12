@@ -1,4 +1,5 @@
 FROM python:3.12-slim
+ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && \
@@ -17,7 +18,12 @@ RUN apt-get update && \
         build-essential \
         g++ \
         python3-dev \
-        pkg-config && \
+        pkg-config \
+        # ★ python-magic が必要とする OS 依存ライブラリ
+        libmagic1 \
+        libmagic-dev && \
+        # （必要に応じて file コマンドも）
+        # file && \
     rm -rf /var/lib/apt/lists/*
 
 COPY backend/pyproject.toml backend/poetry.lock ./

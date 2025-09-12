@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>example_img_analyze – Client-Only Fetch</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .test-section {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+    }
+
+    .test-section h2 {
+      margin: 0 0 .75rem;
+    }
+
+    label {
+      display: block;
+      margin-top: .5rem;
+    }
+
+    input[type="text"],
+    input[type="url"] {
+      width: 100%;
+      max-width: 720px;
+      padding: .5rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    button {
+      padding: .6rem 1.1rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #007bff;
+      color: #fff;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .muted {
+      color: #6b7280;
+    }
+
+    .row {
+      margin: .5rem 0;
+    }
+
+    .result-area {
+      border-top: 2px solid #007bff;
+      margin-top: 1rem;
+      padding-top: 1rem;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      background: #2d2d2d;
+      color: #f0f0f0;
+      padding: 10px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .error {
+      color: #d8000c;
+      background: #ffbaba;
+      border: 1px solid #d8000c;
+      padding: .75rem;
+      border-radius: 6px;
+    }
+
+    .hint {
+      font-size: .9rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>example_img_analyze</h1>
+    <p class="muted">このページは <code>fetch</code> を使って、クライアントサイドから直接 <code>POST /v1/analyze</code> を呼び出します。</p>
+
+    <div class="test-section">
+      <h2>画像解析を実行（POST /v1/analyze）</h2>
+      <form id="analyzeForm">
+        <label>画像ファイル（任意・URLと併用不可推奨）</label>
+        <input type="file" name="file" accept="image/*" />
+        <label>画像URL（任意・ファイルと併用不可推奨）</label>
+        <input type="url" name="image_url" placeholder="https://example.com/image.jpg" />
+        <label>質問（任意）</label>
+        <input type="text" name="question" placeholder="この画像に写っている物体について説明してください。" />
+        <div class="row"><button type="submit">解析する</button></div>
+      </form>
+      <div id="resultArea" class="result-area"></div>
+    </div>
+
+    <div class="test-section">
+      <h2>ヘルスチェック</h2>
+      <div class="row">
+        <button id="btnHealth">GET /health</button>
+        <button id="btnReady">GET /ready</button>
+      </div>
+      <div id="healthArea" class="result-area"></div>
+    </div>
+  </div>
+
+  <script>
+    const resultArea = document.getElementById("resultArea");
+    const healthArea = document.getElementById("healthArea");
+
+    const esc = (v) => (v ?? "").toString().replace(/[&<>]/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[s]));
+
+    // data の形が { title, discovery, question } または { answer: { ... } } の両方に対応
+    function pickAnswerFields(data) {
+      const src = data?.answer && typeof data.answer === 'object' ? data.answer : data;
+      return {
+        title: src?.title ?? "",
+        discovery: src?.discovery ?? "",
+        question: src?.question ?? ""
+      };
+    }
+
+    document.getElementById("analyzeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      resultArea.innerHTML = "<p>解析中...</p>";
+
+      const formEl = e.currentTarget;
+      const fd = new FormData(formEl);
+
+      const hasFile = fd.get("file") && fd.get("file").size > 0;
+      const hasUrl = (fd.get("image_url") || "").toString().trim().length > 0;
+
+      if (!hasFile) fd.delete("file");
+      if (!hasUrl) fd.delete("image_url");
+
+      if (!hasFile && !hasUrl) {
+        resultArea.innerHTML = '<p class="error">画像ファイルまたは画像URLのどちらかは必須です。</p>';
+        return;
+      }
+
+      try {
+        const resp = await fetch("/v1/analyze", { method: "POST", body: fd });
+        const data = await resp.json().catch(() => ({}));
+
+        if (resp.ok) {
+          const { title, discovery, question } = pickAnswerFields(data);
+          resultArea.innerHTML = `
+            <div class="result-grid">
+              <div class="card">
+                <h3>title</h3>
+                <div>${esc(title)}</div>
+              </div>
+              <div class="card">
+                <h3>discovery</h3>
+                <div>${esc(discovery)}</div>
+              </div>
+            </div>
+            <div class="card" style="margin-top:12px">
+              <h3>question</h3>
+              <div>${esc(question)}</div>
+            </div>
+            <div class="result-area">
+              <h3>Raw JSON</h3>
+              <pre class="pre">${esc(JSON.stringify(data, null, 2))}</pre>
+            </div>
+          `;
+        } else {
+          const msg = data?.error || data?.detail || resp.statusText;
+          resultArea.innerHTML = `<p class="error">解析失敗: ${esc(msg)}</p><div class="pre">${esc(JSON.stringify(data, null, 2))}</div>`;
+        }
+      } catch (err) {
+        resultArea.innerHTML = `<p class="error">通信エラー: ${esc(err)}</p>`;
+      }
+    });
+
+    document.getElementById("btnHealth").addEventListener("click", async () => {
+      healthArea.innerHTML = "<p>読み込み中...</p>";
+      try {
+        const resp = await fetch("/health");
+        const text = await resp.text();
+        healthArea.innerHTML = `<div class="pre">${esc(text)}</div>`;
+      } catch (err) {
+        healthArea.innerHTML = `<p class="error">通信エラー: ${esc(err)}</p>`;
+      }
+    });
+
+    document.getElementById("btnReady").addEventListener("click", async () => {
+      healthArea.innerHTML = "<p>読み込み中...</p>";
+      try {
+        const resp = await fetch("/ready");
+        const text = await resp.text();
+        healthArea.innerHTML = `<div class="pre">${esc(text)}</div>`;
+      } catch (err) {
+        healthArea.innerHTML = `<p class="error">通信エラー: ${esc(err)}</p>`;
+      }
+    });
+  </script>
+</body>
+
+</html>
