@@ -15,16 +15,15 @@ export const createPost = async (
   body: CreatePostBody,
   signal?: AbortSignal
 ) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_ORIGIN}/api/posts`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-      signal,
-      body: JSON.stringify(body),
-    }
-  );
+  const res = await fetch("/api/posts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store",
+    signal,
+    body: JSON.stringify(body),
+    // 認証Cookieを使う場合は必要に応じて
+    // credentials: "same-origin",
+  });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err?.error || `HTTP ${res.status}`);

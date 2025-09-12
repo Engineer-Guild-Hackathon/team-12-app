@@ -7,6 +7,7 @@ type UseReviewingStep = {
   photoData: string | null;
   question: string | null; // ユーザーが入力した質問
   aiResponse: AiResponse | null; // AIからのレスポンス
+  img_id: string; // アップロード結果
   //   isGenerating: boolean; // AIが応答を生成中かどうかのフラグ
   //   startCreation: () => void;
   nextStep: () => void;
@@ -20,11 +21,15 @@ type UseReviewingStep = {
 };
 
 export const useReviewingStep = (params: UseReviewingStep) => {
-  const { photoData, question, aiResponse, nextStep, latitude, longitude } =
+  const { photoData, question, aiResponse, nextStep, latitude, longitude, img_id } =
     params;
   const router = useRouter();
 
   const handleSave = async () => {
+    if (latitude === null || longitude === null) {
+      alert("位置情報が取得できません。位置情報の利用を許可してもう一度やり直してください。");
+      return;
+    }
     if (!photoData || !question || !aiResponse) {
       alert("AIからのデータが不十分です。もう1度最初からやり直してください。");
       return;
@@ -35,8 +40,8 @@ export const useReviewingStep = (params: UseReviewingStep) => {
       // ここでは仮の値を使用
       // ユーザーidは未実装
       const payload = {
-        user_id: "current-user-id", // 認証から取得する想定
-        img_id: "placeholder-img-id",
+        user_id: "123e4567-e89b-12d3-a456-426614174000", // 認証から取得する想定
+        img_id,
         question,
         target: aiResponse.target,
         answer: aiResponse.answer,
@@ -44,6 +49,8 @@ export const useReviewingStep = (params: UseReviewingStep) => {
         latitude,
         longitude,
       };
+
+      console.log("投稿を保存中...", payload);
 
       const { post_id } = await createPost(payload);
       nextStep();

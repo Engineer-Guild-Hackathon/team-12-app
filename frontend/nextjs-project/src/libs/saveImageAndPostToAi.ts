@@ -13,20 +13,22 @@ export const saveImageAndPostToAi = async (
   question: string,
   signal?: AbortSignal
 ): Promise<ImageAnalysisResponse> => {
+  if (!photo) throw new Error("photo is empty");
+  if (!question) throw new Error("question is empty");
+
   // 画像あり：submit と同時に /api/images へ multipart でPOST
   const form = new FormData();
   const file = await urlToFile(photo, "photo.jpg");
-  form.append("image_file", file); // Flask 側必須キー
+  form.append("img_file", file); // Flask 側必須キー
   form.append("question", question);
 
-  // Flask API のベースURL（例: https://api.example.com）
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "";
-  const res = await fetch(`${API_BASE}/api/images`, {
+  // Next.js のAPIルート（プロキシ）を経由してバックエンドへ転送
+  const res = await fetch("/api/image_analyze", {
     method: "POST",
     body: form,
     signal,
-    // 認証Cookieを使う場合は必要に応じて
-    // credentials: "include",
+    // Cookie 認証を使う場合は same-origin を推奨
+    // credentials: "same-origin",
   });
 
   if (!res.ok) {
