@@ -50,8 +50,6 @@ export const useReviewingStep = (params: UseReviewingStep) => {
         longitude,
       };
 
-      console.log("投稿を保存中...", payload);
-
       const { post_id } = await createPost(payload);
       nextStep();
       router.push(`/discoveries/${post_id}`);

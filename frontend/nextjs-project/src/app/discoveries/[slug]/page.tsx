@@ -1,26 +1,11 @@
-import { mockPosts } from "@/data/mockPosts";
-import { notFound } from "next/navigation";
-import { formatTimestampForServer } from "@/utils/formatDate";
-import DiscoveryDetailView from "@/components/features/discovery-creation/DiscoveryDetailView";
+import DiscoveryDetailClient from "./client";
 
 export default async function DiscoveryDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const post = mockPosts.find((p) => p.post_id === params.slug);
-
-  if (!post) {
-    notFound();
-  }
-
-  const { iconName, formattedDate } = formatTimestampForServer(post.date);
-
-  return (
-    <DiscoveryDetailView
-      post={post}
-      iconName={iconName}
-      formattedDate={formattedDate}
-    />
-  );
+  // ここで unwrap（または React.use(params) でもOK）
+  const { slug } = await params; 
+  return <DiscoveryDetailClient slug={slug} />;
 }
