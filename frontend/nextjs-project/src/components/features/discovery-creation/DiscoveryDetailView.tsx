@@ -32,16 +32,32 @@ export default function DiscoveryDetailView({
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
     : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>(
+    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`
+  );
 
   useEffect(() => {
-    fetchImage(post.img_id)
-      .then((imageResponse) => {
-        setImageUrl(imageResponse.signed_url);
+    if (!post.img_id) {
+      setImageUrl("");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    fetchImage(post.img_id, { signal: controller.signal })
+      .then((res) => {
+        setImageUrl(res.signed_url);
       })
-      .catch((error) => {
-        console.error("Error fetching image:", error);
+      .catch((err) => {
+        // Abort は無視
+        if (err?.name !== "AbortError") {
+          console.error("Error fetching image:", err);
+        }
       });
+
+    return () => {
+      controller.abort();
+    };
   }, [post.img_id]);
 
   return (

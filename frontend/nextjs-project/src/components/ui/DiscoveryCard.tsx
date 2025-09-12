@@ -46,13 +46,26 @@ export default function DiscoveryCard({
 
   // TODO: imageUrlの反映に時間がかかる
   useEffect(() => {
-    fetchImage(post.img_id)
-      .then((imageResponse) => {
-        setImageUrl(imageResponse.signed_url);
-      })
-      .catch((error) => {
-        console.error("Error fetching image:", error);
-      });
+    if (!post.img_id) {
+      setImageUrl("");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const fetchAndSetImage = async () => {
+      try {
+        const res = await fetchImage(post.img_id, { signal: controller.signal });
+        setImageUrl(res.signed_url);
+      } catch (err) {
+        console.error("Error fetching image:", err);
+      }
+    };
+    fetchAndSetImage();
+
+    return () => {
+      controller.abort(); // 中断
+    };
   }, [post.img_id]);
 
   // 距離を計算（useMemoで不要な再計算を防ぐ）

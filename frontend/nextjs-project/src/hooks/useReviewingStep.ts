@@ -59,11 +59,11 @@ export const useReviewingStep = (params: UseReviewingStep) => {
         longitude,
       };
 
-      const { post_id } = await createPost(payload);
+      const post = await createPost(payload);
       nextStep();
       // ここまで画面全体のローディングを入れたい
       // TODO: ローディング終了処理
-      router.push(`/discoveries/${post_id}`);
+      router.push(`/discoveries/${post.post_id}`);
     } catch (e) {
       console.error(e);
       alert("保存に失敗しました。もう1度やり直してください。");
