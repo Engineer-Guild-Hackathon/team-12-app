@@ -3,7 +3,11 @@ import { MOBILE_MAX_WIDTH, HEADER_HEIGHT } from "@/constants/styles";
 import HeaderTop from "./HeaderTop";
 import HeaderTabs from "./HeaderTabs";
 
-export default function Header() {
+type HeaderProps = {
+  onFilterClick?: () => void;
+};
+
+export default function Header({ onFilterClick }: HeaderProps) {
   return (
     <AppBar
       position="fixed"
@@ -25,7 +29,7 @@ export default function Header() {
         gap: "12px",
       }}
     >
-      <HeaderTop />
+      <HeaderTop onFilterClick={onFilterClick}/>
       <HeaderTabs />
     </AppBar>
   );
