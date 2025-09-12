@@ -9,7 +9,7 @@ from werkzeug.datastructures import FileStorage
 
 
 class _GeminiSpy:
-    def generate_b64(self, image_jpeg_bytes: bytes, prompt: str) -> str:
+    def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
         return '{"title":"T","discovery":"D","question":"Q"}'
 
     def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
@@ -47,7 +47,7 @@ def test_analyze_endpoint_with_file(monkeypatch: pytest.MonkeyPatch, client):
     # analyze.py 内の gemini を直接パッチ
     monkeypatch.setattr(analyze_mod, "gemini", _GeminiSpy(), raising=False)
     monkeypatch.setenv("GEMINI_API_KEY", "dummy-key")
-    monkeypatch.setenv("B64_MAX_IMAGE_BYTES", "10000000")
+    monkeypatch.setenv("INLINE_MAX_IMAGE_BYTES", "10000000")
 
     data = {
         "file": (io.BytesIO(_png_bytes()), "x.png"),

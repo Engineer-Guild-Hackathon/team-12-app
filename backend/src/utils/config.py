@@ -15,14 +15,14 @@ class _Config:
 
     # 入力制限
     # Geminiは20MBまでbase64許容だが念のため15MB
-    B64_MAX_IMAGE_BYTES: int = int(os.getenv("B64_MAX_IMAGE_BYTES", "15000000"))
+    INLINE_MAX_IMAGE_BYTES: int = int(os.getenv("INLINE_MAX_IMAGE_BYTES", "15000000"))
     MAX_IMAGE_LONG_EDGE: int = int(os.getenv("MAX_IMAGE_LONG_EDGE", "1600"))
 
     # HTTP
     HTTP_TIMEOUT: float = float(os.getenv("HTTP_TIMEOUT", "20.0"))
 
     # CORS等（必要なら app.py 側で使用）
-    ALLOWED_ORIGINS: list[str] = list(
+    ALLOWED_ORIGINS: tuple[str] = tuple(
         o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
     )
 

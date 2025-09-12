@@ -9,11 +9,11 @@ from werkzeug.exceptions import BadRequest
 
 class _GeminiSpy:
     def __init__(self):
-        self.called_b64 = False
+        self.called_inline = False
         self.called_files = False
 
-    def generate_b64(self, image_jpeg_bytes: bytes, prompt: str) -> str:
-        self.called_b64 = True
+    def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
+        self.called_inline = True
         return '{"title":"T","discovery":"D","question":"Q"}'
 
     def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
@@ -35,7 +35,7 @@ def _large_jpeg_bytes() -> bytes:
     return buf.getvalue()
 
 
-def test_analyze_calls_gemini_via_b64(monkeypatch: pytest.MonkeyPatch):
+def test_analyze_calls_gemini_inline(monkeypatch: pytest.MonkeyPatch):
     # 実 API キーが無くても落ちないようダミー
     monkeypatch.setenv("GEMINI_API_KEY", "dummy-key")
 
@@ -43,7 +43,7 @@ def test_analyze_calls_gemini_via_b64(monkeypatch: pytest.MonkeyPatch):
     from dataclasses import replace
 
     monkeypatch.setattr(
-        analyze_mod, "CONFIG", replace(analyze_mod.CONFIG, B64_MAX_IMAGE_BYTES=10_000_000), raising=False
+        analyze_mod, "CONFIG", replace(analyze_mod.CONFIG, INLINE_MAX_IMAGE_BYTES=10_000_000), raising=False
     )
 
     # gemini をスパイに差し替え
@@ -56,7 +56,7 @@ def test_analyze_calls_gemini_via_b64(monkeypatch: pytest.MonkeyPatch):
     assert result.get("title") == "T"
     assert result.get("discovery") == "D"
     assert result.get("question") == "Q"
-    assert spy.called_b64 is True
+    assert spy.called_inline is True
     # Files 経路は（このテストでは使っていないが）FalseのままでOK
     assert spy.called_files is False
 
@@ -93,10 +93,10 @@ def test_analyze_calls_gemini_via_files_when_threshold_low(monkeypatch: pytest.M
     monkeypatch.setattr(analyze_mod, "genai", _types.SimpleNamespace(Client=_DummyClient), raising=False)
 
     # Files 経路を確実に踏ませるため：
-    # 1) B64 閾値を極小に
+    # 1) inline 閾値を極小に
     from dataclasses import replace
 
-    monkeypatch.setattr(analyze_mod, "CONFIG", replace(analyze_mod.CONFIG, B64_MAX_IMAGE_BYTES=1), raising=False)
+    monkeypatch.setattr(analyze_mod, "CONFIG", replace(analyze_mod.CONFIG, INLINE_MAX_IMAGE_BYTES=1), raising=False)
     # 2) JPEG化後のサイズを巨大に（現在の実装は downscale_to_jpeg(raw, max_long_edge)）
     monkeypatch.setattr(
         analyze_mod,
@@ -107,7 +107,7 @@ def test_analyze_calls_gemini_via_files_when_threshold_low(monkeypatch: pytest.M
 
     monkeypatch.setenv("GEMINI_API_KEY", "dummy-key")
 
-    # gemini スパイ（B64 経路が呼ばれないことの確認用）
+    # gemini スパイ（inline 経路が呼ばれないことの確認用）
     spy = _GeminiSpy()
     monkeypatch.setattr(analyze_mod, "gemini", spy, raising=False)
 
@@ -119,7 +119,7 @@ def test_analyze_calls_gemini_via_files_when_threshold_low(monkeypatch: pytest.M
     assert result.get("question") == "Q"
     assert _calls["upload"] is True
     assert _calls["generate"] is True
-    assert spy.called_b64 is False  # B64 経路は通っていない
+    assert spy.called_inline is False  # inline 経路は通っていない
 
 
 # ---- 置き換え：_fetch_image_bytes は gs:// のみ受付 ----

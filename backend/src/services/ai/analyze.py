@@ -1,19 +1,18 @@
 from __future__ import annotations
 
-import base64
 import io
 import json
-import magic
 import unicodedata
 from typing import Any, Dict
 from urllib.parse import unquote
 
+import magic
 from google import genai
 from google.cloud import storage
 from google.genai import types
+from PIL import Image
 from src.services.ai.gemini_client import gemini
 from src.utils.config import CONFIG
-from PIL import Image
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest
 
@@ -57,7 +56,7 @@ class AnalyzeService:
         prompt = AnalyzeService._build_prompt(question)
 
         # 4) 画像サイズに応じてAPIを選択
-        if len(raw) <= CONFIG.B64_MAX_IMAGE_BYTES:
+        if len(raw) <= CONFIG.INLINE_MAX_IMAGE_BYTES:
             return AnalyzeService._gemini_request_by_base64(raw, prompt)
         else:
             return AnalyzeService._gemini_request_by_filesAPI(file, raw, prompt)
@@ -217,11 +216,8 @@ class AnalyzeService:
         # 画像の縮小とJPEG化
         jpeg_bytes = AnalyzeService.downscale_to_jpeg(raw, max_long_edge=CONFIG.MAX_IMAGE_LONG_EDGE)
 
-        # Base64エンコード
-        jpeg_b64 = base64.b64encode(jpeg_bytes).decode("utf-8")
-
         # Gemini API呼び出し
-        answer = gemini.generate_b64(jpeg_b64, prompt)
+        answer = gemini.generate_inline(jpeg_bytes, prompt)
         return AnalyzeService._parse_answer_to_dict(answer)
 
     @staticmethod

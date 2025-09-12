@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import base64
-
 from google import genai
 from google.genai import types
 from src.utils.config import CONFIG
@@ -66,12 +64,11 @@ class GeminiClient:
         text = getattr(resp, "text", None)
         return text or str(resp)
 
-    def generate_b64(self, image_jpeg_b64: str, prompt: str) -> str:
+    def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
         """
-        Base64 文字列 → bytes に decode → Part.from_bytes で渡す
+        bytes → Part.from_bytes で渡す
         """
-        image_bytes = base64.b64decode(image_jpeg_b64)
-        image_part = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
+        image_part = types.Part.from_bytes(data=image_jpeg_bytes, mime_type="image/jpeg")
         kwargs = {}
         if self._gencfg_json is not None:
             kwargs["config"] = self._gencfg_json

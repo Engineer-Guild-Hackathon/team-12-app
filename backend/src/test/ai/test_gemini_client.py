@@ -26,18 +26,18 @@ def test_gemini_client_surface_is_present():
 def test_gemini_client_is_mockable(monkeypatch: pytest.MonkeyPatch):
     """
     analyze 側で行うモック方針が機能するかの確認：
-      - gemini_client.gemini を差し替え可能であること
-      - generate_b64 / generate_fileStorage の形で呼び出せること
+        - gemini_client.gemini を差し替え可能であること
+        - generate_inline / generate_fileStorage の形で呼び出せること
     """
 
     class _Spy:
         def __init__(self):
-            self.b64 = False
+            self.inline = False
             self.files = False
 
-        def generate_b64(self, image_jpeg_bytes: bytes, prompt: str) -> str:
-            self.b64 = True
-            return "OK_B64"
+        def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
+            self.inline = True
+            return "OK_VIA_BYTES"
 
         def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
             self.files = True
@@ -46,10 +46,10 @@ def test_gemini_client_is_mockable(monkeypatch: pytest.MonkeyPatch):
     spy = _Spy()
     monkeypatch.setattr(gemini_client, "gemini", spy, raising=False)
 
-    # b64
+    # inline
     b = _png_bytes()
-    out1 = gemini_client.gemini.generate_b64(b, "q")
-    assert out1 == "OK_B64" and spy.b64 is True
+    out1 = gemini_client.gemini.generate_inline(b, "q")
+    assert out1 == "OK_VIA_BYTES" and spy.inline is True
 
     # files
     fs = FileStorage(stream=io.BytesIO(b), filename="x.png", content_type="image/png")
