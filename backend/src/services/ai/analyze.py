@@ -5,7 +5,6 @@ import io
 import json
 import magic
 import unicodedata
-import unicodedata
 from typing import Any, Dict
 from urllib.parse import unquote
 
