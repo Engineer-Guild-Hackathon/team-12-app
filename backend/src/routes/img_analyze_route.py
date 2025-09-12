@@ -5,17 +5,20 @@ from werkzeug.exceptions import BadRequest
 
 img_analyze_bp = Blueprint("img_analyze", __name__)
 
+
 # プロセスが生きているかの確認用
 @img_analyze_bp.get("/health")
 def health():
     # liveness: 単純に200
     return jsonify({"ok": True}), 200
 
+
 # リクエストの受理が可能かの確認用
 @img_analyze_bp.get("/ready")
 def ready():
     # readiness: APIキーが設定されていればOK（本番は外部依存もチェック推奨）
     return jsonify({"ready": bool(CONFIG.GEMINI_API_KEY)}), 200
+
 
 @img_analyze_bp.post("/v1/analyze")
 def post_analyze():
@@ -31,7 +34,7 @@ def post_analyze():
     question = request.form.get("question")
 
     if not file and not image_url:
-        raise BadRequest("file or image_url is required")
+        raise BadRequest("画像ファイルまたは画像URLは必須です")
 
     try:
         answer = AnalyzeService.analyze(file=file, image_url=image_url, question=question)

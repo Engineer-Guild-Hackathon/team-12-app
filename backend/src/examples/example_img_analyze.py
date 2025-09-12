@@ -140,7 +140,7 @@ def analyze_form():
     question = request.form.get("question") or None
 
     if not file and not image_url:
-        raise BadRequest("file or image_url is required")
+        raise BadRequest("画像ファイルまたは画像URLは必須です")
 
     try:
         parsed = AnalyzeService.analyze(file=file, image_url=image_url, question=question)
@@ -189,7 +189,7 @@ def local_analyze():
     image_url = request.form.get("image_url") or None
     question = request.form.get("question") or None
     if not file and not image_url:
-        raise BadRequest("file or image_url is required")
+        raise BadRequest("画像ファイルまたは画像URLは必須です")
     parsed = AnalyzeService.analyze(file=file, image_url=image_url, question=question)
     return jsonify(parsed), 200
 

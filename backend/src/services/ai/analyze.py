@@ -22,15 +22,15 @@ class AnalyzeService:
     def analyze(file: FileStorage | None, image_url: str | None, question: str | None) -> Dict[str, str]:
         """
         画像を解析してAIからの回答を返す
-        
+
         Args:
             file: アップロードされた画像ファイル
             image_url: 画像のURL
             question: 補助的な質問
-            
+
         Returns:
             {"title": str, "discovery": str, "question": str} の辞書
-            
+
         Raises:
             BadRequest: 無効な画像やリクエスト
             TimeoutError: 画像取得のタイムアウト
@@ -44,7 +44,7 @@ class AnalyzeService:
         # 2) 画像形式の検証
         mime = sniff_mime(raw)
         if not mime.startswith("image/"):
-            raise BadRequest("invalid image content")
+            raise BadRequest("画像ファイルではありません")
 
         # 3) プロンプトの構築
         prompt = AnalyzeService._build_prompt(question)
@@ -59,13 +59,13 @@ class AnalyzeService:
     def _fetch_image_bytes(url: str) -> bytes:
         """
         URLから画像データを取得する
-        
+
         Args:
             url: 画像のURL
-            
+
         Returns:
             画像のバイトデータ
-            
+
         Raises:
             BadRequest: HTTPエラー
             TimeoutError: タイムアウト
@@ -75,7 +75,7 @@ class AnalyzeService:
             with httpx.Client(timeout=CONFIG.HTTP_TIMEOUT, follow_redirects=True) as client:
                 r = client.get(url)
                 if r.status_code != 200:
-                    raise BadRequest("image_url fetch failed")
+                    raise BadRequest("画像URLからの取得に失敗しました")
                 return r.content
         except httpx.TimeoutException:
             raise TimeoutError("image_url fetch timeout")
@@ -84,10 +84,10 @@ class AnalyzeService:
     def _build_prompt(question: str | None) -> str:
         """
         モデルに「厳密にJSONのみ」を返させるプロンプトを構築する
-        
+
         Args:
             question: 補助的な質問（オプション）
-            
+
         Returns:
             構築されたプロンプト文字列
         """
@@ -113,13 +113,13 @@ class AnalyzeService:
     def _parse_answer_to_dict(answer: str) -> Dict[str, str]:
         """
         モデルからの文字列応答をJSONとしてパースし、辞書に変換する
-        
+
         Args:
             answer: モデルからの応答文字列
-            
+
         Returns:
             {"title": str, "discovery": str, "question": str} の辞書
-            
+
         Raises:
             BadRequest: 無効なJSON形式
         """
@@ -138,7 +138,7 @@ class AnalyzeService:
         # 必須フィールドの検証
         for k in ("title", "discovery", "question"):
             if k not in obj or not isinstance(obj[k], str):
-                raise BadRequest("model output is not a valid JSON object with required keys")
+                raise BadRequest("AIの出力が必要なJSON形式（title, discovery, questionの各文字列）になっていません")
 
         return obj
 
@@ -146,11 +146,11 @@ class AnalyzeService:
     def _gemini_request_by_base64(raw: bytes | Any, prompt: str) -> Dict[str, str]:
         """
         Base64エンコードした画像でGemini APIを呼び出す（小さい画像用）
-        
+
         Args:
             raw: 画像のバイトデータ
             prompt: プロンプト文字列
-            
+
         Returns:
             解析結果の辞書
         """
@@ -168,12 +168,12 @@ class AnalyzeService:
     def _gemini_request_by_filesAPI(file: FileStorage, raw: bytes | Any, prompt: str) -> Dict[str, str]:
         """
         Files APIを使用してGemini APIを呼び出す（大きい画像用）
-        
+
         Args:
             file: ファイルストレージオブジェクト
             raw: 画像のバイトデータ
             prompt: プロンプト文字列
-            
+
         Returns:
             解析結果の辞書
         """
