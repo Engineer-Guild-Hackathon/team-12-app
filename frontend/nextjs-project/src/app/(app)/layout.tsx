@@ -8,10 +8,8 @@ import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import DiscoveryCreationFlow from "@/components/features/discovery-creation/DiscoveryCreationFlow";
 import FilterHandler from "@/components/features/filter/FilterHandler"; // 作成したコンポーネントをインポート
 
-
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const currentStep = useDiscoveryCreationStore((state) => state.currentStep);
- 
 
   if (currentStep) {
     return (
