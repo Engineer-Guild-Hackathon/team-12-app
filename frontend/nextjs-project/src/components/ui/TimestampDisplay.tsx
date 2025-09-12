@@ -1,10 +1,12 @@
-import { Stack, Typography } from "@mui/material";
+"use client";
+
+import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 
 interface TimestampDisplayProps {
   icon: React.ReactNode;
   formattedDate: string;
-  variant?: "default" | "transparent";
+  variant?: "default" | "transparent" | "small";
 }
 
 export default function TimestampDisplay({
@@ -12,14 +14,19 @@ export default function TimestampDisplay({
   formattedDate,
   variant = "default",
 }: TimestampDisplayProps) {
-  const textStyles =
-    variant === "transparent"
-      ? {
-          color: "white",
-        }
-      : {
-          color: "kinako.900",
-        };
+  let textColor = "kinako.900";
+  let iconColor = "tamago.600";
+  let fontSize = 20;
+  let flexGrow = 1;
+
+  if (variant === "transparent") {
+    textColor = "white";
+    iconColor = "white";
+  }
+  if (variant === "small") {
+    fontSize = 18;
+    flexGrow = 0;
+  }
 
   return (
     <Stack
@@ -28,17 +35,22 @@ export default function TimestampDisplay({
       justifyContent="center"
       spacing={0.5}
       sx={{
-        flexGrow: 1,
-        color: "tamago.600",
+        flexGrow: flexGrow,
       }}
     >
       <Typography
         variant="body2"
-        sx={{ fontSize: 20, lineHeight: 1, ...textStyles }}
+        sx={{
+          fontSize: fontSize,
+          lineHeight: 1,
+          color: textColor,
+        }}
       >
         {formattedDate}
       </Typography>
-      {icon}
+      <Box component="span" sx={{ color: iconColor, display: "flex" }}>
+        {icon}
+      </Box>
     </Stack>
   );
 }
