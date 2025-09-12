@@ -18,7 +18,7 @@
 | GET     | `/api/posts/{post_id}`     | 特定投稿を取得                               |
 | GET     | `/api/posts`               | 投稿一覧（ページング）                       |
 | GET     | `/api/posts/recent`        | 現在時刻から 15 分より前の投稿一覧           |
-| DELETE  | `/api/posts/{post_id}`     | 投稿の削除                                   |
+| DELETE  | `/api/posts/{post_id}`     | 投稿と関連画像を削除                         |
 
 ---
 
@@ -239,28 +239,37 @@ curl http://localhost:5001/api/posts/recent
 
 ---
 
-## 5) DELETE `/api/posts/{post_id}` — 削除
+## 5) DELETE `/api/posts/{post_id}` — 投稿と画像の削除
 
 ### 説明
 - 指定 `post_id` を物理削除します。  
-- 成功時は `200 OK`（もしくは `204 No Content` 運用でも可）。
+- 関連する画像（`img_id`）があれば **ベストエフォートで削除**します（失敗しても投稿削除は成功扱い）。
 
-### レスポンス例（200）
+### レスポンス例（200 成功＋画像削除成功）
 
 ```json
-{ "status": "deleted", "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726" }
+{
+  "status": "deleted",
+  "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726",
+  "image_deleted": true
+}
+```
+
+### レスポンス例（200 成功＋画像削除失敗）
+
+```json
+{
+  "status": "deleted",
+  "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726",
+  "image_deleted": false,
+  "image_delete_error": "画像削除サービスに接続できませんでした"
+}
 ```
 
 ### 失敗例（404）
 
 ```json
 { "error": "指定された投稿は存在しません" }
-```
-
-### curl 例
-
-```bash
-curl -X DELETE http://localhost:5001/api/posts/c008f66e-f15b-4cf9-a5be-892dae037726
 ```
 
 ---
