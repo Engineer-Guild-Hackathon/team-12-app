@@ -11,14 +11,14 @@ from src.utils.config import CONFIG
 
 
 # プロセスが生きているかの確認用
-@img_analyze_bp.get("/health")
+@app.get("/health")
 def health():
     # liveness: 単純に200
     return jsonify({"ok": True}), 200
 
 
 # リクエストの受理が可能かの確認用
-@img_analyze_bp.get("/ready")
+@app.get("/ready")
 def ready():
     # readiness: APIキーが設定されていればOK（本番は外部依存もチェック推奨）
     return jsonify({"ready": bool(CONFIG.GEMINI_API_KEY)}), 200
