@@ -12,7 +12,7 @@ export default function LoginView() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        minHeight: "100vh",
+        minHeight: "100svh",
         paddingTop: "240px",
         px: "12%",
       }}

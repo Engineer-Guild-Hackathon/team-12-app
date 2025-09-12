@@ -1,9 +1,18 @@
 import { AppBar } from "@mui/material";
-import { MOBILE_MAX_WIDTH, HEADER_HEIGHT } from "@/constants/styles";
+import {
+  MOBILE_MAX_WIDTH,
+  HEADER_HEIGHT,
+  HEADER_HEIGHT_FOR_BROWSER,
+} from "@/constants/styles";
 import HeaderTop from "./HeaderTop";
 import HeaderTabs from "./HeaderTabs";
+import { useIsPWA } from "@/hooks/useIsPWA";
 
 export default function Header() {
+  const isPWA = useIsPWA();
+  const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
+  const gapStyle = isPWA ? "12px" : "0px";
+
   return (
     <AppBar
       position="fixed"
@@ -11,7 +20,7 @@ export default function Header() {
       sx={{
         width: "100%",
         maxWidth: `${MOBILE_MAX_WIDTH}px`,
-        height: `${HEADER_HEIGHT}px`,
+        height: `${headerHeight}px`,
         top: 0,
         left: "50%",
         transform: "translateX(-50%)",
@@ -22,7 +31,7 @@ export default function Header() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-end",
-        gap: "12px",
+        gap: { gapStyle },
       }}
     >
       <HeaderTop />

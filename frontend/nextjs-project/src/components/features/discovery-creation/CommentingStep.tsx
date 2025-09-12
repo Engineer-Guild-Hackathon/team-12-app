@@ -5,9 +5,13 @@ import React from "react";
 import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
 import { formatTimestampForClient } from "@/utils/formatDate";
 import DiscoveryImage from "@/components/ui/DiscoveryImage";
-import { DISCOVERY_HEADER_HEIGHT } from "@/constants/styles";
+import {
+  DISCOVERY_HEADER_HEIGHT,
+  DISCOVERY_HEADER_HEIGHT_FOR_BROWSER,
+} from "@/constants/styles";
 import { useForm, SubmitHandler } from "react-hook-form";
 import SubmitButton from "@/components/ui/SubmitButton";
+import { useIsPWA } from "@/hooks/useIsPWA";
 
 interface CommentingStepProps {
   photo: string | null;
@@ -31,6 +35,10 @@ export default function CommentingStep({
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
+  const isPWA = useIsPWA();
+  const discoveryHeaderHeight = isPWA
+    ? DISCOVERY_HEADER_HEIGHT
+    : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
 
   const now = new Date();
   const { iconName, formattedDate } = formatTimestampForClient(now);
@@ -52,7 +60,7 @@ export default function CommentingStep({
         spacing={4}
         sx={{
           color: "kinako.900",
-          pt: `${DISCOVERY_HEADER_HEIGHT + 16}px`,
+          pt: `${discoveryHeaderHeight + 16}px`,
           pb: "56px",
         }}
       >
