@@ -1,53 +1,41 @@
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  Divider,
-} from "@mui/material";
-import Link from "next/link";
+"use client";
+
+import { Box, Typography, CircularProgress, Stack } from "@mui/material";
 import { mockPosts } from "@/data/mockPosts";
 import React from "react";
+import { useGeolocation } from "@/hooks/useGeolocation";
+import DiscoveryCard from "@/components/ui/DiscoveryCard";
 
 export default function ListPage() {
-  return (
-    <Box sx={{ p: 2, overflowY: "scroll", height: "100%" }}>
-      <Typography
-        variant="h5"
-        component="h1"
-        sx={{ mb: 2, fontWeight: "bold" }}
-      >
-        はっけん一覧
+  const { latitude, longitude, loading, error } = useGeolocation();
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Typography color="error" sx={{ p: 4 }}>
+        現在地の取得に失敗しました: {error}
       </Typography>
-      <List>
-        {mockPosts.map((post, index) => (
-          // Reactのmapでリストをレンダリングする際は、ユニークなkeyを渡します
-          <React.Fragment key={post.post_id}>
-            <ListItem disablePadding>
-              {/* ListItemButtonをNext.jsのLinkとして機能させる */}
-              <ListItemButton
-                component={Link}
-                href={`/discoveries/${post.post_id}`} // post_idをslugとしてURLを生成
-              >
-                <ListItemText
-                  primary={post.question} // 質問文をメインのテキストとして表示
-                  primaryTypographyProps={{
-                    fontWeight: "medium",
-                    color: "text.primary",
-                  }}
-                  secondaryTypographyProps={{
-                    color: "text.secondary",
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-            {/* 最後の要素以外に区切り線を入れる */}
-            {index < mockPosts.length - 1 && <Divider />}
-          </React.Fragment>
+    );
+  }
+
+  return (
+    <Box sx={{ px: 2.5, py: 2, overflowY: "scroll", height: "100%" }}>
+      <Stack spacing={1.5}>
+        {mockPosts.map((post) => (
+          <DiscoveryCard
+            key={post.post_id}
+            post={post}
+            currentLocation={{ latitude, longitude }}
+          />
         ))}
-      </List>
+      </Stack>
     </Box>
   );
 }

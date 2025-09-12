@@ -4,7 +4,6 @@ from typing import Any, Dict, List, Optional
 
 import sqlalchemy as sa
 from sqlalchemy.orm import declarative_base
-
 from src.utils.db.cloudsql import connect_db, disconnect_db
 
 # --- DB接続初期化 ---
@@ -94,9 +93,7 @@ class PostService:
                     "latitude": post.latitude,
                     "longitude": post.longitude,
                     "date": post.date.isoformat() if post.date else None,
-                    "updated_at": post.updated_at.isoformat()
-                    if post.updated_at
-                    else None,
+                    "updated_at": post.updated_at.isoformat() if post.updated_at else None,
                 }
             except Exception as e:
                 session.rollback()
@@ -136,13 +133,7 @@ class PostService:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            posts = (
-                session.query(Post)
-                .order_by(Post.date.desc())
-                .limit(limit)
-                .offset(offset)
-                .all()
-            )
+            posts = session.query(Post).order_by(Post.date.desc()).limit(limit).offset(offset).all()
             return [
                 {
                     "post_id": str(p.post_id),
@@ -168,12 +159,7 @@ class PostService:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            rows = (
-                session.query(Post)
-                .filter(Post.date < cutoff)
-                .order_by(Post.date.desc())
-                .all()
-            )
+            rows = session.query(Post).filter(Post.date < cutoff).order_by(Post.date.desc()).all()
             return [
                 {
                     "post_id": str(p.post_id),

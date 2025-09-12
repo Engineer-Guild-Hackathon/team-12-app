@@ -42,7 +42,7 @@ export function useMapControl(): MapControl {
         geoPosition.coords.longitude,
       ];
       setPosition(newPos);
-      map.flyTo(newPos, 17);
+      map.flyTo(newPos, 16);
     });
   };
 

@@ -1,15 +1,18 @@
 "use client";
 
-import { DISCOVERY_HEADER_HEIGHT, MOBILE_MAX_WIDTH } from "@/constants/styles";
+import {
+  DISCOVERY_HEADER_HEIGHT,
+  MOBILE_MAX_WIDTH,
+  DISCOVERY_HEADER_HEIGHT_FOR_BROWSER,
+} from "@/constants/styles";
 import { Box } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import React from "react";
 import TimestampDisplay from "./TimestampDisplay";
-import { MdSunny } from "react-icons/md";
-import { RiMoonClearFill } from "react-icons/ri";
-import { TbSunset2 } from "react-icons/tb";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import BackButton from "./BackButton";
+import getIconComponent from "@/utils/getIconComponent";
+import { useIsPWA } from "@/hooks/useIsPWA";
 
 interface DiscoveryHeaderProps {
   iconName: TimeOfDayIcon;
@@ -18,20 +21,17 @@ interface DiscoveryHeaderProps {
   onBackClick?: () => void;
 }
 
-// アイコン名（文字列）を、実際のアイコンコンポーネントに変換するヘルパー
-const getIconComponent = (iconName: TimeOfDayIcon) => {
-  if (iconName === "sun") return <MdSunny size={20} />;
-  if (iconName === "sunset") return <TbSunset2 size={20} />;
-  if (iconName === "moon") return <RiMoonClearFill size={20} />;
-  return null;
-};
-
 export default function DiscoveryHeader({
   iconName,
   formattedDate,
   variant = "default",
   onBackClick,
 }: DiscoveryHeaderProps) {
+  const isPWA = useIsPWA();
+  const discoveryHeaderHeight = isPWA
+    ? DISCOVERY_HEADER_HEIGHT
+    : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
+
   const iconComponent = getIconComponent(iconName);
 
   return (
@@ -44,7 +44,7 @@ export default function DiscoveryHeader({
         py: 2.5,
         width: "100%",
         maxWidth: `${MOBILE_MAX_WIDTH}px`,
-        height: `${DISCOVERY_HEADER_HEIGHT}px`,
+        height: `${discoveryHeaderHeight}px`,
         top: 0,
         left: "50%",
         transform: "translateX(-50%)",

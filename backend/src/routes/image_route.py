@@ -2,7 +2,6 @@ import uuid
 from typing import Any, Dict
 
 from flask import Blueprint, jsonify, request
-
 from src.services.image.image import ImageService
 
 image_bp = Blueprint("image_bp", __name__)

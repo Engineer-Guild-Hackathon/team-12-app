@@ -9,7 +9,6 @@ import sqlalchemy as sa
 from google.cloud import storage
 from google.oauth2 import service_account
 from sqlalchemy.orm import declarative_base
-
 from src.utils.db.cloudsql import connect_db, disconnect_db
 
 # --- DB接続初期化 ---

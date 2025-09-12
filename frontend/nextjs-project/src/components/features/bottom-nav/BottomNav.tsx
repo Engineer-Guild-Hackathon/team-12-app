@@ -2,7 +2,11 @@
 
 "use client";
 
-import { MOBILE_MAX_WIDTH, BOTTOM_NAV_HEIGHT } from "@/constants/styles";
+import {
+  MOBILE_MAX_WIDTH,
+  BOTTOM_NAV_HEIGHT,
+  BOTTOM_NAV_HEIGHT_FOR_BROWSER,
+} from "@/constants/styles";
 import { BottomNavigation, Box } from "@mui/material";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -14,9 +18,14 @@ import {
   IoPersonOutline,
   IoPerson,
 } from "react-icons/io5";
+import { useIsPWA } from "@/hooks/useIsPWA";
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const isPWA = useIsPWA();
+  const bottomNavHeight = isPWA
+    ? BOTTOM_NAV_HEIGHT
+    : BOTTOM_NAV_HEIGHT_FOR_BROWSER;
 
   return (
     <Box
@@ -37,7 +46,7 @@ export default function BottomNav() {
           borderTop: "1px solid",
           borderColor: "kinako.300",
           backgroundColor: "kinako.100",
-          height: `${BOTTOM_NAV_HEIGHT}px`,
+          height: `${bottomNavHeight}px`,
           px: 3,
         }}
       >

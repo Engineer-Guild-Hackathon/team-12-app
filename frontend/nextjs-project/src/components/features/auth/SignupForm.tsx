@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form";
 import {
   Box,
   Typography,
-  Button,
-  CircularProgress,
   Stack,
   FormControl,
   OutlinedInput,
@@ -14,6 +12,7 @@ import {
 } from "@mui/material";
 import { PiPlant } from "react-icons/pi";
 import { FaDiamond } from "react-icons/fa6";
+import SubmitButton from "@/components/ui/SubmitButton";
 
 // フォームのデータ型を定義
 type FormInputs = {
@@ -122,42 +121,22 @@ export default function SignupForm() {
               "& .MuiOutlinedInput-notchedOutline": {
                 border: "none",
               },
+              "& .MuiInputBase-input::placeholder": {
+                color: "kinako.700",
+                opacity: 1,
+              },
             }}
           />
-          <FormHelperText sx={{ marginLeft: 0 }}>
+          <FormHelperText sx={{ marginLeft: 0, color: "kinako.800" }}>
             {errors.username?.message || "※10文字まで入力できます"}
           </FormHelperText>
         </FormControl>
       </Box>
 
       {/* 登録ボタン */}
-      <Button
-        type="submit"
-        variant="contained"
-        disabled={isSubmitting}
-        sx={{
-          borderRadius: 200,
-          backgroundColor: "kinako.900",
-          color: "gray.100",
-          py: 1.6,
-          boxShadow: "none",
-          textTransform: "none",
-          width: "80%",
-          alignSelf: "center",
-          "&:hover": {
-            transform: "translateY(-3px) scale(1.02)",
-            boxShadow: "none",
-            backgroundColor: "kinako.900",
-          },
-        }}
-      >
-        {isSubmitting && (
-          <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />
-        )}
-        <Typography fontSize={20}>
-          {isSubmitting ? "登録中..." : "登録"}
-        </Typography>
-      </Button>
+      <SubmitButton isLoading={isSubmitting} loadingText="登録中...">
+        登録する
+      </SubmitButton>
     </Stack>
   );
 }

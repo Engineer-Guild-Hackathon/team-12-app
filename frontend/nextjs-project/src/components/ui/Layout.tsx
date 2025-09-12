@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         margin: "0 auto",
         padding: 0,
         backgroundColor: "kinako.100",
-        minHeight: "100vh",
+        minHeight: "100svh",
       }}
     >
       {children}
