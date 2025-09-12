@@ -70,7 +70,7 @@ export default function FilterDrawer({
           <Box sx={{ width: 24 }} />
 
           {/* flex: 1 と textAlign: 'center' で中央寄せを実現 */}
-          <Typography sx={{ flex: 1, textAlign: "center", fontSize: "20" }}>
+          <Typography sx={{ flex: 1, textAlign: "center", fontSize: "20", py: 1 }}>
             フィルター
           </Typography>
 
