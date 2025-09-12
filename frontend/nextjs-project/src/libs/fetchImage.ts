@@ -3,7 +3,7 @@ import { ImageRecord, ImageResponse } from "@/types/apiResponse";
 // 画像メタ情報（署名付きURL等）を取得
 export const fetchImage = async (
   imgId: string,
-  { signal }: { signal?: AbortSignal } = {}
+  { signal }: { signal?: AbortSignal } = {},
 ): Promise<ImageRecord> => {
   const res = await fetch(`/api/images/${imgId}`, {
     method: "GET",
@@ -15,7 +15,7 @@ export const fetchImage = async (
     // 失敗時は本文を拾ってエラーにする
     const text = await res.text().catch(() => "");
     throw new Error(
-      `Failed to fetch image via proxy: ${res.status} ${text.slice(0, 200)}`
+      `Failed to fetch image via proxy: ${res.status} ${text.slice(0, 200)}`,
     );
   }
 

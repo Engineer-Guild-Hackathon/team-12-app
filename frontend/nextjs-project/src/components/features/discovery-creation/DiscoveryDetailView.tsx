@@ -33,7 +33,7 @@ export default function DiscoveryDetailView({
     ? DISCOVERY_HEADER_HEIGHT
     : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
   const [imageUrl, setImageUrl] = useState<string>(
-    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`
+    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`,
   );
 
   useEffect(() => {

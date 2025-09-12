@@ -55,7 +55,9 @@ export default function DiscoveryCard({
 
     const fetchAndSetImage = async () => {
       try {
-        const res = await fetchImage(post.img_id, { signal: controller.signal });
+        const res = await fetchImage(post.img_id, {
+          signal: controller.signal,
+        });
         setImageUrl(res.signed_url);
       } catch (err) {
         console.error("Error fetching image:", err);
