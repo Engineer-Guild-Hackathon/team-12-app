@@ -3,6 +3,8 @@ from __future__ import annotations
 import base64
 import io
 import json
+import magic
+import unicodedata
 import unicodedata
 from typing import Any, Dict
 from urllib.parse import unquote
@@ -12,7 +14,7 @@ from google.cloud import storage
 from google.genai import types
 from src.services.ai.gemini_client import gemini
 from src.utils.config import CONFIG
-from src.utils.image_processing import downscale_to_jpeg, sniff_mime
+from PIL import Image
 from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import BadRequest
 
@@ -48,7 +50,7 @@ class AnalyzeService:
             raise BadRequest("画像データが空です（0 byte）")
 
         # 2) 画像形式の検証
-        mime = sniff_mime(raw)
+        mime = AnalyzeService.sniff_mime(raw)
         if not mime.startswith("image/"):
             raise BadRequest("画像ファイルではありません")
 
@@ -113,6 +115,31 @@ class AnalyzeService:
             raise BadRequest("GCSから空データを受信しました")
 
         return data
+
+    @staticmethod
+    def sniff_mime(raw: bytes) -> str:
+        """
+        バイト列から MIME を推定する。未検出時は 'application/octet-stream'。
+        """
+        mime = magic.from_buffer(raw, mime=True)
+        return mime or "application/octet-stream"
+
+    @staticmethod
+    def downscale_to_jpeg(raw: bytes, max_long_edge: int = 1600, quality: int = 90) -> bytes:
+        """
+        任意の画像バイトを長辺 max_long_edge に収めつつ JPEG に再エンコードして返す。
+        """
+        with Image.open(io.BytesIO(raw)) as im:
+            im = im.convert("RGB")
+            w, h = im.size
+            long_edge = max(w, h)
+            if long_edge > max_long_edge:
+                scale = max_long_edge / long_edge
+                new_size = (int(w * scale), int(h * scale))
+                im = im.resize(new_size)
+            buf = io.BytesIO()
+            im.save(buf, format="JPEG", quality=quality)
+            return buf.getvalue()
 
     @staticmethod
     def _build_prompt(question: str | None) -> str:
@@ -189,7 +216,7 @@ class AnalyzeService:
             解析結果の辞書
         """
         # 画像の縮小とJPEG化
-        jpeg_bytes = downscale_to_jpeg(raw, max_long_edge=CONFIG.MAX_IMAGE_LONG_EDGE)
+        jpeg_bytes = AnalyzeService.downscale_to_jpeg(raw, max_long_edge=CONFIG.MAX_IMAGE_LONG_EDGE)
 
         # Base64エンコード
         jpeg_b64 = base64.b64encode(jpeg_bytes).decode("utf-8")
@@ -214,7 +241,7 @@ class AnalyzeService:
         client = genai.Client()
         display_name = getattr(file, "filename", None) or "uploaded_image"
         # FileStorage が無い場合は sniff_mime で検出、フォールバックで image/jpeg
-        detected_mime = sniff_mime(raw) if raw else None
+        detected_mime = AnalyzeService.sniff_mime(raw) if raw else None
         mime_type = (
             (getattr(file, "mimetype", None) if isinstance(file, FileStorage) else None)
             or detected_mime

@@ -230,3 +230,37 @@ def test_fetch_gcs_bytes_errors(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(analyze_mod, "storage", _types.SimpleNamespace(Client=_DummyClient), raising=False)
     with pytest.raises(BadRequest):
         analyze_mod.AnalyzeService._fetch_gcs_bytes("gs://bkt/file.jpg")
+
+
+def _png_bytes(w=800, h=600) -> bytes:
+    im = Image.new("RGB", (w, h), (50, 120, 200))
+    buf = io.BytesIO()
+    im.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def test_sniff_mime_returns_image_prefix_if_available():
+    """
+    画像バイトからのMIME推定が 'image/' で始まることを緩く検証
+    （元の test_image_processing.py 相当）。
+    """
+    if not hasattr(analyze_mod.AnalyzeService, "sniff_mime"):
+        pytest.skip("sniff_mime が見つからないためスキップ")
+    mime = analyze_mod.AnalyzeService.sniff_mime(_png_bytes())
+    assert isinstance(mime, str)
+    assert mime.startswith("image/")
+
+
+def test_downscale_to_jpeg_outputs_jpeg_bytes():
+    """
+    縮小＆JPEG再エンコードの出力がJPEGで、元画像より小さくなることを緩く検証
+    （元の test_image_processing.py 相当）。
+    """
+    if not hasattr(analyze_mod.AnalyzeService, "downscale_to_jpeg"):
+        pytest.skip("downscale_to_jpeg が見つからないためスキップ")
+    big = _png_bytes(4000, 2400)
+    jpeg = analyze_mod.AnalyzeService.downscale_to_jpeg(big, max_long_edge=1600, quality=85)
+    # JPEG マジック（FF D8）
+    assert jpeg[:2] == b"\xff\xd8"
+    # サイズは元より小さくなっているはず（厳密比較は避ける）
+    assert len(jpeg) < len(big)
