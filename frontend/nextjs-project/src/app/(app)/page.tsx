@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { Post } from "@/types/post";
-import { mockPosts } from "@/data/mockPosts";
 import { useGeolocation } from "@/hooks/useGeolocation";
 
 import dynamic from "next/dynamic";
@@ -17,7 +16,7 @@ export default function HomePage() {
   const { latitude, longitude } = useGeolocation();
   const currentLocation = { latitude, longitude };
 
-  const [posts, setPosts] = useState<Post[]>(mockPosts);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   useEffect(() => {

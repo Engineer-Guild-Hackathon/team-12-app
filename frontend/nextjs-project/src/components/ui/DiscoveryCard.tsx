@@ -10,11 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { formatTimestampForClient } from "@/utils/formatDate";
 import { calculateDistance } from "@/utils/calculateDistance";
 import TimestampDisplay from "./TimestampDisplay";
 import getIconComponent from "@/utils/getIconComponent";
+import { fetchImage } from "@/libs/fetchImage";
 
 interface DiscoveryCardProps {
   post: Post;
@@ -36,9 +37,23 @@ export default function DiscoveryCard({
 }: DiscoveryCardProps) {
   // 投稿時間とアイコンを取得
   const { iconName, formattedDate } = formatTimestampForClient(
-    new Date(post.date),
+    new Date(post.date)
   );
   const iconComponent = getIconComponent(iconName);
+  const [imageUrl, setImageUrl] = useState<string>(
+    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`
+  );
+
+  // TODO: imageUrlの反映に時間がかかる
+  useEffect(() => {
+    fetchImage(post.img_id)
+      .then((imageResponse) => {
+        setImageUrl(imageResponse.signed_url);
+      })
+      .catch((error) => {
+        console.error("Error fetching image:", error);
+      });
+  }, [post.img_id]);
 
   // 距離を計算（useMemoで不要な再計算を防ぐ）
   const distance = useMemo(() => {
@@ -47,7 +62,7 @@ export default function DiscoveryCard({
         currentLocation.latitude,
         currentLocation.longitude,
         post.latitude,
-        post.longitude,
+        post.longitude
       );
     }
     return null;
@@ -82,7 +97,7 @@ export default function DiscoveryCard({
       >
         <CardMedia
           component="img"
-          image={`https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`}
+          image={imageUrl}
           alt={post.target}
           sx={{
             objectFit: "cover",
