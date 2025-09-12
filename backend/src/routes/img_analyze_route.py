@@ -5,7 +5,6 @@ from typing import Any, Dict, Tuple
 from flask import Blueprint, jsonify, request
 from src.services.ai.analyze import AnalyzeService
 from src.services.image.image import ImageService
-from src.utils.config import CONFIG
 from werkzeug.exceptions import BadRequest
 
 img_analyze_bp = Blueprint("img_analyze", __name__)
@@ -16,20 +15,6 @@ def _bad_request(msg: str, detail: str | None = None) -> Tuple[Any, int]:
     if detail:
         payload["detail"] = detail
     return jsonify(payload), 400
-
-
-# プロセスが生きているかの確認用
-@img_analyze_bp.get("/health")
-def health():
-    # liveness: 単純に200
-    return jsonify({"ok": True}), 200
-
-
-# リクエストの受理が可能かの確認用
-@img_analyze_bp.get("/ready")
-def ready():
-    # readiness: APIキーが設定されていればOK（本番は外部依存もチェック推奨）
-    return jsonify({"ready": bool(CONFIG.GEMINI_API_KEY)}), 200
 
 
 @img_analyze_bp.post("/v1/analyze")

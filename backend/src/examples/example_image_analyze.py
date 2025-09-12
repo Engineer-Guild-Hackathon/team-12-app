@@ -3,10 +3,25 @@ from __future__ import annotations
 import logging
 import os
 
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
 
 # 既存の Blueprint（/health, /ready, /v1/analyze ...）を有効化
 from src.routes.img_analyze_route import img_analyze_bp
+from src.utils.config import CONFIG
+
+
+# プロセスが生きているかの確認用
+@img_analyze_bp.get("/health")
+def health():
+    # liveness: 単純に200
+    return jsonify({"ok": True}), 200
+
+
+# リクエストの受理が可能かの確認用
+@img_analyze_bp.get("/ready")
+def ready():
+    # readiness: APIキーが設定されていればOK（本番は外部依存もチェック推奨）
+    return jsonify({"ready": bool(CONFIG.GEMINI_API_KEY)}), 200
 
 
 def create_app() -> Flask:
