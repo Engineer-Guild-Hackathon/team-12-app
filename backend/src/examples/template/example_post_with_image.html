@@ -166,7 +166,7 @@
                 
                 // 動的に作成した削除ボタンにイベントリスナーを追加
                 document.getElementById("deleteButton").addEventListener("click", () => {
-                    deletePostAndImage(post.post_id, post.img_id);
+                    deletePost(post.post_id);
                 });
 
             } catch(err) {
@@ -174,27 +174,28 @@
             }
         }
         
-        // --- 投稿と画像を削除する関数 ---
-        async function deletePostAndImage(postId, imgId) {
-            if (!confirm(`以下の投稿と画像を削除しますか？\nPost ID: ${postId}\nImage ID: ${imgId}`)) return;
+        // --- 投稿を削除する関数 ---
+        async function deletePost(postId) {
+            if (!confirm(`この投稿を削除しますか？\n関連する画像も一緒に削除されます。\nPost ID: ${postId}`)) return;
 
             try {
-                // 並行して削除APIを呼び出す
-                const [postResp, imageResp] = await Promise.all([
-                    fetch(`/api/posts/${postId}`, { method: 'DELETE' }),
-                    fetch(`/api/images/${imgId}`, { method: 'DELETE' })
-                ]);
-                
-                if (!postResp.ok || !imageResp.ok) {
-                    throw new Error("投稿または画像の削除に失敗しました。");
-                }
-                
-                alert("投稿と画像が正常に削除されました。");
-                // 結果表示エリアを隠す
-                document.getElementById("resultSection").classList.add("hidden");
-                // 画像アップロードフォームを再表示
-                document.getElementById("imageUploadSection").classList.remove("hidden");
+                const resp = await fetch(`/api/posts/${postId}`, { method: 'DELETE' });
+                const data = await resp.json().catch(() => ({}));
 
+                if (resp.ok) {
+                    let alertMessage = `投稿が正常に削除されました。\nPost ID: ${data.post_id}`;
+                    if (data.image_deleted === true) {
+                        alertMessage += "\n関連する画像も削除されました。";
+                    } else if (data.image_deleted === false) {
+                        alertMessage += `\n警告: 関連画像の削除に失敗しました。Error: ${data.image_delete_error}`;
+                    }
+                    alert(alertMessage);
+                    
+                    document.getElementById("resultSection").classList.add("hidden");
+                    document.getElementById("imageUploadSection").classList.remove("hidden");
+                } else {
+                    throw new Error(data.error || data.detail || "削除に失敗しました。");
+                }
             } catch(err) {
                 alert(`削除エラー: ${err}`);
             }
