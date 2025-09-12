@@ -67,7 +67,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
           const imageResult = await saveImageAndPostToAi(
             photoData,
             question,
-            ac.signal
+            ac.signal,
           );
 
           // APIレスポンスをAiResponse形式に変換
@@ -150,5 +150,5 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
         aiResponse: null,
         img_id: "",
       }),
-  })
+  }),
 );

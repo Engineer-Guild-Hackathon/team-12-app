@@ -13,7 +13,7 @@ export type CreatePostBody = {
 
 export const createPost = async (
   body: CreatePostBody,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ) => {
   const res = await fetch("/api/posts", {
     method: "POST",

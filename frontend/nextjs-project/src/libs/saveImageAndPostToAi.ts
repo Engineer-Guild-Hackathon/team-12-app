@@ -11,7 +11,7 @@ import { ImageAnalysisResponse } from "@/types/apiResponse";
 export const saveImageAndPostToAi = async (
   photo: string,
   question: string,
-  signal?: AbortSignal
+  signal?: AbortSignal,
 ): Promise<ImageAnalysisResponse> => {
   if (!photo) throw new Error("photo is empty");
   if (!question) throw new Error("question is empty");

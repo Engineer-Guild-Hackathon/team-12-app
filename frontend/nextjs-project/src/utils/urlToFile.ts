@@ -8,7 +8,7 @@
 export const urlToFile = async (
   url: string,
   filename: string,
-  mime?: string
+  mime?: string,
 ): Promise<File> => {
   const res = await fetch(url);
   const blob = await res.blob();

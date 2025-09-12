@@ -6,6 +6,6 @@ export default async function DiscoveryDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   // ここで unwrap（または React.use(params) でもOK）
-  const { slug } = await params; 
+  const { slug } = await params;
   return <DiscoveryDetailClient slug={slug} />;
 }

@@ -12,7 +12,7 @@ export const fetchPosts = async (signal: AbortSignal): Promise<Post[]> => {
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(
-      `Failed to fetch posts via proxy: ${res.status} ${text.slice(0, 200)}`
+      `Failed to fetch posts via proxy: ${res.status} ${text.slice(0, 200)}`,
     );
   }
 

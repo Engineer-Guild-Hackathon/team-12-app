@@ -12,7 +12,7 @@ export const GET = async (req: Request) => {
   const res = await fetch(
     `${BACKEND_BASE}/api/posts?limit=${limit}&offset=${offset}`,
     // 認証ヘッダ等があればここで付与
-    { cache: "no-store" }
+    { cache: "no-store" },
   );
 
   const body = await res.text();

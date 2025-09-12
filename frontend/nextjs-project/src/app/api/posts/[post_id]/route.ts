@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-const BACKEND_BASE =
-  process.env.BACKEND_BASE ?? "http://back-server:5000";
+const BACKEND_BASE = process.env.BACKEND_BASE ?? "http://back-server:5000";
 
 // v1–v5対応の簡易UUIDチェック
 const UUID_RE =
@@ -9,7 +8,7 @@ const UUID_RE =
 
 export const GET = async (
   _req: Request,
-  { params }: { params: { post_id: string } }
+  { params }: { params: { post_id: string } },
 ) => {
   const postId = params.post_id;
 
@@ -17,7 +16,7 @@ export const GET = async (
   if (!UUID_RE.test(postId)) {
     return NextResponse.json(
       { error: "post_id は UUID 形式で指定してください" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 

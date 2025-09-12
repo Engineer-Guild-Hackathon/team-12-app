@@ -21,13 +21,22 @@ type UseReviewingStep = {
 };
 
 export const useReviewingStep = (params: UseReviewingStep) => {
-  const { photoData, question, aiResponse, nextStep, latitude, longitude, img_id } =
-    params;
+  const {
+    photoData,
+    question,
+    aiResponse,
+    nextStep,
+    latitude,
+    longitude,
+    img_id,
+  } = params;
   const router = useRouter();
 
   const handleSave = async () => {
     if (latitude === null || longitude === null) {
-      alert("位置情報が取得できません。位置情報の利用を許可してもう一度やり直してください。");
+      alert(
+        "位置情報が取得できません。位置情報の利用を許可してもう一度やり直してください。",
+      );
       return;
     }
     if (!photoData || !question || !aiResponse) {

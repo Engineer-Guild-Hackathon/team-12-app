@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 
-const BACKEND_BASE =
-  process.env.BACKEND_BASE ?? "http://back-server:5000";
+const BACKEND_BASE = process.env.BACKEND_BASE ?? "http://back-server:5000";
 
 // v1–v5 UUID の簡易チェック
 const UUID_RE =
@@ -9,13 +8,13 @@ const UUID_RE =
 
 export const GET = async (
   _req: Request,
-  ctx: { params: Promise<{ img_id: string }> }
+  ctx: { params: Promise<{ img_id: string }> },
 ) => {
   const { img_id } = await ctx.params; // ← unwrap (Next.js 15系)
   if (!UUID_RE.test(img_id)) {
     return NextResponse.json(
       { error: "img_id は UUID 形式で指定してください" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
