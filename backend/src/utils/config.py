@@ -5,10 +5,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 @dataclass(frozen=True)
 class _Config:
     GEMINI_API_KEY: str | None = os.getenv("GEMINI_API_KEY")
     GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+
+    GCP_PROJECT_ID: str | None = os.getenv("PROJECT_ID")
 
     # 入力制限
     # Geminiは20MBまでbase64許容だが念のため15MB
@@ -22,5 +25,6 @@ class _Config:
     ALLOWED_ORIGINS: list[str] = tuple(
         o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
     )
+
 
 CONFIG = _Config()

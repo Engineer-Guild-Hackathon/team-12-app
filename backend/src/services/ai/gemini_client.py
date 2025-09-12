@@ -14,7 +14,7 @@ class GeminiClient:
         api_key = api_key or CONFIG.GEMINI_API_KEY
         model_name = model_name or CONFIG.GEMINI_MODEL
         if not api_key:
-            raise ValueError("GEMINI_API_KEY not set")
+            raise ValueError("GEMINI_API_KEYが設定されていません")
 
         self._client = genai.Client(api_key=api_key)
         self._model_name = model_name

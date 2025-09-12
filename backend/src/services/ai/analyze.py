@@ -3,10 +3,14 @@ from __future__ import annotations
 import base64
 import io
 import json
+
+import unicodedata
 from typing import Any, Dict
+from urllib.parse import unquote
 
 import httpx
 from google import genai
+from google.cloud import storage
 from google.genai import types
 from src.services.ai.gemini_client import gemini
 from src.utils.config import CONFIG
@@ -40,6 +44,10 @@ class AnalyzeService:
             raw = file.read()
         else:
             raw = AnalyzeService._fetch_image_bytes(image_url)
+
+        # 空データは即時エラー（sniff_mime が x-empty を返す前に止める）
+        if not raw:
+            raise BadRequest("画像データが空です（0 byte）")
 
         # 2) 画像形式の検証
         mime = sniff_mime(raw)
@@ -76,9 +84,49 @@ class AnalyzeService:
                 r = client.get(url)
                 if r.status_code != 200:
                     raise BadRequest("画像URLからの取得に失敗しました")
+                if not r.content:
+                    raise BadRequest("画像URLから取得したデータが空です（0 byte）")
                 return r.content
         except httpx.TimeoutException:
-            raise TimeoutError("image_url fetch timeout")
+            raise TimeoutError("画像URLの取得がタイムアウトしました")
+
+    @staticmethod
+    def _fetch_gcs_bytes(gs_url: str) -> bytes:
+        """
+        Google Cloud Storage からバイト列を取得（gs://bucket/path/to/object）
+        """
+        if not gs_url.startswith("gs://"):
+            raise BadRequest("invalid gs url scheme")
+
+        # 前後の空白や引用符を除去
+        gs_url_clean = gs_url.strip().strip('"').strip("'")
+        rest = gs_url_clean[5:]
+        try:
+            bucket_name, blob_name = rest.split("/", 1)
+        except ValueError:
+            raise BadRequest("invalid gs url format")
+
+        blob_name_unquoted = unquote(blob_name)
+        blob_name_norm = unicodedata.normalize("NFC", blob_name_unquoted)
+
+        # フォルダ（末尾/）はエラー
+        if blob_name_norm.endswith("/"):
+            raise BadRequest("GCSパスがフォルダを指しています（末尾/）。ファイル名まで指定してください。")
+
+        client = storage.Client(project=CONFIG.GCP_PROJECT_ID)
+        blob = client.bucket(bucket_name).blob(blob_name_norm)
+
+        # ここでダウンロード → 例外で NotFound/権限なし等を拾える
+        try:
+            data = blob.download_as_bytes()
+        except Exception as e:
+            raise BadRequest(f"GCSからのダウンロードに失敗しました: {e}")
+
+        if not data:
+            raise BadRequest("GCSから空データを受信しました")
+
+        return data
+
 
     @staticmethod
     def _build_prompt(question: str | None) -> str:
@@ -170,7 +218,7 @@ class AnalyzeService:
         Files APIを使用してGemini APIを呼び出す（大きい画像用）
 
         Args:
-            file: ファイルストレージオブジェクト
+            file: ファイルストレージオブジェクト（URL経由の場合は None）
             raw: 画像のバイトデータ
             prompt: プロンプト文字列
 
@@ -179,7 +227,13 @@ class AnalyzeService:
         """
         client = genai.Client()
         display_name = getattr(file, "filename", None) or "uploaded_image"
-        mime_type = getattr(file, "mimetype", None) or "image/jpeg"
+        # FileStorage が無い場合は sniff_mime で検出、フォールバックで image/jpeg
+        detected_mime = sniff_mime(raw) if raw else None
+        mime_type = (
+            (getattr(file, "mimetype", None) if isinstance(file, FileStorage) else None)
+            or detected_mime
+            or "image/jpeg"
+        )
 
         # 構造化出力（JSON強制）設定
         try:
