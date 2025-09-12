@@ -13,6 +13,7 @@ services:
       retries: 5
       start_period: 30s
     restart: unless-stopped
+    networks: [app-net]
 
   back-server:
     build:
@@ -33,3 +34,9 @@ services:
       - "5001:5000"
     tty: true
     restart: unless-stopped
+    networks: [app-net]
+
+networks:
+  app-net:
+    name: app-net
+    driver: bridge

@@ -5,7 +5,10 @@ import React, { useState } from "react";
 import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
 import { formatTimestampForClient } from "@/utils/formatDate";
 import DiscoveryImage from "@/components/ui/DiscoveryImage";
-import { DISCOVERY_HEADER_HEIGHT } from "@/constants/styles";
+import {
+  DISCOVERY_HEADER_HEIGHT,
+  DISCOVERY_HEADER_HEIGHT_FOR_BROWSER,
+} from "@/constants/styles";
 import QuestionBubble from "@/components/ui/QuestioinBubble";
 import Section from "@/components/ui/Section";
 import { IoLeaf, IoSearch } from "react-icons/io5";
@@ -13,6 +16,7 @@ import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import SubmitButton from "@/components/ui/SubmitButton";
 import { useReviewingStep } from "@/hooks/useReviewingStep";
 import { useGeolocation } from "@/hooks/useGeolocation";
+import { useIsPWA } from "@/hooks/useIsPWA";
 
 export default function ReviewingStep() {
   // TODO: useDiscoveryCreationStoreに型付けを行う
@@ -21,6 +25,10 @@ export default function ReviewingStep() {
   const { handleSave } = useReviewingStep({ ...params, ...currentLocation });
   const { photoData, question, aiResponse, prevStep } = params;
   const [isPublic, setIsPublic] = useState(true);
+  const isPWA = useIsPWA();
+  const discoveryHeaderHeight = isPWA
+    ? DISCOVERY_HEADER_HEIGHT
+    : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
 
   const now = new Date();
   const { iconName, formattedDate } = formatTimestampForClient(now);
@@ -41,7 +49,7 @@ export default function ReviewingStep() {
         spacing={3.5}
         sx={{
           color: "kinako.900",
-          pt: `${DISCOVERY_HEADER_HEIGHT + 16}px`,
+          pt: `${discoveryHeaderHeight + 16}px`,
           pb: "56px",
         }}
       >

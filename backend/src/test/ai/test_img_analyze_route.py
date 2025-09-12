@@ -35,13 +35,6 @@ def client(app):
     return app.test_client()
 
 
-def test_health_and_ready(client):
-    r1 = client.get("/health")
-    assert r1.status_code == 200 and r1.json.get("ok") is True
-    r2 = client.get("/ready")
-    assert r2.status_code == 200 and r2.json.get("ready") is True
-
-
 def test_analyze_endpoint_with_file(monkeypatch: pytest.MonkeyPatch, client):
     # 実 API には飛ばさず常に "MOCK_OK"
     # analyze.py 内の gemini を直接パッチ

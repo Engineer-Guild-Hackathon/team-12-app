@@ -30,3 +30,4 @@ services:
       - "--config"
       - "/etc/ngrok.yml"
     restart: unless-stopped
+    networks: [app-net]

@@ -35,7 +35,7 @@ export default function ShootingStep({ onNext, onCancel }: ShootingStepProps) {
     <Box
       sx={{
         width: "100%",
-        height: "100vh",
+        height: "100svh",
         display: "flex",
         flexDirection: "column",
         position: "relative",

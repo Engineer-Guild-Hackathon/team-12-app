@@ -43,15 +43,15 @@ def upload_image_for_post():
     """
     Step 1.5: 画像をアップロードし、成功したらStep 2の投稿フォームを表示する
     """
-    if "image_file" not in request.files:
+    if "img_file" not in request.files:
         flash("ファイルが選択されていません。")
         return redirect(url_for("index"))
 
-    file = request.files["image_file"]
+    file = request.files["img_file"]
     api_url = request.url_root + "api/images"
     try:
         # 1. Image APIを叩いて画像を保存
-        files = {"image_file": (file.filename, file.read(), file.mimetype)}
+        files = {"img_file": (file.filename, file.read(), file.mimetype)}
         resp = requests.post(api_url, files=files, timeout=20)
 
         if not resp.ok:

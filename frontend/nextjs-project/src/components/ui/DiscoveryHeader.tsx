@@ -1,6 +1,10 @@
 "use client";
 
-import { DISCOVERY_HEADER_HEIGHT, MOBILE_MAX_WIDTH } from "@/constants/styles";
+import {
+  DISCOVERY_HEADER_HEIGHT,
+  MOBILE_MAX_WIDTH,
+  DISCOVERY_HEADER_HEIGHT_FOR_BROWSER,
+} from "@/constants/styles";
 import { Box } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import React from "react";
@@ -8,6 +12,7 @@ import TimestampDisplay from "./TimestampDisplay";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import BackButton from "./BackButton";
 import getIconComponent from "@/utils/getIconComponent";
+import { useIsPWA } from "@/hooks/useIsPWA";
 
 interface DiscoveryHeaderProps {
   iconName: TimeOfDayIcon;
@@ -22,6 +27,11 @@ export default function DiscoveryHeader({
   variant = "default",
   onBackClick,
 }: DiscoveryHeaderProps) {
+  const isPWA = useIsPWA();
+  const discoveryHeaderHeight = isPWA
+    ? DISCOVERY_HEADER_HEIGHT
+    : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
+
   const iconComponent = getIconComponent(iconName);
 
   return (
@@ -34,7 +44,7 @@ export default function DiscoveryHeader({
         py: 2.5,
         width: "100%",
         maxWidth: `${MOBILE_MAX_WIDTH}px`,
-        height: `${DISCOVERY_HEADER_HEIGHT}px`,
+        height: `${discoveryHeaderHeight}px`,
         top: 0,
         left: "50%",
         transform: "translateX(-50%)",

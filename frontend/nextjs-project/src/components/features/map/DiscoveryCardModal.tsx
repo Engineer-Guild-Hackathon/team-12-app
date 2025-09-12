@@ -1,10 +1,15 @@
 "use client";
 
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
-import { BOTTOM_NAV_HEIGHT, MOBILE_MAX_WIDTH } from "@/constants/styles";
+import {
+  BOTTOM_NAV_HEIGHT,
+  MOBILE_MAX_WIDTH,
+  BOTTOM_NAV_HEIGHT_FOR_BROWSER,
+} from "@/constants/styles";
 import { Post } from "@/types/post";
 import { Modal, Box } from "@mui/material";
 import React from "react";
+import { useIsPWA } from "@/hooks/useIsPWA";
 
 interface DiscoveryCardModalProps {
   post: Post | null;
@@ -17,6 +22,11 @@ export default function DiscoveryCardModal({
   currentLocation,
   onClose,
 }: DiscoveryCardModalProps) {
+  const isPWA = useIsPWA();
+  const bottomNavHeight = isPWA
+    ? BOTTOM_NAV_HEIGHT
+    : BOTTOM_NAV_HEIGHT_FOR_BROWSER;
+
   if (!post) {
     return null;
   }
@@ -41,7 +51,7 @@ export default function DiscoveryCardModal({
     >
       <Box
         sx={{
-          pb: `${BOTTOM_NAV_HEIGHT + 40}px`,
+          pb: `${bottomNavHeight + 40}px`,
           width: `${MOBILE_MAX_WIDTH - 40}px`,
         }}
       >

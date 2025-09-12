@@ -18,10 +18,10 @@ def _bad_request(msg: str, detail: str | None = None) -> tuple[Any, int]:
 @image_bp.route("/api/images", methods=["POST"])
 def save_image():
     """画像を新規アップロード"""
-    if "image_file" not in request.files:
-        return _bad_request("必須フィールド不足", "image_fileがありません")
+    if "img_file" not in request.files:
+        return _bad_request("必須フィールド不足", "img_fileがありません")
 
-    file = request.files["image_file"]
+    file = request.files["img_file"]
     if not file or file.filename == "":
         return _bad_request("ファイルが空です")
 
@@ -52,7 +52,9 @@ def get_image(img_id: uuid.UUID):
     try:
         image = ImageService.get_image(img_id)
         if image is None:
-            return jsonify({"error": "指定された画像は存在しないか、保存処理に失敗しています"}), 404
+            return jsonify(
+                {"error": "指定された画像は存在しないか、保存処理に失敗しています"}
+            ), 404
         return jsonify({"image": image}), 200
     except RuntimeError as e:
         return jsonify({"error": "サービス初期化エラー", "detail": str(e)}), 503
