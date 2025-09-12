@@ -52,8 +52,8 @@ export default function CommentingStep({
         spacing={4}
         sx={{
           color: "kinako.900",
-          pt: `${DISCOVERY_HEADER_HEIGHT + 20}px`,
-          pb: "20px",
+          pt: `${DISCOVERY_HEADER_HEIGHT + 16}px`,
+          pb: "56px",
         }}
       >
         {photo && <DiscoveryImage src={photo} alt="撮影した写真" />}
@@ -79,9 +79,16 @@ export default function CommentingStep({
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 border: "none",
               },
+              "& .MuiInputBase-input::placeholder": {
+                color: "kinako.700",
+                opacity: 1,
+              },
             },
             "& .MuiOutlinedInput-notchedOutline": {
               border: "none",
+            },
+            "& .MuiFormHelperText-root": {
+              color: "kinako.800",
             },
           }}
         />

@@ -1,7 +1,7 @@
 "use client";
 
-import { Box, Stack } from "@mui/material";
-import React from "react";
+import { Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
+import React, { useState } from "react";
 import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
 import { formatTimestampForClient } from "@/utils/formatDate";
 import DiscoveryImage from "@/components/ui/DiscoveryImage";
@@ -17,6 +17,7 @@ export default function ReviewingStep() {
   const { photoData, question, aiResponse, prevStep, nextStep } =
     useDiscoveryCreationStore();
   const router = useRouter();
+  const [isPublic, setIsPublic] = useState(true);
 
   const now = new Date();
   const { iconName, formattedDate } = formatTimestampForClient(now);
@@ -25,6 +26,7 @@ export default function ReviewingStep() {
     // ここで、実際のデータベースにデータを保存する非同期処理を呼び出します。
     // await saveDiscoveryToDatabase({ photoData, question, ... });
     console.log("データベースに保存処理が完了したと仮定します。");
+    console.log(`公開設定: ${isPublic}`);
 
     // ダミーの投稿IDを生成（実際にはDB保存後に返ってくるIDを使います）
     const newPostId = "a1b2c3d4-e5f6-7890-1234-567890abcdef";
@@ -45,26 +47,52 @@ export default function ReviewingStep() {
         onBackClick={prevStep}
       />
       <Stack
-        spacing={4}
+        spacing={3.5}
         sx={{
           color: "kinako.900",
-          pt: `${DISCOVERY_HEADER_HEIGHT + 20}px`,
-          pb: "20px",
+          pt: `${DISCOVERY_HEADER_HEIGHT + 16}px`,
+          pb: "56px",
         }}
       >
-        <DiscoveryImage src={photoData} alt={question} />
+        <Stack spacing={3}>
+          <DiscoveryImage src={photoData} alt={question} />
+          <QuestionBubble text={question} />
+        </Stack>
 
-        <QuestionBubble text={question} />
+        <Stack spacing={2.5} pb={2.5}>
+          <Section icon={<IoLeaf size={32} />} title="はっけん">
+            {aiResponse.answer}
+          </Section>
 
-        <Section icon={<IoLeaf size={32} />} title={aiResponse.target}>
-          {aiResponse.answer}
-        </Section>
+          <Section icon={<IoSearch size={32} />} title="問い">
+            {aiResponse.toi}
+          </Section>
+        </Stack>
 
-        <Section icon={<IoSearch size={32} />} title="問い">
-          {aiResponse.toi}
-        </Section>
-
-        <SubmitButton onClick={handleSave}>記録する</SubmitButton>
+        <Stack spacing={2}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isPublic}
+                onChange={(e) => setIsPublic(e.target.checked)}
+                name="isPublic"
+                sx={{
+                  color: "kinako.900",
+                  "&.Mui-checked": { color: "kinako.900" },
+                }}
+              />
+            }
+            label="このはっけんを他のユーザーに公開する"
+            sx={{
+              color: "kinako.900",
+              "& .MuiFormControlLabel-label": {
+                fontSize: 14,
+                lineHeight: 1.2,
+              },
+            }}
+          />
+          <SubmitButton onClick={handleSave}>記録する</SubmitButton>
+        </Stack>
       </Stack>
     </Box>
   );
