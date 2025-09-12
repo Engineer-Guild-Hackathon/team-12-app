@@ -1,28 +1,111 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>example_img_analyze – Client-Only Fetch</title>
   <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif; margin: 2rem; line-height: 1.6; }
-    .container { max-width: 900px; margin: 0 auto; }
-    .test-section { background: #f9f9f9; border: 1px solid #ddd; padding: 1.25rem; margin: 1.5rem 0; border-radius: 8px; }
-    .test-section h2 { margin: 0 0 .75rem; }
-    label { display: block; margin-top: .5rem; }
-    input[type="text"], input[type="url"] { width: 100%; max-width: 720px; padding: .5rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
-    button { padding: .6rem 1.1rem; border-radius: 6px; border: none; cursor: pointer; background: #007bff; color: #fff; }
-    button:hover { background: #0056b3; }
-    .muted { color: #6b7280; }
-    .row { margin: .5rem 0; }
-    .result-area { border-top: 2px solid #007bff; margin-top: 1rem; padding-top: 1rem; }
-    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .card { border: 1px solid #e5e7eb; background: #fff; border-radius: 8px; padding: 12px; }
-    .pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; background: #2d2d2d; color: #f0f0f0; padding: 10px; border-radius: 6px; white-space: pre-wrap; word-wrap: break-word; }
-    .error { color: #d8000c; background: #ffbaba; border: 1px solid #d8000c; padding: .75rem; border-radius: 6px; }
-    .hint { font-size: .9rem; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .test-section {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+      border-radius: 8px;
+    }
+
+    .test-section h2 {
+      margin: 0 0 .75rem;
+    }
+
+    label {
+      display: block;
+      margin-top: .5rem;
+    }
+
+    input[type="text"],
+    input[type="url"] {
+      width: 100%;
+      max-width: 720px;
+      padding: .5rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    button {
+      padding: .6rem 1.1rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #007bff;
+      color: #fff;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .muted {
+      color: #6b7280;
+    }
+
+    .row {
+      margin: .5rem 0;
+    }
+
+    .result-area {
+      border-top: 2px solid #007bff;
+      margin-top: 1rem;
+      padding-top: 1rem;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      background: #2d2d2d;
+      color: #f0f0f0;
+      padding: 10px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .error {
+      color: #d8000c;
+      background: #ffbaba;
+      border: 1px solid #d8000c;
+      padding: .75rem;
+      border-radius: 6px;
+    }
+
+    .hint {
+      font-size: .9rem;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>example_img_analyze</h1>
@@ -56,7 +139,7 @@
     const resultArea = document.getElementById("resultArea");
     const healthArea = document.getElementById("healthArea");
 
-    const esc = (v) => (v ?? "").toString().replace(/[&<>]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[s]));
+    const esc = (v) => (v ?? "").toString().replace(/[&<>]/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[s]));
 
     // data の形が { title, discovery, question } または { answer: { ... } } の両方に対応
     function pickAnswerFields(data) {
@@ -76,7 +159,11 @@
       const fd = new FormData(formEl);
 
       const hasFile = fd.get("file") && fd.get("file").size > 0;
-      const hasUrl  = (fd.get("image_url") || "").toString().trim().length > 0;
+      const hasUrl = (fd.get("image_url") || "").toString().trim().length > 0;
+
+      if (!hasFile) fd.delete("file");
+      if (!hasUrl) fd.delete("image_url");
+
       if (!hasFile && !hasUrl) {
         resultArea.innerHTML = '<p class="error">画像ファイルまたは画像URLのどちらかは必須です。</p>';
         return;
@@ -140,4 +227,5 @@
     });
   </script>
 </body>
+
 </html>
