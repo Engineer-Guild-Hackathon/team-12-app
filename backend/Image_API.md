@@ -47,10 +47,10 @@
 - 保存が完了すると `201 Created` と作成された `image` を返します。
 
 ### リクエスト（multipart/form-data）
-`image_file` というキーで画像ファイルを送信してください。
+`img_file` というキーで画像ファイルを送信してください。
 
 #### フィールド要件
-- `image_file`: 必須。画像ファイル（例: `image/jpeg`, `image/png`）。  
+- `img_file`: 必須。画像ファイル（例: `image/jpeg`, `image/png`）。  
   - サーバ側で MIME 検証を行い、不正なタイプは `400` を返すこと。  
 - （オプション）`original_filename` のようなメタが必要なら追加可能。ただし GCS 上のオブジェクト名は `img_id` を使うことを推奨。
 
@@ -76,7 +76,7 @@
 ~~~json
 {
   "error": "ファイル形式が不正です",
-  "detail": "image_file に画像ファイルを指定してください"
+  "detail": "img_file に画像ファイルを指定してください"
 }
 ~~~
 
@@ -85,7 +85,7 @@
 ~~~bash
 # "/path/to/your/photo.jpg" の部分を実際のファイルパスに置き換えてください
 curl -X POST http://localhost:5001/api/images \
-  -F "image_file=@/path/to/your/photo.jpg"
+  -F "img_file=@/path/to/your/photo.jpg"
 ~~~
 
 ---
@@ -169,7 +169,7 @@ curl -X DELETE http://localhost:5001/api/images/c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4
 ~~~js
 const fileInput = document.querySelector('input[type="file"]');
 const formData = new FormData();
-formData.append('image_file', fileInput.files[0]);
+formData.append('img_file', fileInput.files[0]);
 
 const resp = await fetch("/api/images", {
   method: "POST",
