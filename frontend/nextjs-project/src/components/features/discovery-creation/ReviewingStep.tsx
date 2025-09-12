@@ -11,28 +11,19 @@ import Section from "@/components/ui/Section";
 import { IoLeaf, IoSearch } from "react-icons/io5";
 import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import SubmitButton from "@/components/ui/SubmitButton";
-import { useRouter } from "next/navigation";
+import { useReviewingStep } from "@/hooks/useReviewingStep";
+import { useGeolocation } from "@/hooks/useGeolocation";
 
 export default function ReviewingStep() {
-  const { photoData, question, aiResponse, prevStep, nextStep } =
-    useDiscoveryCreationStore();
-  const router = useRouter();
+  // TODO: useDiscoveryCreationStoreに型付けを行う
+  const params = useDiscoveryCreationStore();
+  const currentLocation = useGeolocation();
+  const { handleSave } = useReviewingStep({ ...params, ...currentLocation });
+  const { photoData, question, aiResponse, prevStep } = params;
   const [isPublic, setIsPublic] = useState(true);
 
   const now = new Date();
   const { iconName, formattedDate } = formatTimestampForClient(now);
-
-  const handleSave = () => {
-    // ここで、実際のデータベースにデータを保存する非同期処理を呼び出します。
-    // await saveDiscoveryToDatabase({ photoData, question, ... });
-    console.log("データベースに保存処理が完了したと仮定します。");
-    console.log(`公開設定: ${isPublic}`);
-
-    // ダミーの投稿IDを生成（実際にはDB保存後に返ってくるIDを使います）
-    const newPostId = "a1b2c3d4-e5f6-7890-1234-567890abcdef";
-    nextStep();
-    router.push(`/discoveries/${newPostId}`);
-  };
 
   // データがなければ何も表示しない（エラーハンドリング）
   if (!photoData || !question || !aiResponse) {
