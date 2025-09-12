@@ -5,11 +5,9 @@ import { Box } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import React from "react";
 import TimestampDisplay from "./TimestampDisplay";
-import { MdSunny } from "react-icons/md";
-import { RiMoonClearFill } from "react-icons/ri";
-import { TbSunset2 } from "react-icons/tb";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import BackButton from "./BackButton";
+import getIconComponent from "@/utils/getIconComponent";
 
 interface DiscoveryHeaderProps {
   iconName: TimeOfDayIcon;
@@ -17,14 +15,6 @@ interface DiscoveryHeaderProps {
   variant?: "default" | "transparent";
   onBackClick?: () => void;
 }
-
-// アイコン名（文字列）を、実際のアイコンコンポーネントに変換するヘルパー
-const getIconComponent = (iconName: TimeOfDayIcon) => {
-  if (iconName === "sun") return <MdSunny size={20} />;
-  if (iconName === "sunset") return <TbSunset2 size={20} />;
-  if (iconName === "moon") return <RiMoonClearFill size={20} />;
-  return null;
-};
 
 export default function DiscoveryHeader({
   iconName,
