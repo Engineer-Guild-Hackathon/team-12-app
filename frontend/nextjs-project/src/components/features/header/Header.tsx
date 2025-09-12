@@ -1,3 +1,5 @@
+"use client";
+
 import { AppBar } from "@mui/material";
 import {
   MOBILE_MAX_WIDTH,
@@ -6,9 +8,16 @@ import {
 } from "@/constants/styles";
 import HeaderTop from "./HeaderTop";
 import HeaderTabs from "./HeaderTabs";
+import { usePathname } from "next/navigation";
 import { useIsPWA } from "@/hooks/useIsPWA";
 
-export default function Header() {
+type HeaderProps = {
+  onFilterClick?: () => void;
+};
+
+export default function Header({ onFilterClick }: HeaderProps) {
+  const pathname = usePathname();
+  const showTabs = pathname === "/" || pathname === "/list";
   const isPWA = useIsPWA();
   const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
   const gapStyle = isPWA ? "12px" : "0px";
@@ -34,8 +43,8 @@ export default function Header() {
         gap: { gapStyle },
       }}
     >
-      <HeaderTop />
-      <HeaderTabs />
+      <HeaderTop onFilterClick={onFilterClick} />
+      {showTabs && <HeaderTabs />}
     </AppBar>
   );
 }

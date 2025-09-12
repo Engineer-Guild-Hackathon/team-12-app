@@ -1,14 +1,14 @@
 "use client";
 
 import { Box } from "@mui/material";
-import React from "react";
+import React, { Suspense } from "react"; // Suspenseをインポート
+import FilterHandler from "@/components/features/filter/FilterHandler"; // 作成したコンポーネントをインポート
 import {
   HEADER_HEIGHT,
   BOTTOM_NAV_HEIGHT,
   BOTTOM_NAV_HEIGHT_FOR_BROWSER,
   HEADER_HEIGHT_FOR_BROWSER,
 } from "@/constants/styles";
-import Header from "@/components/features/header/Header";
 import BottomNav from "@/components/features/bottom-nav/BottomNav";
 import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import DiscoveryCreationFlow from "@/components/features/discovery-creation/DiscoveryCreationFlow";
@@ -38,7 +38,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Header />
+      <Suspense fallback={null}>
+        <FilterHandler />
+      </Suspense>
+
       {/* メインコンテンツ */}
       <Box
         component="main"

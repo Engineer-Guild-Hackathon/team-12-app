@@ -1,8 +1,14 @@
+"use client";
+
 import { Box, IconButton, SvgIcon, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
 import { IoLeaf, IoFilterOutline } from "react-icons/io5";
 
-export default function HeaderTop() {
+type HeaderTopProps = {
+  onFilterClick?: () => void;
+};
+
+export default function HeaderTop({ onFilterClick }: HeaderTopProps) {
   return (
     <Toolbar disableGutters sx={{ px: 1 }}>
       {/* 左側の見えないスペーサー */}
@@ -30,11 +36,13 @@ export default function HeaderTop() {
       </Box>
 
       {/* 右側のフィルターアイコン */}
-      <IconButton color="inherit" sx={{ width: 40 }}>
-        <SvgIcon>
-          <IoFilterOutline />
-        </SvgIcon>
-      </IconButton>
+      {onFilterClick && (
+        <IconButton color="inherit" onClick={onFilterClick} sx={{ width: 40 }}>
+          <SvgIcon>
+            <IoFilterOutline />
+          </SvgIcon>
+        </IconButton>
+      )}
     </Toolbar>
   );
 }

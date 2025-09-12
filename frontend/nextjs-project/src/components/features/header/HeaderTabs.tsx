@@ -1,6 +1,7 @@
 import { Tab, Tabs } from "@mui/material";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useFilterStore } from "@/stores/filterStore";
 
 const tabStyles = {
   flexGrow: 1,
@@ -14,6 +15,28 @@ const tabStyles = {
 
 export default function HeaderTabs() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { sort: savedSort } = useFilterStore();
+
+  // scopeは常にURLから取得
+  const currentScope = searchParams.get("scope");
+
+  // --- 地図タブ(/)のURLを生成 ---
+  const mapParams = new URLSearchParams();
+  if (currentScope) {
+    mapParams.set("scope", currentScope);
+  }
+  const mapHref = `/?${mapParams.toString()}`.replace(/\?$/, ""); // 末尾の?を削除
+
+  // --- 一覧タブ(/list)のURLを生成 ---
+  const listParams = new URLSearchParams();
+  if (currentScope) {
+    listParams.set("scope", currentScope);
+  }
+  if (savedSort) {
+    listParams.set("sort", savedSort);
+  }
+  const listHref = `/list?${listParams.toString()}`.replace(/\?$/, ""); // 末尾の?を削除
 
   return (
     <Tabs
@@ -29,7 +52,7 @@ export default function HeaderTabs() {
         label="地図"
         value="/"
         component={Link}
-        href="/"
+        href={mapHref}
         disableRipple
         sx={tabStyles}
       />
@@ -37,7 +60,7 @@ export default function HeaderTabs() {
         label="一覧"
         value="/list"
         component={Link}
-        href="/list"
+        href={listHref}
         disableRipple
         sx={tabStyles}
       />
