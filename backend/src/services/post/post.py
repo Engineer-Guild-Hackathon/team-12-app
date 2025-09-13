@@ -58,6 +58,7 @@ class PostService:
         location: str,
         latitude: float,
         longitude: float,
+        **kwargs,
     ) -> Optional[Dict[str, Any]]:
         """新しい Post を保存し、作成結果を返す"""
         if SessionLocal is None or engine is None:
@@ -77,6 +78,10 @@ class PostService:
                     latitude=latitude,
                     longitude=longitude,
                 )
+
+                if "date" in kwargs:
+                    post.date = kwargs["date"]
+
                 session.add(post)
                 session.commit()
                 session.refresh(post)
@@ -93,7 +98,9 @@ class PostService:
                     "latitude": post.latitude,
                     "longitude": post.longitude,
                     "date": post.date.isoformat() if post.date else None,
-                    "updated_at": post.updated_at.isoformat() if post.updated_at else None,
+                    "updated_at": post.updated_at.isoformat()
+                    if post.updated_at
+                    else None,
                 }
             except Exception as e:
                 session.rollback()
@@ -133,7 +140,13 @@ class PostService:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            posts = session.query(Post).order_by(Post.date.desc()).limit(limit).offset(offset).all()
+            posts = (
+                session.query(Post)
+                .order_by(Post.date.desc())
+                .limit(limit)
+                .offset(offset)
+                .all()
+            )
             return [
                 {
                     "post_id": str(p.post_id),
@@ -159,7 +172,12 @@ class PostService:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            rows = session.query(Post).filter(Post.date < cutoff).order_by(Post.date.desc()).all()
+            rows = (
+                session.query(Post)
+                .filter(Post.date < cutoff)
+                .order_by(Post.date.desc())
+                .all()
+            )
             return [
                 {
                     "post_id": str(p.post_id),
