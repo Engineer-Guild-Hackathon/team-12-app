@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
         hostname: "storage.googleapis.com",
         pathname: "/**", // バケット以下のすべてを許可
       },
+      { protocol: "https", hostname: "placehold.co", pathname: "/**" },
     ],
   },
 };

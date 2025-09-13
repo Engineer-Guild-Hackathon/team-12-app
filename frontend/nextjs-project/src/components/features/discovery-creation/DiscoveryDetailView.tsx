@@ -15,6 +15,7 @@ import { Post } from "@/types/post"; // Post型をインポート
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import { useEffect, useState } from "react";
 import { fetchImage } from "@/libs/fetchImage";
+import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
 
 // コンポーネントが受け取るプロパティの型を定義
 interface DiscoveryDetailViewProps {
@@ -33,7 +34,7 @@ export default function DiscoveryDetailView({
     ? DISCOVERY_HEADER_HEIGHT
     : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
   const [imageUrl, setImageUrl] = useState<string>(
-    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`,
+    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`
   );
 
   useEffect(() => {
@@ -49,9 +50,9 @@ export default function DiscoveryDetailView({
         setImageUrl(res.signed_url);
       })
       .catch((err) => {
-        // Abort は無視
-        if (err?.name !== "AbortError") {
-          console.error("Error fetching image:", err);
+        if (!isAbortOrCancel(err)) {
+          const e = err instanceof Error ? err : new Error(String(err));
+          console.error("Error fetching image:", e);
         }
       });
 

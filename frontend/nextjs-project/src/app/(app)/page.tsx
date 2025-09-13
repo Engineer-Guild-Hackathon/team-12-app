@@ -8,6 +8,7 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
 import { fetchPosts } from "@/libs/fetchPosts";
+import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
 const Map = dynamic(() => import("@/components/features/map/Map"), {
   ssr: false,
 });
@@ -27,6 +28,11 @@ export default function HomePage() {
         const signal = ac.signal;
         const fetchedPosts = await fetchPosts(signal);
         setPosts(fetchedPosts);
+      } catch (err) {
+        if (!isAbortOrCancel(err)) {
+          const e = err instanceof Error ? err : new Error(String(err));
+          console.error("Error fetching image:", e);
+        }
       } finally {
         // TODO: ローディング終了処理つける
       }

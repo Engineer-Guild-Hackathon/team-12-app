@@ -15,6 +15,7 @@ import { formatTimestampForClient } from "@/utils/formatDate";
 import { calculateDistance } from "@/utils/calculateDistance";
 import TimestampDisplay from "./TimestampDisplay";
 import getIconComponent from "@/utils/getIconComponent";
+import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
 import { fetchImage } from "@/libs/fetchImage";
 
 interface DiscoveryCardProps {
@@ -37,11 +38,11 @@ export default function DiscoveryCard({
 }: DiscoveryCardProps) {
   // 投稿時間とアイコンを取得
   const { iconName, formattedDate } = formatTimestampForClient(
-    new Date(post.date),
+    new Date(post.date)
   );
   const iconComponent = getIconComponent(iconName);
   const [imageUrl, setImageUrl] = useState<string>(
-    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`,
+    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`
   );
 
   // TODO: imageUrlの反映に時間がかかる
@@ -59,8 +60,11 @@ export default function DiscoveryCard({
           signal: controller.signal,
         });
         setImageUrl(res.signed_url);
-      } catch (err) {
-        console.error("Error fetching image:", err);
+      } catch (err: unknown) {
+        if (!isAbortOrCancel(err)) {
+          const e = err instanceof Error ? err : new Error(String(err));
+          console.error("Error fetching image:", e);
+        }
       }
     };
     fetchAndSetImage();
@@ -77,7 +81,7 @@ export default function DiscoveryCard({
         currentLocation.latitude,
         currentLocation.longitude,
         post.latitude,
-        post.longitude,
+        post.longitude
       );
     }
     return null;
