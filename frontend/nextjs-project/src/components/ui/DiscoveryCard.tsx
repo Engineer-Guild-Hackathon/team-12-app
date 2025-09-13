@@ -38,11 +38,11 @@ export default function DiscoveryCard({
 }: DiscoveryCardProps) {
   // 投稿時間とアイコンを取得
   const { iconName, formattedDate } = formatTimestampForClient(
-    new Date(post.date)
+    new Date(post.date),
   );
   const iconComponent = getIconComponent(iconName);
   const [imageUrl, setImageUrl] = useState<string>(
-    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`
+    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`,
   );
 
   // TODO: imageUrlの反映に時間がかかる
@@ -81,7 +81,7 @@ export default function DiscoveryCard({
         currentLocation.latitude,
         currentLocation.longitude,
         post.latitude,
-        post.longitude
+        post.longitude,
       );
     }
     return null;
