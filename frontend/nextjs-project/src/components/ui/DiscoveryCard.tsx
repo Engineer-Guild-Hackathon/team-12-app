@@ -10,11 +10,13 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { formatTimestampForClient } from "@/utils/formatDate";
 import { calculateDistance } from "@/utils/calculateDistance";
 import TimestampDisplay from "./TimestampDisplay";
 import getIconComponent from "@/utils/getIconComponent";
+import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
+import { fetchImage } from "@/libs/fetchImage";
 
 interface DiscoveryCardProps {
   post: Post;
@@ -39,6 +41,38 @@ export default function DiscoveryCard({
     new Date(post.date),
   );
   const iconComponent = getIconComponent(iconName);
+  const [imageUrl, setImageUrl] = useState<string>(
+    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`,
+  );
+
+  // TODO: imageUrlの反映に時間がかかる
+  useEffect(() => {
+    if (!post.img_id) {
+      setImageUrl("");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const fetchAndSetImage = async () => {
+      try {
+        const res = await fetchImage(post.img_id, {
+          signal: controller.signal,
+        });
+        setImageUrl(res.signed_url);
+      } catch (err: unknown) {
+        if (!isAbortOrCancel(err)) {
+          const e = err instanceof Error ? err : new Error(String(err));
+          console.error("Error fetching image:", e);
+        }
+      }
+    };
+    fetchAndSetImage();
+
+    return () => {
+      controller.abort(); // 中断
+    };
+  }, [post.img_id]);
 
   // 距離を計算（useMemoで不要な再計算を防ぐ）
   const distance = useMemo(() => {
@@ -82,7 +116,7 @@ export default function DiscoveryCard({
       >
         <CardMedia
           component="img"
-          image={`https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`}
+          image={imageUrl}
           alt={post.target}
           sx={{
             objectFit: "cover",
