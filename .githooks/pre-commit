@@ -1,0 +1,157 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 進捗スピナーを抑止（任意）
+export COMPOSE_PROGRESS=quiet
+
+# ---- config ----------------------------------------------------
+COMPOSE_FILES="-f compose.yaml -f compose.dev.yaml"   # base → dev の順！
+FRONT_SERVICE="front-app"
+BACK_SERVICE="back-server"
+
+# 変更がある時だけ走らせたい拡張子（正規表現）
+FRONT_GLOBS="\.(js|jsx|ts|tsx)$"
+BACK_GLOBS="\.py$"
+
+# ルートからの相対パス（ホスト側）
+FRONT_DIR_HOST="frontend/nextjs-project"
+BACK_DIR_HOST="backend"
+
+# コンテナ内の対応ディレクトリ（compose の volume に合わせる）
+FRONT_DIR_IN="/app"
+BACK_DIR_IN="/backend"
+# ----------------------------------------------------------------
+
+# スキップフラグ(例: SKIP_LINT=1 git commit ...)
+if [[ "${SKIP_LINT:-0}" = "1" ]]; then
+  echo "[pre-commit] SKIP_LINT=1 が指定されたためスキップします"
+  exit 0
+fi
+
+# --- NUL安全: 変数に入れず、一旦ファイルへ -----------------------
+staged_file="$(mktemp)"
+trap 'rm -f "$staged_file" "$front_file" "$back_file"' EXIT
+
+# ステージ済みのファイル一覧を NUL 区切りで保存
+# （コマンド置換を使わない＝NUL無視の警告が出ない）
+git diff --cached --name-only -z --diff-filter=ACMR >"$staged_file" || true
+
+# デバッグ: 生データ（NUL→改行して可視化）
+if [[ "${DEBUG:-0}" = "1" ]]; then
+  echo "[debug] staged (NUL-separated):"
+  tr '\0' '\n' <"$staged_file" | sed 's/^/  /'
+fi
+
+# --- FRONT/BACK をそれぞれ NUL 区切りで抽出 ----------------------
+front_file="$(mktemp)"
+back_file="$(mktemp)"
+
+# FRONT 抽出: ホスト→コンテナパスに置換（NULのまま）
+grep -z -E "^${FRONT_DIR_HOST}/.*(${FRONT_GLOBS})" <"$staged_file" \
+  | sed -z -E "s|^${FRONT_DIR_HOST}|${FRONT_DIR_IN}|" >"$front_file" || true
+
+# BACK 抽出: 同上
+grep -z -E "^${BACK_DIR_HOST}/.*(${BACK_GLOBS})" <"$staged_file" \
+  | sed -z -E "s|^${BACK_DIR_HOST}|${BACK_DIR_IN}|" >"$back_file" || true
+
+# 配列へロード（NUL 区切りのまま）
+FRONT_FILES=()
+if [[ -s "$front_file" ]]; then
+  while IFS= read -r -d '' f; do FRONT_FILES+=("$f"); done <"$front_file"
+fi
+
+BACK_FILES=()
+if [[ -s "$back_file" ]]; then
+  while IFS= read -r -d '' f; do BACK_FILES+=("$f"); done <"$back_file"
+fi
+
+# デバッグ出力
+if [[ "${DEBUG:-0}" = "1" ]]; then
+  echo "[debug] FRONT_FILES (count=${#FRONT_FILES[@]}):"
+  tr '\0' '\n' <"$front_file" | sed 's/^/  /'
+  echo "[debug] BACK_FILES  (count=${#BACK_FILES[@]}):"
+  tr '\0' '\n' <"$back_file"  | sed 's/^/  /'
+fi
+
+# 何も対象がなければ終了
+if [[ ${#FRONT_FILES[@]} -eq 0 && ${#BACK_FILES[@]} -eq 0 ]]; then
+  echo "[pre-commit] 対象変更なし（frontend/back どちらも該当なし）"
+  exit 0
+fi
+
+# ---- Frontend: ESLint + Prettier (自動修正あり) ----------------
+if [[ ${#FRONT_FILES[@]} -gt 0 ]]; then
+  echo "[pre-commit] Frontend lint/format を実行します"
+  echo "--------------------------------"
+
+  # 1) Prettier
+  printf '%s\0' "${FRONT_FILES[@]}" \
+  | docker compose ${COMPOSE_FILES} run -T --rm --no-deps \
+      --entrypoint /bin/sh \
+      "${FRONT_SERVICE}" -c "
+        set -e
+        cd '${FRONT_DIR_IN}'
+        if [ ! -d node_modules ]; then
+          npm ci --prefer-offline --no-audit --no-fund
+        fi
+        xargs -0 npx prettier --write --ignore-unknown
+      "
+
+  # 2) ESLint
+  printf '%s\0' "${FRONT_FILES[@]}" \
+  | docker compose ${COMPOSE_FILES} run -T --rm --no-deps \
+      --entrypoint /bin/sh \
+      "${FRONT_SERVICE}" -c "
+        set -e
+        cd '${FRONT_DIR_IN}'
+        if [ ! -d node_modules ]; then
+          npm ci --prefer-offline --no-audit --no-fund
+        fi
+        xargs -0 npx eslint --fix
+      "
+
+  # 自動修正があれば再ステージ
+  git add "${FRONT_DIR_HOST}"
+fi
+
+# ---- Backend: Ruff (format + check --fix) ----------------------
+if [[ ${#BACK_FILES[@]} -gt 0 ]]; then
+  echo "[pre-commit] Backend ruff を実行します"
+  echo ""
+  echo "--------------------------------"
+  echo ""
+
+  # 1) ruff format
+  printf '%s\0' "${BACK_FILES[@]}" \
+  | docker compose ${COMPOSE_FILES} run -T --rm --no-deps \
+      --entrypoint /bin/sh \
+      "${BACK_SERVICE}" -c "
+        set -e
+        cd '${BACK_DIR_IN}'
+        if command -v poetry >/dev/null 2>&1; then
+          poetry install --no-root --sync >/dev/null 2>&1 || true
+        fi
+        # 1件ずつ: ファイル名を表示してから ruff format を実行
+        xargs -0 -r -n1 sh -c 'echo \"[ruff format] \$1\"; ruff format \"\$1\"' _ 
+      "
+
+  echo ""
+
+  # 2) ruff check --fix
+  printf '%s\0' "${BACK_FILES[@]}" \
+  | docker compose ${COMPOSE_FILES} run -T --rm --no-deps \
+      --entrypoint /bin/sh \
+      "${BACK_SERVICE}" -c "
+        set -e
+        cd '${BACK_DIR_IN}'
+        # 1件ずつ: ファイル名を表示してから ruff check --fix を実行
+        xargs -0 -r -n1 sh -c 'echo \"[ruff fix]    \$1\"; ruff check --fix \"\$1\"' _ 
+      "
+
+  git add "${BACK_DIR_HOST}"
+fi
+
+echo ""
+echo "--------------------------------"
+echo ""
+echo "[pre-commit] OK ✅"
