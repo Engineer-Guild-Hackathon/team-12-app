@@ -9,8 +9,8 @@
 ---
 
 ## デモ　/ プレゼン資料
-- デモURL: 
-- プレゼンURL：
+- デモURL: [デモ動画(予選発表時)](https://drive.google.com/file/d/1O-P8ADvdTSPMdaQi1md53s76T8jFakQn/view?usp=share_link)
+- プレゼンURL：[プレゼン共有リンク(予選発表時)](https://www.canva.com/design/DAGyvV7xHEw/HdBF_WemKPQ5FikKThroBQ/view?utm_content=DAGyvV7xHEw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he880c6234f)
 
 --
 ## 開発環境の構築方法
