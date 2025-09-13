@@ -7,6 +7,7 @@
 ```shell
 src/
 ├── app.py
+├── dummy_data/
 ├── examples/
 ├── routes/
 ├── services/
@@ -22,6 +23,10 @@ src/
 - Flask アプリケーションのエントリーポイント。
 - Blueprint の登録やアプリ全体の設定をここで行う。
 - 開発サーバ起動時は `python src/app.py` で実行可能。
+
+### dummy_data/
+- Google Cloud 上にダミーデータを生成するプログラムを格納
+- Google Cloud の全てのデータを初期化するコード
 
 ### examples/
 - 接続や機能確認用のサンプルコードを格納。
