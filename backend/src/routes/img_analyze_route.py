@@ -34,9 +34,7 @@ def post_analyze():
         raise BadRequest("画像ファイルまたは画像URLは必須です")
 
     try:
-        answer = AnalyzeService.analyze(
-            file=file, image_url=image_url, question=question
-        )
+        answer = AnalyzeService.analyze(file=file, image_url=image_url, question=question)
         return jsonify({"answer": answer}), 200
     except BadRequest as e:
         # 400/413などの入力系
@@ -63,7 +61,11 @@ def create_image_and_analyze():
     レスポンス (200):
     {
         "img_id": "<uuid>",
-        "answer": { ... }
+        "answer": {
+            "target": "...",
+            "answer": "...",
+            "toi": "..."
+        }
     }
     """
     # 入力取得

@@ -141,13 +141,13 @@
 
     const esc = (v) => (v ?? "").toString().replace(/[&<>]/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[s]));
 
-    // data の形が { title, discovery, question } または { answer: { ... } } の両方に対応
+    // data の形が { target, answer, toi } または { answer: { ... } } の両方に対応
     function pickAnswerFields(data) {
       const src = data?.answer && typeof data.answer === 'object' ? data.answer : data;
       return {
-        title: src?.title ?? "",
-        discovery: src?.discovery ?? "",
-        question: src?.question ?? ""
+        target: src?.target ?? "",
+        answer: src?.answer ?? "",
+        toi: src?.toi ?? ""
       };
     }
 
@@ -174,21 +174,21 @@
         const data = await resp.json().catch(() => ({}));
 
         if (resp.ok) {
-          const { title, discovery, question } = pickAnswerFields(data);
+          const { target, answer, toi } = pickAnswerFields(data);
           resultArea.innerHTML = `
             <div class="result-grid">
               <div class="card">
-                <h3>title</h3>
-                <div>${esc(title)}</div>
+                <h3>target</h3>
+                <div>${esc(target)}</div>
               </div>
               <div class="card">
-                <h3>discovery</h3>
-                <div>${esc(discovery)}</div>
+                <h3>answer</h3>
+                <div>${esc(answer)}</div>
               </div>
             </div>
             <div class="card" style="margin-top:12px">
-              <h3>question</h3>
-              <div>${esc(question)}</div>
+              <h3>toi</h3>
+              <div>${esc(toi)}</div>
             </div>
             <div class="result-area">
               <h3>Raw JSON</h3>

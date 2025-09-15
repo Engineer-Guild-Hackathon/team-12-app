@@ -14,11 +14,11 @@ class _GeminiSpy:
 
     def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
         self.called_inline = True
-        return '{"title":"T","discovery":"D","question":"Q"}'
+        return '{"target":"T","answer":"A","toi":"Q"}'
 
     def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
         self.called_files = True
-        return '{"title":"T","discovery":"D","question":"Q"}'
+        return '{"target":"T","answer":"A","toi":"Q"}'
 
 
 def _small_png_bytes() -> bytes:
@@ -53,9 +53,9 @@ def test_analyze_calls_gemini_inline(monkeypatch: pytest.MonkeyPatch):
     fs = FileStorage(stream=io.BytesIO(_small_png_bytes()), filename="tiny.png", content_type="image/png")
     result = analyze_mod.analyze(file=fs, image_url=None, question="何が写っていますか？")
     assert isinstance(result, dict)
-    assert result.get("title") == "T"
-    assert result.get("discovery") == "D"
-    assert result.get("question") == "Q"
+    assert result.get("target") == "T"
+    assert result.get("answer") == "A"
+    assert result.get("toi") == "Q"
     assert spy.called_inline is True
     # Files 経路は（このテストでは使っていないが）FalseのままでOK
     assert spy.called_files is False
@@ -75,7 +75,7 @@ def test_analyze_calls_gemini_via_files_when_threshold_low(monkeypatch: pytest.M
     class _DummyModels:
         def generate_content(self, *args, **kwargs):
             _calls["generate"] = True
-            json_str = '{"title":"T","discovery":"D","question":"Q"}'
+            json_str = '{"target":"T","answer":"A","toi":"Q"}'
             return _types.SimpleNamespace(
                 text=json_str,
                 candidates=[
@@ -114,9 +114,9 @@ def test_analyze_calls_gemini_via_files_when_threshold_low(monkeypatch: pytest.M
     fs = FileStorage(stream=io.BytesIO(_large_jpeg_bytes()), filename="big.jpg", content_type="image/jpeg")
     result = analyze_mod.analyze(file=fs, image_url=None, question="何が写っていますか？")
     assert isinstance(result, dict)
-    assert result.get("title") == "T"
-    assert result.get("discovery") == "D"
-    assert result.get("question") == "Q"
+    assert result.get("target") == "T"
+    assert result.get("answer") == "A"
+    assert result.get("toi") == "Q"
     assert _calls["upload"] is True
     assert _calls["generate"] is True
     assert spy.called_inline is False  # inline 経路は通っていない
@@ -159,13 +159,13 @@ def test_parse_allows_code_fence_json():
     """```json ... ``` のようなコードフェンス付きでもパースできる"""
     fenced = """```json
     {
-        "title": "T",
-        "discovery": "D",
-        "question": "Q"
+        "target": "T",
+        "answer": "A",
+        "toi": "Q"
     }
     ```"""
     got = analyze_mod.AnalyzeService._parse_answer_to_dict(fenced)
-    assert got == {"title": "T", "discovery": "D", "question": "Q"}
+    assert got == {"target": "T", "answer": "A", "toi": "Q"}
 
 
 def test_fetch_gcs_bytes_success(monkeypatch: pytest.MonkeyPatch):

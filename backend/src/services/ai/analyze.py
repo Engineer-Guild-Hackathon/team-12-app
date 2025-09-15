@@ -31,7 +31,7 @@ class AnalyzeService:
             question: 補助的な質問
 
         Returns:
-            {"title": str, "discovery": str, "question": str} の辞書
+            {"target": str, "answer": str, "toi": str} の辞書
 
         Raises:
             BadRequest: 無効な画像やリクエスト
@@ -155,12 +155,12 @@ class AnalyzeService:
             "出力は JSON のみ（前後の説明文・コードフェンス・Markdown見出しなど一切禁止）で返してください。\n\n"
             "出力フォーマット（例）:\n"
             "{\n"
-            '  "title": "検知した物体の名前（簡潔に1つ）",\n'
-            '  "discovery": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",\n'
-            '  "question": "その物体に関する興味深い問いを1つ（日本語）"\n'
+            '  "target": "検知した物体の名前（簡潔に1つ）",\n'
+            '  "answer": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",\n'
+            '  "toi": "その物体に関する興味深い問いを1つ（日本語）"\n'
             "}\n\n"
             "制約:\n"
-            "- フィールド名は必ず title / discovery / question。\n"
+            "- フィールド名は必ず target / answer / toi。\n"
             "- すべて文字列。改行はそのまま文字列内に含めてよい。\n"
             "- JSON以外のテキスト・コードブロック・Markdown記法は禁止。\n"
         )
@@ -177,7 +177,7 @@ class AnalyzeService:
             answer: モデルからの応答文字列
 
         Returns:
-            {"title": str, "discovery": str, "question": str} の辞書
+            {"target": str, "answer": str, "toi": str} の辞書
 
         Raises:
             BadRequest: 無効なJSON形式
@@ -195,10 +195,9 @@ class AnalyzeService:
             obj = json.loads(txt)
 
         # 必須フィールドの検証
-        for k in ("title", "discovery", "question"):
+        for k in ("target", "answer", "toi"):
             if k not in obj or not isinstance(obj[k], str):
-                raise BadRequest("AIの出力が必要なJSON形式（title, discovery, questionの各文字列）になっていません")
-
+                raise BadRequest("AIの出力が必要なJSON形式（target, answer, toiの各文字列）になっていません")
         return obj
 
     @staticmethod
@@ -211,7 +210,7 @@ class AnalyzeService:
             prompt: プロンプト文字列
 
         Returns:
-            解析結果の辞書
+            解析結果の辞書（target, answer, toi）
         """
         # 画像の縮小とJPEG化
         jpeg_bytes = AnalyzeService.downscale_to_jpeg(raw, max_long_edge=CONFIG.MAX_IMAGE_LONG_EDGE)
@@ -248,11 +247,11 @@ class AnalyzeService:
             JSON_SCHEMA = types.Schema(
                 type=types.Type.OBJECT,
                 properties={
-                    "title": types.Schema(type=types.Type.STRING),
-                    "discovery": types.Schema(type=types.Type.STRING),
-                    "question": types.Schema(type=types.Type.STRING),
+                    "target": types.Schema(type=types.Type.STRING),
+                    "answer": types.Schema(type=types.Type.STRING),
+                    "toi": types.Schema(type=types.Type.STRING),
                 },
-                required=["title", "discovery", "question"],
+                required=["target", "answer", "toi"],
             )
             GENCFG_JSON = types.GenerateContentConfig(
                 response_mime_type="application/json",

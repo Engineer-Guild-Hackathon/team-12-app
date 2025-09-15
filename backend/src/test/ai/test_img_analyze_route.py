@@ -10,10 +10,10 @@ from werkzeug.datastructures import FileStorage
 
 class _GeminiSpy:
     def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
-        return '{"title":"T","discovery":"D","question":"Q"}'
+        return '{"target":"T","answer":"A","toi":"Q"}'
 
     def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
-        return '{"title":"T","discovery":"D","question":"Q"}'
+        return '{"target":"T","answer":"A","toi":"Q"}'
 
 
 def _png_bytes() -> bytes:
@@ -52,6 +52,6 @@ def test_analyze_endpoint_with_file(monkeypatch: pytest.MonkeyPatch, client):
     body = r.json
     assert isinstance(body, dict) and "answer" in body
     ans = body["answer"]
-    assert ans.get("title") == "T"
-    assert ans.get("discovery") == "D"
-    assert ans.get("question") == "Q"
+    assert ans.get("target") == "T"
+    assert ans.get("answer") == "A"
+    assert ans.get("toi") == "Q"
