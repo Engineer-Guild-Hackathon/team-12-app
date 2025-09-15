@@ -1,17 +1,19 @@
-"use client";
-
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
 
-export default function AuthButton({
-  text,
-  onClick,
-}: {
-  text: string;
-  onClick: () => void;
-}) {
+export default function LogoutButton() {
+  const { signOut } = useAuthStore();
+  const router = useRouter();
+  const handleLogout = async () => {
+    await signOut();
+    alert("ログアウトしました");
+    router.push("/");
+  };
+
   return (
     <Button
-      onClick={onClick}
+      onClick={handleLogout}
       sx={{
         backgroundColor: "kinako.900",
         color: "white",
@@ -27,7 +29,7 @@ export default function AuthButton({
         alignSelf: "center",
       }}
     >
-      {text}
+      ログアウト
     </Button>
   );
 }
