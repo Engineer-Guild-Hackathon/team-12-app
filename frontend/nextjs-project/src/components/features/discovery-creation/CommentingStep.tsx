@@ -16,12 +16,12 @@ import { useIsPWA } from "@/hooks/useIsPWA";
 interface CommentingStepProps {
   photo: string | null;
   isGenerating: boolean;
-  onNext: (question: string) => void;
+  onNext: (user_question: string) => void;
   onPrev: () => void;
 }
 
 type FormInputs = {
-  question: string;
+  user_question: string;
 };
 
 export default function CommentingStep({
@@ -44,7 +44,7 @@ export default function CommentingStep({
   const { iconName, formattedDate } = formatTimestampForClient(now);
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    onNext(data.question);
+    onNext(data.user_question);
   };
 
   return (
@@ -70,12 +70,12 @@ export default function CommentingStep({
           multiline
           rows={8}
           fullWidth
-          error={!!errors.question}
+          error={!!errors.user_question}
           helperText={
-            errors.question?.message ||
+            errors.user_question?.message ||
             "気づいたことやふしぎに思ったことを自由に書き出して、はっけんについてAIに聞いてみましょう"
           }
-          {...register("question", { required: "コメントは入力必須です" })}
+          {...register("user_question", { required: "コメントは入力必須です" })}
           sx={{
             "& .MuiOutlinedInput-root": {
               backgroundColor: "gray.100",

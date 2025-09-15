@@ -4,23 +4,23 @@ import { ImageAnalysisResponse } from "@/types/apiResponse";
 /**
  * 画像とユーザーからの質問をAPIに送信する関数
  * @param photo - 画像のURL（dataURL または objectURL）
- * @param question - ユーザーの質問
+ * @param user_question - ユーザーの質問
  * @param signal - AbortController のシグナル（オプション）
  * @returns 画像解析APIレスポンス
  */
 export const saveImageAndPostToAi = async (
   photo: string,
-  question: string,
+  user_question: string,
   signal?: AbortSignal,
 ): Promise<ImageAnalysisResponse> => {
   if (!photo) throw new Error("photo is empty");
-  if (!question) throw new Error("question is empty");
+  if (!user_question) throw new Error("user_question is empty");
 
   // 画像あり：submit と同時に /api/images へ multipart でPOST
   const form = new FormData();
   const file = await urlToFile(photo, "photo.jpg");
   form.append("img_file", file); // Flask 側必須キー
-  form.append("question", question);
+  form.append("user_question", user_question);
 
   // Next.js のAPIルート（プロキシ）を経由してバックエンドへ転送
   const res = await fetch("/api/image_analyze", {
@@ -48,9 +48,9 @@ export const saveImageAndPostToAi = async (
   const imageAnalysisResponse: ImageAnalysisResponse = {
     img_id: json.img_id,
     answer: {
-      title: json.answer.title || "",
-      discovery: json.answer.discovery || "",
-      question: json.answer.question || "",
+      object_label: json.answer.object_label || "",
+      ai_answer: json.answer.ai_answer || "",
+      ai_question: json.answer.ai_question || "",
     },
   };
 

@@ -8,25 +8,25 @@ type CreationStep = "shooting" | "commenting" | "reviewing" | null;
 
 // AIからのレスポンスデータの型
 export interface AiResponse {
-  answer: string;
-  target: string;
-  toi: string;
+  ai_answer: string;
+  object_label: string;
+  ai_question: string;
 }
 
 // ストアが持つ状態とアクションの型定義
 interface DiscoveryCreationState {
   currentStep: CreationStep;
   photoData: string | null;
-  question: string | null; // ユーザーが入力した質問
+  user_question: string | null; // ユーザーが入力した質問
   aiResponse: AiResponse | null; // AIからのレスポンス
-  isGenerating: boolean; // AIが応答を生成中かどうかのフラグ
+  isGenerating: boolean; // AIが回答を生成中かどうかのフラグ
   img_id: string; // アップロード結果
   startCreation: () => void;
   nextStep: () => void;
   prevStep: () => void;
   cancelCreation: () => void;
   setPhotoData: (data: string) => void;
-  setQuestion: (question: string) => void;
+  setUserQuestion: (user_question: string) => void;
   generateAiResponse: () => Promise<void>; // AI応答を生成する非同期アクション
 }
 
@@ -36,7 +36,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
     // 初期状態
     currentStep: null,
     photoData: null,
-    question: null,
+    user_question: null,
     aiResponse: null,
     isGenerating: false,
     img_id: "",
@@ -51,30 +51,30 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
         img_id: "",
       }),
     setPhotoData: (data) => set({ photoData: data }),
-    setQuestion: (question) => set({ question }),
+    setUserQuestion: (user_question) => set({ user_question }),
 
     generateAiResponse: async () => {
       const state = useDiscoveryCreationStore.getState();
-      const { photoData, question } = state;
+      const { photoData, user_question } = state;
 
       set({ isGenerating: true });
       console.log("AIに応答をリクエスト中...");
 
       try {
         // 画像がある場合は実際のAPI呼び出し
-        if (photoData && question) {
+        if (photoData && user_question) {
           const ac = new AbortController();
           const imageResult = await saveImageAndPostToAi(
             photoData,
-            question,
+            user_question,
             ac.signal,
           );
 
           // APIレスポンスをAiResponse形式に変換
           const aiResponse: AiResponse = {
-            answer: imageResult.answer.discovery,
-            target: imageResult.answer.title,
-            toi: imageResult.answer.question,
+            ai_answer: imageResult.answer.ai_answer,
+            object_label: imageResult.answer.object_label,
+            ai_question: imageResult.answer.ai_question,
           };
 
           set({
@@ -87,10 +87,10 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
           // 画像がない場合はダミーデータ
           await new Promise((resolve) => setTimeout(resolve, 2000));
           const dummyResponse: AiResponse = {
-            answer:
+            ai_answer:
               "画像がないため、詳細な解析はできませんが、質問に基づいてお答えします。",
-            target: "不明",
-            toi: "より詳しく調べるにはどうすればよいでしょうか？",
+            object_label: "不明",
+            ai_question: "より詳しく調べるにはどうすればよいでしょうか？",
           };
           set({ aiResponse: dummyResponse, isGenerating: false });
         }
@@ -100,9 +100,10 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
         console.error("AI応答の生成に失敗しました:", error);
         // エラー時もダミーデータで続行
         const errorResponse: AiResponse = {
-          answer: "申し訳ございませんが、現在AI解析サービスに接続できません。",
-          target: "エラー",
-          toi: "しばらく時間をおいて再度お試しください。",
+          ai_answer:
+            "申し訳ございませんが、現在AI解析サービスに接続できません。",
+          object_label: "エラー",
+          ai_question: "しばらく時間をおいて再度お試しください。",
         };
         set({ aiResponse: errorResponse, isGenerating: false });
       }

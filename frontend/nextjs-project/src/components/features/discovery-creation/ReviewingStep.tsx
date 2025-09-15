@@ -23,7 +23,7 @@ export default function ReviewingStep() {
   const params = useDiscoveryCreationStore();
   const currentLocation = useGeolocation();
   const { handleSave } = useReviewingStep({ ...params, ...currentLocation });
-  const { photoData, question, aiResponse, prevStep } = params;
+  const { photoData, user_question, aiResponse, prevStep } = params;
   const [isPublic, setIsPublic] = useState(true);
   const isPWA = useIsPWA();
   const discoveryHeaderHeight = isPWA
@@ -34,7 +34,7 @@ export default function ReviewingStep() {
   const { iconName, formattedDate } = formatTimestampForClient(now);
 
   // データがなければ何も表示しない（エラーハンドリング）
-  if (!photoData || !question || !aiResponse) {
+  if (!photoData || !user_question || !aiResponse) {
     return <p>データの読み込みに失敗しました。</p>;
   }
 
@@ -54,17 +54,17 @@ export default function ReviewingStep() {
         }}
       >
         <Stack spacing={3}>
-          <DiscoveryImage src={photoData} alt={question} />
-          <QuestionBubble text={question} />
+          <DiscoveryImage src={photoData} alt={user_question} />
+          <QuestionBubble text={user_question} />
         </Stack>
 
         <Stack spacing={2.5} pb={2.5}>
           <Section icon={<IoLeaf size={32} />} title="はっけん">
-            {aiResponse.answer}
+            {aiResponse.ai_answer}
           </Section>
 
           <Section icon={<IoSearch size={32} />} title="問い">
-            {aiResponse.toi}
+            {aiResponse.ai_question}
           </Section>
         </Stack>
 
