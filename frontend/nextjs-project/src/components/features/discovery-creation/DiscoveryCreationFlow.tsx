@@ -4,6 +4,8 @@ import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import ShootingStep from "./ShootingStep";
 import CommentingStep from "./CommentingStep";
 import ReviewingStep from "./ReviewingStep";
+import { useAuthStore } from "@/stores/authStore";
+import LoginGuideModal from "../auth/LoginGuideModal";
 
 export default function DiscoveryCreationFlow() {
   const {
@@ -17,6 +19,7 @@ export default function DiscoveryCreationFlow() {
     generateAiResponse,
     isGenerating,
   } = useDiscoveryCreationStore();
+  const { user } = useAuthStore();
 
   const handlePhotoTaken = (photo: string) => {
     setPhotoData(photo);
@@ -32,7 +35,10 @@ export default function DiscoveryCreationFlow() {
   switch (currentStep) {
     case "shooting":
       return (
-        <ShootingStep onNext={handlePhotoTaken} onCancel={cancelCreation} />
+        <>
+          <ShootingStep onNext={handlePhotoTaken} onCancel={cancelCreation} />
+          <LoginGuideModal open={user === null} />
+        </>
       );
 
     case "commenting":
