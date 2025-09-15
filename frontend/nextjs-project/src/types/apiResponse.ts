@@ -13,7 +13,7 @@ export interface ImageAnalysisResponse {
   /** 画像ID */
   img_id: string;
   /** AIからの回答 */
-  answer: ImageAnalysisAnswer;
+  ai_response: ImageAnalysisAnswer;
 }
 
 // 画像1件のレコード

@@ -93,7 +93,7 @@ curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/i
 - **画像と質問を同時に受け取り**、以下を実施する複合 API：  
   1) 画像を **GCS + DB** に保存（`ImageService.save_image`）  
   2) 保存で得た **`gs://`** と質問文を用いて **Gemini 解析**（`AnalyzeService.analyze`）  
-  3) 解析結果（`answer`）に **`img_id`** を添えて返却  
+  3) 解析結果（`ai_response`）に **`img_id`** を添えて返却  
   実装は `img_analyze_route.py` の `create_image_and_analyze` を参照。 
 
 ### リクエスト（multipart/form-data）

@@ -169,12 +169,12 @@ class AnalyzeService:
         return base
 
     @staticmethod
-    def _parse_answer_to_dict(answer: str) -> Dict[str, str]:
+    def _parse_answer_to_dict(ai_response: str) -> Dict[str, str]:
         """
         モデルからの文字列応答をJSONとしてパースし、辞書に変換する
 
         Args:
-            answer: モデルからの応答文字列
+            ai_response: モデルからの応答文字列
 
         Returns:
             {"object_label": str, "ai_answer": str, "ai_question": str} の辞書
@@ -183,10 +183,10 @@ class AnalyzeService:
             BadRequest: 無効なJSON形式
         """
         try:
-            obj = json.loads(answer)
+            obj = json.loads(ai_response)
         except json.JSONDecodeError:
             # コードブロック形式の場合の処理
-            txt = answer.strip()
+            txt = ai_response.strip()
             if txt.startswith("```"):
                 start = txt.find("{")
                 end = txt.rfind("}")
@@ -218,8 +218,8 @@ class AnalyzeService:
         jpeg_bytes = AnalyzeService.downscale_to_jpeg(raw, max_long_edge=CONFIG.MAX_IMAGE_LONG_EDGE)
 
         # Gemini API呼び出し
-        answer = gemini.generate_inline(jpeg_bytes, prompt)
-        return AnalyzeService._parse_answer_to_dict(answer)
+        ai_response = gemini.generate_inline(jpeg_bytes, prompt)
+        return AnalyzeService._parse_answer_to_dict(ai_response)
 
     @staticmethod
     def _gemini_request_by_filesAPI(file: FileStorage, raw: bytes | Any, prompt: str) -> Dict[str, str]:
@@ -292,8 +292,8 @@ class AnalyzeService:
             contents=[uploaded_file, prompt],
             **kwargs,
         )
-        answer = getattr(response, "text", "") or ""
-        return AnalyzeService._parse_answer_to_dict(answer)
+        ai_response = getattr(response, "text", "") or ""
+        return AnalyzeService._parse_answer_to_dict(ai_response)
 
 
 def analyze(file: FileStorage | None, image_url: str | None, user_question: str | None) -> Dict[str, str]:

@@ -52,7 +52,7 @@ def create_image_and_analyze():
     画像と質問文を受け取り、以下を実施するAPI:
     1) img_id を発行して Cloud Storage + Cloud SQL に保存
     2) 保存に成功したら、gs:// と質問文をもとに Gemini を呼び出す
-    3) img_analyze_route と同形式の answer に img_id を添えて返す
+    3) img_analyze_route と同形式の ai_response に img_id を添えて返す
 
     リクエスト (multipart/form-data):
     - file: 画像ファイル (必須)

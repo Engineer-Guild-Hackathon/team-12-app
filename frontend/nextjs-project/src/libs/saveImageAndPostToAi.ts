@@ -41,16 +41,16 @@ export const saveImageAndPostToAi = async (
   const json = await res.json();
 
   // レスポンス構造の検証とパース
-  if (!json.img_id || !json.answer) {
+  if (!json.img_id || !json.ai_response) {
     throw new Error("Invalid response structure from AI API");
   }
 
   const imageAnalysisResponse: ImageAnalysisResponse = {
     img_id: json.img_id,
-    answer: {
-      object_label: json.answer.object_label || "",
-      ai_answer: json.answer.ai_answer || "",
-      ai_question: json.answer.ai_question || "",
+    ai_response: {
+      object_label: json.ai_response.object_label || "",
+      ai_answer: json.ai_response.ai_answer || "",
+      ai_question: json.ai_response.ai_question || "",
     },
   };
 

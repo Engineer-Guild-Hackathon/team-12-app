@@ -46,7 +46,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
       set({
         currentStep: "shooting",
         photoData: null,
-        question: null,
+        user_question: null,
         aiResponse: null,
         img_id: "",
       }),
@@ -72,9 +72,9 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
 
           // APIレスポンスをAiResponse形式に変換
           const aiResponse: AiResponse = {
-            ai_answer: imageResult.answer.ai_answer,
-            object_label: imageResult.answer.object_label,
-            ai_question: imageResult.answer.ai_question,
+            ai_answer: imageResult.ai_response.ai_answer,
+            object_label: imageResult.ai_response.object_label,
+            ai_question: imageResult.ai_response.ai_question,
           };
 
           set({
@@ -119,7 +119,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
           return {
             currentStep: null,
             photoData: null,
-            question: null,
+            user_question: null,
             aiResponse: null,
             img_id: "",
           }; // 完了時にリセット
@@ -136,7 +136,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
           return {
             currentStep: null,
             photoData: null,
-            question: null,
+            user_question: null,
             aiResponse: null,
             img_id: "",
           };
@@ -147,7 +147,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
       set({
         currentStep: null,
         photoData: null,
-        question: null,
+        user_question: null,
         aiResponse: null,
         img_id: "",
       }),
