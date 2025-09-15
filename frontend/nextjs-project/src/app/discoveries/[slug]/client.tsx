@@ -9,8 +9,7 @@ export default function DiscoveryDetailClient({ slug }: { slug: string }) {
   const { post, isLoading, isError } = usePostDetail(slug);
 
   if (isLoading) return <div>投稿を読み込んでいます...</div>;
-  if (isError) return <div>投稿の読み込みに失敗しました。</div>;
-  if (!post) return null;
+  if (isError || !post) return <div>投稿の読み込みに失敗しました。</div>;
 
   const { iconName, formattedDate } = formatTimestampForServer(post.date);
 
