@@ -23,21 +23,19 @@ def post_analyze():
     multipart/form-data:
     - file: 画像ファイル（任意）
     - image_url: 画像URL（任意）
-    - question: テキスト（任意）
+    - user_question: テキスト（任意）
     file / image_url のどちらかは必須
     """
     file = request.files.get("file")
     image_url = request.form.get("image_url")
-    question = request.form.get("question")
+    user_question = request.form.get("user_question")
 
     if not file and not image_url:
         raise BadRequest("画像ファイルまたは画像URLは必須です")
 
     try:
-        answer = AnalyzeService.analyze(
-            file=file, image_url=image_url, question=question
-        )
-        return jsonify({"answer": answer}), 200
+        ai_response = AnalyzeService.analyze(file=file, image_url=image_url, user_question=user_question)
+        return jsonify({"ai_response": ai_response}), 200
     except BadRequest as e:
         # 400/413などの入力系
         return jsonify({"error": str(e)}), e.code
@@ -54,16 +52,20 @@ def create_image_and_analyze():
     画像と質問文を受け取り、以下を実施するAPI:
     1) img_id を発行して Cloud Storage + Cloud SQL に保存
     2) 保存に成功したら、gs:// と質問文をもとに Gemini を呼び出す
-    3) img_analyze_route と同形式の answer に img_id を添えて返す
+    3) img_analyze_route と同形式の ai_response に img_id を添えて返す
 
     リクエスト (multipart/form-data):
     - file: 画像ファイル (必須)
-    - question: テキスト質問 (必須)
+    - user_question: テキスト質問 (必須)
 
     レスポンス (200):
     {
         "img_id": "<uuid>",
-        "answer": { ... }
+        "ai_response": {
+            "object_label": "...",
+            "ai_answer": "...",
+            "ai_question": "..."
+        }
     }
     """
     # 入力取得
@@ -71,12 +73,12 @@ def create_image_and_analyze():
         return _bad_request("必須フィールド不足", "img_fileがありません")
 
     file = request.files.get("img_file")
-    question = request.form.get("question", "").strip()
+    user_question = request.form.get("user_question", "").strip()
 
     if file is None:
         return _bad_request("画像ファイル(img_file)は必須です")
-    if not question:
-        return _bad_request("質問文(question)は必須です")
+    if not user_question:
+        return _bad_request("質問文(user_question)は必須です")
 
     try:
         # 1) まず画像を GCS + Cloud SQL に保存
@@ -97,10 +99,10 @@ def create_image_and_analyze():
 
         # 2) 保存に成功したので、Gemini で解析
         #    AnalyzeService.analyze は image_url に gs:// を渡せば内部でダウンロードして処理します
-        answer = AnalyzeService.analyze(file=None, image_url=gcs_uri, question=question)
+        ai_response = AnalyzeService.analyze(file=None, image_url=gcs_uri, user_question=user_question)
 
-        # 3) フロントへ img_id を添えて返却（img_analyze_route に合わせて "answer" のみをネスト）
-        return jsonify({"img_id": img_id, "answer": answer}), 200
+        # 3) フロントへ img_id を添えて返却（img_analyze_route に合わせて "ai_response" のみをネスト）
+        return jsonify({"img_id": img_id, "ai_response": ai_response}), 200
 
     except BadRequest as e:
         return jsonify({"error": str(e)}), e.code

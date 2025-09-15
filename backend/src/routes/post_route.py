@@ -18,10 +18,10 @@ class CreatePostDTO:
     post_id: uuid.UUID
     user_id: uuid.UUID
     img_id: uuid.UUID
-    question: str
-    target: str
-    answer: str
-    toi: str
+    user_question: str
+    object_label: str
+    ai_answer: str
+    ai_question: str
     location: str
     latitude: float
     longitude: float
@@ -65,10 +65,10 @@ def _parse_create_post_payload(data: Dict[str, Any]) -> CreatePostDTO:
         "post_id",
         "user_id",
         "img_id",
-        "question",
-        "target",
-        "answer",
-        "toi",
+        "user_question",
+        "object_label",
+        "ai_answer",
+        "ai_question",
         "location",
         "latitude",
         "longitude",
@@ -86,7 +86,7 @@ def _parse_create_post_payload(data: Dict[str, Any]) -> CreatePostDTO:
         raise ValueError(f"post_id / user_id / img_id はUUID形式: {e}")
 
     # 文字列必須
-    for key in ("question", "target", "answer", "toi", "location"):
+    for key in ("user_question", "object_label", "ai_answer", "ai_question", "location"):
         v = data.get(key)
         if not isinstance(v, str) or not v.strip():
             raise ValueError(f"{key} は空でない文字列を指定")
@@ -103,10 +103,10 @@ def _parse_create_post_payload(data: Dict[str, Any]) -> CreatePostDTO:
         post_id=post_id,
         user_id=user_id,
         img_id=img_id,
-        question=data["question"].strip(),
-        target=data["target"].strip(),
-        answer=data["answer"].strip(),
-        toi=data["toi"].strip(),
+        user_question=data["user_question"].strip(),
+        object_label=data["object_label"].strip(),
+        ai_answer=data["ai_answer"].strip(),
+        ai_question=data["ai_question"].strip(),
         location=data["location"].strip(),
         latitude=lat,
         longitude=lng,
@@ -152,10 +152,10 @@ def create_post():
             post_id=dto.post_id,
             user_id=dto.user_id,
             img_id=dto.img_id,
-            question=dto.question,
-            target=dto.target,
-            answer=dto.answer,
-            toi=dto.toi,
+            user_question=dto.user_question,
+            object_label=dto.object_label,
+            ai_answer=dto.ai_answer,
+            ai_question=dto.ai_question,
             location=dto.location,
             latitude=dto.latitude,
             longitude=dto.longitude,

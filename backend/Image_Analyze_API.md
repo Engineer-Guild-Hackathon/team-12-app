@@ -9,7 +9,7 @@
 > - `POST /api/image_analyze` は **画像を保存（GCS + DB）→ 取得した `gs://` を使って Gemini 解析** の順で処理し、結果と `img_id` を返します。   
 > - `image_url` は **`gs://` のみ対応**。HTTP(S) など他スキームは **400** になります。   
 > - 画像 MIME はサーバ側で処理（`python-magic`）し、**非画像は 400**。空バイトも 400。   
-> - モデル出力は **厳密に JSON（title / discovery / question の3フィールド）** にパースして返します。 
+> - モデル出力は **厳密に JSON（object_label / ai_answer / ai_question の3フィールド）** にパースして返します。 
 
 ---
 
@@ -44,21 +44,21 @@
 ### 説明
 - マルチパートで **`file`** を送るか、フォームフィールド **`image_url`** に **`gs://` 形式の URL** を指定します（**どちらか必須**）。  
 - 画像はバイト列を取得後に MIME を推定し、**画像でない場合は 400**。空データも 400。  
-- 画像サイズが小さい場合は **インライン（画像バイト列）**、大きい場合は **Files API** でアップロードしてから Gemini を呼びます。応答テキストは JSON としてパースし、**`{title, discovery, question}`** の辞書として返します。  
+- 画像サイズが小さい場合は **インライン（画像バイト列）**、大きい場合は **Files API** でアップロードしてから Gemini を呼びます。応答テキストは JSON としてパースし、**`{object_label, ai_answer, ai_question}`** の辞書として返します。  
 
 ### リクエスト（multipart/form-data）
 - `file`: 画像ファイル（任意）  
 - `image_url`: 画像 URL（任意、**`gs://` のみ対応**）  
-- `question`: 解析時の補助質問（任意のテキスト）  
+- `user_question`: 解析時の補助質問（任意のテキスト）  
 ※ `file` または `image_url` の **いずれかは必須**。両方未指定は 400。 
 
 ### レスポンス例（200）
 ```json
 {
-  "answer": {
-    "title": "検知した物体の名前（簡潔）",
-    "discovery": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",
-    "question": "その物体に関する興味深い問いを1つ（日本語）"
+  "ai_response": {
+    "object_label": "検知した物体の名前（簡潔）",
+    "ai_answer": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",
+    "ai_question": "その物体に関する興味深い問いを1つ（日本語）"
   }
 }
 ```
@@ -77,12 +77,12 @@
 
 ### curl 例（ファイル）
 ```bash
-curl -X POST http://localhost:5001/v1/analyze   -F "file=@/path/to/photo.jpg"   -F "question=この昆虫について教えて"
+curl -X POST http://localhost:5001/v1/analyze   -F "file=@/path/to/photo.jpg"   -F "user_question=この昆虫について教えて"
 ```
 
 ### curl 例（gs://）
 ```bash
-curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/images/abc123.jpg"   -F "question=この植物の生態は？"
+curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/images/abc123.jpg"   -F "user_question=この植物の生態は？"
 ```
 
 ---
@@ -93,22 +93,22 @@ curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/i
 - **画像と質問を同時に受け取り**、以下を実施する複合 API：  
   1) 画像を **GCS + DB** に保存（`ImageService.save_image`）  
   2) 保存で得た **`gs://`** と質問文を用いて **Gemini 解析**（`AnalyzeService.analyze`）  
-  3) 解析結果（`answer`）に **`img_id`** を添えて返却  
+  3) 解析結果（`ai_response`）に **`img_id`** を添えて返却  
   実装は `img_analyze_route.py` の `create_image_and_analyze` を参照。 
 
 ### リクエスト（multipart/form-data）
 - `img_file`: 画像ファイル（**必須**）  
-- `question`: テキスト（**必須**）  
+- `user_question`: テキスト（**必須**）  
 未指定の場合は 400 を返します。 
 
 ### レスポンス例（200）
 ```json
 {
   "img_id": "c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
-  "answer": {
-    "title": "検知した物体の名前（簡潔）",
-    "discovery": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",
-    "question": "その物体に関する興味深い問いを1つ（日本語）"
+  "ai_response": {
+    "object_label": "検知した物体の名前（簡潔）",
+    "ai_answer": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",
+    "ai_question": "その物体に関する興味深い問いを1つ（日本語）"
   }
 }
 ```
@@ -118,7 +118,7 @@ curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/i
 { "error": "必須フィールド不足", "detail": "img_fileがありません" }
 ```
 ```json
-{ "error": "質問文(question)は必須です" }
+{ "error": "質問文(user_question)は必須です" }
 ```
 ```json
 { "error": "画像の保存に失敗しました" }
@@ -136,7 +136,7 @@ curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/i
 
 ### curl 例
 ```bash
-curl -X POST http://localhost:5001/api/image_analyze   -F "img_file=@/path/to/photo.jpg"   -F "question=この魚の特徴を教えて"
+curl -X POST http://localhost:5001/api/image_analyze   -F "img_file=@/path/to/photo.jpg"   -F "user_question=この魚の特徴を教えて"
 ```
 
 ---
@@ -147,33 +147,33 @@ curl -X POST http://localhost:5001/api/image_analyze   -F "img_file=@/path/to/ph
 ```js
 const fd = new FormData();
 fd.append("file", fileInput.files[0]);
-fd.append("question", "この昆虫の生態は？");
+fd.append("user_question", "この昆虫の生態は？");
 
 const resp = await fetch("/v1/analyze", { method: "POST", body: fd });
 const data = await resp.json();
-console.log(data.answer);
+console.log(data.ai_response);
 ```
 
 ### `/v1/analyze`（gs://）
 ```js
 const fd = new FormData();
 fd.append("image_url", "gs://your-bucket/images/abc123.jpg");
-fd.append("question", "この植物の用途は？");
+fd.append("user_question", "この植物の用途は？");
 
 const resp = await fetch("/v1/analyze", { method: "POST", body: fd });
 const data = await resp.json();
-console.log(data.answer);
+console.log(data.ai_response);
 ```
 
 ### `/api/image_analyze`（保存 + 解析）
 ```js
 const fd = new FormData();
 fd.append("img_file", fileInput.files[0]);
-fd.append("question", "この被写体の名前は？");
+fd.append("user_question", "この被写体の名前は？");
 
 const resp = await fetch("/api/image_analyze", { method: "POST", body: fd });
 const data = await resp.json();
-console.log(data.img_id, data.answer);
+console.log(data.img_id, data.ai_response);
 ```
 
 ---

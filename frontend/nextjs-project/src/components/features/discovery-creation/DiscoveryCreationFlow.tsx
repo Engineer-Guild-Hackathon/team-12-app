@@ -13,7 +13,7 @@ export default function DiscoveryCreationFlow() {
     cancelCreation,
     photoData,
     setPhotoData,
-    setQuestion,
+    setUserQuestion,
     generateAiResponse,
     isGenerating,
   } = useDiscoveryCreationStore();
@@ -23,9 +23,9 @@ export default function DiscoveryCreationFlow() {
     nextStep();
   };
 
-  const handleCommentSubmit = async (question: string) => {
-    setQuestion(question);
-    await generateAiResponse(); // AIの応答生成を待つ
+  const handleCommentSubmitUserQuestion = async (user_question: string) => {
+    setUserQuestion(user_question);
+    await generateAiResponse(); // AIの回答生成を待つ
     nextStep();
   };
 
@@ -40,7 +40,7 @@ export default function DiscoveryCreationFlow() {
         <CommentingStep
           photo={photoData}
           isGenerating={isGenerating}
-          onNext={handleCommentSubmit}
+          onNext={handleCommentSubmitUserQuestion}
           onPrev={prevStep}
         />
       );

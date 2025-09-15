@@ -21,17 +21,17 @@ class AnalyzeService:
     """画像解析をGemini APIで実行するサービスクラス"""
 
     @staticmethod
-    def analyze(file: FileStorage | None, image_url: str | None, question: str | None) -> Dict[str, str]:
+    def analyze(file: FileStorage | None, image_url: str | None, user_question: str | None) -> Dict[str, str]:
         """
         画像を解析してAIからの回答を返す
 
         Args:
             file: アップロードされた画像ファイル
             image_url: 画像のURL
-            question: 補助的な質問
+            user_question: 補助的な質問
 
         Returns:
-            {"title": str, "discovery": str, "question": str} の辞書
+            {"object_label": str, "ai_answer": str, "ai_question": str} の辞書
 
         Raises:
             BadRequest: 無効な画像やリクエスト
@@ -53,7 +53,7 @@ class AnalyzeService:
             raise BadRequest("画像ファイルではありません")
 
         # 3) プロンプトの構築
-        prompt = AnalyzeService._build_prompt(question)
+        prompt = AnalyzeService._build_prompt(user_question)
 
         # 4) 画像サイズに応じてAPIを選択
         if len(raw) <= CONFIG.INLINE_MAX_IMAGE_BYTES:
@@ -140,12 +140,12 @@ class AnalyzeService:
             return buf.getvalue()
 
     @staticmethod
-    def _build_prompt(question: str | None) -> str:
+    def _build_prompt(user_question: str | None) -> str:
         """
         モデルに「厳密にJSONのみ」を返させるプロンプトを構築する
 
         Args:
-            question: 補助的な質問（オプション）
+            user_question: 補助的な質問（オプション）
 
         Returns:
             構築されたプロンプト文字列
@@ -155,38 +155,38 @@ class AnalyzeService:
             "出力は JSON のみ（前後の説明文・コードフェンス・Markdown見出しなど一切禁止）で返してください。\n\n"
             "出力フォーマット（例）:\n"
             "{\n"
-            '  "title": "検知した物体の名前（簡潔に1つ）",\n'
-            '  "discovery": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",\n'
-            '  "question": "その物体に関する興味深い問いを1つ（日本語）"\n'
+            '  "object_label": "検知した物体の名前（簡潔に1つ）",\n'
+            '  "ai_answer": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",\n'
+            '  "ai_question": "その物体に関する興味深い問いを1つ（日本語）"\n'
             "}\n\n"
             "制約:\n"
-            "- フィールド名は必ず title / discovery / question。\n"
+            "- フィールド名は必ず object_label / ai_answer / ai_question。\n"
             "- すべて文字列。改行はそのまま文字列内に含めてよい。\n"
             "- JSON以外のテキスト・コードブロック・Markdown記法は禁止。\n"
         )
-        if question:
-            base += f"\n補助質問（考慮してよいが、出力は上記JSONのみ）: {question}\n"
+        if user_question:
+            base += f"\n補助質問（考慮してよいが、出力は上記JSONのみ）: {user_question}\n"
         return base
 
     @staticmethod
-    def _parse_answer_to_dict(answer: str) -> Dict[str, str]:
+    def _parse_answer_to_dict(ai_response: str) -> Dict[str, str]:
         """
         モデルからの文字列応答をJSONとしてパースし、辞書に変換する
 
         Args:
-            answer: モデルからの応答文字列
+            ai_response: モデルからの応答文字列
 
         Returns:
-            {"title": str, "discovery": str, "question": str} の辞書
+            {"object_label": str, "ai_answer": str, "ai_question": str} の辞書
 
         Raises:
             BadRequest: 無効なJSON形式
         """
         try:
-            obj = json.loads(answer)
+            obj = json.loads(ai_response)
         except json.JSONDecodeError:
             # コードブロック形式の場合の処理
-            txt = answer.strip()
+            txt = ai_response.strip()
             if txt.startswith("```"):
                 start = txt.find("{")
                 end = txt.rfind("}")
@@ -195,10 +195,11 @@ class AnalyzeService:
             obj = json.loads(txt)
 
         # 必須フィールドの検証
-        for k in ("title", "discovery", "question"):
+        for k in ("object_label", "ai_answer", "ai_question"):
             if k not in obj or not isinstance(obj[k], str):
-                raise BadRequest("AIの出力が必要なJSON形式（title, discovery, questionの各文字列）になっていません")
-
+                raise BadRequest(
+                    "AIの出力が必要なJSON形式（object_label, ai_answer, ai_questionの各文字列）になっていません"
+                )
         return obj
 
     @staticmethod
@@ -211,14 +212,14 @@ class AnalyzeService:
             prompt: プロンプト文字列
 
         Returns:
-            解析結果の辞書
+            解析結果の辞書（object_label, ai_answer, ai_question）
         """
         # 画像の縮小とJPEG化
         jpeg_bytes = AnalyzeService.downscale_to_jpeg(raw, max_long_edge=CONFIG.MAX_IMAGE_LONG_EDGE)
 
         # Gemini API呼び出し
-        answer = gemini.generate_inline(jpeg_bytes, prompt)
-        return AnalyzeService._parse_answer_to_dict(answer)
+        ai_response = gemini.generate_inline(jpeg_bytes, prompt)
+        return AnalyzeService._parse_answer_to_dict(ai_response)
 
     @staticmethod
     def _gemini_request_by_filesAPI(file: FileStorage, raw: bytes | Any, prompt: str) -> Dict[str, str]:
@@ -248,11 +249,11 @@ class AnalyzeService:
             JSON_SCHEMA = types.Schema(
                 type=types.Type.OBJECT,
                 properties={
-                    "title": types.Schema(type=types.Type.STRING),
-                    "discovery": types.Schema(type=types.Type.STRING),
-                    "question": types.Schema(type=types.Type.STRING),
+                    "object_label": types.Schema(type=types.Type.STRING),
+                    "ai_answer": types.Schema(type=types.Type.STRING),
+                    "ai_question": types.Schema(type=types.Type.STRING),
                 },
-                required=["title", "discovery", "question"],
+                required=["object_label", "ai_answer", "ai_question"],
             )
             GENCFG_JSON = types.GenerateContentConfig(
                 response_mime_type="application/json",
@@ -291,9 +292,9 @@ class AnalyzeService:
             contents=[uploaded_file, prompt],
             **kwargs,
         )
-        answer = getattr(response, "text", "") or ""
-        return AnalyzeService._parse_answer_to_dict(answer)
+        ai_response = getattr(response, "text", "") or ""
+        return AnalyzeService._parse_answer_to_dict(ai_response)
 
 
-def analyze(file: FileStorage | None, image_url: str | None, question: str | None) -> Dict[str, str]:
-    return AnalyzeService.analyze(file, image_url, question)
+def analyze(file: FileStorage | None, image_url: str | None, user_question: str | None) -> Dict[str, str]:
+    return AnalyzeService.analyze(file, image_url, user_question)

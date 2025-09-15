@@ -1,7 +1,7 @@
 # Posts API 使用マニュアル
 
 本書は、`/api/posts` 系エンドポイントの **リクエスト方法・引数・例・戻り値** をまとめたものです。  
-実装は Flask + SQLAlchemy。保存スキーマは以下（必須のみ抜粋）：`post_id(UUID)`, `user_id(UUID)`, `img_id(UUID)`, `question`, `target`, `answer`, `toi`, `location`, `latitude(double)`, `longitude(double)` ほか。
+実装は Flask + SQLAlchemy。保存スキーマは以下（必須のみ抜粋）：`post_id(UUID)`, `user_id(UUID)`, `img_id(UUID)`, `user_question`, `object_label`, `ai_answer`, `ai_question`, `location`, `latitude(double)`, `longitude(double)` ほか。
 
 > **注記**
 > - `POST /api/posts` では **サーバ側で `post_id` を自動生成**します。  
@@ -52,10 +52,10 @@
 {
   "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
   "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
-  "question": "LLMに質問したい内容のテキスト",
-  "target": "写真の対象物名のテキスト",
-  "answer": "LLMの回答内容のテキスト",
-  "toi": "LLMからの「問い」のテキスト",
+  "user_question": "LLMに質問したい内容のテキスト",
+  "object_label": "写真の対象物名のテキスト",
+  "ai_answer": "LLMの回答内容のテキスト",
+  "ai_question": "LLMからの「問い」のテキスト",
   "latitude": 43.068,
   "longitude": 141.35
 }
@@ -63,7 +63,7 @@
 
 #### フィールド要件
 - `user_id`, `img_id`: UUID 形式必須  
-- `question`, `target`, `answer`, `toi`: 空でない文字列必須  
+- `user_question`, `object_label`, `ai_answer`, `ai_question`: 空でない文字列必須  
 - `latitude`: `-90.0`〜`90.0`  
 - `longitude`: `-180.0`〜`180.0`  
 - `location`: 送らなくてよい（サーバが補完）
@@ -76,10 +76,10 @@
     "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726",
     "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
     "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
-    "question": "LLMに質問したい内容のテキスト",
-    "target": "写真の対象物名のテキスト",
-    "answer": "LLMの回答内容のテキスト",
-    "toi": "LLMからの「問い」のテキスト",
+    "user_question": "LLMに質問したい内容のテキスト",
+    "object_label": "写真の対象物名のテキスト",
+    "ai_answer": "LLMの回答内容のテキスト",
+    "ai_question": "LLMからの「問い」のテキスト",
     "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
     "latitude": 43.068,
     "longitude": 141.35,
@@ -104,10 +104,10 @@
 curl -X POST http://localhost:5001/api/posts   -H "Content-Type: application/json"   -d '{
     "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
     "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
-    "question": "LLMに質問したい内容のテキスト",
-    "target": "写真の対象物名のテキスト",
-    "answer": "LLMの回答内容のテキスト",
-    "toi": "LLMからの「問い」のテキスト",
+    "user_question": "LLMに質問したい内容のテキスト",
+    "object_label": "写真の対象物名のテキスト",
+    "ai_answer": "LLMの回答内容のテキスト",
+    "ai_question": "LLMからの「問い」のテキスト",
     "latitude": 43.068,
     "longitude": 141.35
   }'
@@ -128,10 +128,10 @@ curl -X POST http://localhost:5001/api/posts   -H "Content-Type: application/jso
     "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726",
     "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
     "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
-    "question": "LLMに質問したい内容のテキスト",
-    "target": "写真の対象物名のテキスト",
-    "answer": "LLMの回答内容のテキスト",
-    "toi": "LLMからの「問い」のテキスト",
+    "user_question": "LLMに質問したい内容のテキスト",
+    "object_label": "写真の対象物名のテキスト",
+    "ai_answer": "LLMの回答内容のテキスト",
+    "ai_question": "LLMからの「問い」のテキスト",
     "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
     "latitude": 43.068,
     "longitude": 141.35,
@@ -170,10 +170,10 @@ curl http://localhost:5001/api/posts/c008f66e-f15b-4cf9-a5be-892dae037726
       "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726",
       "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
       "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
-      "question": "LLMに質問したい内容のテキスト",
-      "target": "写真の対象物名のテキスト",
-      "answer": "LLMの回答内容のテキスト",
-      "toi": "LLMからの「問い」のテキスト",
+      "user_question": "LLMに質問したい内容のテキスト",
+      "object_label": "写真の対象物名のテキスト",
+      "ai_answer": "LLMの回答内容のテキスト",
+      "ai_question": "LLMからの「問い」のテキスト",
       "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
       "latitude": 43.068,
       "longitude": 141.35,
@@ -215,10 +215,10 @@ curl "http://localhost:5001/api/posts?limit=10&offset=0"
       "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726",
       "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
       "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
-      "question": "LLMに質問したい内容のテキスト",
-      "target": "写真の対象物名のテキスト",
-      "answer": "LLMの回答内容のテキスト",
-      "toi": "LLMからの「問い」のテキスト",
+      "user_question": "LLMに質問したい内容のテキスト",
+      "object_label": "写真の対象物名のテキスト",
+      "ai_answer": "LLMの回答内容のテキスト",
+      "ai_question": "LLMからの「問い」のテキスト",
       "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
       "latitude": 43.068,
       "longitude": 141.35,
@@ -282,10 +282,10 @@ curl http://localhost:5001/api/posts/recent
 const payload = {
   user_id: "47b6...08eb",
   img_id: "2220...40b4d",
-  question: "LLMに質問したい内容のテキスト",
-  target: "写真の対象物名のテキスト",
-  answer: "LLMの回答内容のテキスト",
-  toi: "LLMからの「問い」のテキスト",
+  user_question: "LLMに質問したい内容のテキスト",
+  object_label: "写真の対象物名のテキスト",
+  ai_answer: "LLMの回答内容のテキスト",
+  ai_question: "LLMからの「問い」のテキスト",
   latitude: 43.068,
   longitude: 141.35
 };
@@ -326,10 +326,10 @@ if (resp.ok) {
     "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726",
     "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
     "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
-    "question": "LLMに質問したい内容のテキスト",
-    "target": "写真の対象物名のテキスト",
-    "answer": "LLMの回答内容のテキスト",
-    "toi": "LLMからの「問い」のテキスト",
+    "user_question": "LLMに質問したい内容のテキスト",
+    "object_label": "写真の対象物名のテキスト",
+    "ai_answer": "LLMの回答内容のテキスト",
+    "ai_question": "LLMからの「問い」のテキスト",
     "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
     "latitude": 43.068,
     "longitude": 141.35,

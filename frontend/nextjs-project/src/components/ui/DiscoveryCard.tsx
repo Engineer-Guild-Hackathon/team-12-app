@@ -117,7 +117,7 @@ export default function DiscoveryCard({
         <CardMedia
           component="img"
           image={imageUrl}
-          alt={post.target}
+          alt={post.object_label}
           sx={{
             objectFit: "cover",
             width: "100px",
@@ -172,7 +172,7 @@ export default function DiscoveryCard({
               width: "100%",
             }}
           >
-            {post.question}
+            {post.user_question}
           </Typography>
         </CardContent>
       </CardActionArea>
