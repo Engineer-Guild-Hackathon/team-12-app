@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 import { useRouter } from "next/navigation";
-import { useTransition } from 'react';
+import { useTransition } from "react";
 import { AiResponse } from "@/stores/discoveryCreationStore";
-import { createPostAction, CreatePostPayload } from "@/app/actions";
+import { createPostAction, CreatePostPayload } from "@/app/actions/postActions";
 
 type UseReviewingStepParams = {
   photoData: string | null;
@@ -33,7 +33,9 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
 
   const handleSave = () => {
     if (latitude === null || longitude === null) {
-      alert("位置情報が取得できません。位置情報の利用を許可してもう一度やり直してください");
+      alert(
+        "位置情報が取得できません。位置情報の利用を許可してもう一度やり直してください",
+      );
       return;
     }
     if (!photoData || !user_question || !aiResponse) {
@@ -56,13 +58,13 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
     // この中の処理が完了するまでisPendingがtrueになります。
     startTransition(async () => {
       const result = await createPostAction(payload);
-      
+
       if (result.error) {
         console.error(result.error);
         alert("保存に失敗しました。もう1度やり直してください。");
         return;
       }
-      
+
       if (result.data) {
         nextStep();
         router.push(`/discoveries/${result.data.post_id}`);
@@ -70,9 +72,8 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
     });
   };
 
-  return { 
+  return {
     handleSave,
-    isLoading: isPending
+    isLoading: isPending,
   };
 };
-
