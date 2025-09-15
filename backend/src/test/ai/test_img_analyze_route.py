@@ -10,10 +10,10 @@ from werkzeug.datastructures import FileStorage
 
 class _GeminiSpy:
     def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
-        return '{"target":"T","answer":"A","toi":"Q"}'
+        return '{"object_label":"T","ai_answer":"A","ai_question":"Q"}'
 
     def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
-        return '{"target":"T","answer":"A","toi":"Q"}'
+        return '{"object_label":"T","ai_answer":"A","ai_question":"Q"}'
 
 
 def _png_bytes() -> bytes:
@@ -44,14 +44,14 @@ def test_analyze_endpoint_with_file(monkeypatch: pytest.MonkeyPatch, client):
 
     data = {
         "file": (io.BytesIO(_png_bytes()), "x.png"),
-        "question": "内容？",
+        "user_question": "内容？",
     }
     r = client.post("/v1/analyze", data=data, content_type="multipart/form-data")
     assert r.status_code == 200
-    # ルートが {"answer": {...}} で包んで返す実装に合わせる
+    # ルートが {"ai_response": {...}} で包んで返す実装に合わせる
     body = r.json
-    assert isinstance(body, dict) and "answer" in body
-    ans = body["answer"]
-    assert ans.get("target") == "T"
-    assert ans.get("answer") == "A"
-    assert ans.get("toi") == "Q"
+    assert isinstance(body, dict) and "ai_response" in body
+    ans = body["ai_response"]
+    assert ans.get("object_label") == "T"
+    assert ans.get("ai_answer") == "A"
+    assert ans.get("ai_question") == "Q"

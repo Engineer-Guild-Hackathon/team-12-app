@@ -23,11 +23,11 @@ class GeminiClient:
             JSON_SCHEMA = types.Schema(
                 type=types.Type.OBJECT,
                 properties={
-                    "target": types.Schema(type=types.Type.STRING),
-                    "answer": types.Schema(type=types.Type.STRING),
-                    "toi": types.Schema(type=types.Type.STRING),
+                    "object_label": types.Schema(type=types.Type.STRING),
+                    "ai_answer": types.Schema(type=types.Type.STRING),
+                    "ai_question": types.Schema(type=types.Type.STRING),
                 },
-                required=["target", "answer", "toi"],
+                required=["object_label", "ai_answer", "ai_question"],
             )
             self._gencfg_json = types.GenerateContentConfig(
                 response_mime_type="application/json",

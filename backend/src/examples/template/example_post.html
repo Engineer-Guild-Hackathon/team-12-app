@@ -22,10 +22,10 @@
             <b>"user_id":</b> "{{ p.user_id }}"<br />
             <b>"img_id":</b> "{{ p.img_id }}"<br />
             </div>
-            <p><b>"question":</b> "{{ p.question }}"</p>
-            <p><b>"target":</b> "{{ p.target }}"</p>
-            <p><b>"answer":</b> "{{ p.answer }}"</p>
-            <p><b>"toi":</b> "{{ p.toi }}"</p>
+            <p><b>"user_question":</b> "{{ p.user_question }}"</p>
+            <p><b>"object_label":</b> "{{ p.object_label }}"</p>
+            <p><b>"ai_answer":</b> "{{ p.ai_answer }}"</p>
+            <p><b>"ai_question":</b> "{{ p.ai_question }}"</p>
             <p><b>"location":</b> "{{ p.location }}"</p>
             <p><b>"latitude":</b> {{ p.latitude }}</p>
             <p><b>"longitude":</b> {{ p.longitude }}</p>
@@ -48,17 +48,17 @@
         <label for="img_id">img_id (UUID):</label>
         <input type="text" id="img_id" name="img_id" value="{{ form.img_id }}" required />
 
-        <label for="question">question:</label>
-        <input type="text" id="question" name="question" value="{{ form.question }}" required />
+        <label for="user_question">user_question:</label>
+        <input type="text" id="user_question" name="user_question" value="{{ form.user_question }}" required />
 
-        <label for="target">target:</label>
-        <input type="text" id="target" name="target" value="{{ form.target }}" required />
+        <label for="object_label">object_label:</label>
+        <input type="text" id="object_label" name="object_label" value="{{ form.object_label }}" required />
 
-        <label for="answer">answer:</label>
-        <input type="text" id="answer" name="answer" value="{{ form.answer }}" required />
+        <label for="ai_answer">ai_answer:</label>
+        <input type="text" id="ai_answer" name="ai_answer" value="{{ form.ai_answer }}" required />
 
-        <label for="toi">toi:</label>
-        <input type="text" id="toi" name="toi" value="{{ form.toi }}" required />
+        <label for="ai_question">ai_question:</label>
+        <input type="text" id="ai_question" name="ai_question" value="{{ form.ai_question }}" required />
 
         <label for="latitude">latitute(緯度):</label>
         <input type="number" id="latitude" name="latitude" value="{{ form.latitude }}" step="0.000001" min="-90" max="90" required />
@@ -92,10 +92,10 @@
         const payload = {
             user_id:  fd.get("user_id"),
             img_id:   fd.get("img_id"),
-            question: fd.get("question"),
-            target:   fd.get("target"),
-            answer:   fd.get("answer"),
-            toi:      fd.get("toi"),
+            user_question: fd.get("user_question"),
+            object_label:   fd.get("object_label"),
+            ai_answer:   fd.get("ai_answer"),
+            ai_question:      fd.get("ai_question"),
             location: fd.get("location"),
             latitude: Number(fd.get("latitude")),
             longitude:Number(fd.get("longitude")),

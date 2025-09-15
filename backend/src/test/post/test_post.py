@@ -101,10 +101,10 @@ def sample_payload(sample_ids):
         post_id=sample_ids["post_id"],
         user_id=sample_ids["user_id"],
         img_id=sample_ids["img_id"],
-        question="Q",
-        target="TGT",
-        answer="ANS",
-        toi="TOI",
+        user_question="Q",
+        object_label="TGT",
+        ai_answer="ANS",
+        ai_question="TOI",
         location="札幌市 中央区",
         latitude=43.068,
         longitude=141.35,
@@ -142,7 +142,7 @@ def test_create_post_success(patch_session_engine, sample_payload):
     result = PostService.create_post(**sample_payload)
     assert result is not None
     assert result["post_id"] == str(sample_payload["post_id"])
-    assert result["question"] == "Q"
+    assert result["user_question"] == "Q"
     assert result["latitude"] == sample_payload["latitude"]
     assert "date" in result and result["date"] is not None
 
@@ -169,10 +169,10 @@ def test_get_post_found(patch_session_engine, sample_payload):
         post_id=sample_payload["post_id"],
         user_id=sample_payload["user_id"],
         img_id=sample_payload["img_id"],
-        question="Q",
-        target="TGT",
-        answer="ANS",
-        toi="TOI",
+        user_question="Q",
+        object_label="TGT",
+        ai_answer="ANS",
+        ai_question="TOI",
         location="札幌市 中央区",
         latitude=43.068,
         longitude=141.35,
@@ -207,10 +207,10 @@ def test_list_posts_returns_dicts(patch_session_engine):
         post_id=uuid.uuid4(),
         user_id=uuid.uuid4(),
         img_id=uuid.uuid4(),
-        question="Q1",
-        target="T1",
-        answer="A1",
-        toi="TOI1",
+        user_question="Q1",
+        object_label="T1",
+        ai_answer="A1",
+        ai_question="TOI1",
         location="札幌市1",
         latitude=43.1,
         longitude=141.1,
@@ -221,10 +221,10 @@ def test_list_posts_returns_dicts(patch_session_engine):
         post_id=uuid.uuid4(),
         user_id=uuid.uuid4(),
         img_id=uuid.uuid4(),
-        question="Q2",
-        target="T2",
-        answer="A2",
-        toi="TOI2",
+        user_question="Q2",
+        object_label="T2",
+        ai_answer="A2",
+        ai_question="TOI2",
         location="札幌市2",
         latitude=43.2,
         longitude=141.2,
@@ -235,8 +235,8 @@ def test_list_posts_returns_dicts(patch_session_engine):
     got = PostService.list_posts(limit=10, offset=0)
     assert isinstance(got, list)
     assert len(got) == 2
-    assert got[0]["question"] == "Q1"
-    assert got[1]["target"] == "T2"
+    assert got[0]["user_question"] == "Q1"
+    assert got[1]["object_label"] == "T2"
 
 
 def test_list_posts_before_filters_old(patch_session_engine):
@@ -244,10 +244,10 @@ def test_list_posts_before_filters_old(patch_session_engine):
         post_id=uuid.uuid4(),
         user_id=uuid.uuid4(),
         img_id=uuid.uuid4(),
-        question="old",
-        target="t",
-        answer="a",
-        toi="toi",
+        user_question="old",
+        object_label="t",
+        ai_answer="a",
+        ai_question="TOI",
         location="loc",
         latitude=1.0,
         longitude=2.0,
@@ -258,7 +258,7 @@ def test_list_posts_before_filters_old(patch_session_engine):
     cutoff = dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=15)
     got = PostService.list_posts_before(cutoff)
     assert len(got) == 1
-    assert got[0]["question"] == "old"
+    assert got[0]["user_question"] == "old"
 
 
 def test_list_posts_raises_when_session_not_ready(monkeypatch):

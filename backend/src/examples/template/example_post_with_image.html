@@ -44,17 +44,17 @@
                 <label for="user_id">user_id (UUID):</label>
                 <input type="text" id="user_id" name="user_id" value="{{ post_form.user_id }}" required />
                 
-                <label for="question">question:</label>
-                <input type="text" id="question" name="question" value="{{ post_form.question }}" required />
+                <label for="user_question">user_question:</label>
+                <input type="text" id="user_question" name="user_question" value="{{ post_form.user_question }}" required />
 
-                <label for="target">target:</label>
-                <input type="text" id="target" name="target" value="{{ post_form.target }}" required />
+                <label for="object_label">object_label:</label>
+                <input type="text" id="object_label" name="object_label" value="{{ post_form.object_label }}" required />
 
-                <label for="answer">answer:</label>
-                <input type="text" id="answer" name="answer" value="{{ post_form.answer }}" required />
+                <label for="ai_answer">ai_answer:</label>
+                <input type="text" id="ai_answer" name="ai_answer" value="{{ post_form.ai_answer }}" required />
 
-                <label for="toi">toi:</label>
-                <input type="text" id="toi" name="toi" value="{{ post_form.toi }}" required />
+                <label for="ai_question">ai_question:</label>
+                <input type="text" id="ai_question" name="ai_question" value="{{ post_form.ai_question }}" required />
 
                 <label for="latitude">latitude(緯度):</label>
                 <input type="number" id="latitude" name="latitude" value="{{ post_form.latitude }}" step="0.000001" min="-90" max="90" required />
@@ -87,10 +87,10 @@
                 const payload = {
                     user_id: fd.get("user_id"),
                     img_id: fd.get("img_id"),
-                    question: fd.get("question"),
-                    target: fd.get("target"),
-                    answer: fd.get("answer"),
-                    toi: fd.get("toi"),
+                    user_question: fd.get("user_question"),
+                    object_label: fd.get("object_label"),
+                    ai_answer: fd.get("ai_answer"),
+                    ai_question: fd.get("ai_question"),
                     latitude: Number(fd.get("latitude")),
                     longitude: Number(fd.get("longitude")),
                 };
@@ -153,10 +153,10 @@
                             <b>post_id:</b> ${post.post_id}<br>
                             <b>img_id:</b> ${post.img_id}<br>
                         </div>
-                        <p><b>question:</b> ${post.question}</p>
-                        <p><b>target:</b> ${post.target}</p>
-                        <p><b>answer:</b> ${post.answer}</p>
-                        <p><b>toi:</b> ${post.toi}</p>
+                        <p><b>user_question:</b> ${post.user_question}</p>
+                        <p><b>object_label:</b> ${post.object_label}</p>
+                        <p><b>ai_answer:</b> ${post.ai_answer}</p>
+                        <p><b>ai_question:</b> ${post.ai_question}</p>
                         <p><b>location:</b> ${post.location}</p>
                         <div style="margin-top: 1em;">
                             <button id="deleteButton" style="background-color: #d9534f;">この投稿と画像を削除 (Step 5)</button>

@@ -19,10 +19,10 @@ def _default_form_values():
         "user_id": str(uuid.uuid4()),
         "img_id": str(uuid.uuid4()),
         # 入力フィールド
-        "question": "LLMに質問したい内容のテキスト",
-        "target": "写真の対象物名のテキスト",
-        "answer": "LLMの回答内容のテキスト",
-        "toi": "LLMからの「問い」のテキスト",
+        "user_question": "LLMに質問したい内容のテキスト",
+        "object_label": "写真の対象物名のテキスト",
+        "ai_answer": "LLMの回答内容のテキスト",
+        "ai_question": "LLMからの「問い」のテキスト",
         # 緯度経度（札幌駅あたりをデフォルトに）
         "latitude": 43.0680,
         "longitude": 141.3500,
