@@ -11,13 +11,13 @@ import {
   DISCOVERY_HEADER_HEIGHT_FOR_BROWSER,
 } from "@/constants/styles";
 import { useIsPWA } from "@/hooks/useIsPWA";
-import { Post } from "@/types/post"; // Post型をインポート
+import { Post } from "@/types/post";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import { useEffect, useState } from "react";
 import { fetchImage } from "@/libs/fetchImage";
 import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
+import { useImage } from "@/hooks/useImage";
 
-// コンポーネントが受け取るプロパティの型を定義
 interface DiscoveryDetailViewProps {
   post: Post;
   iconName: TimeOfDayIcon;
@@ -33,33 +33,8 @@ export default function DiscoveryDetailView({
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
     : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
-  const [imageUrl, setImageUrl] = useState<string>(
-    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`,
-  );
 
-  useEffect(() => {
-    if (!post.img_id) {
-      setImageUrl("");
-      return;
-    }
-
-    const controller = new AbortController();
-
-    fetchImage(post.img_id, { signal: controller.signal })
-      .then((res) => {
-        setImageUrl(res.signed_url);
-      })
-      .catch((err) => {
-        if (!isAbortOrCancel(err)) {
-          const e = err instanceof Error ? err : new Error(String(err));
-          console.error("Error fetching image:", e);
-        }
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, [post.img_id]);
+  const { imageUrl, isLoading, isError } = useImage(post.img_id);
 
   return (
     <Box sx={{ px: 3 }}>
@@ -72,19 +47,15 @@ export default function DiscoveryDetailView({
           pb: "20px",
         }}
       >
-        {/* 1. 画像 */}
-        {/* TODO: useEffectの反映に時間がかかるのでローディング作る */}
-        {/* できればサーバーサイドで読み込みたい */}
+        {isLoading && <div>画像を読み込んでいます...</div>}
+        {isError && <div>画像の読み込みに失敗しました</div>}{" "}
         {imageUrl && <DiscoveryImage src={imageUrl} alt={post.object_label} />}
-
         {/* 2. 質問 */}
         <QuestionBubble text={post.user_question} />
-
         {/* 3. AIからの回答 (はっけん) */}
         <Section icon={<IoLeaf size={32} />} title="はっけん">
           {post.ai_answer}
         </Section>
-
         {/* 4. AIからの問い */}
         <Section icon={<IoSearch size={32} />} title="問い">
           {post.ai_question}

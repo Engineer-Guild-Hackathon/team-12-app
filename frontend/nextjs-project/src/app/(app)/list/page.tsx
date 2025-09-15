@@ -6,31 +6,14 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
 import { fetchPosts } from "@/libs/fetchPosts";
 import { Post } from "@/types/post";
+import { usePosts } from "@/hooks/usePosts";
 
 export default function ListPage() {
   const { latitude, longitude, loading, error } = useGeolocation();
-  // 本当は初期値にmockPostsを入れたくない
-  // mapメソッドでエラーになるためいったんmockPostsを入れたい
-  const [posts, setPosts] = useState<Post[]>([]);
 
-  useEffect(() => {
-    const ac = new AbortController();
-    const fetchAndSetPosts = async () => {
-      try {
-        // TODO: ローディング処理つける
-        const signal = ac.signal;
-        const fetchedPosts = await fetchPosts(signal);
-        setPosts(fetchedPosts);
-      } finally {
-        // TODO: ローディング終了処理つける
-      }
-    };
+  const { posts, isLoading, isError } = usePosts();
 
-    fetchAndSetPosts();
-    return () => ac.abort();
-  }, []);
-
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
         <CircularProgress />
