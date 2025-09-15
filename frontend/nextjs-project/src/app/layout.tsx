@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import Layout from "@/components/ui/Layout";
+import AuthInitializer from "@/components/features/auth/AuthInitializer";
 
 const yomogi = Yomogi({
   weight: ["400"],
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={yomogi.variable}>
         <AppRouterCacheProvider>
+          <AuthInitializer />
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Layout>{children}</Layout>

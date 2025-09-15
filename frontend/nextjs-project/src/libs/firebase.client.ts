@@ -1,5 +1,9 @@
 import { initializeApp, getApps } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
@@ -14,3 +18,5 @@ if (!config.apiKey || !config.authDomain || !config.projectId) {
 
 export const app = getApps().length ? getApps()[0] : initializeApp(config);
 export const auth = getAuth(app);
+
+setPersistence(auth, browserLocalPersistence);
