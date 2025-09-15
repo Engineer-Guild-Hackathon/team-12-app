@@ -13,9 +13,6 @@ import {
 import { useIsPWA } from "@/hooks/useIsPWA";
 import { Post } from "@/types/post";
 import { TimeOfDayIcon } from "@/utils/formatDate";
-import { useEffect, useState } from "react";
-import { fetchImage } from "@/libs/fetchImage";
-import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
 import { useImage } from "@/hooks/useImage";
 
 interface DiscoveryDetailViewProps {

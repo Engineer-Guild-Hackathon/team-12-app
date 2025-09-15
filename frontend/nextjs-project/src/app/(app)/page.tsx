@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Box } from "@mui/material";
 import { Post } from "@/types/post";
 import { useGeolocation } from "@/hooks/useGeolocation";
@@ -8,8 +8,6 @@ import { usePosts } from "@/hooks/usePosts";
 
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
-import { fetchPosts } from "@/libs/fetchPosts";
-import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
 const Map = dynamic(() => import("@/components/features/map/Map"), {
   ssr: false,
 });

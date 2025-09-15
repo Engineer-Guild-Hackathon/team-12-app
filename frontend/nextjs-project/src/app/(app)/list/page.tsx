@@ -1,17 +1,15 @@
 "use client";
 
 import { Box, Typography, CircularProgress, Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
-import { fetchPosts } from "@/libs/fetchPosts";
-import { Post } from "@/types/post";
 import { usePosts } from "@/hooks/usePosts";
 
 export default function ListPage() {
   const { latitude, longitude, loading, error } = useGeolocation();
 
-  const { posts, isLoading, isError } = usePosts();
+  const { posts, isLoading } = usePosts();
 
   if (loading || isLoading) {
     return (
