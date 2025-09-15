@@ -11,7 +11,9 @@ export default function ListPage() {
 
   const { posts, isLoading } = usePosts();
 
-  if (loading || isLoading) {
+  const isPageLoading = loading || isLoading;
+
+  if (isPageLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
         <CircularProgress />
@@ -30,7 +32,7 @@ export default function ListPage() {
   return (
     <Box sx={{ px: 2.5, py: 2, overflowY: "scroll", height: "100%" }}>
       <Stack spacing={1.5}>
-        {posts.map((post) => (
+        {(posts || []).map((post) => (
           <DiscoveryCard
             key={post.post_id}
             post={post}
