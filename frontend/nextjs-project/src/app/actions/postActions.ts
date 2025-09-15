@@ -40,8 +40,8 @@ export async function createPostAction(
 
     // 投稿が成功したら、関連するページのキャッシュを無効化します。
     // これにより、SWRなどでデータを表示しているページが自動的に更新されます。
-    revalidatePath("/"); // ホームページなど
-    revalidatePath("/discoveries"); // 投稿一覧ページなどを想定
+    revalidatePath("/"); // ホームページ
+    revalidatePath("/list"); // 投稿一覧ページ
 
     return { data: json.post as Post };
   } catch (e) {

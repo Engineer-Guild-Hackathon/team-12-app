@@ -26,6 +26,7 @@
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0-rc.2",
     "react-webcam": "^7.2.0",
+    "swr": "^2.3.6",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
