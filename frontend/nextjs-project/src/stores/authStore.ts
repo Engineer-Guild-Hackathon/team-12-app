@@ -4,7 +4,6 @@ import { create } from "zustand";
 import { auth } from "@/libs/firebase.client";
 import {
   onIdTokenChanged,
-  //   onAuthStateChanged,
   signOut as firebaseSignOut,
   User,
 } from "firebase/auth";
