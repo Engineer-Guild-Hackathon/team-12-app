@@ -3,19 +3,12 @@ import { AiResponse } from "@/stores/discoveryCreationStore";
 import { createPost } from "@/libs/createNewPost";
 
 type UseReviewingStep = {
-  //   currentStep: CreationStep;
   photoData: string | null;
-  question: string | null; // ユーザーが入力した質問
+  user_question: string | null; // ユーザーが入力した質問
   aiResponse: AiResponse | null; // AIからのレスポンス
   img_id: string; // アップロード結果
-  //   isGenerating: boolean; // AIが応答を生成中かどうかのフラグ
-  //   startCreation: () => void;
   nextStep: () => void;
   prevStep: () => void;
-  //   cancelCreation: () => void;
-  //   setPhotoData: (data: string) => void;
-  //   setQuestion: (question: string) => void;
-  //   generateAiResponse: () => Promise<void>; // AI応答を生成する非同期アクション
   latitude: number | null;
   longitude: number | null;
 };
@@ -23,7 +16,7 @@ type UseReviewingStep = {
 export const useReviewingStep = (params: UseReviewingStep) => {
   const {
     photoData,
-    question,
+    user_question,
     aiResponse,
     nextStep,
     latitude,
@@ -39,7 +32,7 @@ export const useReviewingStep = (params: UseReviewingStep) => {
       );
       return;
     }
-    if (!photoData || !question || !aiResponse) {
+    if (!photoData || !user_question || !aiResponse) {
       alert("AIからのデータが不十分です。もう1度最初からやり直してください。");
       return;
     }
@@ -51,10 +44,10 @@ export const useReviewingStep = (params: UseReviewingStep) => {
       const payload = {
         user_id: "123e4567-e89b-12d3-a456-426614174000", // 認証から取得する想定
         img_id,
-        question,
-        target: aiResponse.target,
-        answer: aiResponse.answer,
-        toi: aiResponse.toi,
+        user_question,
+        object_label: aiResponse.object_label,
+        ai_answer: aiResponse.ai_answer,
+        ai_question: aiResponse.ai_question,
         latitude,
         longitude,
       };

@@ -8,13 +8,14 @@ export interface Post {
   user_id: string;
   /** 投稿された画像のID (UUID) */
   img_id: string;
-  /** AIに投げかけた質問文 */
-  question: string;
+  /** ユーザーがAIに投げかけた質問文 */
+  user_question: string;
   /** AIからの回答文 */
-  answer: string;
-  /** アプリから提供された「問い」 (もしあれば) */
-  target: string;
-  toi: string;
+  ai_answer: string;
+  /** AIが生成した問い */
+  ai_question: string;
+  /** 画像の物体ラベル */
+  object_label: string;
   location: string;
   /** 緯度 (数値) */
   latitude: number;

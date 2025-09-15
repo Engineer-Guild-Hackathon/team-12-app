@@ -4,7 +4,7 @@ const BACKEND_BASE = process.env.BACKEND_BASE ?? "http://back-server:5000";
 
 /**
  * 期待する入力:
- * - form-data: file(画像), question(文字列) など
+ * - form-data: file(画像), user_question(文字列) など
  * 返却:
  * - バックエンドの JSON をそのまま透過
  */

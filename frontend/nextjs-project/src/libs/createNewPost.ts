@@ -3,10 +3,10 @@ import { Post } from "@/types/post";
 export type CreatePostBody = {
   user_id: string;
   img_id: string;
-  question: string;
-  target: string;
-  answer: string;
-  toi: string;
+  user_question: string;
+  object_label: string;
+  ai_answer: string;
+  ai_question: string;
   latitude: number | null;
   longitude: number | null;
 };

@@ -75,19 +75,19 @@ export default function DiscoveryDetailView({
         {/* 1. 画像 */}
         {/* TODO: useEffectの反映に時間がかかるのでローディング作る */}
         {/* できればサーバーサイドで読み込みたい */}
-        {imageUrl && <DiscoveryImage src={imageUrl} alt={post.target} />}
+        {imageUrl && <DiscoveryImage src={imageUrl} alt={post.object_label} />}
 
         {/* 2. 質問 */}
-        <QuestionBubble text={post.question} />
+        <QuestionBubble text={post.user_question} />
 
         {/* 3. AIからの回答 (はっけん) */}
         <Section icon={<IoLeaf size={32} />} title="はっけん">
-          {post.answer}
+          {post.ai_answer}
         </Section>
 
-        {/* 4. アプリからの問い */}
+        {/* 4. AIからの問い */}
         <Section icon={<IoSearch size={32} />} title="問い">
-          {post.toi}
+          {post.ai_question}
         </Section>
       </Stack>
     </Box>

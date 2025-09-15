@@ -119,7 +119,7 @@
         <label>画像URL（任意・ファイルと併用不可推奨）</label>
         <input type="url" name="image_url" placeholder="https://example.com/image.jpg" />
         <label>質問（任意）</label>
-        <input type="text" name="question" placeholder="この画像に写っている物体について説明してください。" />
+        <input type="text" name="user_question" placeholder="この画像に写っている物体について説明してください。" />
         <div class="row"><button type="submit">解析する</button></div>
       </form>
       <div id="resultArea" class="result-area"></div>
@@ -141,13 +141,13 @@
 
     const esc = (v) => (v ?? "").toString().replace(/[&<>]/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[s]));
 
-    // data の形が { title, discovery, question } または { answer: { ... } } の両方に対応
+    // data の形が { object_label, ai_answer, ai_question } または { ai_response: { ... } } の両方に対応
     function pickAnswerFields(data) {
-      const src = data?.answer && typeof data.answer === 'object' ? data.answer : data;
+      const src = data?.ai_response && typeof data.ai_response === 'object' ? data.ai_response : data;
       return {
-        title: src?.title ?? "",
-        discovery: src?.discovery ?? "",
-        question: src?.question ?? ""
+        object_label: src?.object_label ?? "",
+        ai_answer: src?.ai_answer ?? "",
+        ai_question: src?.ai_question ?? ""
       };
     }
 
@@ -174,21 +174,21 @@
         const data = await resp.json().catch(() => ({}));
 
         if (resp.ok) {
-          const { title, discovery, question } = pickAnswerFields(data);
+          const { object_label, ai_answer, ai_question } = pickAnswerFields(data);
           resultArea.innerHTML = `
             <div class="result-grid">
               <div class="card">
-                <h3>title</h3>
-                <div>${esc(title)}</div>
+                <h3>object_label</h3>
+                <div>${esc(object_label)}</div>
               </div>
               <div class="card">
-                <h3>discovery</h3>
-                <div>${esc(discovery)}</div>
+                <h3>ai_answer</h3>
+                <div>${esc(ai_answer)}</div>
               </div>
             </div>
             <div class="card" style="margin-top:12px">
-              <h3>question</h3>
-              <div>${esc(question)}</div>
+              <h3>ai_question</h3>
+              <div>${esc(ai_question)}</div>
             </div>
             <div class="result-area">
               <h3>Raw JSON</h3>

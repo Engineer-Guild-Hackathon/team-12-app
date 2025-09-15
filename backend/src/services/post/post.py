@@ -21,10 +21,10 @@ class Post(Base):
     user_id = sa.Column(sa.Uuid, nullable=False)
     img_id = sa.Column(sa.Uuid, nullable=False)
 
-    question = sa.Column(sa.Text, nullable=False)
-    target = sa.Column(sa.Text, nullable=False)
-    answer = sa.Column(sa.Text, nullable=False)
-    toi = sa.Column(sa.Text, nullable=False)
+    user_question = sa.Column(sa.Text, nullable=False)
+    object_label = sa.Column(sa.Text, nullable=False)
+    ai_answer = sa.Column(sa.Text, nullable=False)
+    ai_question = sa.Column(sa.Text, nullable=False)
     location = sa.Column(sa.Text, nullable=False)
 
     latitude = sa.Column(sa.Float, nullable=False)
@@ -51,10 +51,10 @@ class PostService:
         post_id: uuid.UUID,
         user_id: uuid.UUID,
         img_id: uuid.UUID,
-        question: str,
-        target: str,
-        answer: str,
-        toi: str,
+        user_question: str,
+        object_label: str,
+        ai_answer: str,
+        ai_question: str,
         location: str,
         latitude: float,
         longitude: float,
@@ -70,10 +70,10 @@ class PostService:
                     post_id=post_id,
                     user_id=user_id,
                     img_id=img_id,
-                    question=question,
-                    target=target,
-                    answer=answer,
-                    toi=toi,
+                    user_question=user_question,
+                    object_label=object_label,
+                    ai_answer=ai_answer,
+                    ai_question=ai_question,
                     location=location,
                     latitude=latitude,
                     longitude=longitude,
@@ -90,17 +90,15 @@ class PostService:
                     "post_id": str(post.post_id),
                     "user_id": str(post.user_id),
                     "img_id": str(post.img_id),
-                    "question": post.question,
-                    "target": post.target,
-                    "answer": post.answer,
-                    "toi": post.toi,
+                    "user_question": post.user_question,
+                    "object_label": post.object_label,
+                    "ai_answer": post.ai_answer,
+                    "ai_question": post.ai_question,
                     "location": post.location,
                     "latitude": post.latitude,
                     "longitude": post.longitude,
                     "date": post.date.isoformat() if post.date else None,
-                    "updated_at": post.updated_at.isoformat()
-                    if post.updated_at
-                    else None,
+                    "updated_at": post.updated_at.isoformat() if post.updated_at else None,
                 }
             except Exception as e:
                 session.rollback()
@@ -122,10 +120,10 @@ class PostService:
                 "post_id": str(post.post_id),
                 "user_id": str(post.user_id),
                 "img_id": str(post.img_id),
-                "question": post.question,
-                "target": post.target,
-                "answer": post.answer,
-                "toi": post.toi,
+                "user_question": post.user_question,
+                "object_label": post.object_label,
+                "ai_answer": post.ai_answer,
+                "ai_question": post.ai_question,
                 "location": post.location,
                 "latitude": post.latitude,
                 "longitude": post.longitude,
@@ -140,22 +138,16 @@ class PostService:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            posts = (
-                session.query(Post)
-                .order_by(Post.date.desc())
-                .limit(limit)
-                .offset(offset)
-                .all()
-            )
+            posts = session.query(Post).order_by(Post.date.desc()).limit(limit).offset(offset).all()
             return [
                 {
                     "post_id": str(p.post_id),
                     "user_id": str(p.user_id),
                     "img_id": str(p.img_id),
-                    "question": p.question,
-                    "target": p.target,
-                    "answer": p.answer,
-                    "toi": p.toi,
+                    "user_question": p.user_question,
+                    "object_label": p.object_label,
+                    "ai_answer": p.ai_answer,
+                    "ai_question": p.ai_question,
                     "location": p.location,
                     "latitude": p.latitude,
                     "longitude": p.longitude,
@@ -172,21 +164,16 @@ class PostService:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            rows = (
-                session.query(Post)
-                .filter(Post.date < cutoff)
-                .order_by(Post.date.desc())
-                .all()
-            )
+            rows = session.query(Post).filter(Post.date < cutoff).order_by(Post.date.desc()).all()
             return [
                 {
                     "post_id": str(p.post_id),
                     "user_id": str(p.user_id),
                     "img_id": str(p.img_id),
-                    "question": p.question,
-                    "target": p.target,
-                    "answer": p.answer,
-                    "toi": p.toi,
+                    "user_question": p.user_question,
+                    "object_label": p.object_label,
+                    "ai_answer": p.ai_answer,
+                    "ai_question": p.ai_question,
                     "location": p.location,
                     "latitude": p.latitude,
                     "longitude": p.longitude,
