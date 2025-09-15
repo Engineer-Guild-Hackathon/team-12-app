@@ -2,6 +2,7 @@
 backend/data/
 .env
 gcloud.env
+frontend.env
 __pycache__
 .ruff_cache
 .pytest_cache

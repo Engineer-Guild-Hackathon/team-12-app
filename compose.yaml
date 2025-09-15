@@ -4,8 +4,15 @@ services:
     ports:
       - "3000:3000"
     tty: true
+    env_file:
+      - frontend.env
     environment:
       NODE_ENV: "production"
+      NEXT_PUBLIC_FB_API_KEY: ${NEXT_PUBLIC_FB_API_KEY}
+      NEXT_PUBLIC_FB_AUTH_DOMAIN: ${NEXT_PUBLIC_FB_AUTH_DOMAIN}
+      NEXT_PUBLIC_FB_PROJECT_ID: ${NEXT_PUBLIC_FB_PROJECT_ID}
+      NEXT_PUBLIC_BACKEND_ORIGIN: ${NEXT_PUBLIC_BACKEND_ORIGIN}
+      NEXT_PUBLIC_SITE_ORIGIN: ${NEXT_PUBLIC_SITE_ORIGIN}
     healthcheck:
       test: ['CMD-SHELL', 'wget -q -T 5 -O - http://localhost:3000/ > /dev/null 2>&1 || exit 1']
       interval: 15s
@@ -27,6 +34,8 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/adc.json
       SERVICE_ACCOUNT_CREDENTIALS: /var/secrets/service_account.json
       PYTHONPATH: /backend
+      ALLOW_ORIGIN: ${ALLOW_ORIGIN}
+      DATABASE_URL: postgresql+pg8000://
     volumes:
       - "${ADC_JSON}:/var/secrets/adc.json:ro"
       - ./service_account.json:/var/secrets/service_account.json:ro
