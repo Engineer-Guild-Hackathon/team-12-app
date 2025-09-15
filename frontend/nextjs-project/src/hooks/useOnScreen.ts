@@ -2,7 +2,7 @@
 
 import { useState, useEffect, RefObject } from "react";
 
-export function useOnScreen(ref: RefObject<HTMLElement>): boolean {
+export function useOnScreen(ref: RefObject<HTMLElement | null>): boolean {
   const [isOnScreen, setIsOnScreen] = useState(false);
 
   useEffect(() => {
