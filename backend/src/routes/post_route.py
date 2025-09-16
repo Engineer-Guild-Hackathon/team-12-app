@@ -7,6 +7,7 @@ from flask import Blueprint, jsonify, request
 from geopy.geocoders import Nominatim
 from src.services.image.image import ImageService
 from src.services.post.post import PostService
+from src.services.vertex_ai.search import SearchService
 
 post_bp = Blueprint("post_bp", __name__)
 
@@ -254,3 +255,51 @@ def delete_post(post_id: uuid.UUID):
         return jsonify(payload), 200
     except RuntimeError as e:
         return jsonify({"error": "DB初期化エラー", "detail": str(e)}), 503
+
+
+@post_bp.route("/api/posts/<uuid:post_id>/related", methods=["GET"])
+def list_related_posts(post_id: uuid.UUID):
+    """指定された投稿に類似した投稿を取得"""
+    try:
+        # 1. クライアントが要求する取得件数を'limit'パラメータから取得
+        limit = int(request.args.get("limit", "10"))
+        if not 1 <= limit <= 20:
+            return _bad_request("limitは1から20の間で指定してください")
+
+        # 2. SearchServiceを呼び出して、類似した投稿の post_id リストを取得
+        related_ids_str = SearchService.find_related_posts(post_id=post_id, num_results=limit)
+
+        if related_ids_str is None:
+            return jsonify({"error": "関連投稿の検索に失敗しました"}), 500
+
+        if not related_ids_str:
+            # 類似投稿が見つからなかった場合、空のリストを返す
+            return jsonify({"posts": []}), 200
+
+        # 3. 取得した post_id リストを元に、PostServiceを使って投稿を取得
+        related_posts = []
+        for post_id_str in related_ids_str:
+            try:
+                # 文字列の post_id をUUIDオブジェクトに変換
+                related_post_id = uuid.UUID(post_id_str)
+                # PostServiceを使って、DBから投稿の詳細を取得
+                post_details = PostService.get_post(related_post_id)
+
+                # DBに投稿が存在する場合のみリストに追加
+                # (検索インデックスとDBの同期ラグで、IDはあっても実体がない場合があるため)
+                if post_details:
+                    related_posts.append(post_details)
+
+            except (ValueError, TypeError):
+                print(f"WARN: Invalid UUID format returned from search service: {post_id_str}")
+                continue
+
+        # 4. 最終的な投稿オブジェクトのリストを返す
+        return jsonify({"posts": related_posts}), 200
+
+    except ValueError:
+        return _bad_request("limitは整数で指定してください")
+    except RuntimeError as e:
+        return jsonify({"error": "サービス初期化エラー", "detail": str(e)}), 503
+    except Exception as e:
+        return jsonify({"error": "予期せぬエラーが発生しました", "detail": str(e)}), 500
