@@ -66,8 +66,8 @@ Created service account [back-server-sa].
 
 ### 0-3. 環境変数を Secret Manager に登録 (更新されるたびに実行)
 ```bash
-printf 'egh202509' | gcloud secrets create gcp_project \
-  --project="egh202509" --data-file=-
+printf 'egh202509:asia-northeast1:dev-postgre-holo' | gcloud secrets versions add gcp_project \
+  --project=egh202509 --data-file=-
 printf 'holodb' | gcloud secrets create db_name \
   --project="egh202509" --data-file=-
 printf 'postgres' | gcloud secrets create db_user \
@@ -95,6 +95,22 @@ Created version [1] of the secret [version_id].
 Created version [1] of the secret [gemini_api_key].
 ```
 
+### 0-4. 鍵ファイル方式を Secret Manager に登録 (更新されるたびに実行)
+```bash
+gcloud secrets create signer_sa_key --project=egh202509 --data-file=./service_account.json
+```
+```bash
+# 実行結果
+Created version [1] of the secret [signer_sa_key].
+```
+#### SA にアクセス権を付与
+```bash
+gcloud secrets add-iam-policy-binding signer_sa_key \
+  --project=egh202509 \
+  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+```
+
 ## 1. 初回デプロイ (手動)
 ### 1-1. イメージがあるかを確認
 ```bash
@@ -115,36 +131,42 @@ Listed 0 items.
 > その場合、`--platform linux/amd64` オプションを `docker build` コマンドに追加して、x86_64(AMD64) 向けのイメージをビルドする必要がある。
 
 ```bash
-docker build --platform linux/amd64 -f .devcontainer/backend/Dockerfile -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}/back-server:init .
+docker buildx build \
+  --platform linux/amd64 \
+  -f .devcontainer/backend/Dockerfile \
+  -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}/back-server:latest \
+  --push .
 ```
 ```bash
 # 実行結果
-+] Building 93.0s (15/15) FINISHED                                                    docker:orbstack
- => [internal] load build definition from Dockerfile                                              0.0s
- => => transferring dockerfile: 1.19kB                                                            0.0s
- => [internal] load metadata for docker.io/library/python:3.12-slim                               3.7s
- (省略)
- => => writing image sha256:(省略)      0.0s
- => => naming to asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server:init          0.0s
+ => [internal] load build definition from Dockerfile                0.0s
+ => => transferring dockerfile: 1.19kB                              0.0s
+ => [internal] load metadata for docker.io/library/python:3.12-slim 0.9s
+ => [internal] load .dockerignore                                   0.0s
+ => => transferring context: 2B                                     0.0s
+ => [internal] load build context                                   0.0s
+ => => transferring context: 6.26kB                                 0.0s
+ => [ 1/10] FROM docker.io/library/python:3.12-slim@sha256:         0.0s
+ => => resolve docker.io/library/python:3.12-slim@sha256:           0.0s
+ => CACHED [ 2/10] RUN apt-get update && apt-get -y install locales && localedef -f UTF-8 -i ja_JP  0.0s
+ => CACHED [ 3/10] WORKDIR /backend                                 0.0s
+ => CACHED [ 4/10] RUN apt-get update && apt-get install -y --no-install-recommends build-essential  0.0s
+ => CACHED [ 5/10] COPY backend/pyproject.toml backend/poetry.lock ./   0.0s
+ => CACHED [ 6/10] RUN python -m pip install --upgrade pip && pip install poetry                            0.0s
+ => CACHED [ 7/10] RUN pip install gunicorn                         0.0s
+ => CACHED [ 8/10] RUN poetry config virtualenvs.create false       0.0s
+ => CACHED [ 9/10] RUN poetry install --no-interaction --no-ansi $( [ -n "" ] && echo --with "" )       0.0s
+ => CACHED [10/10] COPY backend/ ./                                 0.0s
+ => exporting to image     31.9s
+ => => exporting layers     0.0s
+ => => exporting manifest sha256:                0.0s
+ => => exporting config sha256:                  0.0s
+ => => exporting attestation manifest sha256:    0.0s
+ => => exporting manifest list sha256:           0.0s
+ => => pushing layers                            30.8s
+ => => pushing manifest for asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server:latest@sha2  1.1s
+ => [auth] egh202509/holo-app-repo/back-server:pull,push token for asia-northeast1-docker.pkg.dev           0.0s
 ```
-```bash
-gcloud auth configure-docker ${REGION}-docker.pkg.dev -q
-```
-```bash
-# 実行結果
-Adding credentials for: asia-northeast1-docker.pkg.dev
-Docker configuration file updated.
-```
-```bash
-docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}/${BACK_SVC}:init
-```
-```bash
-# 出力結果
-The push refers to repository [asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server]
-(省略)
-init: digest: sha256:(省略) size: 3056
-```
-
 もう一度、イメージがあるかを確認すると、
 ```bash
 gcloud artifacts docker images list \
@@ -154,17 +176,20 @@ gcloud artifacts docker images list \
 Listing items under project egh202509, location asia-northeast1, repository holo-app-repo.
 
 IMAGE                                                               DIGEST                                                                   CREATE_TIME          UPDATE_TIME          SIZE
-asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server  sha256:b2fe73a71c1c04f891e2de1923e6e7fe2a1542d96aedca7802c61a02341b3ff1  2025-09-15T19:47:16  2025-09-15T19:47:16  450365539
+asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server  sha256:(省略)  2025-09-15T19:47:16  2025-09-15T19:47:16  450365539
 ```
 ちゃんと上がってる。
 
 #### ローカル例 (フロントエンド)
 ```bash
-docker build --platform linux/amd64 -f .devcontainer/frontend/Dockerfile.prod -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}/front-app:init .
+docker buildx build \
+  --platform linux/amd64 \
+  -f .devcontainer/frontend/Dockerfile.prod \
+  -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}/front-app:latest \
+  --push .
 ```
-```bash
-docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}/${FRONT_SVC}:init
-```
+
+#### イメージの確認
 ```bash
 gcloud artifacts docker images list \
   ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}
@@ -187,7 +212,12 @@ asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/front-app    sha256:13f(�
 gcloud projects add-iam-policy-binding egh202509 \
   --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor"
-Updated IAM policy for project [egh202509].
+```
+#### バックエンドのサービスアカウントに Cloud SQL へのアクセス権を付与
+```bash
+gcloud projects add-iam-policy-binding egh202509 \
+  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+  --role="roles/cloudsql.client"
 ```
 
 #### バックエンドの Cloud Run サービスをデプロイ
@@ -199,16 +229,19 @@ gcloud run deploy back-server \
   --image asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server:latest \
   --no-allow-unauthenticated \
   --service-account back-server-sa@egh202509.iam.gserviceaccount.com \
+  --add-cloudsql-instances egh202509:asia-northeast1:dev-postgre-holo \
   --port 8080 \
   --timeout 300 \
-  --set-secrets GCP_PROJECT=gcp_project:latest \
-  --set-secrets DB_NAME=db_name:latest \
-  --set-secrets DB_USER=db_user:latest \
-  --set-secrets GCS_BUCKET=gcs_bucket:latest \
-  --set-secrets PROJECT_ID=project_id:latest \
-  --set-secrets SECRET_ID=secret_id:latest \
-  --set-secrets VERSION_ID=version_id:latest \
-  --set-secrets GEMINI_API_KEY=gemini_api_key:latest \
+  --update-secrets GCP_PROJECT=gcp_project:latest \
+  --update-secrets DB_NAME=db_name:latest \
+  --update-secrets DB_USER=db_user:latest \
+  --update-secrets GCS_BUCKET=gcs_bucket:latest \
+  --update-secrets PROJECT_ID=project_id:latest \
+  --update-secrets SECRET_ID=secret_id:latest \
+  --update-secrets VERSION_ID=version_id:latest \
+  --update-secrets GEMINI_API_KEY=gemini_api_key:latest \
+  --update-secrets=/var/secrets/service_account.json=signer_sa_key:latest \
+  --set-env-vars SERVICE_ACCOUNT_CREDENTIALS=/var/secrets/service_account.json \
   --command sh \
   --args=-c \
   --args='exec gunicorn -w 2 --chdir /backend/src -b 0.0.0.0:${PORT} app:app'
@@ -242,17 +275,16 @@ gcloud run services add-iam-policy-binding back-server \
 ```bash
 BACK_URL="https://back-server-708894055394.asia-northeast1.run.app"
 ```
-
 #### フロントエンドの Cloud Run サービスをデプロイ
 frontend → 認証不要
 ```bash
 gcloud run deploy front-app \
   --project egh202509 \
   --region  asia-northeast1 \
-  --image   asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/front-app:init \
+  --image   asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/front-app:latest \
   --allow-unauthenticated \
   --service-account front-app-sa@egh202509.iam.gserviceaccount.com \
-  --set-env-vars NODE_ENV=production,BACKEND_BASE_URL="${BACK_URL}"
+  --set-env-vars NODE_ENV=production,BACKEND_BASE_URL="${BACK_URL},REQUIRE_ID_TOKEN=true"
 ```
 ```bash
 # 実行結果
@@ -268,6 +300,23 @@ Service URL: https://front-app-708894055394.asia-northeast1.run.app
 これで、フロントエンドの Cloud Run サービスができた。
 
 ## その他
+### フロントエンドからバックエンドの health をチェックする
+```bash
+RONT_URL="$(gcloud run services describe front-app --project egh202509 --region asia-northeast1 --format='value(status.url)')"
+curl -i "${FRONT_URL}/api/ping-back"
+```
+```bash
+# 実行結果
+HTTP/2 200 
+vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
+content-type: application/json
+date: Tue, 16 Sep 2025 07:17:38 GMT
+server: Google Frontend
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+{"ok":true}
+```
+
 ### 古いイメージの削除
 イメージ本体 (特定の digest) を削除する例 (関連タグも消すなら --delete-tags を付与)
 ```bash
