@@ -47,12 +47,8 @@ export default function DiscoveryCard({
   const iconComponent = getIconComponent(iconName);
 
   // カードが画面に表示されてから、初めて画像取得のフックを有効化する
-  // const { imageUrl } = useImage(isOnScreen ? post.img_id : null);
-  const { imageUrl } = useImage(null);
-
-  // const displayImageUrl =
-  //   // imageUrl ||
-  //   `https://placehold.co/600x400/CCD6A6/333?text=Image+ID:${post.img_id}`;
+  const { imageUrl } = useImage(isOnScreen ? post.img_id : null);
+  // const { imageUrl } = useImage(null);
 
   const distance = useMemo(() => {
     if (currentLocation.latitude && currentLocation.longitude) {
@@ -94,20 +90,6 @@ export default function DiscoveryCard({
           height: "100%",
         }}
       >
-        {/*
-        <CardMedia
-          component="img"
-          image={displayImageUrl}
-          alt={post.object_label}
-          sx={{
-            objectFit: "cover",
-            width: "100px",
-            height: "100px",
-            minWidth: "100px",
-            minHeight: "100px",
-            borderRadius: 2,
-          }}
-        /> */}
         {imageUrl ? (
           // imageUrlが存在する場合は、今まで通り画像を表示
           <CardMedia

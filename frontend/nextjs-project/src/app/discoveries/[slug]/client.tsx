@@ -15,13 +15,17 @@ export default function DiscoveryDetailClient({ slug }: { slug: string }) {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center", // 横方向の中央揃え
-          alignItems: "center", // 縦方向の中央揃え
-          height: "100%", // 親要素の高さ全体を使う
-          width: "100%", // 親要素の幅全体を使う
+          flexDirection: "column", // ★ 1. 要素を縦に並べる
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100svh", // ★ 2. このままでOK (レイアウトに高さがある場合)
+          // もし親の高さが不明な場合は minHeight: '100%' or '80vh' などに
+          gap: 2, // ★ 3. 要素間の余白を追加（任意）
         }}
       >
         <LeafyLoader />
+        <div>discover</div>
       </Box>
     );
   if (isError || !post) return <div>投稿の読み込みに失敗しました。</div>;

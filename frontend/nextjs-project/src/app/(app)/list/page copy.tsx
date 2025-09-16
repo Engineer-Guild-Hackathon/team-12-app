@@ -1,8 +1,10 @@
-import { Box } from "@mui/material";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
+import { Suspense } from "react";
+import { Box } from "@mui/material";
+import ListClient from "./client";
 
-export default function Loading() {
-  // サーバーのローディング画面として、作成したアニメーションを表示
+// Suspenseのローディング中に表示するコンポーネント
+function ListLoading() {
   return (
     <Box
       sx={{
@@ -14,7 +16,14 @@ export default function Loading() {
       }}
     >
       <LeafyLoader />
-      <div>loading.tsx</div>
     </Box>
+  );
+}
+
+export default function ListPage() {
+  return (
+    <Suspense fallback={<ListLoading />}>
+      <ListClient />
+    </Suspense>
   );
 }
