@@ -15,6 +15,7 @@ import { Post } from "@/types/post";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import { useImage } from "@/hooks/useImage";
 import { useAuthStore } from "@/stores/authStore";
+import { useDiscoveryDelete } from "@/hooks/useDiscoveryDelete";
 
 interface DiscoveryDetailViewProps {
   post: Post;
@@ -29,6 +30,7 @@ export default function DiscoveryDetailView({
 }: DiscoveryDetailViewProps) {
   const user = useAuthStore((state) => state.user);
   const isPostOwner = user?.uid === post.user_id;
+  const { deleteDiscovery } = useDiscoveryDelete();
   const isPWA = useIsPWA();
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
@@ -65,7 +67,7 @@ export default function DiscoveryDetailView({
         {isPostOwner && (
           <Button
             variant="contained"
-            onClick={() => {}}
+            onClick={() => deleteDiscovery(post.post_id)}
             autoFocus
             sx={{
               backgroundColor: "kinako.900",
