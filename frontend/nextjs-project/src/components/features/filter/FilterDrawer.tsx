@@ -1,5 +1,6 @@
 "use client";
 
+import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 import {
   SwipeableDrawer,
   Box,
@@ -64,7 +65,7 @@ export default function FilterDrawer({
       sx={{
         "& .MuiDrawer-paper": {
           borderRadius: "16px 16px 0 0",
-          maxWidth: "440px",
+          maxWidth: `${MOBILE_MAX_WIDTH}px`,
           margin: "0 auto",
         },
       }}
