@@ -29,6 +29,10 @@
 - ローカルでも `npm run format` を実行すれば、CI と同じチェックを手元で再現できます。  
 - CI が失敗した場合は、まず `npm run format` を実行してフォーマットを揃え、再度コミット・プッシュしてください。
 - `npm run format` は、front-appのコンテナ内で実行してください。
+- ホスト(ローカル)環境から `npm run format` を実行する場合は、以下のコマンドを使用してください。
+```bash
+docker exec -it front-app sh -lc 'npm run format'
+```
 
 
 ## Git Pre-commit Hook 導入手順

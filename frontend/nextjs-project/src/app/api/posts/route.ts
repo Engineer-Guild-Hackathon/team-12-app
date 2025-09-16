@@ -1,6 +1,6 @@
+// ./frontend/nextjs-project/src/app/api/posts/route.ts
+import { backendFetch } from "@/libs/backendFetch";
 import { NextResponse } from "next/server";
-
-const BACKEND_BASE = process.env.BACKEND_BASE ?? "http://back-server:5000";
 
 export const GET = async (req: Request) => {
   const url = new URL(req.url);
@@ -9,10 +9,13 @@ export const GET = async (req: Request) => {
   const limit = Math.max(qLimit, 1);
   const offset = Math.max(qOffset, 0);
 
-  const res = await fetch(
-    `${BACKEND_BASE}/api/posts?limit=${limit}&offset=${offset}`,
+  const res = await backendFetch(
+    `/api/posts?limit=${limit}&offset=${offset}`,
     // 認証ヘッダ等があればここで付与
-    { cache: "no-store" },
+    {
+      method: "GET",
+      cache: "no-store",
+    },
   );
 
   const body = await res.text();
@@ -26,7 +29,7 @@ export const GET = async (req: Request) => {
 
 export const POST = async (req: Request) => {
   const json = await req.json().catch(() => ({}));
-  const res = await fetch(`${BACKEND_BASE}/api/posts`, {
+  const res = await backendFetch(`/api/posts`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     cache: "no-store",

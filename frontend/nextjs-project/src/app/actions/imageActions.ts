@@ -1,8 +1,8 @@
+// ./frontend/nextjs-project/src/app/actions/imageActions.ts
 "use server";
 
 import { ImageAnalysisResponse } from "@/types/apiResponse";
-
-const BACKEND_BASE = process.env.BACKEND_BASE ?? "http://back-server:5000";
+import { backendFetch } from "@/libs/backendFetch";
 
 /**
  * 画像と質問をFlaskに送信し、AIの解析結果を取得するためのサーバーアクション。
@@ -13,10 +13,10 @@ export async function analyzeImageAction(
   formData: FormData,
 ): Promise<{ data?: ImageAnalysisResponse; error?: string }> {
   try {
-    const res = await fetch(`${BACKEND_BASE}/api/image_analyze`, {
+    const res = await backendFetch(`/api/image_analyze`, {
       method: "POST",
-      body: formData,
       cache: "no-store",
+      body: formData,
     });
     const json = await res.json();
     if (!res.ok) {
