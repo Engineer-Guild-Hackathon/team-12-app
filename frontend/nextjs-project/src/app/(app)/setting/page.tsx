@@ -1,16 +1,23 @@
 "use client";
 
 import LoginGuideModal from "@/components/features/auth/LoginGuideModal";
-import LogoutButton from "@/components/features/auth/LogoutButton";
+import SubmitButton from "@/components/ui/SubmitButton";
 import { useAuthStore } from "@/stores/authStore";
 import { Stack } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function SettingPage() {
-  const { user } = useAuthStore();
+  const { signOut, user } = useAuthStore();
+  const router = useRouter();
+  const handleLogout = async () => {
+    await signOut();
+    alert("ログアウトしました");
+    router.push("/");
+  };
   return (
     <>
       <Stack pt={2}>
-        <LogoutButton />
+        <SubmitButton onClick={handleLogout}>ログアウト</SubmitButton>
       </Stack>
       <LoginGuideModal open={user === null} />
     </>
