@@ -110,6 +110,8 @@ export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
         style={{ height: "100%", width: "100%" }}
         zoomControl={false}
         ref={setMap}
+        worldCopyJump={true}
+        minZoom={3}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
