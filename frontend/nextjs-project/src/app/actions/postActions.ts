@@ -1,7 +1,9 @@
+// ./frontend/nextjs-project/src/app/actions/postActions.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
 import { Post } from "@/types/post";
+import { backendFetch } from "@/libs/backendFetch";
 
 export type CreatePostPayload = {
   user_id: string;
@@ -14,8 +16,6 @@ export type CreatePostPayload = {
   longitude: number;
 };
 
-const BACKEND_BASE = process.env.BACKEND_BASE ?? "http://back-server:5000";
-
 /**
  * 新しい投稿を作成するためのサーバーアクション。
  * @param payload フロントエンドから渡される新しい投稿のデータ
@@ -25,7 +25,7 @@ export async function createPostAction(
   payload: CreatePostPayload,
 ): Promise<{ data?: Post; error?: string }> {
   try {
-    const res = await fetch(`${BACKEND_BASE}/api/posts`, {
+    const res = await backendFetch(`/api/posts`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       cache: "no-store",

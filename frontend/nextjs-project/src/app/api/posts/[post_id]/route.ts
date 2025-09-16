@@ -1,6 +1,6 @@
+// ./frontend/nextjs-project/src/app/api/posts/[post_id]/route.ts
+import { backendFetch } from "@/libs/backendFetch";
 import { NextRequest, NextResponse } from "next/server";
-
-const BACKEND_BASE = process.env.BACKEND_BASE ?? "http://back-server:5000";
 
 // v1–v5対応の簡易UUIDチェック
 const UUID_RE =
@@ -20,8 +20,9 @@ export const GET = async (
     );
   }
 
-  const res = await fetch(`${BACKEND_BASE}/api/posts/${post_id}`, {
+  const res = await backendFetch(`/api/posts/${post_id}`, {
     // 認証ヘッダ等があればここで付与
+    method: "GET",
     cache: "no-store",
   });
 
