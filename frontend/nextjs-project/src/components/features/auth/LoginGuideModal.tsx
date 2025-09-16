@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -44,7 +43,7 @@ export default function LoginGuideModal({
       <Box
         sx={{ display: "flex", flexDirection: "row-reverse", height: "12px" }}
       >
-        <IoClose size={20} onClick={closeModal} />
+        <IoClose size={20} onClick={closeModal} cursor="pointer" />
       </Box>
       <DialogContent
         sx={{
