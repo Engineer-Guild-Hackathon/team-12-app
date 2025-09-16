@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { IoLeaf, IoSearch } from "react-icons/io5";
 import QuestionBubble from "@/components/ui/QuestioinBubble";
 import Section from "@/components/ui/Section";
@@ -14,6 +14,7 @@ import { useIsPWA } from "@/hooks/useIsPWA";
 import { Post } from "@/types/post";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import { useImage } from "@/hooks/useImage";
+import { useAuthStore } from "@/stores/authStore";
 
 interface DiscoveryDetailViewProps {
   post: Post;
@@ -26,6 +27,8 @@ export default function DiscoveryDetailView({
   iconName,
   formattedDate,
 }: DiscoveryDetailViewProps) {
+  const user = useAuthStore((state) => state.user);
+  const isPostOwner = user?.uid === post.user_id;
   const isPWA = useIsPWA();
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
@@ -57,6 +60,31 @@ export default function DiscoveryDetailView({
         <Section icon={<IoSearch size={32} />} title="問い">
           {post.ai_question}
         </Section>
+        {/* TODO: 仮で置いているので必ずfigmaを参照する */}
+        {/* 5. 投稿削除ボタン */}
+        {isPostOwner && (
+          <Button
+            variant="contained"
+            onClick={() => {}}
+            autoFocus
+            sx={{
+              backgroundColor: "kinako.900",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "kinako.700",
+              },
+              padding: "8px 16px",
+              height: "56px",
+              width: "80%",
+              borderRadius: "200px",
+              textTransform: "none",
+              fontSize: "20px",
+              alignSelf: "center",
+            }}
+          >
+            この投稿を削除する
+          </Button>
+        )}
       </Stack>
     </Box>
   );
