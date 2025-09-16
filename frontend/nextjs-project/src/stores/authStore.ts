@@ -13,6 +13,7 @@ export type AuthState = {
   status: "idle" | "loading" | "authenticated" | "unauthenticated";
   initialized: boolean;
   initializing: boolean;
+  error: "token_fetch_failed" | "signout_failed" | undefined;
   // 初期化を一度だけ実行する
   init: () => void;
   // 最新のIDトークンを取得（必要ならforceRefreshも可能）

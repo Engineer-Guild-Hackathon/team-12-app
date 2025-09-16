@@ -55,7 +55,7 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
     }
 
     const payload: CreatePostPayload = {
-      user_id: user?.uid, // 認証から取得する想定
+      user_id: user?.uid ?? "", // userがnullの時useEffectが走るので""は想定されない
       img_id,
       user_question,
       object_label: aiResponse.object_label,
