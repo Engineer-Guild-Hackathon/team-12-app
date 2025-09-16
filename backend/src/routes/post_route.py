@@ -269,6 +269,9 @@ def list_related_posts(post_id: uuid.UUID):
         # 2. SearchServiceを呼び出して、類似した投稿の post_id リストを取得
         related_ids_str = SearchService.find_related_posts(post_id=post_id, num_results=limit)
 
+        print("--- DEBUG: Inside list_related_posts ---")
+        print(f"[1] SearchService returned IDs: {related_ids_str}")
+
         if related_ids_str is None:
             return jsonify({"error": "関連投稿の検索に失敗しました"}), 500
 
@@ -278,21 +281,30 @@ def list_related_posts(post_id: uuid.UUID):
 
         # 3. 取得した post_id リストを元に、PostServiceを使って投稿を取得
         related_posts = []
-        for post_id_str in related_ids_str:
+        for i, post_id_str in enumerate(related_ids_str):
             try:
                 # 文字列の post_id をUUIDオブジェクトに変換
                 related_post_id = uuid.UUID(post_id_str)
                 # PostServiceを使って、DBから投稿の詳細を取得
                 post_details = PostService.get_post(related_post_id)
 
+                print(f"[2-{i + 1}] Searching for ID: {post_id_str}")
+                if post_details:
+                    print(f"  -> Found Post: {post_details['post_id']}")
+                    related_posts.append(post_details)
+                else:
+                    print("  -> NOT FOUND in Database.")
+
                 # DBに投稿が存在する場合のみリストに追加
                 # (検索インデックスとDBの同期ラグで、IDはあっても実体がない場合があるため)
-                if post_details:
-                    related_posts.append(post_details)
+                #if post_details:
+                #    related_posts.append(post_details)
 
             except (ValueError, TypeError):
                 print(f"WARN: Invalid UUID format returned from search service: {post_id_str}")
                 continue
+
+        print("---------------------------------------")
 
         # 4. 最終的な投稿オブジェクトのリストを返す
         return jsonify({"posts": related_posts}), 200
