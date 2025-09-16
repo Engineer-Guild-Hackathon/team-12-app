@@ -5,7 +5,6 @@ import { Box } from "@mui/material";
 import { Post } from "@/types/post";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
-import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams } from "next/navigation";
 
 import dynamic from "next/dynamic";
