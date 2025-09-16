@@ -15,8 +15,8 @@ app.logger.setLevel(logging.INFO)
 
 # --- Blueprint 登録 ---
 # /api/images/* と /api/posts/* の両方のエンドポイントが有効になる
-app.register_blueprint(image_bp, url_prefix="/api")
-app.register_blueprint(post_bp, url_prefix="/api")
+app.register_blueprint(image_bp, url_prefix="")
+app.register_blueprint(post_bp, url_prefix="")
 
 
 def fetch_related_posts(search_post_id_str, request, app):
@@ -55,6 +55,7 @@ def fetch_related_posts(search_post_id_str, request, app):
 
         related_posts.append(post_data)
     return related_posts
+
 
 @app.route("/", methods=["GET"])
 def index():
