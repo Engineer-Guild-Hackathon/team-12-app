@@ -26,6 +26,7 @@ export default function HeaderTop({
         display: "flex",
         justifyContent: "space-between",
         height: `${headerHeight - 48}px`,
+        alignItems: "center",
       }}
     >
       {onFilterClick && <Box sx={{ width: 40 }} />}
@@ -51,7 +52,11 @@ export default function HeaderTop({
 
       {/* 右側のフィルターアイコン */}
       {onFilterClick && (
-        <IconButton color="inherit" onClick={onFilterClick} sx={{ width: 40 }}>
+        <IconButton
+          color="inherit"
+          onClick={onFilterClick}
+          sx={{ width: 40, height: 40, borderRadius: "50%" }}
+        >
           <SvgIcon>
             <IoFilterOutline />
           </SvgIcon>
