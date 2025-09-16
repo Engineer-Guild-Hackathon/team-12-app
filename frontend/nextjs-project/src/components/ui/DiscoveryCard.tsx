@@ -17,6 +17,7 @@ import TimestampDisplay from "./TimestampDisplay";
 import getIconComponent from "@/utils/getIconComponent";
 import { useImage } from "@/hooks/useImage";
 import { useOnScreen } from "@/hooks/useOnScreen";
+import { IoLeaf } from "react-icons/io5";
 
 interface DiscoveryCardProps {
   post: Post;
@@ -46,11 +47,12 @@ export default function DiscoveryCard({
   const iconComponent = getIconComponent(iconName);
 
   // カードが画面に表示されてから、初めて画像取得のフックを有効化する
-  const { imageUrl } = useImage(isOnScreen ? post.img_id : null);
+  // const { imageUrl } = useImage(isOnScreen ? post.img_id : null);
+  const { imageUrl } = useImage(null);
 
-  const displayImageUrl =
-    imageUrl ||
-    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`;
+  // const displayImageUrl =
+  //   // imageUrl ||
+  //   `https://placehold.co/600x400/CCD6A6/333?text=Image+ID:${post.img_id}`;
 
   const distance = useMemo(() => {
     if (currentLocation.latitude && currentLocation.longitude) {
@@ -92,6 +94,7 @@ export default function DiscoveryCard({
           height: "100%",
         }}
       >
+        {/*
         <CardMedia
           component="img"
           image={displayImageUrl}
@@ -104,7 +107,43 @@ export default function DiscoveryCard({
             minHeight: "100px",
             borderRadius: 2,
           }}
-        />
+        /> */}
+        {imageUrl ? (
+          // imageUrlが存在する場合は、今まで通り画像を表示
+          <CardMedia
+            component="img"
+            image={imageUrl}
+            alt={post.object_label}
+            sx={{
+              objectFit: "cover",
+              width: "100px",
+              height: "100px",
+              minWidth: "100px",
+              minHeight: "100px",
+              borderRadius: 2,
+            }}
+          />
+        ) : (
+          // imageUrlがない場合は、アイコンを表示する
+          <CardMedia
+            // componentを"div"に変更
+            component="div"
+            sx={{
+              width: "100px",
+              height: "100px",
+              minWidth: "100px",
+              minHeight: "100px",
+              borderRadius: 2,
+              color: "yomogi.600", // アイコンの色を設定
+              backgroundColor: "yomogi.200", // テーマの色に合わせて調整
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <IoLeaf size={40} />
+          </CardMedia>
+        )}
         <CardContent
           sx={{
             flexGrow: 1,

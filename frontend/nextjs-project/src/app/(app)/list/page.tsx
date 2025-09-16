@@ -5,26 +5,42 @@ import React from "react";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
 import { usePosts } from "@/hooks/usePosts";
+import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 
 export default function ListPage() {
-  const { latitude, longitude, loading, error } = useGeolocation();
+  const {
+    latitude,
+    longitude,
+    loading: geolocationLoading,
+    error: geolocationError,
+  } = useGeolocation();
 
-  const { posts, isLoading } = usePosts();
+  const { posts, isError: postsError } = usePosts();
 
-  const isPageLoading = loading || isLoading;
+  // const isPageLoading = loading || isLoading;
 
-  if (isPageLoading) {
+  if (geolocationLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-        <CircularProgress />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center", // 横方向の中央揃え
+          alignItems: "center", // 縦方向の中央揃え
+          height: "100%", // 親要素の高さ全体を使う
+          width: "100%", // 親要素の幅全体を使う
+        }}
+      >
+        <LeafyLoader />
       </Box>
     );
   }
 
-  if (error) {
+  if (geolocationError || postsError) {
     return (
       <Typography color="error" sx={{ p: 4 }}>
-        現在地の取得に失敗しました: {error}
+        {geolocationError
+          ? `現在地の取得に失敗しました: ${geolocationError}`
+          : "投稿の取得に失敗しました。"}
       </Typography>
     );
   }

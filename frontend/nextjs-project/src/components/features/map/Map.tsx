@@ -8,6 +8,7 @@ import RecenterButton from "./RecenterButton";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import PostMarker from "./PostMarker";
+import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 
 interface MapProps {
   posts: Post[];
@@ -28,7 +29,19 @@ export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
   const { position, setMap, isLoading, handleRecenter } = useMapControl();
 
   if (isLoading) {
-    return <p>現在地を取得しています...</p>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center", // 横方向の中央揃え
+          alignItems: "center", // 縦方向の中央揃え
+          height: "100%", // 親要素の高さ全体を使う
+          width: "100%", // 親要素の幅全体を使う
+        }}
+      >
+        <LeafyLoader />
+      </Box>
+    );
   }
 
   return (
