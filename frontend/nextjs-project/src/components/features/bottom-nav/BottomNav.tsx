@@ -17,10 +17,14 @@ import {
   IoLeaf,
   IoPersonOutline,
   IoPerson,
+  IoLogInOutline,
+  IoLogIn,
 } from "react-icons/io5";
 import { useIsPWA } from "@/hooks/useIsPWA";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function BottomNav() {
+  const { user } = useAuthStore();
   const pathname = usePathname();
   const isPWA = useIsPWA();
   const bottomNavHeight = isPWA
@@ -57,12 +61,21 @@ export default function BottomNav() {
           inactiveIcon={<IoLeafOutline size={32} />}
         />
         <RecordButton />
-        <NavActionButton
-          label="せってい"
-          href="/setting"
-          activeIcon={<IoPerson size={32} />}
-          inactiveIcon={<IoPersonOutline size={32} />}
-        />
+        {user === null ? (
+          <NavActionButton
+            label="ログイン"
+            href="/login"
+            activeIcon={<IoLogIn size={32} />}
+            inactiveIcon={<IoLogInOutline size={32} />}
+          />
+        ) : (
+          <NavActionButton
+            label="せってい"
+            href="/setting"
+            activeIcon={<IoPerson size={32} />}
+            inactiveIcon={<IoPersonOutline size={32} />}
+          />
+        )}
       </BottomNavigation>
     </Box>
   );
