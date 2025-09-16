@@ -43,6 +43,43 @@ export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
     };
   }, [map]);
 
+  // アニメーションとマーカーアイコンのスタイルを<head>に注入します
+  useEffect(() => {
+    const styleId = "map-marker-styles";
+    if (document.getElementById(styleId)) return;
+
+    const styleElement = document.createElement("style");
+    styleElement.id = styleId;
+    styleElement.innerHTML = `
+      /* 両方のマーカーに共通の基本スタイル */
+      .custom-marker-default,
+      .custom-marker-selected {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        border: none; /* Leafletのデフォルトの枠線を消す */
+      }
+
+      /* 通常時のマーカーアイコン */
+      .custom-marker-default {
+        background-image: url('/marker.svg');
+      }
+
+      /* 選択時のマーカーアイコン */
+      .custom-marker-selected {
+        background-image: url('/selected-marker.svg');
+      }
+  `;
+    document.head.appendChild(styleElement);
+
+    return () => {
+      const existingStyle = document.getElementById(styleId);
+      if (existingStyle) {
+        document.head.removeChild(existingStyle);
+      }
+    };
+  }, []);
+
   if (geolocationLoading) {
     return (
       <Box
