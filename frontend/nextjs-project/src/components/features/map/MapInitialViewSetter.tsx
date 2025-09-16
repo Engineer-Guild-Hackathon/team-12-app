@@ -20,6 +20,7 @@ export default function MapInitialViewSetter({
     if (map && position) {
       map.setView(position, 16);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]); // mapインスタンスが準備できた時に実行
 
   return null;
