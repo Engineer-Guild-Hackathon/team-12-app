@@ -288,9 +288,9 @@ def list_related_posts(post_id: uuid.UUID):
                 # PostServiceを使って、DBから投稿の詳細を取得
                 post_details = PostService.get_post(related_post_id)
 
-                print(f"[2-{i + 1}] Searching for ID: {post_id_str}")
+                #print(f"[2-{i + 1}] Searching for ID: {post_id_str}")
                 if post_details:
-                    print(f"  -> Found Post: {post_details['post_id']}")
+                    #print(f"  -> Found Post: {post_details['post_id']}")
                     related_posts.append(post_details)
                 else:
                     print("  -> NOT FOUND in Database.")
@@ -304,7 +304,7 @@ def list_related_posts(post_id: uuid.UUID):
                 print(f"WARN: Invalid UUID format returned from search service: {post_id_str}")
                 continue
 
-        print("---------------------------------------")
+        #print(f"[3] Total related posts found: {related_posts}")
 
         # 4. 最終的な投稿オブジェクトのリストを返す
         return jsonify({"posts": related_posts}), 200

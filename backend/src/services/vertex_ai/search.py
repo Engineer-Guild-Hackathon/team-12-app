@@ -51,15 +51,6 @@ class SearchService:
 
             response = client.search(request=request)
 
-            print("DEBUG: response raw repr:", repr(response))
-            # もし protobuf オブジェクトなら to_dict 的に取り出してみる
-            try:
-                import google.protobuf.json_format as pf
-
-                print("DEBUG: response json:", pf.MessageToJson(response._pb))
-            except Exception:
-                pass
-
             related_post_ids = []
             for result in response.results:
                 if result.document.id != str(post_id):
