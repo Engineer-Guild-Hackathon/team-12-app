@@ -1,31 +1,100 @@
 "use client";
 
 import useSWR from "swr";
+import { useMemo } from "react";
 import { Post } from "@/types/post";
 import { fetcher } from "@/libs/fetcher";
+import { calculateDistance } from "@/utils/calculateDistance";
 
 type PostsApiResponse = {
   posts: Post[];
 };
 
-/**
- * 投稿の一覧を取得するためのSWRカスタムフック。
- * 15秒ごとの自動更新機能付き。
- */
-export function usePosts() {
-  const key = "/api/posts?limit=100&offset=0";
+type UsePostsParams = {
+  sort?: string | null;
+  scope?: string | null;
+  userId?: string | null; // 「自分」を判定するためのユーザーID
+  currentLocation?: { latitude: number | null; longitude: number | null }; // 「近い順」ソート用
+};
 
-  const { data, error } = useSWR<PostsApiResponse>(key, fetcher, {
-    // 300000ミリ秒（5分）ごとにデータを自動的に再取得します。
-    // ユーザーが別のタブを見ているときや、ネットワークがオフラインのときは、
-    // SWRが賢くポーリングを一時停止してくれます。
-    refreshInterval: 300000,
+/**
+ * 投稿の一覧を取得し、フロントエンドでフィルタリングとソートを行うSWRカスタムフック
+ * 30秒ごとの自動更新機能付き。
+ * @param params sort, scope, userId, currentLocation を含むオブジェクト
+ */
+export function usePosts({
+  sort,
+  scope,
+  userId,
+  currentLocation,
+}: UsePostsParams = {}) {
+  const key = `/api/posts?limit=100&offset=0`;
+
+  const { data, error, mutate } = useSWR<PostsApiResponse>(key, fetcher, {
+    refreshInterval: 30000,
+    dedupingInterval: 30000,
+    // キャッシュにデータがあれば、マウント時に再検証しない
+    revalidateOnMount: false,
     suspense: true,
   });
 
+  const filteredPosts = useMemo(() => {
+    if (!data?.posts) {
+      return [];
+    }
+
+    // --- 1. スコープによるフィルタリング ---
+    let postsToFilter = data.posts;
+    if (scope === "mine") {
+      postsToFilter = data.posts.filter((post) => post.user_id === userId);
+    }
+
+    // --- 2. ソート順による並び替え ---
+    const sortedPosts = [...postsToFilter]; // 元の配列を破壊しないようにコピー
+
+    switch (sort) {
+      case "newest":
+        sortedPosts.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        );
+        break;
+      case "oldest":
+        sortedPosts.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        );
+        break;
+      case "nearest":
+        if (currentLocation?.latitude && currentLocation?.longitude) {
+          sortedPosts.sort((a, b) => {
+            const distA = calculateDistance(
+              currentLocation.latitude!,
+              currentLocation.longitude!,
+              a.latitude,
+              a.longitude,
+            );
+            const distB = calculateDistance(
+              currentLocation.latitude!,
+              currentLocation.longitude!,
+              b.latitude,
+              b.longitude,
+            );
+            return distA - distB;
+          });
+        }
+        break;
+      // TODO: "recommended" (おすすめ順)を実装する
+      default:
+        break;
+    }
+
+    return sortedPosts;
+
+    // data, sort, scope, userId, currentLocation のいずれかが変更された場合のみ再計算
+  }, [data, sort, scope, userId, currentLocation]);
+
   return {
-    posts: data?.posts,
-    // isLoading,
+    posts: filteredPosts, // フィルタリング・ソート済みの結果を返す
     isError: error,
+    mutate,
   };
 }

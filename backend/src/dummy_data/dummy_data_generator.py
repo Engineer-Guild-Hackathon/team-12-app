@@ -156,7 +156,7 @@ def dummy_data_generator() -> None:
         try:
             result_create_post = PostService.create_post(
                 post_id=uuid.UUID(str(d["post_id"])),
-                user_id=uuid.UUID(str(d["user_id"])),
+                user_id=d["user_id"],
                 img_id=img_id,
                 user_question=d["user_question"],
                 object_label=d["object_label"],
