@@ -20,6 +20,9 @@ export default function RecordButton() {
       setIsModalOpen(true);
     }
   };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
@@ -55,7 +58,7 @@ export default function RecordButton() {
           </Box>
         }
       />
-      <LoginGuideModal open={isModalOpen} />
+      <LoginGuideModal open={isModalOpen} closeModal={closeModal} />
     </>
   );
 }
