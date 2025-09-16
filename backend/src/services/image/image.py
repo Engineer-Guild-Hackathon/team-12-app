@@ -5,6 +5,7 @@ import os
 import uuid
 from typing import Any, Dict, Optional
 
+import google.auth
 import sqlalchemy as sa
 from google.cloud import storage
 from google.oauth2 import service_account
@@ -39,7 +40,9 @@ try:
     sa_credentials = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_CREDENTIALS,
     )
-    sa_storage_client = storage.Client(credentials=sa_credentials, project=sa_credentials.project_id)
+    sa_storage_client = storage.Client(
+        credentials=sa_credentials, project=sa_credentials.project_id
+    )
     sa_bucket = sa_storage_client.bucket(GCS_BUCKET)
 except Exception as e:
     print(f"ERROR: Failed to initialize SA GCS client for signing: {e}")
@@ -59,7 +62,9 @@ class Image(Base):
     size_bytes = sa.Column(sa.BigInteger, nullable=False)
     sha256_hex = sa.Column(sa.String(64), nullable=False)
     status = sa.Column(sa.Text, nullable=False)  # 'pending', 'stored', 'failed'
-    created_at = sa.Column(sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False)
+    created_at = sa.Column(
+        sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False
+    )
     updated_at = sa.Column(
         sa.TIMESTAMP(timezone=True),
         server_default=sa.func.now(),
@@ -134,7 +139,9 @@ class ImageService:
                             failed_image.status = "failed"
                             failed_session.commit()
                 except Exception as update_err:
-                    print(f"ERROR: failed to update image status to 'failed': {update_err}")
+                    print(
+                        f"ERROR: failed to update image status to 'failed': {update_err}"
+                    )
 
                 return None
 
@@ -151,14 +158,33 @@ class ImageService:
 
             # GCSオブジェクト名を取得
             object_name = image.gcs_uri.replace(f"gs://{GCS_BUCKET}/", "")
-            blob = sa_bucket.blob(object_name)
 
-            # 15分間有効なダウンロード用URLを生成
-            signed_url = blob.generate_signed_url(
-                version="v4",
-                expiration=datetime.timedelta(minutes=15),
-                method="GET",
-            )
+            # 署名用のバケット/資格情報の選択
+            if sa_bucket is not None:
+                # ★ 鍵ファイルがある（=ローカル開発や明示的に指定した時）
+                blob = sa_bucket.blob(object_name)
+                # 15分間有効なダウンロード用URLを生成
+                signed_url = blob.generate_signed_url(
+                    version="v4",
+                    expiration=datetime.timedelta(minutes=15),
+                    method="GET",
+                )
+            else:
+                # 鍵ファイルが無い（=Cloud Run 本番）
+                # ADC を使って IAMCredentials の SignBlob 経由で署名
+                # （back-server-sa に roles/iam.serviceAccountTokenCreator が必要）
+                default_creds, _ = google.auth.default()
+                # ADC クライアントで同じバケットの blob を作る
+                if adc_storage_client is None:
+                    raise RuntimeError("GCS client is not initialized")
+                blob = adc_storage_client.bucket(GCS_BUCKET).blob(object_name)
+                # 15分間有効なダウンロード用URLを生成
+                signed_url = blob.generate_signed_url(
+                    version="v4",
+                    expiration=datetime.timedelta(minutes=15),
+                    method="GET",
+                    credentials=default_creds,
+                )
 
             return {
                 "img_id": str(image.img_id),
@@ -191,7 +217,9 @@ class ImageService:
                     blob = adc_bucket.blob(object_name)
                     blob.delete()
                 except Exception as gcs_err:
-                    print(f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}")
+                    print(
+                        f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}"
+                    )
 
                 # 2. DBからレコードを削除
                 session.delete(image)
