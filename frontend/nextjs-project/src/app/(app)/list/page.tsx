@@ -74,7 +74,6 @@ export default function ListPage() {
             sx={{
               textAlign: "center",
               p: 1,
-              color: "text.secondary",
               color: "kinako.800",
             }}
           >
