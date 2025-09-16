@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Box } from "@mui/material";
 import { Post } from "@/types/post";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
+import { useFilterStore } from "@/stores/filterStore";
+import { useSearchParams } from "next/navigation";
 
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
@@ -15,18 +17,32 @@ const Map = dynamic(() => import("@/components/features/map/Map"), {
 export default function HomePage() {
   const { latitude, longitude } = useGeolocation();
   const currentLocation = { latitude, longitude };
+  const searchParams = useSearchParams();
+  const currentScope = searchParams.get("scope");
 
-  const { posts: fetchedPosts, isLoading, isError } = usePosts();
+  // TODO: 認証情報を取得
+  const user = {};
+
+  const {
+    posts: fetchedPosts,
+    isLoading,
+    isError,
+  } = usePosts({
+    scope: currentScope,
+    userId: user?.uid,
+    currentLocation: { latitude, longitude },
+  });
+
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   // マーカーがクリックされた時の処理
-  const handleMarkerClick = (post: Post) => {
+  const handleMarkerClick = useCallback((post: Post) => {
     setSelectedPost(post);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setSelectedPost(null);
-  };
+  }, []);
 
   if (isError) return <div>データの取得に失敗しました</div>;
 
