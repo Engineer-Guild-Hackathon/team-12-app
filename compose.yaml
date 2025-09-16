@@ -6,6 +6,8 @@ services:
     tty: true
     environment:
       NODE_ENV: "production"
+      BACKEND_BASE: "http://back-server:5000"
+      REQUIRE_ID_TOKEN: false
     healthcheck:
       test: ['CMD-SHELL', 'wget -q -T 5 -O - http://localhost:3000/ > /dev/null 2>&1 || exit 1']
       interval: 15s

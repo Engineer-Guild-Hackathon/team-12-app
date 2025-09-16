@@ -1,6 +1,6 @@
+// ./frontend/nextjs-project/src/app/api/images/[img_id]/route.ts
 import { NextResponse } from "next/server";
-
-const BACKEND_BASE = process.env.BACKEND_BASE ?? "http://back-server:5000";
+import { backendFetch } from "@/libs/backendFetch";
 
 // v1–v5 UUID の簡易チェック
 const UUID_RE =
@@ -18,8 +18,9 @@ export const GET = async (
     );
   }
 
-  const res = await fetch(`${BACKEND_BASE}/api/images/${img_id}`, {
+  const res = await backendFetch(`/api/images/${img_id}`, {
     // 認証ヘッダを付ける場合はここで追加
+    method: "GET",
     cache: "no-store",
   });
 
