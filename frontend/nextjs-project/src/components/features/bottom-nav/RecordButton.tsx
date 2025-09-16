@@ -3,7 +3,7 @@
 import { useAuthStore } from "@/stores/authStore";
 import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import { BottomNavigationAction, Box, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { PiCamera } from "react-icons/pi";
 import LoginGuideModal from "../auth/LoginGuideModal";
 
@@ -11,17 +11,22 @@ export default function RecordButton() {
   const startCreation = useDiscoveryCreationStore(
     (state) => state.startCreation,
   );
-  const { user } = useAuthStore();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user, isLoginGuideModalOpen, handleLoginGuideModal } = useAuthStore(
+    (state) => ({
+      user: state.user,
+      isLoginGuideModalOpen: state.isLoginGuideModalOpen,
+      handleLoginGuideModal: state.handleLoginGuideModal,
+    }),
+  );
   const handleStartCreation = () => {
     if (user !== null) {
       startCreation();
     } else {
-      setIsModalOpen(true);
+      handleLoginGuideModal(true);
     }
   };
   const closeModal = () => {
-    setIsModalOpen(false);
+    handleLoginGuideModal(false);
   };
 
   return (
@@ -58,7 +63,7 @@ export default function RecordButton() {
           </Box>
         }
       />
-      <LoginGuideModal open={isModalOpen} closeModal={closeModal} />
+      <LoginGuideModal open={isLoginGuideModalOpen} closeModal={closeModal} />
     </>
   );
 }

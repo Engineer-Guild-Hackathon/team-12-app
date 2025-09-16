@@ -28,7 +28,7 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
     img_id,
   } = params;
   const router = useRouter();
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
 
   // ログインせずに撮影機能は使用できないため想定していないが念のため
   // if節だと条件付きhook呼び出しのためuseEffectを使う

@@ -24,7 +24,7 @@ import { useIsPWA } from "@/hooks/useIsPWA";
 import { useAuthStore } from "@/stores/authStore";
 
 export default function BottomNav() {
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
   const pathname = usePathname();
   const isPWA = useIsPWA();
   const bottomNavHeight = isPWA

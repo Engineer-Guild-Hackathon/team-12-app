@@ -7,7 +7,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function SettingPage() {
-  const { signOut, user } = useAuthStore();
+  const { signOut, user } = useAuthStore((state) => ({
+    signOut: state.signOut,
+    user: state.user,
+  }));
   const router = useRouter();
   const handleLogout = async () => {
     await signOut();

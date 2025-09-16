@@ -14,11 +14,17 @@ export type AuthState = {
   initialized: boolean;
   initializing: boolean;
   error: "token_fetch_failed" | "signout_failed" | undefined;
+  isLoginGuideModalOpen: boolean;
+
   // 初期化を一度だけ実行する
   init: () => void;
   // 最新のIDトークンを取得（必要ならforceRefreshも可能）
   getToken: (opts?: { forceRefresh?: boolean }) => Promise<string | null>;
   signOut: () => Promise<void>;
+  handleLoginGuideModal: (newOpen: boolean) => void;
+
+  _unsubAuth: (() => void) | null;
+  _storageHandler: ((e: StorageEvent) => void) | null;
 };
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -27,6 +33,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   initialized: false,
   initializing: false,
   error: undefined,
+  isLoginGuideModalOpen: false,
+  _unsubAuth: null,
+  _storageHandler: null,
 
   init: () => {
     const s = get();
@@ -102,4 +111,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       // set({ user: null, status: "unauthenticated" });
     }
   },
+
+  handleLoginGuideModal: (newOpen) => set({ isLoginGuideModalOpen: newOpen }),
 }));
