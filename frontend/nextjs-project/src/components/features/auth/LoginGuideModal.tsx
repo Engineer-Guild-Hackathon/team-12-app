@@ -23,6 +23,10 @@ export default function LoginGuideModal({
 }: LoginGuideModalProps) {
   const router = useRouter();
   const theme = useTheme();
+  const goToLoginPage = () => {
+    closeModal();
+    router.push("/login");
+  };
 
   // TODO: ページ遷移中にローディングマークつけたい
   return (
@@ -115,7 +119,7 @@ export default function LoginGuideModal({
       <DialogActions sx={{ justifyContent: "center", padding: "0" }}>
         <Button
           variant="contained"
-          onClick={() => router.push("/login")}
+          onClick={goToLoginPage}
           autoFocus
           sx={{
             backgroundColor: "kinako.900",
