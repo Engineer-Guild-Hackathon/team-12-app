@@ -1,14 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Box } from "@mui/material";
 import { Post } from "@/types/post";
 import { useGeolocation } from "@/hooks/useGeolocation";
+import { usePosts } from "@/hooks/usePosts";
 
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
-import { fetchPosts } from "@/libs/fetchPosts";
-import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
 const Map = dynamic(() => import("@/components/features/map/Map"), {
   ssr: false,
 });
@@ -17,30 +16,8 @@ export default function HomePage() {
   const { latitude, longitude } = useGeolocation();
   const currentLocation = { latitude, longitude };
 
-  const [posts, setPosts] = useState<Post[]>([]);
+  const { posts: fetchedPosts, isLoading, isError } = usePosts();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-
-  useEffect(() => {
-    const ac = new AbortController();
-    const fetchAndSetPosts = async () => {
-      try {
-        // TODO: ローディング処理つける
-        const signal = ac.signal;
-        const fetchedPosts = await fetchPosts(signal);
-        setPosts(fetchedPosts);
-      } catch (err) {
-        if (!isAbortOrCancel(err)) {
-          const e = err instanceof Error ? err : new Error(String(err));
-          console.error("Error fetching image:", e);
-        }
-      } finally {
-        // TODO: ローディング終了処理つける
-      }
-    };
-
-    fetchAndSetPosts();
-    return () => ac.abort();
-  }, []);
 
   // マーカーがクリックされた時の処理
   const handleMarkerClick = (post: Post) => {
@@ -50,6 +27,26 @@ export default function HomePage() {
   const handleCloseModal = () => {
     setSelectedPost(null);
   };
+
+  if (isError) return <div>データの取得に失敗しました</div>;
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div>地図データを読み込んでいます...</div>
+      </Box>
+    );
+  }
+
+  const posts = fetchedPosts || [];
 
   return (
     <Box sx={{ height: "100%", width: "100%", position: "relative" }}>

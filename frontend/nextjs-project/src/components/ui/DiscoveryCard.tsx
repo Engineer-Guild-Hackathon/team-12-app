@@ -2,21 +2,21 @@
 
 import { Post } from "@/types/post";
 import {
-  Box,
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
   Typography,
+  Box,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import { formatTimestampForClient } from "@/utils/formatDate";
 import { calculateDistance } from "@/utils/calculateDistance";
 import TimestampDisplay from "./TimestampDisplay";
 import getIconComponent from "@/utils/getIconComponent";
-import { isAbortOrCancel } from "@/utils/isFetchAbortOrCancel";
-import { fetchImage } from "@/libs/fetchImage";
+import { useImage } from "@/hooks/useImage";
+import { useOnScreen } from "@/hooks/useOnScreen";
 
 interface DiscoveryCardProps {
   post: Post;
@@ -36,45 +36,22 @@ export default function DiscoveryCard({
   post,
   currentLocation,
 }: DiscoveryCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isOnScreen = useOnScreen(cardRef); // カードが画面上にあるか監視
+
   // 投稿時間とアイコンを取得
   const { iconName, formattedDate } = formatTimestampForClient(
     new Date(post.date),
   );
   const iconComponent = getIconComponent(iconName);
-  const [imageUrl, setImageUrl] = useState<string>(
-    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`,
-  );
 
-  // TODO: imageUrlの反映に時間がかかる
-  useEffect(() => {
-    if (!post.img_id) {
-      setImageUrl("");
-      return;
-    }
+  // カードが画面に表示されてから、初めて画像取得のフックを有効化する
+  const { imageUrl } = useImage(isOnScreen ? post.img_id : null);
 
-    const controller = new AbortController();
+  const displayImageUrl =
+    imageUrl ||
+    `https://placehold.co/600x400/EFEFEF/333?text=Image+ID:${post.img_id}`;
 
-    const fetchAndSetImage = async () => {
-      try {
-        const res = await fetchImage(post.img_id, {
-          signal: controller.signal,
-        });
-        setImageUrl(res.signed_url);
-      } catch (err: unknown) {
-        if (!isAbortOrCancel(err)) {
-          const e = err instanceof Error ? err : new Error(String(err));
-          console.error("Error fetching image:", e);
-        }
-      }
-    };
-    fetchAndSetImage();
-
-    return () => {
-      controller.abort(); // 中断
-    };
-  }, [post.img_id]);
-
-  // 距離を計算（useMemoで不要な再計算を防ぐ）
   const distance = useMemo(() => {
     if (currentLocation.latitude && currentLocation.longitude) {
       return calculateDistance(
@@ -89,6 +66,7 @@ export default function DiscoveryCard({
 
   return (
     <Card
+      ref={cardRef}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -116,12 +94,14 @@ export default function DiscoveryCard({
       >
         <CardMedia
           component="img"
-          image={imageUrl}
+          image={displayImageUrl}
           alt={post.object_label}
           sx={{
             objectFit: "cover",
             width: "100px",
             height: "100px",
+            minWidth: "100px",
+            minHeight: "100px",
             borderRadius: 2,
           }}
         />
