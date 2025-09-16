@@ -20,7 +20,7 @@ export default function HomePage() {
   const currentScope = searchParams.get("scope");
 
   // TODO: 認証情報を取得
-  const user = {};
+  const user = { uid: "" };
 
   const {
     posts: fetchedPosts,
