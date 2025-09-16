@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useFilterStore } from "@/stores/filterStore";
 import Header from "@/components/features/header/Header";
 import FilterDrawer from "@/components/features/filter/FilterDrawer";
+import { useAuthStore } from "@/stores/authStore";
 
 // 選択肢の定義
 const sortOptions = [
@@ -23,6 +24,8 @@ export default function FilterHandler() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const user = useAuthStore((s) => s.user);
+  const handleLoginGuideModal = useAuthStore((s) => s.handleLoginGuideModal);
   const { sort: currentSort, setSort } = useFilterStore();
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
@@ -30,6 +33,10 @@ export default function FilterHandler() {
 
   const currentScope = searchParams.get("scope") || "all";
   const handleScopeChange = (scopeValue: string) => {
+    if (user === null && scopeValue === "mine") {
+      handleLoginGuideModal(true);
+      return;
+    }
     const params = new URLSearchParams(searchParams.toString());
     params.set("scope", scopeValue);
     router.push(`${pathname}?${params.toString()}`);

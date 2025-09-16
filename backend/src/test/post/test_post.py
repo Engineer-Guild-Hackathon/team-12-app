@@ -90,7 +90,7 @@ class FakeSession:
 def sample_ids():
     return {
         "post_id": uuid.uuid4(),
-        "user_id": uuid.uuid4(),
+        "user_id": "string_type_user_id",
         "img_id": uuid.uuid4(),
     }
 
@@ -167,7 +167,7 @@ def test_create_post_raises_when_session_not_ready(monkeypatch, sample_payload):
 def test_get_post_found(patch_session_engine, sample_payload):
     found = SimpleNamespace(
         post_id=sample_payload["post_id"],
-        user_id=sample_payload["user_id"],
+        user_id=sample_payload["user_id"],  # string_type_user_id
         img_id=sample_payload["img_id"],
         user_question="Q",
         object_label="TGT",
@@ -205,7 +205,7 @@ def test_get_post_raises_when_session_not_ready(monkeypatch, sample_payload):
 def test_list_posts_returns_dicts(patch_session_engine):
     row1 = SimpleNamespace(
         post_id=uuid.uuid4(),
-        user_id=uuid.uuid4(),
+        user_id="string_type_user_id",
         img_id=uuid.uuid4(),
         user_question="Q1",
         object_label="T1",
@@ -219,7 +219,7 @@ def test_list_posts_returns_dicts(patch_session_engine):
     )
     row2 = SimpleNamespace(
         post_id=uuid.uuid4(),
-        user_id=uuid.uuid4(),
+        user_id="string_type_user_id",
         img_id=uuid.uuid4(),
         user_question="Q2",
         object_label="T2",
@@ -242,7 +242,7 @@ def test_list_posts_returns_dicts(patch_session_engine):
 def test_list_posts_before_filters_old(patch_session_engine):
     old = SimpleNamespace(
         post_id=uuid.uuid4(),
-        user_id=uuid.uuid4(),
+        user_id="string_type_user_id",
         img_id=uuid.uuid4(),
         user_question="old",
         object_label="t",

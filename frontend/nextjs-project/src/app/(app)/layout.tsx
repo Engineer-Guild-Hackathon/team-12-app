@@ -13,9 +13,15 @@ import BottomNav from "@/components/features/bottom-nav/BottomNav";
 import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import DiscoveryCreationFlow from "@/components/features/discovery-creation/DiscoveryCreationFlow";
 import { useIsPWA } from "@/hooks/useIsPWA";
+import LoginGuideModal from "@/components/features/auth/LoginGuideModal";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const currentStep = useDiscoveryCreationStore((state) => state.currentStep);
+  const isLoginGuideModalOpen = useAuthStore((s) => s.isLoginGuideModalOpen);
+  const handleLoginGuideModal = useAuthStore((s) => s.handleLoginGuideModal);
+
+  const closeModal = () => handleLoginGuideModal(false);
   const isPWA = useIsPWA();
   const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
   const bottomNavHeight = isPWA
@@ -57,6 +63,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </Box>
 
       <BottomNav />
+      <LoginGuideModal open={isLoginGuideModalOpen} closeModal={closeModal} />
     </>
   );
 }
