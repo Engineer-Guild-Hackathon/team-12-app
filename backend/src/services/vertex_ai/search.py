@@ -72,7 +72,7 @@ class SearchService:
     @staticmethod
     def search_by_text(search_query: str, num_results: int = 10) -> Optional[List[Dict[str, Any]]]:
         """
-        【新規追加】ユーザーが入力したテキストクエリに基づいて投稿を検索する。
+        ユーザーが入力したテキストクエリに基づいて投稿を検索する。
         """
         if not all([GCP_PROJECT_ID, GCP_LOCATION, DATA_STORE_ID]):
             raise RuntimeError("Vertex AI Search environment variables are not set")
@@ -86,15 +86,13 @@ class SearchService:
                 serving_config="default_config",
             )
 
-            # --- ここが公式ドキュメントのロジックです ---
             request = SearchRequest(
                 serving_config=serving_config,
-                query=search_query,  # 【重要】ユーザーの検索文字列をここに渡す
+                query=search_query,
                 page_size=num_results,
                 # 必要に応じて、要約やクエリ拡張などの高度な機能を追加できます
                 # content_search_spec=...
             )
-            # --- ここまで ---
 
             response = client.search(request=request)
 
