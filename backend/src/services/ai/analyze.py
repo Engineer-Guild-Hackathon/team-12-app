@@ -231,7 +231,17 @@ class AnalyzeService:
 
         # Gemini API呼び出し
         ai_response = gemini.generate_inline(jpeg_bytes, prompt)
-        return AnalyzeService._parse_answer_to_dict(ai_response)
+        result = AnalyzeService._parse_answer_to_dict(ai_response)
+        # GeminiClient が最後に抽出した grounding_urls をDictに付与
+        try:
+            urls = gemini.get_last_grounding_urls()
+            print(urls)
+            if isinstance(urls, list):
+                result["grounding_urls"] = [u for u in urls if isinstance(u, str)]
+        except Exception:
+            # 取得できない場合は既定の [] を維持
+            pass
+        return result
 
     @staticmethod
     def _gemini_request_by_filesAPI(  # noqa: C901
@@ -309,7 +319,7 @@ class AnalyzeService:
             **kwargs,
         )
 
-        grounding_urls = []
+        grounding_urls: list[str] = []
 
         try:
             # candidates と groundingMetadata の取得
@@ -337,26 +347,11 @@ class AnalyzeService:
         except Exception:
             grounding_urls = []
 
-        # レスポンステキスト取得・grounding_urls追加して文字列で返す
-        try:
-            obj = json.loads(getattr(response, "text", "") or "")
-            if isinstance(obj, dict):
-                obj["grounding_urls"] = grounding_urls  # grounding_urls を追加
-                ai_response = json.dumps(obj, ensure_ascii=False)
-            else:
-                ai_response = getattr(response, "text", "") or str(response)
-        except Exception:
-            ai_response = getattr(response, "text", "") or str(response)
-
-        # JSONに grounding_urls をマージ
-        try:
-            obj = json.loads(ai_response)
-            if isinstance(obj, dict):
-                obj.setdefault("grounding_urls", grounding_urls)
-                return AnalyzeService._parse_answer_to_dict(json.dumps(obj, ensure_ascii=False))
-        except Exception:
-            pass
-        return AnalyzeService._parse_answer_to_dict(ai_response)
+        # レスポンステキストをDictに変換し、grounding_urlsをDictに付与して返す
+        ai_response = getattr(response, "text", "") or str(response)
+        result = AnalyzeService._parse_answer_to_dict(ai_response)
+        result["grounding_urls"] = grounding_urls
+        return result
 
 
 def analyze(file: FileStorage | None, image_url: str | None, user_question: str | None) -> Dict[str, str]:

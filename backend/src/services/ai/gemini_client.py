@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import json
-
 from google import genai
 from google.genai import types
 from src.utils.config import CONFIG
@@ -40,6 +38,8 @@ class GeminiClient:
             # この例外は想定していない
             # 古いSDKなどで未対応の場合はプロンプトのみで運用（_build_prompt がJSONを強制）
             self._gencfg_json = None
+        # 直近呼び出しで抽出したグラウンディングURL
+        self._last_grounding_urls: list[str] = []
 
     # 現在使用していない
     def generate_file_storage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
@@ -71,51 +71,40 @@ class GeminiClient:
             contents=[image_part, prompt],
             **kwargs,
         )
+        print("resp", resp)
 
-        # 可能ならグラウンディングURL（最初の1件）を抽出
-        # Gemini APIのレスポンス（resp）はJSON文字列
-        # 必要項目: object_label, ai_answer, ai_question（全てstr）＋ grounding_urls（string[]）
-
-        grounding_urls = []
+        # 可能ならグラウンディングURLを抽出（Dictではなく内部状態に保存）
+        grounding_urls: list[str] = []
 
         try:
-            # candidates と groundingMetadata の取得
-            candidates = getattr(resp, "candidates", [])
-            for cand in candidates:
-                gm = cand.get("groundingMetadata")
+            for cand in getattr(resp, "candidates", []):
+                gm = getattr(cand, "grounding_metadata", None)
                 if gm:
                     # citations から URL を取得
-                    citations = gm.get("citations", [])
-                    for c in citations:
-                        uri = c.get("uri")
+                    for c in getattr(gm, "citations", []):
+                        uri = getattr(c, "uri", None)
                         if isinstance(uri, str) and uri.startswith("http"):
                             grounding_urls.append(uri)
 
                     # grounding_chunks から URL を取得（citations がなかった場合）
                     if not grounding_urls:
-                        chunks = gm.get("groundingChunks", [])
+                        chunks = getattr(gm, "grounding_chunks", [])
                         for ch in chunks:
-                            web = ch.get("web")
-                            if web:
-                                uri = web.get("uri")
-                                if isinstance(uri, str) and uri.startswith("http"):
-                                    grounding_urls.append(uri)
+                            web = getattr(ch, "web", None)
+                            uri = getattr(web, "uri", None) if web else None
+                            if isinstance(uri, str) and uri.startswith("http"):
+                                grounding_urls.append(uri)
 
         except Exception:
             grounding_urls = []
 
-        # レスポンステキスト取得・grounding_urls追加して文字列で返す
-        try:
-            obj = json.loads(getattr(resp, "text", "") or "")
-            if isinstance(obj, dict):
-                obj["grounding_urls"] = grounding_urls  # grounding_urls を追加
-                result = json.dumps(obj, ensure_ascii=False)
-            else:
-                result = getattr(resp, "text", "") or str(resp)
-        except Exception:
-            result = getattr(resp, "text", "") or str(resp)
+        # グラウンディングURLを内部に保存し、文字列テキストはそのまま返す
+        self._last_grounding_urls = grounding_urls
+        text = getattr(resp, "text", "") or str(resp)
+        return text
 
-        return result
+    def get_last_grounding_urls(self) -> list[str]:
+        return list(self._last_grounding_urls)
 
 
 # シングルトン的に使えるデフォルトインスタンス
