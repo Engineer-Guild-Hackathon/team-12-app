@@ -37,9 +37,11 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
   );
 
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [isFollowing, setIsFollowing] = useState(true);
 
   const handleMarkerClick = useCallback((post: Post) => {
     setSelectedPost(post);
+    setIsFollowing(false);
   }, []);
 
   const handleCloseModal = useCallback(() => {
@@ -56,6 +58,9 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
         posts={posts}
         onMarkerClick={handleMarkerClick}
         selectedPost={selectedPost}
+        setSelectedPost={setSelectedPost}
+        isFollowing={isFollowing}
+        setIsFollowing={setIsFollowing}
       />
 
       <DiscoveryCardModal
