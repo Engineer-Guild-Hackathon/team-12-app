@@ -145,6 +145,10 @@ def test_create_post_success(patch_session_engine, sample_payload):
     assert result["user_question"] == "Q"
     assert result["latitude"] == sample_payload["latitude"]
     assert "date" in result and result["date"] is not None
+    # 新フィールドのデフォルト確認
+    assert result.get("ai_reference") is None
+    assert result.get("is_public") is False
+    assert result.get("post_rarity") == 0
 
 
 def test_create_post_commit_failure_returns_none(patch_session_engine, sample_payload):
@@ -173,9 +177,12 @@ def test_get_post_found(patch_session_engine, sample_payload):
         object_label="TGT",
         ai_answer="ANS",
         ai_question="TOI",
+        ai_reference=None,
         location="札幌市 中央区",
         latitude=43.068,
         longitude=141.35,
+        is_public=False,
+        post_rarity=0,
         date=dt.datetime.now(dt.timezone.utc),
         updated_at=dt.datetime.now(dt.timezone.utc),
     )
@@ -184,6 +191,8 @@ def test_get_post_found(patch_session_engine, sample_payload):
     assert got is not None
     assert got["post_id"] == str(sample_payload["post_id"])
     assert got["location"].startswith("札幌市")
+    assert got.get("is_public") is False
+    assert got.get("post_rarity") == 0
 
 
 def test_get_post_not_found(patch_session_engine, sample_payload):
@@ -211,9 +220,12 @@ def test_list_posts_returns_dicts(patch_session_engine):
         object_label="T1",
         ai_answer="A1",
         ai_question="TOI1",
+        ai_reference="ref1",
         location="札幌市1",
         latitude=43.1,
         longitude=141.1,
+        is_public=True,
+        post_rarity=2,
         date=dt.datetime.now(dt.timezone.utc),
         updated_at=dt.datetime.now(dt.timezone.utc),
     )
@@ -225,9 +237,12 @@ def test_list_posts_returns_dicts(patch_session_engine):
         object_label="T2",
         ai_answer="A2",
         ai_question="TOI2",
+        ai_reference=None,
         location="札幌市2",
         latitude=43.2,
         longitude=141.2,
+        is_public=False,
+        post_rarity=0,
         date=dt.datetime.now(dt.timezone.utc),
         updated_at=dt.datetime.now(dt.timezone.utc),
     )
@@ -237,6 +252,8 @@ def test_list_posts_returns_dicts(patch_session_engine):
     assert len(got) == 2
     assert got[0]["user_question"] == "Q1"
     assert got[1]["object_label"] == "T2"
+    assert got[0].get("is_public") is True
+    assert got[1].get("post_rarity") == 0
 
 
 def test_list_posts_before_filters_old(patch_session_engine):
@@ -248,9 +265,12 @@ def test_list_posts_before_filters_old(patch_session_engine):
         object_label="t",
         ai_answer="a",
         ai_question="TOI",
+        ai_reference="ref-old",
         location="loc",
         latitude=1.0,
         longitude=2.0,
+        is_public=False,
+        post_rarity=0,
         date=dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=2),
         updated_at=dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=1),
     )
