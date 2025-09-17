@@ -4,6 +4,7 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import logo from "../../../../public/logo.svg"; // パスを調整
 import LoginButton from "./LoginButton"; // ボタンコンポーネントをインポート
+import Link from "next/link";
 
 export default function LoginView() {
   return (
@@ -39,6 +40,19 @@ export default function LoginView() {
         新しい散歩地図。
       </Typography>
       <LoginButton />
+      <Link href="/">
+        <Typography
+          variant="body2"
+          sx={{
+            color: "kinako.800",
+            mt: 3,
+            textAlign: "center",
+            textDecoration: "underline",
+          }}
+        >
+          ログインせずに使う
+        </Typography>
+      </Link>
     </Box>
   );
 }

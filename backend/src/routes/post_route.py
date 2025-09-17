@@ -17,7 +17,7 @@ class CreatePostDTO:
     """Data Transfer Object"""
 
     post_id: uuid.UUID
-    user_id: uuid.UUID
+    user_id: str
     img_id: uuid.UUID
     user_question: str
     object_label: str
@@ -81,13 +81,12 @@ def _parse_create_post_payload(data: Dict[str, Any]) -> CreatePostDTO:
     # UUID
     try:
         post_id = uuid.UUID(str(data["post_id"]))
-        user_id = uuid.UUID(str(data["user_id"]))
         img_id = uuid.UUID(str(data["img_id"]))
     except Exception as e:
-        raise ValueError(f"post_id / user_id / img_id はUUID形式: {e}")
+        raise ValueError(f"post_id / img_id はUUID形式: {e}")
 
     # 文字列必須
-    for key in ("user_question", "object_label", "ai_answer", "ai_question", "location"):
+    for key in ("user_id", "user_question", "object_label", "ai_answer", "ai_question", "location"):
         v = data.get(key)
         if not isinstance(v, str) or not v.strip():
             raise ValueError(f"{key} は空でない文字列を指定")
@@ -102,7 +101,7 @@ def _parse_create_post_payload(data: Dict[str, Any]) -> CreatePostDTO:
 
     return CreatePostDTO(
         post_id=post_id,
-        user_id=user_id,
+        user_id=data["user_id"].strip(),
         img_id=img_id,
         user_question=data["user_question"].strip(),
         object_label=data["object_label"].strip(),

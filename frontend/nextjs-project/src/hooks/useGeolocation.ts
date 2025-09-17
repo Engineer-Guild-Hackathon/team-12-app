@@ -27,7 +27,7 @@ export function useGeolocation(): GeolocationState {
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
+    const watchId = navigator.geolocation.watchPosition(
       (position) => {
         setState({
           latitude: position.coords.latitude,
@@ -39,7 +39,16 @@ export function useGeolocation(): GeolocationState {
       (error) => {
         setState((s) => ({ ...s, error: error.message, loading: false }));
       },
+      {
+        enableHighAccuracy: true,
+        // 10秒待っても位置情報が取得できない場合はタイムアウト
+        timeout: 10000,
+      },
     );
+
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
   }, []);
 
   return state;

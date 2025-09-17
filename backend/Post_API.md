@@ -1,7 +1,7 @@
 # Posts API 使用マニュアル
 
 本書は、`/api/posts` 系エンドポイントの **リクエスト方法・引数・例・戻り値** をまとめたものです。  
-実装は Flask + SQLAlchemy。保存スキーマは以下（必須のみ抜粋）：`post_id(UUID)`, `user_id(UUID)`, `img_id(UUID)`, `user_question`, `object_label`, `ai_answer`, `ai_question`, `location`, `latitude(double)`, `longitude(double)` ほか。
+実装は Flask + SQLAlchemy。保存スキーマは以下（必須のみ抜粋）：`post_id(UUID)`, `user_id`, `img_id(UUID)`, `user_question`, `object_label`, `ai_answer`, `ai_question`, `location`, `latitude(double)`, `longitude(double)` ほか。
 
 > **注記**
 > - `POST /api/posts` では **サーバ側で `post_id` を自動生成**します。  
@@ -62,8 +62,8 @@
 ```
 
 #### フィールド要件
-- `user_id`, `img_id`: UUID 形式必須  
-- `user_question`, `object_label`, `ai_answer`, `ai_question`: 空でない文字列必須  
+-  `img_id`: UUID 形式必須  
+- `user_id`,`user_question`, `object_label`, `ai_answer`, `ai_question`: 空でない文字列必須  
 - `latitude`: `-90.0`〜`90.0`  
 - `longitude`: `-180.0`〜`180.0`  
 - `location`: 送らなくてよい（サーバが補完）

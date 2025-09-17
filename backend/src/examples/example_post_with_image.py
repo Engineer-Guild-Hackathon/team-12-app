@@ -19,7 +19,7 @@ app.register_blueprint(post_bp, url_prefix="")
 def _default_post_form_values():
     """フォームの初期値をPython側で生成"""
     return {
-        "user_id": str(uuid.uuid4()),
+        "user_id": str(uuid.uuid4()),  # str型なので放置
         "img_id": str(uuid.uuid4()),
         # 入力フィールド
         "user_question": "LLMに質問したい内容のテキスト",

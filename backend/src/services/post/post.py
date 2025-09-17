@@ -18,7 +18,7 @@ class Post(Base):
     __tablename__ = "posts"
 
     post_id = sa.Column(sa.Uuid, primary_key=True)
-    user_id = sa.Column(sa.Uuid, nullable=False)
+    user_id = sa.Column(sa.Text, nullable=False)
     img_id = sa.Column(sa.Uuid, nullable=False)
 
     user_question = sa.Column(sa.Text, nullable=False)
@@ -49,7 +49,7 @@ class PostService:
     @staticmethod
     def create_post(
         post_id: uuid.UUID,
-        user_id: uuid.UUID,
+        user_id: str,
         img_id: uuid.UUID,
         user_question: str,
         object_label: str,

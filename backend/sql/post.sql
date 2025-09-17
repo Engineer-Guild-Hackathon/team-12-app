@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS posts (
   post_id    UUID        PRIMARY KEY,
-  user_id    UUID        NOT NULL,
+  user_id    TEXT        NOT NULL,
   img_id     UUID        NOT NULL,
   user_question   TEXT        NOT NULL,
   object_label     TEXT        NOT NULL,

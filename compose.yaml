@@ -4,6 +4,8 @@ services:
     ports:
       - "3000:3000"
     tty: true
+    env_file:
+      - frontend.env
     environment:
       NODE_ENV: "production"
       BACKEND_BASE: "http://back-server:5000"
@@ -29,6 +31,7 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/adc.json
       SERVICE_ACCOUNT_CREDENTIALS: /var/secrets/service_account.json
       PYTHONPATH: /backend
+      DATABASE_URL: postgresql+pg8000://
     volumes:
       - "${ADC_JSON}:/var/secrets/adc.json:ro"
       - ./service_account.json:/var/secrets/service_account.json:ro

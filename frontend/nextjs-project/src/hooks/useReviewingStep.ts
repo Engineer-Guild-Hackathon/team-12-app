@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useTransition, useEffect } from "react";
 import { AiResponse } from "@/stores/discoveryCreationStore";
 import { createPostAction, CreatePostPayload } from "@/app/actions/postActions";
+import { useAuthStore } from "@/stores/authStore";
 
 type UseReviewingStepParams = {
   photoData: string | null;
@@ -27,6 +28,16 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
     img_id,
   } = params;
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+
+  // ログインせずに撮影機能は使用できないため想定していないが念のため
+  // if節だと条件付きhook呼び出しのためuseEffectを使う
+  useEffect(() => {
+    if (user === null) {
+      alert("ログインしてください");
+      router.push("/login");
+    }
+  }, [user, router]);
 
   // Server Actionの実行状態（ローディング中か否か）を管理するためのフック
   const [isPending, startTransition] = useTransition();
@@ -44,7 +55,7 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
     }
 
     const payload: CreatePostPayload = {
-      user_id: "123e4567-e89b-12d3-a456-426614174000", // 認証から取得する想定
+      user_id: user?.uid ?? "", // userがnullの時useEffectが走るので""は想定されない
       img_id,
       user_question,
       object_label: aiResponse.object_label,
