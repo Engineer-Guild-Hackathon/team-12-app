@@ -107,6 +107,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
             "申し訳ございませんが、現在AI解析サービスに接続できません。",
           object_label: "エラー",
           ai_question: "しばらく時間をおいて再度お試しください。",
+          grounding_urls: [],
         };
         set({ aiResponse: errorResponse });
       } finally {
