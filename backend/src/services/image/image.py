@@ -22,9 +22,7 @@ engine, SessionLocal, Base, connector = connect_db()
 # --- GCSクライアントを初期化 ---
 GCS_BUCKET = os.environ.get("GCS_BUCKET")
 GCP_PROJECT = os.environ.get("GCP_PROJECT")
-SERVICE_ACCOUNT_CREDENTIALS = (
-    os.environ.get("SERVICE_ACCOUNT_CREDENTIALS") or ""
-).strip()
+SERVICE_ACCOUNT_CREDENTIALS = (os.environ.get("SERVICE_ACCOUNT_CREDENTIALS") or "").strip()
 
 # クライアント1: 一般操作用 (Application Default Credentialsを使用)
 try:
@@ -58,18 +56,12 @@ def _load_signer_credentials():
             if p.exists():
                 return service_account.Credentials.from_service_account_file(str(p))
             else:
-                print(
-                    f"WARN: SERVICE_ACCOUNT_CREDENTIALS path not found: {raw} -> fallback to ADC"
-                )
+                print(f"WARN: SERVICE_ACCOUNT_CREDENTIALS path not found: {raw} -> fallback to ADC")
         except Exception as e:
-            print(
-                f"WARN: failed to use SERVICE_ACCOUNT_CREDENTIALS: {e} -> fallback to ADC"
-            )
+            print(f"WARN: failed to use SERVICE_ACCOUNT_CREDENTIALS: {e} -> fallback to ADC")
 
     # 本番: ADC + IAM サイナー（SignBlob）で署名可能にする
-    base_creds, _ = google.auth.default(
-        scopes=["https://www.googleapis.com/auth/cloud-platform"]
-    )
+    base_creds, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
     req = Request()
     if not getattr(base_creds, "valid", True) or getattr(base_creds, "expired", False):
         base_creds.refresh(req)
@@ -111,9 +103,7 @@ class Image(Base):
     size_bytes = sa.Column(sa.BigInteger, nullable=False)
     sha256_hex = sa.Column(sa.String(64), nullable=False)
     status = sa.Column(sa.Text, nullable=False)  # 'pending', 'stored', 'failed'
-    created_at = sa.Column(
-        sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False
-    )
+    created_at = sa.Column(sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False)
     updated_at = sa.Column(
         sa.TIMESTAMP(timezone=True),
         server_default=sa.func.now(),
@@ -188,9 +178,7 @@ class ImageService:
                             failed_image.status = "failed"
                             failed_session.commit()
                 except Exception as update_err:
-                    print(
-                        f"ERROR: failed to update image status to 'failed': {update_err}"
-                    )
+                    print(f"ERROR: failed to update image status to 'failed': {update_err}")
 
                 return None
 
@@ -248,9 +236,7 @@ class ImageService:
                     blob = adc_bucket.blob(object_name)
                     blob.delete()
                 except Exception as gcs_err:
-                    print(
-                        f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}"
-                    )
+                    print(f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}")
 
                 # 2. DBからレコードを削除
                 session.delete(image)

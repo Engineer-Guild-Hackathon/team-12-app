@@ -1083,14 +1083,14 @@ testing = ["pytest"]
 
 [[package]]
 name = "google-genai"
-version = "1.36.0"
+version = "1.38.0"
 description = "GenAI Python SDK"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "google_genai-1.36.0-py3-none-any.whl", hash = "sha256:bd48d800547cb90e40648178620c89474807305b03f6cd147fb3cc7faab27670"},
-    {file = "google_genai-1.36.0.tar.gz", hash = "sha256:6501f18cbf44488becab6fbff09529ff77e856f1baa65d55686261e4677cec3f"},
+    {file = "google_genai-1.38.0-py3-none-any.whl", hash = "sha256:95407425132d42b3fa11bc92b3f5cf61a0fbd8d9add1f0e89aac52c46fbba090"},
+    {file = "google_genai-1.38.0.tar.gz", hash = "sha256:363272fc4f677d0be6a1aed7ebabe8adf45e1626a7011a7886a587e9464ca9ec"},
 ]
 
 [package.dependencies]
@@ -3636,4 +3636,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "5c65c0e18d4ab9ed94649d2ad44d379b0bcc4c44f6c46800762a25c77a2818b6"
+content-hash = "1e14b3a521891cbed7042f3f18d0e14daae8be2a23b0b8c68ce04ab480b02762"

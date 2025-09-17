@@ -6,6 +6,8 @@ export interface ImageAnalysisAnswer {
   ai_answer: string;
   /** AIが生成した問い */
   ai_question: string;
+  /** グラウンディングで参照したURLの配列（0件可） */
+  grounding_urls: string[];
 }
 
 /** 画像解析API レスポンス */

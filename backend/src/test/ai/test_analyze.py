@@ -161,11 +161,12 @@ def test_parse_allows_code_fence_json():
     {
         "object_label": "T",
         "ai_answer": "A",
-        "ai_question": "Q"
+        "ai_question": "Q",
+        "grounding_urls": []
     }
     ```"""
     got = analyze_mod.AnalyzeService._parse_answer_to_dict(fenced)
-    assert got == {"object_label": "T", "ai_answer": "A", "ai_question": "Q"}
+    assert got == {"object_label": "T", "ai_answer": "A", "ai_question": "Q", "grounding_urls": []}
 
 
 def test_fetch_gcs_bytes_success(monkeypatch: pytest.MonkeyPatch):
