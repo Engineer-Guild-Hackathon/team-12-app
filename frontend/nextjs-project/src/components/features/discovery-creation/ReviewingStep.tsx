@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
+import Link from "next/link";
 import React, { useState } from "react";
 import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
 import { formatTimestampForClient } from "@/utils/formatDate";
@@ -61,6 +68,30 @@ export default function ReviewingStep() {
         <Stack spacing={2.5} pb={2.5}>
           <Section icon={<IoLeaf size={32} />} title="はっけん">
             {aiResponse.ai_answer}
+            {Array.isArray(aiResponse.grounding_urls) &&
+              aiResponse.grounding_urls.length > 0 && (
+                <Box sx={{ mt: 1 }}>
+                  {aiResponse.grounding_urls.map((url, idx) => (
+                    <Typography
+                      key={idx}
+                      variant="body2"
+                      sx={{ display: "block" }}
+                    >
+                      {aiResponse.grounding_urls.length === 1
+                        ? "AIが参考にしたサイト"
+                        : `AIが参考にしたサイト${idx + 1}`}
+                      ：
+                      <Link
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {url}
+                      </Link>
+                    </Typography>
+                  ))}
+                </Box>
+              )}
           </Section>
 
           <Section icon={<IoSearch size={32} />} title="問い">

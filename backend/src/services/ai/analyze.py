@@ -3,7 +3,7 @@ from __future__ import annotations
 import io
 import json
 import unicodedata
-from typing import Any, Dict
+from typing import Any, Dict, Union
 from urllib.parse import unquote
 
 import magic
@@ -21,7 +21,9 @@ class AnalyzeService:
     """画像解析をGemini APIで実行するサービスクラス"""
 
     @staticmethod
-    def analyze(file: FileStorage | None, image_url: str | None, user_question: str | None) -> Dict[str, str]:
+    def analyze(
+        file: FileStorage | None, image_url: str | None, user_question: str | None
+    ) -> Dict[str, Union[str, list[str]]]:
         """
         画像を解析してAIからの回答を返す
 
@@ -31,7 +33,7 @@ class AnalyzeService:
             user_question: 補助的な質問
 
         Returns:
-            {"object_label": str, "ai_answer": str, "ai_question": str} の辞書
+            {"object_label": str, "ai_answer": str, "ai_question": str, "grounding_urls": list[str]} の辞書
 
         Raises:
             BadRequest: 無効な画像やリクエスト
@@ -169,7 +171,7 @@ class AnalyzeService:
         return base
 
     @staticmethod
-    def _parse_answer_to_dict(ai_response: str) -> Dict[str, str]:
+    def _parse_answer_to_dict(ai_response: str) -> Dict[str, Union[str, list[str]]]:
         """
         モデルからの文字列応答をJSONとしてパースし、辞書に変換する
 
@@ -177,7 +179,7 @@ class AnalyzeService:
             ai_response: モデルからの応答文字列
 
         Returns:
-            {"object_label": str, "ai_answer": str, "ai_question": str} の辞書
+            {"object_label": str, "ai_answer": str, "ai_question": str, "grounding_urls": list[str]} の辞書
 
         Raises:
             BadRequest: 無効なJSON形式
@@ -200,10 +202,20 @@ class AnalyzeService:
                 raise BadRequest(
                     "AIの出力が必要なJSON形式（object_label, ai_answer, ai_questionの各文字列）になっていません"
                 )
+        # grounding_urls は省略可。存在すれば list[str]、無ければ [] を設定
+        grounding = obj.get("grounding_urls")
+        if isinstance(grounding, list):
+            urls: list[str] = []
+            for u in grounding:
+                if isinstance(u, str):
+                    urls.append(u)
+            obj["grounding_urls"] = urls
+        else:
+            obj["grounding_urls"] = []
         return obj
 
     @staticmethod
-    def _gemini_request_by_base64(raw: bytes | Any, prompt: str) -> Dict[str, str]:
+    def _gemini_request_by_base64(raw: bytes | Any, prompt: str) -> Dict[str, Union[str, list[str]]]:
         """
         Base64エンコードした画像でGemini APIを呼び出す（小さい画像用）
 
@@ -222,7 +234,9 @@ class AnalyzeService:
         return AnalyzeService._parse_answer_to_dict(ai_response)
 
     @staticmethod
-    def _gemini_request_by_filesAPI(file: FileStorage, raw: bytes | Any, prompt: str) -> Dict[str, str]:
+    def _gemini_request_by_filesAPI(  # noqa: C901
+        file: FileStorage, raw: bytes | Any, prompt: str
+    ) -> Dict[str, Union[str, list[str]]]:
         """
         Files APIを使用してGemini APIを呼び出す（大きい画像用）
 
@@ -256,8 +270,9 @@ class AnalyzeService:
                 required=["object_label", "ai_answer", "ai_question"],
             )
             GENCFG_JSON = types.GenerateContentConfig(
-                response_mime_type="application/json",
+                # response_mime_type="application/json",
                 response_schema=JSON_SCHEMA,
+                tools=[types.Tool(google_search=types.GoogleSearch())],
             )
         except Exception:
             # 古いSDK等で未対応の場合はNoneにしてプロンプトのみで運用
@@ -287,12 +302,60 @@ class AnalyzeService:
         kwargs = {}
         if GENCFG_JSON is not None:
             kwargs["config"] = GENCFG_JSON
+
         response = client.models.generate_content(
             model=CONFIG.GEMINI_MODEL,
             contents=[uploaded_file, prompt],
             **kwargs,
         )
-        ai_response = getattr(response, "text", "") or ""
+
+        grounding_urls = []
+
+        try:
+            # candidates と groundingMetadata の取得
+            candidates = getattr(response, "candidates", [])
+            for cand in candidates:
+                gm = cand.get("groundingMetadata")
+                if gm:
+                    # citations から URL を取得
+                    citations = gm.get("citations", [])
+                    for c in citations:
+                        uri = c.get("uri")
+                        if isinstance(uri, str) and uri.startswith("http"):
+                            grounding_urls.append(uri)
+
+                    # grounding_chunks から URL を取得（citations がなかった場合）
+                    if not grounding_urls:
+                        chunks = gm.get("groundingChunks", [])
+                        for ch in chunks:
+                            web = ch.get("web")
+                            if web:
+                                uri = web.get("uri")
+                                if isinstance(uri, str) and uri.startswith("http"):
+                                    grounding_urls.append(uri)
+
+        except Exception:
+            grounding_urls = []
+
+        # レスポンステキスト取得・grounding_urls追加して文字列で返す
+        try:
+            obj = json.loads(getattr(response, "text", "") or "")
+            if isinstance(obj, dict):
+                obj["grounding_urls"] = grounding_urls  # grounding_urls を追加
+                ai_response = json.dumps(obj, ensure_ascii=False)
+            else:
+                ai_response = getattr(response, "text", "") or str(response)
+        except Exception:
+            ai_response = getattr(response, "text", "") or str(response)
+
+        # JSONに grounding_urls をマージ
+        try:
+            obj = json.loads(ai_response)
+            if isinstance(obj, dict):
+                obj.setdefault("grounding_urls", grounding_urls)
+                return AnalyzeService._parse_answer_to_dict(json.dumps(obj, ensure_ascii=False))
+        except Exception:
+            pass
         return AnalyzeService._parse_answer_to_dict(ai_response)
 
 
