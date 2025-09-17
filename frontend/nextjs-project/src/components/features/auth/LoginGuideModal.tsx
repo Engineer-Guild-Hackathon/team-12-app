@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import logo from "../../../../public/logo.svg";
+import logo from "../../../../public/logo.png";
 import Image from "next/image";
 import { Box, Stack } from "@mui/material";
 import { PiCamera, PiLeaf } from "react-icons/pi";
