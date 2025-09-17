@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import DiscoveryDetailClient from "./client";
 
 export default async function DiscoveryDetailPage({
@@ -7,5 +8,9 @@ export default async function DiscoveryDetailPage({
 }) {
   // ここで unwrap（または React.use(params) でもOK）
   const { slug } = await params;
-  return <DiscoveryDetailClient slug={slug} />;
+  return (
+    <Box sx={{ height: "100%", width: "100%" }}>
+      <DiscoveryDetailClient slug={slug} />
+    </Box>
+  );
 }

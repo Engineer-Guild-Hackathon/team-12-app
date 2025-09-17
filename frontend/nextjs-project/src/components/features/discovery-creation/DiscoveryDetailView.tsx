@@ -3,6 +3,7 @@
 import {
   Box,
   Stack,
+  CardMedia,
   Dialog,
   DialogContent,
   DialogActions,
@@ -10,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IoLeaf, IoSearch, IoClose } from "react-icons/io5";
+import { DISCOVERY_IMAGE_HEIGHT } from "@/constants/styles";
 import QuestionBubble from "@/components/ui/QuestioinBubble";
 import Section from "@/components/ui/Section";
 import DiscoveryImage from "@/components/ui/DiscoveryImage";
@@ -72,6 +74,24 @@ export default function DiscoveryDetailView({
             pb: "20px",
           }}
         >
+          {isLoading && (
+            // ローディング中はアイコンを表示
+            <CardMedia
+              component="div"
+              sx={{
+                width: "100%",
+                height: `${DISCOVERY_IMAGE_HEIGHT}px`,
+                borderRadius: 2,
+                backgroundColor: "yomogi.200",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "yomogi.600",
+              }}
+            >
+              <IoLeaf size={48} />
+            </CardMedia>
+          )}
           {isLoading && <div>画像を読み込んでいます...</div>}
           {isError && <div>画像の読み込みに失敗しました</div>}{" "}
           {imageUrl && (

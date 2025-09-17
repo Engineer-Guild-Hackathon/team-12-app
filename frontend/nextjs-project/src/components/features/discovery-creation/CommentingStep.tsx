@@ -12,6 +12,7 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import SubmitButton from "@/components/ui/SubmitButton";
 import { useIsPWA } from "@/hooks/useIsPWA";
+import OverlayLoader from "@/components/features/loading/OverlayLoader";
 
 interface CommentingStepProps {
   photo: string | null;
@@ -100,10 +101,12 @@ export default function CommentingStep({
             },
           }}
         />
-        <SubmitButton isLoading={isGenerating} loadingText={"AIが考えています"}>
+        {/* <SubmitButton isLoading={isGenerating} loadingText={"AIが考えています"}>
           次へ
-        </SubmitButton>
+        </SubmitButton> */}
+        <SubmitButton disabled={isGenerating}>次へ</SubmitButton>
       </Stack>
+      {isGenerating && <OverlayLoader message="AIが考えています..." />}
     </Box>
   );
 }

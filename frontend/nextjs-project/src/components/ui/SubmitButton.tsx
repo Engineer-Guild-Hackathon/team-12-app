@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  Button,
-  ButtonProps,
-  CircularProgress,
-  styled,
-  Typography,
-} from "@mui/material";
+import { Button, ButtonProps, styled, Typography, Box } from "@mui/material";
 import React from "react";
+import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 
 const StyledSubmitButton = styled(Button)(({ theme }) => ({
   borderRadius: 200,
@@ -49,7 +44,17 @@ export default function SubmitButton({
       {...props}
     >
       {isLoading && (
-        <CircularProgress size={24} color="inherit" sx={{ mr: 1 }} />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center", // 横方向の中央揃え
+            alignItems: "center", // 縦方向の中央揃え
+            height: "100svh", // 親要素の高さ全体を使う
+            width: "100%", // 親要素の幅全体を使う
+          }}
+        >
+          <LeafyLoader />
+        </Box>
       )}
       <Typography fontSize={20}>
         {isLoading ? loadingText : children}
