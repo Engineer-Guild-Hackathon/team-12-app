@@ -2,7 +2,7 @@
 
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
-import logo from "../../../../public/logo.svg"; // パスを調整
+import logo from "../../../../public/logo.png"; // パスを調整
 import LoginButton from "./LoginButton"; // ボタンコンポーネントをインポート
 import Link from "next/link";
 
