@@ -6,6 +6,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import Layout from "@/components/ui/Layout";
+import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
 const yomogi = Yomogi({
   weight: ["400"],

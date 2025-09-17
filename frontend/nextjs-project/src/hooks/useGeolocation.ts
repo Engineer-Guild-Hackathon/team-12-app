@@ -9,9 +9,6 @@ interface GeolocationState {
   loading: boolean;
 }
 
-// 許容する最大の誤差（メートル）。これより大きい誤差の位置情報は無視する。
-const MAX_ACCURACY_METERS = 100;
-
 export function useGeolocation(): GeolocationState {
   const [state, setState] = useState<GeolocationState>({
     latitude: null,
@@ -32,15 +29,6 @@ export function useGeolocation(): GeolocationState {
 
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
-        // 精度の低い情報をフィルタリング
-        if (position.coords.accuracy > MAX_ACCURACY_METERS) {
-          console.warn(
-            `Accuracy is too low (${position.coords.accuracy}m). Ignoring update.`,
-          );
-          // 誤差が大きすぎるので、stateを更新しない
-          return;
-        }
-
         setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -54,7 +42,7 @@ export function useGeolocation(): GeolocationState {
       {
         enableHighAccuracy: true,
         // 10秒待っても位置情報が取得できない場合はタイムアウト
-        timeout: 10000, // 10秒
+        timeout: 10000,
       },
     );
 

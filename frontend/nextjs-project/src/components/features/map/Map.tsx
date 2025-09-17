@@ -12,6 +12,7 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import CurrentUserMarker from "./CurrentUserMarker";
 import MapViewController from "./MapViewController";
 import MapInitialViewSetter from "./MapInitialViewSetter";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 
 interface MapProps {
   posts: Post[];
@@ -51,6 +52,30 @@ export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
     const styleElement = document.createElement("style");
     styleElement.id = styleId;
     styleElement.innerHTML = `
+      /* クラスターの基本スタイル */
+      .marker-cluster {
+        background-clip: padding-box;
+        border-radius: 50%;
+        color: #fff; /* 中の数字の色 */
+        font-weight: bold;
+        font-size: 12px;
+        background-color: #85934E;
+        width: 40px;
+        height: 40px;
+        border: 3px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .marker-cluster div {
+        background-color: rgb(255, 255, 255, 0);
+        border-radius: 50%;
+        margin-left: 0px;
+        margin-top: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       /* 両方のマーカーに共通の基本スタイル */
       .custom-marker-default,
       .custom-marker-selected {
@@ -112,10 +137,12 @@ export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
         ref={setMap}
         worldCopyJump={true}
         minZoom={3}
+        maxZoom={19}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maxZoom={19}
         />
 
         <MapInitialViewSetter position={initialPosition} />
@@ -126,14 +153,24 @@ export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
           />
         )}
 
-        {posts.map((post) => (
-          <PostMarker
-            key={post.post_id}
-            post={post}
-            isSelected={selectedPost?.post_id === post.post_id}
-            onMarkerClick={onMarkerClick}
-          />
-        ))}
+        <MarkerClusterGroup
+          polygonOptions={{
+            color: "#85934E",
+            weight: 2,
+            opacity: 0.8,
+            fillColor: "#B2BE83",
+            fillOpacity: 0.3,
+          }}
+        >
+          {posts.map((post) => (
+            <PostMarker
+              key={post.post_id}
+              post={post}
+              isSelected={selectedPost?.post_id === post.post_id}
+              onMarkerClick={onMarkerClick}
+            />
+          ))}
+        </MarkerClusterGroup>
 
         {currentPosition && <CurrentUserMarker position={currentPosition} />}
 
