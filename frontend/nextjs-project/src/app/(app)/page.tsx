@@ -1,4 +1,4 @@
-import { getPosts } from "@/libs/data";
+import { getPosts } from "@/libs/getPosts";
 import HomeClient from "./client";
 
 // page.tsx は async 関数にする
