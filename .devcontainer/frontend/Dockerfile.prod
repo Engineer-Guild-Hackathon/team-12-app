@@ -10,6 +10,15 @@ RUN npm ci
 # ビルド
 FROM deps AS build
 COPY frontend/nextjs-project ./
+
+# ★ ここで build-arg を受け取り、ENV に昇格（Next が build 時に読む）
+ARG NEXT_PUBLIC_FB_API_KEY
+ARG NEXT_PUBLIC_FB_AUTH_DOMAIN
+ARG NEXT_PUBLIC_FB_PROJECT_ID
+ENV NEXT_PUBLIC_FB_API_KEY=$NEXT_PUBLIC_FB_API_KEY \
+    NEXT_PUBLIC_FB_AUTH_DOMAIN=$NEXT_PUBLIC_FB_AUTH_DOMAIN \
+    NEXT_PUBLIC_FB_PROJECT_ID=$NEXT_PUBLIC_FB_PROJECT_ID
+
 RUN npm run build
 
 # 本番
@@ -20,11 +29,17 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-# これらだけをコピーすれば動作する
+# Next.js のキャッシュ先を /tmp に
+ENV NEXT_CACHE_DIR=/tmp/nextjs-cache
+RUN mkdir -p /tmp/nextjs-cache
+
 COPY --from=build /app/.next/standalone ./
 # ビルド成果物と静的ファイルをコピー
 COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/.next/server ./.next/server
 COPY --from=build /app/public ./public
+
+RUN chown -R node:node /app/.next /tmp/nextjs-cache
 
 # 非rootで実行
 USER node
