@@ -6,7 +6,7 @@ import { useMapControl } from "@/hooks/useMapControl";
 import { Post } from "@/types/post";
 import RecenterButton from "./RecenterButton";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PostMarker from "./PostMarker";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import CurrentUserMarker from "./CurrentUserMarker";
@@ -14,7 +14,6 @@ import MapViewController from "./MapViewController";
 import MapInitialViewSetter from "./MapInitialViewSetter";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
-import { useSearchParams } from "next/navigation";
 import { useMapStore } from "@/stores/mapStore";
 
 interface MapProps {
@@ -22,6 +21,8 @@ interface MapProps {
   onMarkerClick: (post: Post) => void;
   selectedPost: Post | null;
   setSelectedPost: (post: Post) => void;
+  isFollowing: boolean;
+  setIsFollowing: (isFollowing: boolean) => void;
 }
 
 export default function Map({
@@ -29,11 +30,11 @@ export default function Map({
   onMarkerClick,
   selectedPost,
   setSelectedPost,
+  isFollowing,
+  setIsFollowing,
 }: MapProps) {
   const { latitude, longitude, loading: geolocationLoading } = useGeolocation();
-  const searchParams = useSearchParams();
   const { map, setMap, flyTo } = useMapControl();
-  const [isFollowing, setIsFollowing] = useState(true);
 
   const { initialTarget, clearInitialTarget } = useMapStore();
 
@@ -127,7 +128,6 @@ export default function Map({
         align-items: center;
         justify-content: center;
       }
-      /* 両方のマーカーに共通の基本スタイル */
       .custom-marker-default,
       .custom-marker-selected {
         background-size: contain;
