@@ -56,6 +56,7 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
         posts={posts}
         onMarkerClick={handleMarkerClick}
         selectedPost={selectedPost}
+        setSelectedPost={setSelectedPost}
       />
 
       <DiscoveryCardModal
