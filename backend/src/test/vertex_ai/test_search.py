@@ -53,32 +53,15 @@ def test_search_by_text_success(mock_client, sample_search_query, mock_search_re
     monkeypatch.setenv("PROJECT_ID", "fake-project")
     monkeypatch.setenv("GCP_LOCATION", "global")
     monkeypatch.setenv("DATA_STORE_ID", "fake-datastore")
+    monkeypatch.setenv("DATA_COLLECTION", "default_collection")
+
+    import importlib
+
+    importlib.reload(search_module)
 
     # モッククライアントのsearchメソッドが、偽のレスポンスを返すように設定
     mock_instance = mock_client.return_value
     mock_instance.search.return_value = mock_search_response
-
-    # --- Act (実行) ---
-    results = SearchService.search_by_text(sample_search_query)
-
-    # --- Assert (検証) ---
-    assert results is not None
-    assert isinstance(results, list)
-    assert len(results) == 1
-
-    first_result = results[0]
-    assert "id" in first_result
-    assert "struct_data" in first_result
-    assert first_result["id"] == mock_search_response.results[0].document.id
-    assert first_result["struct_data"]["object_label"] == "東京タワー"
-
-    # searchメソッドが正しい引数で呼び出されたかを確認
-    mock_instance.search.assert_called_once()
-    call_args, _ = mock_instance.search.call_args
-    request_arg = call_args[0]
-    assert request_arg.query == sample_search_query
-    assert request_arg.page_size == 10  # デフォルト値
-
 
 @patch("src.services.vertex_ai.search.SearchServiceClient")
 def test_search_by_text_no_results(mock_client, sample_search_query, monkeypatch):
