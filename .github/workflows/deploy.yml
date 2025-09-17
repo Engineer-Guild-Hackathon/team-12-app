@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch: {}   # 手動デプロイ可
-  workflow_call: {}   # 他の workflow から呼び出し可
+  workflow_call: {}       # 他の workflow から呼び出し可
 
 env:
   PROJECT_ID: egh202509
@@ -13,7 +13,7 @@ env:
   FRONT_SVC: front-app
   BACK_SVC: back-server
 
-  # Cloud Run 実行時の env（固定値はここで定義）
+  # Cloud Run 実行時の env（固定値）
   BACKEND_BASE: https://back-server-708894055394.asia-northeast1.run.app
   REQUIRE_ID_TOKEN: "true"
 
@@ -42,13 +42,15 @@ jobs:
         with:
           project_id: ${{ env.PROJECT_ID }}
 
+      # Artifact Registry への Docker 認証設定
       - name: Configure Docker to use Artifact Registry
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
+      # buildx/BuildKit で資格情報取りこぼしを防ぐため明示ログイン
       - name: Login to Artifact Registry (explicit)
         run: |
           gcloud auth print-access-token | \
-            docker login -u oauth2accesstoken --password-stdin https://asia-northeast1-docker.pkg.dev
+            docker login -u oauth2accesstoken --password-stdin https://${{ env.REGION }}-docker.pkg.dev
 
       # -------------------
       # Build & Push Backend
