@@ -1,4 +1,4 @@
-import { getPosts } from "@/libs/data";
+import { getPosts } from "@/libs/getPosts";
 import ListClient from "./client";
 
 // ページコンポーネントをasyncにする
