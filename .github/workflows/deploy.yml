@@ -4,6 +4,7 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch: {}   # 手動デプロイ可
+  workflow_call: {}   # 他の workflow から呼び出し可
 
 env:
   PROJECT_ID: egh202509
