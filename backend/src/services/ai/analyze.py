@@ -165,6 +165,8 @@ class AnalyzeService:
             "- フィールド名は必ず object_label / ai_answer / ai_question。\n"
             "- すべて文字列。改行はそのまま文字列内に含めてよい。\n"
             "- JSON以外のテキスト・コードブロック・Markdown記法は禁止。\n"
+            "- ユーザーからの補助質問に「検索して」などの指示がなくても、グラウンディング（Web検索）を行ったほうが良いと判断したときはグラウンディングを行ってください。\n"
+            "- グラウンディングを行った場合は、グラウンディングのURL(検索に用いた情報)をgrounding_urlsに含めてください。\n"
         )
         if user_question:
             base += f"\n補助質問（考慮してよいが、出力は上記JSONのみ）: {user_question}\n"
