@@ -29,6 +29,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Who am I?
+        run: |
+          echo "Active account:"
+          gcloud auth list --filter=status:ACTIVE --format="value(account)"
+          echo "Config account:"
+          gcloud config get-value account
+
       # ---- Auth via Workload Identity Federation (no key file) ----
       - name: Auth to Google Cloud (Workload Identity Federation)
         uses: google-github-actions/auth@v2
