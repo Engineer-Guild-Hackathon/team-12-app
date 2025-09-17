@@ -3,8 +3,9 @@
 import useSWR from "swr";
 import { useMemo } from "react";
 import { Post } from "@/types/post";
-import { fetcher } from "@/libs/fetcher";
 import { calculateDistance } from "@/utils/calculateDistance";
+import { useAuthStore } from "@/stores/authStore";
+import { fetchRecentPostsAction } from "@/app/actions/getRecentAndPostUserIdActions";
 
 type PostsApiResponse = {
   posts: Post[];
@@ -27,16 +28,24 @@ export function usePosts(
   fallbackData?: PostsApiResponse,
 ) {
   const { sort, scope, userId, currentLocation } = params;
-  const key = `/api/posts?limit=100&offset=0`;
-
-  const { data, error, mutate } = useSWR<PostsApiResponse>(key, fetcher, {
-    refreshInterval: 30000,
-    dedupingInterval: 30000,
-    // キャッシュにデータがあれば、マウント時に再検証しない
-    revalidateOnMount: false,
-    suspense: true,
-    fallbackData: fallbackData,
-  });
+  const user = useAuthStore((s) => s.user);
+  const swrKey = user?.uid ? `recent:${user.uid}` : `recent:public`;
+  const { data, error, mutate } = useSWR<PostsApiResponse>(
+    swrKey,
+    async () => {
+      // サーバーアクションをクライアントから呼ぶ
+      const { posts } = await fetchRecentPostsAction(user?.uid ?? "");
+      return { posts } satisfies PostsApiResponse;
+    },
+    {
+      refreshInterval: 30000,
+      dedupingInterval: 30000,
+      // キャッシュにデータがあれば、マウント時に再検証しない
+      revalidateOnMount: false,
+      suspense: true,
+      fallbackData: fallbackData,
+    },
+  );
 
   const filteredPosts = useMemo(() => {
     if (!data?.posts) {
