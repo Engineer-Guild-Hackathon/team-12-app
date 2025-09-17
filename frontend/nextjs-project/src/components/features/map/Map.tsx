@@ -6,7 +6,7 @@ import { useMapControl } from "@/hooks/useMapControl";
 import { Post } from "@/types/post";
 import RecenterButton from "./RecenterButton";
 import { Box } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import PostMarker from "./PostMarker";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import CurrentUserMarker from "./CurrentUserMarker";
@@ -84,9 +84,9 @@ export default function Map({
     }
   };
 
-  const handleManualDrag = () => {
+  const handleManualDrag = useCallback(() => {
     setIsFollowing(false);
-  };
+  }, [setIsFollowing]);
 
   useEffect(() => {
     if (!map) return;
@@ -94,7 +94,7 @@ export default function Map({
     return () => {
       map.off("dragstart", handleManualDrag);
     };
-  }, [map]);
+  }, [map, handleManualDrag]);
 
   // アニメーションとマーカーアイコンのスタイルを<head>に注入します
   useEffect(() => {
