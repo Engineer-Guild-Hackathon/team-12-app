@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>Text Search Example for Posts</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; line-height: 1.6; background-color: #f4f4f4; }
+        .container { max-width: 960px; margin: 0 auto; }
+        .search-form { background-color: #fff; border: 1px solid #ddd; padding: 1.5em; margin-bottom: 2em; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .search-form h2 { margin-top: 0; }
+        .search-form input[type="text"] { width: 95%; max-width: 40em; padding: 10px; font-size: 1em; }
+        .search-form button { padding: 0.7em 1.5em; border-radius: 4px; border: none; cursor: pointer; background-color: #28a745; color: white; font-size: 1em; }
+        .post-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5em; }
+        .post-card { background: white; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .post-card img { width: 100%; height: 200px; object-fit: cover; display: block; background-color: #eee; }
+        .post-info { padding: 1em; }
+        .post-info h3 { font-size: 1.1em; margin: 0 0 0.5em 0; }
+        .post-info p { margin: 0 0 0.5em 0; font-size: 0.9em; color: #333; }
+        .meta { font-family: monospace; font-size: 0.8em; color: #777; word-break: break-all; }
+        .status-message { color: #666; font-style: italic; }
+        .error-msg { color: #d8000c; background-color: #ffbaba; border: 1px solid; padding: 1em; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Text Search Example</h1>
+        <p>
+            検索バーにキーワードを入力すると、Vertex AI Searchが画像の内容とテキストの両方を考慮して、関連する投稿を検索します。<br>
+            例: 「城」「東京タワー」「エゾリス」など
+        </p>
+
+        <!-- 検索フォーム -->
+        <div class="search-form">
+            <h2>キーワードで投稿を検索</h2>
+            <form method="get" action="/">
+                <label for="search_query"><b>検索キーワード:</b></label>
+                <input type="text" id="search_query" name="q" value="{{ search_query or '' }}" placeholder="キーワードを入力..." required>
+                <br><br>
+                <button type="submit">検索実行</button>
+            </form>
+        </div>
+
+        <!-- エラー表示エリア -->
+        {% if error %}
+            <p class="error-msg"><b>エラー:</b> {{ error }}</p>
+        {% endif %}
+
+        <!-- 検索結果表示エリア -->
+        <h2>検索結果:</h2>
+        <div class="post-gallery">
+            {% if posts %}
+                {% for post in posts %}
+                    <div class="post-card">
+                        {% if post.image_info and post.image_info.signed_url %}
+                            <a href="{{ post.image_info.signed_url }}" target="_blank" title="画像を開く">
+                                <img src="{{ post.image_info.signed_url }}" alt="Post Image">
+                            </a>
+                        {% endif %}
+                        <div class="post-info">
+                            <h3>{{ post.object_label }}</h3>
+                            <p>{{ post.user_question }}</p>
+                            <p class="meta"><b>Post ID:</b> {{ post.post_id }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% elif search_query %}
+                <p class="status-message">「{{ search_query }}」に一致する投稿は見つかりませんでした。</p>
+            {% else %}
+                <p class="status-message">キーワードを入力して検索してください。</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
