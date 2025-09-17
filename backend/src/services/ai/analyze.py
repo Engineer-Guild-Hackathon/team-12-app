@@ -237,7 +237,6 @@ class AnalyzeService:
         # GeminiClient が最後に抽出した grounding_urls をDictに付与
         try:
             urls = gemini.get_last_grounding_urls()
-            print(urls)
             if isinstance(urls, list):
                 result["grounding_urls"] = [u for u in urls if isinstance(u, str)]
         except Exception:

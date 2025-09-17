@@ -101,8 +101,6 @@ def create_image_and_analyze():
         #    AnalyzeService.analyze は image_url に gs:// を渡せば内部でダウンロードして処理します
         ai_response = AnalyzeService.analyze(file=None, image_url=gcs_uri, user_question=user_question)
 
-        print(ai_response)
-
         # 3) フロントへ img_id を添えて返却（img_analyze_route に合わせて "ai_response" のみをネスト）
         return jsonify({"img_id": img_id, "ai_response": ai_response}), 200
 

@@ -71,7 +71,6 @@ class GeminiClient:
             contents=[image_part, prompt],
             **kwargs,
         )
-        print("resp", resp)
 
         # 可能ならグラウンディングURLを抽出（Dictではなく内部状態に保存）
         grounding_urls: list[str] = []
