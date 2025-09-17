@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { DISCOVERY_IMAGE_HEIGHT } from "@/constants/styles";
-import { Box, Stack, CardMedia } from "@mui/material";
+import { Box, Stack, CardMedia, Typography } from "@mui/material";
 import { IoLeaf, IoSearch } from "react-icons/io5";
 import QuestionBubble from "@/components/ui/QuestioinBubble";
 import Section from "@/components/ui/Section";
@@ -71,6 +72,33 @@ export default function DiscoveryDetailView({
         <Section icon={<IoLeaf size={32} />} title="はっけん">
           {post.ai_answer}
         </Section>
+        {/* 3.1 参考にしたサイト */}
+        {post.ai_reference && (
+          <Box sx={{ mt: 1 }}>
+            <Link
+              href={post.ai_reference}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none" }}
+            >
+              <Typography
+                variant="body2"
+                component="div"
+                sx={{
+                  display: "block",
+                  textDecoration: "underline",
+                  color: "kinako.900",
+                  "&:hover": {
+                    color: "primary.main",
+                  },
+                  transition: "color 0.2s ease-in-out",
+                }}
+              >
+                AIが参考にしたサイト
+              </Typography>
+            </Link>
+          </Box>
+        )}
         {/* 4. AIからの問い */}
         <Section icon={<IoSearch size={32} />} title="問い">
           {post.ai_question}
