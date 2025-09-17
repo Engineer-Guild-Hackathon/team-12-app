@@ -5,7 +5,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import { useMapControl } from "@/hooks/useMapControl";
 import { Post } from "@/types/post";
 import RecenterButton from "./RecenterButton";
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import PostMarker from "./PostMarker";
 import { useGeolocation } from "@/hooks/useGeolocation";
@@ -13,6 +13,7 @@ import CurrentUserMarker from "./CurrentUserMarker";
 import MapViewController from "./MapViewController";
 import MapInitialViewSetter from "./MapInitialViewSetter";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 
 interface MapProps {
   posts: Post[];
@@ -110,12 +111,13 @@ export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
+          justifyContent: "center", // 横方向の中央揃え
+          alignItems: "center", // 縦方向の中央揃え
+          height: "100%", // 親要素の高さ全体を使う
+          width: "100%", // 親要素の幅全体を使う
         }}
       >
-        <CircularProgress />
+        <LeafyLoader />
       </Box>
     );
   }

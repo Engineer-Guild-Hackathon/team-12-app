@@ -22,24 +22,21 @@ type UsePostsParams = {
  * 30秒ごとの自動更新機能付き。
  * @param params sort, scope, userId, currentLocation を含むオブジェクト
  */
-export function usePosts({
-  sort,
-  scope,
-  userId,
-  currentLocation,
-}: UsePostsParams = {}) {
+export function usePosts(
+  params: UsePostsParams = {},
+  fallbackData?: PostsApiResponse,
+) {
+  const { sort, scope, userId, currentLocation } = params;
   const key = `/api/posts?limit=100&offset=0`;
 
-  const { data, error, isLoading, mutate } = useSWR<PostsApiResponse>(
-    key,
-    fetcher,
-    {
-      refreshInterval: 30000,
-      dedupingInterval: 30000,
-      // キャッシュにデータがあれば、マウント時に再検証しない
-      revalidateOnMount: false,
-    },
-  );
+  const { data, error, mutate } = useSWR<PostsApiResponse>(key, fetcher, {
+    refreshInterval: 30000,
+    dedupingInterval: 30000,
+    // キャッシュにデータがあれば、マウント時に再検証しない
+    revalidateOnMount: false,
+    suspense: true,
+    fallbackData: fallbackData,
+  });
 
   const filteredPosts = useMemo(() => {
     if (!data?.posts) {
@@ -97,7 +94,6 @@ export function usePosts({
 
   return {
     posts: filteredPosts, // フィルタリング・ソート済みの結果を返す
-    isLoading,
     isError: error,
     mutate,
   };

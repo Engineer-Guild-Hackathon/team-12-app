@@ -13,7 +13,12 @@ const Map = dynamic(() => import("@/components/features/map/Map"), {
   ssr: false,
 });
 
-export default function HomeClient() {
+interface HomeClientProps {
+  initialPosts: Post[];
+}
+
+// initialPostsを受け取る
+export default function HomeClient({ initialPosts }: HomeClientProps) {
   const { latitude, longitude } = useGeolocation();
   const currentLocation = { latitude, longitude };
   const searchParams = useSearchParams();
@@ -22,15 +27,14 @@ export default function HomeClient() {
   // TODO: 認証情報を取得
   const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
 
-  const {
-    posts: fetchedPosts,
-    isLoading,
-    isError,
-  } = usePosts({
-    scope: currentScope,
-    userId: user?.uid,
-    currentLocation: { latitude, longitude },
-  });
+  const { posts: fetchedPosts, isError } = usePosts(
+    {
+      scope: currentScope,
+      userId: user?.uid,
+      currentLocation: { latitude, longitude },
+    },
+    { posts: initialPosts },
+  );
 
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
@@ -43,22 +47,6 @@ export default function HomeClient() {
   }, []);
 
   if (isError) return <div>データの取得に失敗しました</div>;
-
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div>地図データを読み込んでいます...</div>
-      </Box>
-    );
-  }
 
   const posts = fetchedPosts || [];
 
