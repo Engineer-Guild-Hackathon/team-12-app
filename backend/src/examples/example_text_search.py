@@ -14,8 +14,8 @@ app.logger.setLevel(logging.INFO)
 
 # --- Blueprint 登録 ---
 # /api/images/* と /api/posts/* の両方のエンドポイントが有効になる
-app.register_blueprint(image_bp, url_prefix="/api")
-app.register_blueprint(post_bp, url_prefix="/api")
+app.register_blueprint(image_bp, url_prefix="/")
+app.register_blueprint(post_bp, url_prefix="/")
 
 
 def fetch_full_post_details(post_id: str) -> dict:

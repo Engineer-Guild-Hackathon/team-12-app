@@ -315,7 +315,7 @@ def list_related_posts(post_id: uuid.UUID):
     except Exception as e:
         return jsonify({"error": "予期せぬエラーが発生しました", "detail": str(e)}), 500
 
-@post_bp.route("/posts/search", methods=["GET"])
+@post_bp.route("/api/posts/search", methods=["GET"])
 def search_posts_by_text():
     """
     ユーザーが入力したテキストクエリに基づいて投稿を検索し、
