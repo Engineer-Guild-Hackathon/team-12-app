@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from "@/stores/authStore";
 import { useDiscoveryCreationStore } from "@/stores/discoveryCreationStore";
 import { BottomNavigationAction, Box, Stack, Typography } from "@mui/material";
 import React from "react";
@@ -9,11 +10,20 @@ export default function RecordButton() {
   const startCreation = useDiscoveryCreationStore(
     (state) => state.startCreation,
   );
+  const user = useAuthStore((s) => s.user);
+  const handleLoginGuideModal = useAuthStore((s) => s.handleLoginGuideModal);
+  const handleStartCreation = () => {
+    if (user !== null) {
+      startCreation();
+    } else {
+      handleLoginGuideModal(true);
+    }
+  };
 
   return (
     <BottomNavigationAction
       disableRipple
-      onClick={startCreation}
+      onClick={handleStartCreation}
       icon={
         <Box
           sx={{

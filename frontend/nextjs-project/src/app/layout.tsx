@@ -9,6 +9,7 @@ import Layout from "@/components/ui/Layout";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import AuthInitializer from "@/components/features/auth/AuthInitializer";
 
 const yomogi = Yomogi({
   weight: ["400"],
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={yomogi.variable}>
         <AppRouterCacheProvider>
+          <AuthInitializer />
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Layout>{children}</Layout>

@@ -95,22 +95,6 @@ Created version [1] of the secret [version_id].
 Created version [1] of the secret [gemini_api_key].
 ```
 
-### 0-4. 鍵ファイル方式を Secret Manager に登録 (更新されるたびに実行)
-```bash
-gcloud secrets create signer_sa_key --project=egh202509 --data-file=./service_account.json
-```
-```bash
-# 実行結果
-Created version [1] of the secret [signer_sa_key].
-```
-#### SA にアクセス権を付与
-```bash
-gcloud secrets add-iam-policy-binding signer_sa_key \
-  --project=egh202509 \
-  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
-  --role="roles/secretmanager.secretAccessor"
-```
-
 ## 1. 初回デプロイ (手動)
 ### 1-1. イメージがあるかを確認
 ```bash
@@ -219,6 +203,30 @@ gcloud projects add-iam-policy-binding egh202509 \
   --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
   --role="roles/cloudsql.client"
 ```
+#### バックエンドのサービスアカウントに Cloud Storage のオブジェクト閲覧権を付与
+```bash
+gcloud storage buckets add-iam-policy-binding gs://dev-bucket-holo \
+  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+  --role="roles/storage.objectViewer" \
+  --project egh202509
+```
+
+#### バックエンドのサービスアカウントに Cloud Storage のオブジェクト管理権を付与
+```bash
+gcloud storage buckets add-iam-policy-binding gs://dev-bucket-holo \
+  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+  --role="roles/storage.objectAdmin" \
+  --project egh202509
+```
+
+#### 署名付きURL生成のための権限付与
+```bash
+gcloud iam service-accounts add-iam-policy-binding \
+  back-server-sa@egh202509.iam.gserviceaccount.com \
+  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+  --role="roles/iam.serviceAccountTokenCreator" \
+  --project egh202509
+```
 
 #### バックエンドの Cloud Run サービスをデプロイ
 - backend → 認証必須　のため、`--no-allow-unauthenticated` を指定
@@ -232,15 +240,13 @@ gcloud run deploy back-server \
   --add-cloudsql-instances egh202509:asia-northeast1:dev-postgre-holo \
   --port 8080 \
   --timeout 300 \
-  --update-secrets GCP_PROJECT=gcp_project:latest \
-  --update-secrets DB_NAME=db_name:latest \
-  --update-secrets DB_USER=db_user:latest \
-  --update-secrets GCS_BUCKET=gcs_bucket:latest \
-  --update-secrets PROJECT_ID=project_id:latest \
-  --update-secrets SECRET_ID=secret_id:latest \
-  --update-secrets VERSION_ID=version_id:latest \
-  --update-secrets GEMINI_API_KEY=gemini_api_key:latest \
-  --update-secrets=/var/secrets/service_account.json=signer_sa_key:latest \
+  --set-secrets GCP_PROJECT=gcp_project:latest \
+  --set-secrets DB_NAME=db_name:latest \
+  --set-secrets DB_USER=db_user:latest \
+  --set-secrets GCS_BUCKET=gcs_bucket:latest \
+  --set-secrets PROJECT_ID=project_id:latest \
+  --set-secrets SECRET_ID=secret_id:latest \
+  --set-secrets VERSION_ID=version_id:latest \
   --set-env-vars SERVICE_ACCOUNT_CREDENTIALS=/var/secrets/service_account.json \
   --command sh \
   --args=-c \

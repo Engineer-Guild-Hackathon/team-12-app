@@ -11,6 +11,13 @@ on:
       run:
         required: true
         type: string   # 実行するコマンド
+    secrets:
+      NEXT_PUBLIC_FB_API_KEY:
+        required: true
+      NEXT_PUBLIC_FB_PROJECT_ID:
+        required: true
+      NEXT_PUBLIC_FB_AUTH_DOMAIN:
+        required: true
 
 jobs:
   run-task:
@@ -34,3 +41,7 @@ jobs:
 
       - name: Run task
         run: ${{ inputs.run }}
+        env:
+          NEXT_PUBLIC_FB_API_KEY: ${{ secrets.NEXT_PUBLIC_FB_API_KEY }}
+          NEXT_PUBLIC_FB_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FB_PROJECT_ID }}
+          NEXT_PUBLIC_FB_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FB_AUTH_DOMAIN }}

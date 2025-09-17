@@ -38,9 +38,10 @@ const theme = createTheme({
       main: "#85934E",
     },
     tamago: {
-      "200": "#FFFBE9",
+      "200": "#F8F3DF",
       "400": "#FBF0BB",
-      "600": "#F5E492",
+      "600": "#EEDC87",
+      "800": "#D5B933",
       main: "#F5E492",
     },
     gray: {

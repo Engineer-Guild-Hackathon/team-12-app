@@ -25,6 +25,7 @@ jobs:
       cache_lockfiles: |
         frontend/nextjs-project/package-lock.json
       run: "npm run lint"
+    secrets: inherit
 
   prettier:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
@@ -34,7 +35,8 @@ jobs:
       cache_lockfiles: |
         frontend/nextjs-project/package-lock.json
       run: "npm run prettier:check"
-  
+    secrets: inherit
+
   build:
     needs: [lint, prettier]
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
@@ -44,6 +46,7 @@ jobs:
       cache_lockfiles: |
         frontend/nextjs-project/package-lock.json
       run: "npm run build"
+    secrets: inherit
   
   # test:
   #   needs: [lint, prettier, build]

@@ -5,6 +5,7 @@ import os
 import uuid
 from typing import Any, Dict, Optional
 
+import google.auth
 import sqlalchemy as sa
 from google.cloud import storage
 from google.oauth2 import service_account
@@ -151,14 +152,33 @@ class ImageService:
 
             # GCSオブジェクト名を取得
             object_name = image.gcs_uri.replace(f"gs://{GCS_BUCKET}/", "")
-            blob = sa_bucket.blob(object_name)
 
-            # 15分間有効なダウンロード用URLを生成
-            signed_url = blob.generate_signed_url(
-                version="v4",
-                expiration=datetime.timedelta(minutes=15),
-                method="GET",
-            )
+            # 署名用のバケット/資格情報の選択
+            if sa_bucket is not None:
+                # ★ 鍵ファイルがある（=ローカル開発や明示的に指定した時）
+                blob = sa_bucket.blob(object_name)
+                # 15分間有効なダウンロード用URLを生成
+                signed_url = blob.generate_signed_url(
+                    version="v4",
+                    expiration=datetime.timedelta(minutes=15),
+                    method="GET",
+                )
+            else:
+                # 鍵ファイルが無い（=Cloud Run 本番）
+                # ADC を使って IAMCredentials の SignBlob 経由で署名
+                # （back-server-sa に roles/iam.serviceAccountTokenCreator が必要）
+                default_creds, _ = google.auth.default()
+                # ADC クライアントで同じバケットの blob を作る
+                if adc_storage_client is None:
+                    raise RuntimeError("GCS client is not initialized")
+                blob = adc_storage_client.bucket(GCS_BUCKET).blob(object_name)
+                # 15分間有効なダウンロード用URLを生成
+                signed_url = blob.generate_signed_url(
+                    version="v4",
+                    expiration=datetime.timedelta(minutes=15),
+                    method="GET",
+                    credentials=default_creds,
+                )
 
             return {
                 "img_id": str(image.img_id),

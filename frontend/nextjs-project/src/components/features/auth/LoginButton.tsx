@@ -2,28 +2,32 @@
 
 import { Button, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { auth } from "@/libs/firebase.client";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useCallback, useState } from "react";
 
 export default function LoginButton() {
   const router = useRouter();
+  const [busy, setBusy] = useState(false);
 
-  const handleLogin = async () => {
-    console.log("ユーザーが登録済みかサーバーに問い合わせ中");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    const isRegistered = Math.random() < 0.5;
-
-    if (isRegistered) {
-      console.log("登録済み");
-      router.push("/");
-    } else {
-      console.log("未登録");
-      router.push("/signup");
+  const handleLogin = useCallback(async () => {
+    if (!auth) return; // 念のため
+    setBusy(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      // TODO: ポップアップブロック環境も想定してフォールバック
+      await signInWithPopup(auth, provider);
+    } finally {
+      setBusy(false);
+      router.replace("/");
     }
-  };
+  }, [router]);
 
   return (
     <Button
       variant="contained"
       onClick={handleLogin}
+      disabled={busy}
       sx={{
         width: "100%",
         maxWidth: 340, // 固定幅ではなく最大幅にするのがおすすめ
