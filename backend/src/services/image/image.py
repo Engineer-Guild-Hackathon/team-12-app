@@ -1,12 +1,16 @@
 import datetime
 import hashlib
+import json
 import mimetypes
 import os
 import uuid
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 import google.auth
 import sqlalchemy as sa
+from google.auth import iam
+from google.auth.transport.requests import Request
 from google.cloud import storage
 from google.oauth2 import service_account
 from sqlalchemy.orm import declarative_base
@@ -18,7 +22,9 @@ engine, SessionLocal, Base, connector = connect_db()
 # --- GCSクライアントを初期化 ---
 GCS_BUCKET = os.environ.get("GCS_BUCKET")
 GCP_PROJECT = os.environ.get("GCP_PROJECT")
-SERVICE_ACCOUNT_CREDENTIALS = os.environ.get("SERVICE_ACCOUNT_CREDENTIALS")
+SERVICE_ACCOUNT_CREDENTIALS = (
+    os.environ.get("SERVICE_ACCOUNT_CREDENTIALS") or ""
+).strip()
 
 # クライアント1: 一般操作用 (Application Default Credentialsを使用)
 try:
@@ -33,19 +39,64 @@ except Exception as e:
     adc_storage_client = None
     adc_bucket = None
 
-# クライアント2: 署名付きURL生成専用 (サービスアカウントを使用)
-try:
-    if not SERVICE_ACCOUNT_CREDENTIALS:
-        raise ValueError("SERVICE_ACCOUNT_CREDENTIALS environment variable is not set.")
-    sa_credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_CREDENTIALS,
+
+def _load_signer_credentials():
+    """
+    署名URL用の Credentials を返す。
+    - 開発: SERVICE_ACCOUNT_CREDENTIALS が JSON本文 or ファイルパスならそれを使用
+    - 本番: 未設定なら ADC を取得し、IAM SignBlob サイナーで「署名可能」にラップ
+    """
+    raw = SERVICE_ACCOUNT_CREDENTIALS
+    if raw:
+        try:
+            # JSON 文字列が直接入っている場合
+            if raw.startswith("{"):
+                info = json.loads(raw)
+                return service_account.Credentials.from_service_account_info(info)
+            # ファイルパスが入っている場合
+            p = Path(raw)
+            if p.exists():
+                return service_account.Credentials.from_service_account_file(str(p))
+            else:
+                print(
+                    f"WARN: SERVICE_ACCOUNT_CREDENTIALS path not found: {raw} -> fallback to ADC"
+                )
+        except Exception as e:
+            print(
+                f"WARN: failed to use SERVICE_ACCOUNT_CREDENTIALS: {e} -> fallback to ADC"
+            )
+
+    # 本番: ADC + IAM サイナー（SignBlob）で署名可能にする
+    base_creds, _ = google.auth.default(
+        scopes=["https://www.googleapis.com/auth/cloud-platform"]
     )
-    sa_storage_client = storage.Client(credentials=sa_credentials, project=sa_credentials.project_id)
-    sa_bucket = sa_storage_client.bucket(GCS_BUCKET)
-except Exception as e:
-    print(f"ERROR: Failed to initialize SA GCS client for signing: {e}")
-    sa_storage_client = None
-    sa_bucket = None
+    req = Request()
+    if not getattr(base_creds, "valid", True) or getattr(base_creds, "expired", False):
+        base_creds.refresh(req)
+
+    # 実行中のサービスアカウントのメールを特定
+    sa_email = getattr(base_creds, "service_account_email", None)
+    if not sa_email:
+        try:
+            from google.auth.compute_engine import _metadata
+
+            sa_email = _metadata.get_service_account_email()
+        except Exception:
+            pass
+    if not sa_email:
+        raise RuntimeError("Could not determine service account email for signing")
+
+    signer = iam.Signer(req, base_creds, sa_email)
+    return service_account.Credentials(
+        signer=signer,
+        service_account_email=sa_email,
+        token_uri="https://oauth2.googleapis.com/token",
+    )
+
+
+# 署名用クレデンシャルを1本用意（開発=鍵 / 本番=ADC+IAM サイナー）
+signer_credentials = _load_signer_credentials()
+
 
 # モデル定義だけは可能にしておく（DB接続失敗時のクラッシュ防止）
 if Base is object:
@@ -60,7 +111,9 @@ class Image(Base):
     size_bytes = sa.Column(sa.BigInteger, nullable=False)
     sha256_hex = sa.Column(sa.String(64), nullable=False)
     status = sa.Column(sa.Text, nullable=False)  # 'pending', 'stored', 'failed'
-    created_at = sa.Column(sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False)
+    created_at = sa.Column(
+        sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False
+    )
     updated_at = sa.Column(
         sa.TIMESTAMP(timezone=True),
         server_default=sa.func.now(),
@@ -135,14 +188,16 @@ class ImageService:
                             failed_image.status = "failed"
                             failed_session.commit()
                 except Exception as update_err:
-                    print(f"ERROR: failed to update image status to 'failed': {update_err}")
+                    print(
+                        f"ERROR: failed to update image status to 'failed': {update_err}"
+                    )
 
                 return None
 
     @staticmethod
     def get_image(img_id: uuid.UUID) -> Optional[Dict[str, Any]]:
         """img_id で Image を1件取得し、GCSの署名付きURLも生成して返す"""
-        if SessionLocal is None or sa_bucket is None:
+        if SessionLocal is None or adc_storage_client is None or adc_bucket is None:
             raise RuntimeError("Database or GCS is not initialized")
 
         with SessionLocal() as session:
@@ -152,33 +207,15 @@ class ImageService:
 
             # GCSオブジェクト名を取得
             object_name = image.gcs_uri.replace(f"gs://{GCS_BUCKET}/", "")
+            blob = adc_bucket.blob(object_name)
 
-            # 署名用のバケット/資格情報の選択
-            if sa_bucket is not None:
-                # ★ 鍵ファイルがある（=ローカル開発や明示的に指定した時）
-                blob = sa_bucket.blob(object_name)
-                # 15分間有効なダウンロード用URLを生成
-                signed_url = blob.generate_signed_url(
-                    version="v4",
-                    expiration=datetime.timedelta(minutes=15),
-                    method="GET",
-                )
-            else:
-                # 鍵ファイルが無い（=Cloud Run 本番）
-                # ADC を使って IAMCredentials の SignBlob 経由で署名
-                # （back-server-sa に roles/iam.serviceAccountTokenCreator が必要）
-                default_creds, _ = google.auth.default()
-                # ADC クライアントで同じバケットの blob を作る
-                if adc_storage_client is None:
-                    raise RuntimeError("GCS client is not initialized")
-                blob = adc_storage_client.bucket(GCS_BUCKET).blob(object_name)
-                # 15分間有効なダウンロード用URLを生成
-                signed_url = blob.generate_signed_url(
-                    version="v4",
-                    expiration=datetime.timedelta(minutes=15),
-                    method="GET",
-                    credentials=default_creds,
-                )
+            # 15分間有効なダウンロード用URLを生成（開発=鍵 / 本番=ADC+IAM サイナー）
+            signed_url = blob.generate_signed_url(
+                version="v4",
+                expiration=datetime.timedelta(minutes=15),
+                method="GET",
+                credentials=signer_credentials,
+            )
 
             return {
                 "img_id": str(image.img_id),
@@ -211,7 +248,9 @@ class ImageService:
                     blob = adc_bucket.blob(object_name)
                     blob.delete()
                 except Exception as gcs_err:
-                    print(f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}")
+                    print(
+                        f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}"
+                    )
 
                 # 2. DBからレコードを削除
                 session.delete(image)

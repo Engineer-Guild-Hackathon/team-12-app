@@ -18,7 +18,7 @@ BACK_SVC="back-server"
 FRONT_SA_NAME="front-app-sa"
 BACK_SA_NAME="back-server-sa"
 ```
-```
+```bash
 set -a; source deploy.env; set +a;
 ```
 
@@ -82,6 +82,16 @@ printf '3' | gcloud secrets create version_id \
   --project="egh202509" --data-file=-
 printf '<YOUR_REAL_GEMINI_API_KEY>' | gcloud secrets create gemini_api_key \
   --project="egh202509" --data-file=-
+printf '<YOUR_REAL_FB_API_KEY>' | gcloud secrets create next_fb_api_key \
+  --project="egh202509" --data-file=-
+printf 'egh202509.firebaseapp.com' | gcloud secrets create next_public_fb_auth_domain \
+  --project="egh202509" --data-file=-
+printf 'egh202509' | gcloud secrets create next_public_fb_project_id \
+  --project="egh202509" --data-file=-
+printf 'http://localhost:5001' | gcloud secrets create next_public_backend_origin \
+  --project="egh202509" --data-file=-
+printf 'http://localhost:3000' | gcloud secrets create next_public_site_origin \
+  --project="egh202509" --data-file=-
 ```
 ```bash
 # 実行結果
@@ -93,6 +103,11 @@ Created version [1] of the secret [project_id].
 Created version [1] of the secret [secret_id].
 Created version [1] of the secret [version_id].
 Created version [1] of the secret [gemini_api_key].
+Created version [1] of the secret [next_fb_api_key].
+Created version [1] of the secret [NEXT_PUBLIC_FB_AUTH_DOMAIN].
+Created version [1] of the secret [NEXT_PUBLIC_FB_PROJECT_ID].
+Created version [1] of the secret [NEXT_PUBLIC_BACKEND_ORIGIN].
+Created version [1] of the secret [NEXT_PUBLIC_SITE_ORIGIN].
 ```
 
 ## 1. 初回デプロイ (手動)
@@ -170,6 +185,9 @@ docker buildx build \
   --platform linux/amd64 \
   -f .devcontainer/frontend/Dockerfile.prod \
   -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}/front-app:latest \
+  --build-arg NEXT_PUBLIC_FB_API_KEY="$NEXT_PUBLIC_FB_API_KEY" \
+  --build-arg NEXT_PUBLIC_FB_AUTH_DOMAIN="$NEXT_PUBLIC_FB_AUTH_DOMAIN" \
+  --build-arg NEXT_PUBLIC_FB_PROJECT_ID="$NEXT_PUBLIC_FB_PROJECT_ID" \
   --push .
 ```
 
@@ -247,7 +265,7 @@ gcloud run deploy back-server \
   --set-secrets PROJECT_ID=project_id:latest \
   --set-secrets SECRET_ID=secret_id:latest \
   --set-secrets VERSION_ID=version_id:latest \
-  --set-env-vars SERVICE_ACCOUNT_CREDENTIALS=/var/secrets/service_account.json \
+  --set-secrets GEMINI_API_KEY=gemini_api_key:latest \
   --command sh \
   --args=-c \
   --args='exec gunicorn -w 2 --chdir /backend/src -b 0.0.0.0:${PORT} app:app'
@@ -268,19 +286,23 @@ Service URL: https://back-server-708894055394.asia-northeast1.run.app
 ### 3-2. フロントエンド
 #### フロントエンドのサービスアカウントに Cloud Run Invoker 権限を付与
 ```bash
-FRONT_SA="front-app-sa@egh202509.iam.gserviceaccount.com"
-
+FRONT_SA=""
+```
+```bash
 gcloud run services add-iam-policy-binding back-server \
   --project egh202509 \
   --region  asia-northeast1 \
-  --member  "serviceAccount:${FRONT_SA}" \
+  --member  "serviceAccount:front-app-sa@egh202509.iam.gserviceaccount.com" \
   --role    "roles/run.invoker"
 ```
 
-#### BACK_URL を環境変数に設定
+#### フロントエンドのサービスアカウントに Secret Manager へのアクセス権を付与
 ```bash
-BACK_URL="https://back-server-708894055394.asia-northeast1.run.app"
+gcloud projects add-iam-policy-binding egh202509 \
+  --member "serviceAccount:front-app-sa@egh202509.iam.gserviceaccount.com" \
+  --role   "roles/secretmanager.secretAccessor"
 ```
+
 #### フロントエンドの Cloud Run サービスをデプロイ
 frontend → 認証不要
 ```bash
@@ -290,7 +312,12 @@ gcloud run deploy front-app \
   --image   asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/front-app:latest \
   --allow-unauthenticated \
   --service-account front-app-sa@egh202509.iam.gserviceaccount.com \
-  --set-env-vars NODE_ENV=production,BACKEND_BASE_URL="${BACK_URL},REQUIRE_ID_TOKEN=true"
+  --set-env-vars NODE_ENV=production,BACKEND_BASE="https://back-server-708894055394.asia-northeast1.run.app,REQUIRE_ID_TOKEN=true" \
+  --set-secrets NEXT_PUBLIC_FB_API_KEY=next_public_fb_api_key:latest \
+  --set-secrets NEXT_PUBLIC_FB_AUTH_DOMAIN=next_public_fb_auth_domain:latest \
+  --set-secrets NEXT_PUBLIC_FB_PROJECT_ID=next_public_fb_project_id:latest \
+  --set-secrets NEXT_PUBLIC_BACKEND_ORIGIN=next_public_backend_origin:latest \
+  --set-secrets NEXT_PUBLIC_SITE_ORIGIN=next_public_site_origin:latest
 ```
 ```bash
 # 実行結果
@@ -313,7 +340,7 @@ curl -i "${FRONT_URL}/api/ping-back"
 ```
 ```bash
 # 実行結果
-HTTP/2 200 
+HTTP/2 200
 vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
 content-type: application/json
 date: Tue, 16 Sep 2025 07:17:38 GMT
@@ -321,6 +348,14 @@ server: Google Frontend
 alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
 
 {"ok":true}
+```
+
+### Cloud Run の履歴(直近200件)を確認する
+```bash
+gcloud run services logs read back-server \
+  --project egh202509 \
+  --region asia-northeast1 \
+  --limit 200
 ```
 
 ### 古いイメージの削除
@@ -337,4 +372,20 @@ Digests:
 Delete request issued.
 Waiting for operation [projects/egh202509/locations/asia-northeast1/operations/600bbb91-1ae7-43ad-b6da
 -4b9311215704] to complete...done.
+```
+
+## 環境変数の削除
+> CAUTION:
+> ERVICE_ACCOUNT_CREDENTIALS を開発環境と同様に渡してしまうと、バックエンドのサービスアカウントを使わずに別のサービスアカウントで動いてしまうため、Cloud SQL や Secret Manager にアクセスできなくなり、エラーになる。
+> 誤って設定してしまった場合は、以下のコマンドで削除する。
+```bash
+gcloud run services update back-server \
+  --project egh202509 \
+  --region asia-northeast1 \
+  --remove-env-vars SERVICE_ACCOUNT_CREDENTIALS
+```
+```bash
+gcloud run services describe back-server \
+  --project egh202509 --region asia-northeast1 \
+  --format="yaml(spec.template.spec.containers[0].env)"
 ```
