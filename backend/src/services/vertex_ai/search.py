@@ -1,6 +1,6 @@
 import os
 import uuid
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from google.api_core.client_options import ClientOptions
 from google.cloud.discoveryengine import SearchRequest, SearchServiceClient
@@ -41,14 +41,14 @@ class SearchService:
             )
 
             # ドキュメントの完全なリソース名を指定して、類似検索クエリを作成
-            #document_name = f"projects/{GCP_PROJECT_ID}/locations/{GCP_LOCATION}/dataStores/{DATA_STORE_ID}/documents/{str(post_id)}"
+            # document_name = f"projects/{GCP_PROJECT_ID}/locations/{GCP_LOCATION}/dataStores/{DATA_STORE_ID}/documents/{str(post_id)}"
             document_name = client.document_path(
-                            project=GCP_PROJECT_ID,
-                            location=GCP_LOCATION,
-                            data_store=DATA_STORE_ID,
-                            branch="0",                # ← 実運用では branch 名を確認して合わせる
-                            document=str(post_id),
-                        )
+                project=GCP_PROJECT_ID,
+                location=GCP_LOCATION,
+                data_store=DATA_STORE_ID,
+                branch="0",  # ← 実運用では branch 名を確認して合わせる
+                document=str(post_id),
+            )
 
             request = SearchRequest(
                 serving_config=serving_config,
@@ -67,4 +67,44 @@ class SearchService:
 
         except Exception as e:
             print(f"ERROR: Vertex AI Search failed for post_id {post_id}: {e}")
+            return None
+
+    @staticmethod
+    def search_by_text(search_query: str, num_results: int = 10) -> Optional[List[Dict[str, Any]]]:
+        """
+        【新規追加】ユーザーが入力したテキストクエリに基づいて投稿を検索する。
+        """
+        if not all([GCP_PROJECT_ID, GCP_LOCATION, DATA_STORE_ID]):
+            raise RuntimeError("Vertex AI Search environment variables are not set")
+
+        try:
+            client = SearchServiceClient(client_options=ClientOptions(api_endpoint=API_ENDPOINT))
+            serving_config = client.serving_config_path(
+                project=GCP_PROJECT_ID,
+                location=GCP_LOCATION,
+                data_store=DATA_STORE_ID,
+                serving_config="default_config",
+            )
+
+            # --- ここが公式ドキュメントのロジックです ---
+            request = SearchRequest(
+                serving_config=serving_config,
+                query=search_query,  # 【重要】ユーザーの検索文字列をここに渡す
+                page_size=num_results,
+                # 必要に応じて、要約やクエリ拡張などの高度な機能を追加できます
+                # content_search_spec=...
+            )
+            # --- ここまで ---
+
+            response = client.search(request=request)
+
+            # 検索結果からIDと、必要であれば他のメタデータも抽出
+            search_results = []
+            for result in response.results:
+                search_results.append({"id": result.document.id, "struct_data": result.document.struct_data})
+
+            return search_results
+
+        except Exception as e:
+            print(f"ERROR: Vertex AI Search by text failed for query '{search_query}': {e}")
             return None
