@@ -13,8 +13,7 @@ app = Flask(__name__, template_folder="template")
 app.secret_key = "dev-search-secret"
 app.logger.setLevel(logging.INFO)
 
-# --- Blueprint 登録 ---
-# /api/images/* と /api/posts/* の両方のエンドポイントが有効になる
+# Blueprint 登録
 app.register_blueprint(image_bp, url_prefix="")
 app.register_blueprint(post_bp, url_prefix="")
 

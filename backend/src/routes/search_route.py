@@ -20,6 +20,7 @@ def _bad_request(msg: str, detail: str | None = None) -> tuple[Any, int]:
 
 
 @search_bp.route("/api/search", methods=["GET"])
+# ruff: noqa
 def search_posts_by_text():
     """
     ユーザーが入力したテキストクエリに基づいて投稿を検索し、
@@ -31,7 +32,7 @@ def search_posts_by_text():
         return _bad_request("検索クエリ 'q' が必要です")
 
     try:
-        limit = int(request.args.get("limit", "12"))
+        limit = int(request.args.get("limit", "10"))
     except ValueError:
         return _bad_request("limitは整数で指定してください")
 
