@@ -1,3 +1,5 @@
+# metadata.jsonl ファイルを生成し、GCS にアップロードするスクリプト
+# 実行すると metadata.jsonl は上書きされ、最新のデータで更新される
 import json
 import os
 import sys
