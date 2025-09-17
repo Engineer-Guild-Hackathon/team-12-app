@@ -31,6 +31,11 @@ export async function analyzeImageAction(
         object_label: json.ai_response.object_label || "",
         ai_answer: json.ai_response.ai_answer || "",
         ai_question: json.ai_response.ai_question || "",
+        grounding_urls: Array.isArray(json.ai_response.grounding_urls)
+          ? json.ai_response.grounding_urls.filter(
+              (u: unknown) => typeof u === "string",
+            )
+          : [],
       },
     };
     return { data: imageAnalysisResponse };

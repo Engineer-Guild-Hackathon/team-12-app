@@ -16,7 +16,7 @@ class _GeminiSpy:
         self.called_inline = True
         return '{"object_label":"T","ai_answer":"A","ai_question":"Q"}'
 
-    def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
+    def generate_file_storage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
         self.called_files = True
         return '{"object_label":"T","ai_answer":"A","ai_question":"Q"}'
 
@@ -161,11 +161,12 @@ def test_parse_allows_code_fence_json():
     {
         "object_label": "T",
         "ai_answer": "A",
-        "ai_question": "Q"
+        "ai_question": "Q",
+        "grounding_urls": []
     }
     ```"""
     got = analyze_mod.AnalyzeService._parse_answer_to_dict(fenced)
-    assert got == {"object_label": "T", "ai_answer": "A", "ai_question": "Q"}
+    assert got == {"object_label": "T", "ai_answer": "A", "ai_question": "Q", "grounding_urls": []}
 
 
 def test_fetch_gcs_bytes_success(monkeypatch: pytest.MonkeyPatch):
