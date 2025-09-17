@@ -27,7 +27,7 @@ def test_gemini_client_is_mockable(monkeypatch: pytest.MonkeyPatch):
     """
     analyze 側で行うモック方針が機能するかの確認：
         - gemini_client.gemini を差し替え可能であること
-        - generate_inline / generate_fileStorage の形で呼び出せること
+        - generate_inline / generate_file_storage の形で呼び出せること
     """
 
     class _Spy:
@@ -39,7 +39,7 @@ def test_gemini_client_is_mockable(monkeypatch: pytest.MonkeyPatch):
             self.inline = True
             return "OK_VIA_BYTES"
 
-        def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
+        def generate_file_storage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
             self.files = True
             return "OK_FILES"
 
@@ -53,5 +53,5 @@ def test_gemini_client_is_mockable(monkeypatch: pytest.MonkeyPatch):
 
     # files
     fs = FileStorage(stream=io.BytesIO(b), filename="x.png", content_type="image/png")
-    out2 = gemini_client.gemini.generate_fileStorage(fs, "q")
+    out2 = gemini_client.gemini.generate_file_storage(fs, "q")
     assert out2 == "OK_FILES" and spy.files is True
