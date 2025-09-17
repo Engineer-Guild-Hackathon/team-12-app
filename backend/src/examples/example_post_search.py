@@ -19,103 +19,107 @@ app.register_blueprint(image_bp, url_prefix="")
 app.register_blueprint(post_bp, url_prefix="")
 
 
-def fetch_related_posts(search_post_id_str, request, app):
+def attach_image_info(post: dict, request, app: Flask) -> dict:
     """
-    指定された投稿IDに関連する投稿の詳細情報と画像情報を取得する。
-    /api/posts/<id>/related の返却形式が複数あり得るため、堅牢に解析する。
+    post に signed_url を追加する。
     """
-    related_posts = []
+    # キー正規化: post_id
+    if "post_id" not in post and "id" in post:
+        post["post_id"] = post.get("id")
 
-    api_url_related = request.url_root.rstrip("/") + f"/api/posts/{search_post_id_str}/related"
-    resp_related = requests.get(api_url_related, timeout=20)
-    app.logger.info(f"[2] Related post API response: {resp_related.status_code}")
+    # 画像IDを探す
+    img_id = post.get("img_id")
+    if not img_id:
+        return post
 
-    # ステータスチェック
-    resp_related.raise_for_status()
-    data = resp_related.json()
-    app.logger.info(f"[2a] Related API JSON: {data}")
+    post["img_id"] = img_id  # 保証しておく
 
-    # --- 1) related_post_ids / post_ids ---
-    related_ids = data.get("related_post_ids") or data.get("post_ids")
-    if related_ids:
-        app.logger.info(f"[3] Related post IDs (direct): {related_ids}")
-    else:
-        # --- 2) posts は投稿オブジェクト（すでに詳細を返している） ---
-        posts_obj = data.get("posts")
-        if posts_obj and isinstance(posts_obj, list) and len(posts_obj) > 0:
-            # posts が既に投稿オブジェクト配列を返すケース
-            app.logger.info(f"[3] Related posts returned directly (count={len(posts_obj)})")
-            # 画像の署名付きURLなどが必要ならここで image API を叩いて補完するか
-            # もし posts_obj に image 情報が入っていればそのまま返却可能
-            # ここでは posts_obj をそのまま返す（既に full post ならこれで完了）
-            app.logger.info(f"[3] Returning posts directly: {posts_obj}")
-            return posts_obj
+    # すでに image_info があり signed_url を持っているならそのまま
+    image_info = post.get("image_info")
+    if isinstance(image_info, dict):
+        if image_info.get("signed_url"):
+            # 正規化
+            signed = image_info.get("signed_url")
+            image_info["signed_url"] = signed
+            post["image_info"] = image_info
+            return post
 
-        # --- 3) Vertex/DiscoveryEngine style: results -> document ... ---
-        if "results" in data and isinstance(data["results"], list):
-            ids = []
-            for r in data["results"]:
-                # r may be dict or object; handle dict path
-                try:
-                    # result.document.id
-                    doc = r.get("document") if isinstance(r, dict) else None
-                    if doc:
-                        # first try id
-                        doc_id = doc.get("id") or None
-                        if not doc_id:
-                            # try name last segment
-                            name = doc.get("name")
-                            if name:
-                                doc_id = name.split("/")[-1]
-                        # sometimes the original post_id is nested in structData fields
-                        if not doc_id and "structData" in doc:
-                            sd = doc.get("structData")
-                            # sd could be nested; try sd.get("id") or sd.get("fields")...
-                            if isinstance(sd, dict):
-                                # try direct id
-                                if sd.get("id"):
-                                    doc_id = sd.get("id")
-                                # or nested structData -> id
-                                nested = sd.get("structData")
-                                if not doc_id and isinstance(nested, dict) and nested.get("id"):
-                                    doc_id = nested.get("id")
-                        if doc_id:
-                            ids.append(doc_id)
-                except Exception:
-                    continue
-            if ids:
-                related_ids = ids
-                app.logger.info(f"[3] Related post IDs (from results): {related_ids}")
+    # API 呼び出し
+    try:
+        base = request.url_root.rstrip("/")
+        api_url_image = f"{base}/api/images/{img_id}"
+        resp = requests.get(api_url_image, timeout=10)
+        if not resp.ok:
+            app.logger.warning(
+                f"attach_image_info: /api/images returned non-OK status {resp.status_code} for img_id={img_id}"
+            )
+            return post
 
-    # --- ここまでで related_ids がなければ空リストとして扱う ---
-    if not related_ids:
-        app.logger.info("[3] No related IDs found in response.")
-        return []
+        payload = resp.json()
+        # 多くの実装は { "image": { ... } }
+        image_obj = {}
+        if isinstance(payload, dict) and "image" in payload and isinstance(payload["image"], dict):
+            image_obj = payload["image"]
+        elif isinstance(payload, dict):
+            # もしかして直下に signed_url がある場合
+            image_obj = payload
 
-    # --- Step 2: 各IDの詳細情報と画像URLを取得（従来どおり） ---
-    for post_id in related_ids:
-        if not post_id:
-            continue
-        # a) 投稿の詳細情報を取得
-        api_url_post = request.url_root.rstrip("/") + f"/api/posts/{post_id}"
-        resp_post = requests.get(api_url_post, timeout=10)
-        if not resp_post.ok:
-            app.logger.warning(f"投稿詳細の取得に失敗 (ID: {post_id})")
-            continue
+        # 正規化 signed_url
+        signed = image_obj.get("signed_url") or image_obj.get("signedUrl") or image_obj.get("url")
+        if signed:
+            image_obj["signed_url"] = signed
 
-        post_data = resp_post.json().get("post", {})
-        img_id = post_data.get("img_id")
+        post["image_info"] = image_obj
+        return post
 
-        # b) 画像の署名付きURLを取得
-        if img_id:
-            api_url_image = request.url_root.rstrip("/") + f"/api/images/{img_id}"
-            resp_image = requests.get(api_url_image, timeout=10)
-            if resp_image.ok:
-                post_data["image_info"] = resp_image.json().get("image", {})
+    except requests.RequestException as e:
+        app.logger.warning(f"attach_image_info: failed to fetch image info for img_id={img_id}: {e}")
+        return post
 
-        related_posts.append(post_data)
 
-    return related_posts
+# -----------------------------
+# メイン: 関連投稿を取得して image_info を付与する
+# -----------------------------
+def fetch_related_posts(search_post_id_str: str, request, app: Flask):
+    """
+    - /api/posts/{id}/related のレスポンスが { "posts": [...] } を返す場合を想定
+    - 互換のため related_post_ids が返るケースにも対応
+    - 各 post に対して attach_image_info を呼んで署名付き URL を付与する
+    """
+    base = request.url_root.rstrip("/")
+    api_url_related = f"{base}/api/posts/{search_post_id_str}/related"
+    try:
+        resp = requests.get(api_url_related, timeout=20)
+        resp.raise_for_status()
+    except requests.RequestException:
+        app.logger.exception(f"fetch_related_posts: related API call failed for post_id={search_post_id_str}")
+        raise
+
+    data = resp.json() if isinstance(resp.json(), (dict, list)) else {}
+    app.logger.info(
+        f"fetch_related_posts: related API keys = {list(data.keys()) if isinstance(data, dict) else 'list/other'}"
+    )
+
+    # 1) posts が直接返却されている場合
+    posts = data.get("posts") if isinstance(data, dict) else None
+
+    # 2) posts を正規化して image_info を付与
+    result = []
+    for p in posts or []:
+        if not isinstance(p, dict):
+            try:
+                p = dict(p)
+            except Exception:
+                continue
+        try:
+            p_with_image = attach_image_info(p, request, app)
+        except Exception:
+            # attach_image_info は通常例外を投げないはずだが保険
+            app.logger.exception("fetch_related_posts: attach_image_info failed")
+            p_with_image = p
+        result.append(p_with_image)
+
+    return result
 
 
 @app.route("/", methods=["GET"])
