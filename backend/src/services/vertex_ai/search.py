@@ -9,6 +9,9 @@ from google.cloud.discoveryengine import SearchRequest, SearchServiceClient
 GCP_PROJECT_ID = os.environ.get("PROJECT_ID")
 GCP_LOCATION = os.environ.get("GCP_LOCATION", "global")
 DATA_STORE_ID = os.environ.get("DATA_STORE_ID")
+COLLECTION_ID = os.environ.get("DATA_COLLECTION", "default_collection")
+
+print(f"DEBUG Project={GCP_PROJECT_ID}, Location={GCP_LOCATION}, DataStore={DATA_STORE_ID}")
 
 # APIエンドポイントを構築
 API_ENDPOINT = (
@@ -38,14 +41,18 @@ class SearchService:
             )
 
             # ドキュメントの完全なリソース名を指定して、類似検索クエリを作成
-            document_name = f"projects/{GCP_PROJECT_ID}/locations/{GCP_LOCATION}/dataStores/{DATA_STORE_ID}/documents/{str(post_id)}"
-            # query = discoveryengine.Query(document=document_name)
-
-            search_params = {"document": document_name}
+            #document_name = f"projects/{GCP_PROJECT_ID}/locations/{GCP_LOCATION}/dataStores/{DATA_STORE_ID}/documents/{str(post_id)}"
+            document_name = client.document_path(
+                            project=GCP_PROJECT_ID,
+                            location=GCP_LOCATION,
+                            data_store=DATA_STORE_ID,
+                            branch="0",                # ← 実運用では branch 名を確認して合わせる
+                            document=str(post_id),
+                        )
 
             request = SearchRequest(
                 serving_config=serving_config,
-                params=search_params,
+                params={"document": document_name},
                 page_size=num_results + 1,
             )
 
