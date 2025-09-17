@@ -40,9 +40,7 @@ try:
     sa_credentials = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_CREDENTIALS,
     )
-    sa_storage_client = storage.Client(
-        credentials=sa_credentials, project=sa_credentials.project_id
-    )
+    sa_storage_client = storage.Client(credentials=sa_credentials, project=sa_credentials.project_id)
     sa_bucket = sa_storage_client.bucket(GCS_BUCKET)
 except Exception as e:
     print(f"ERROR: Failed to initialize SA GCS client for signing: {e}")
@@ -62,9 +60,7 @@ class Image(Base):
     size_bytes = sa.Column(sa.BigInteger, nullable=False)
     sha256_hex = sa.Column(sa.String(64), nullable=False)
     status = sa.Column(sa.Text, nullable=False)  # 'pending', 'stored', 'failed'
-    created_at = sa.Column(
-        sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False
-    )
+    created_at = sa.Column(sa.TIMESTAMP(timezone=True), server_default=sa.func.now(), nullable=False)
     updated_at = sa.Column(
         sa.TIMESTAMP(timezone=True),
         server_default=sa.func.now(),
@@ -139,9 +135,7 @@ class ImageService:
                             failed_image.status = "failed"
                             failed_session.commit()
                 except Exception as update_err:
-                    print(
-                        f"ERROR: failed to update image status to 'failed': {update_err}"
-                    )
+                    print(f"ERROR: failed to update image status to 'failed': {update_err}")
 
                 return None
 
@@ -217,9 +211,7 @@ class ImageService:
                     blob = adc_bucket.blob(object_name)
                     blob.delete()
                 except Exception as gcs_err:
-                    print(
-                        f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}"
-                    )
+                    print(f"WARN: Failed to delete GCS object {image.gcs_uri}: {gcs_err}")
 
                 # 2. DBからレコードを削除
                 session.delete(image)

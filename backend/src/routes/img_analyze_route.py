@@ -34,9 +34,7 @@ def post_analyze():
         raise BadRequest("画像ファイルまたは画像URLは必須です")
 
     try:
-        ai_response = AnalyzeService.analyze(
-            file=file, image_url=image_url, user_question=user_question
-        )
+        ai_response = AnalyzeService.analyze(file=file, image_url=image_url, user_question=user_question)
         return jsonify({"ai_response": ai_response}), 200
     except BadRequest as e:
         # 400/413などの入力系
@@ -101,9 +99,7 @@ def create_image_and_analyze():
 
         # 2) 保存に成功したので、Gemini で解析
         #    AnalyzeService.analyze は image_url に gs:// を渡せば内部でダウンロードして処理します
-        ai_response = AnalyzeService.analyze(
-            file=None, image_url=gcs_uri, user_question=user_question
-        )
+        ai_response = AnalyzeService.analyze(file=None, image_url=gcs_uri, user_question=user_question)
 
         # 3) フロントへ img_id を添えて返却（img_analyze_route に合わせて "ai_response" のみをネスト）
         return jsonify({"img_id": img_id, "ai_response": ai_response}), 200
