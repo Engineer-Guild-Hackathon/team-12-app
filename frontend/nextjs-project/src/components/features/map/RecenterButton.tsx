@@ -1,6 +1,6 @@
 "use client";
 
-import { Fab } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { MdMyLocation } from "react-icons/md";
 
 interface RecenterButtonProps {
@@ -9,23 +9,32 @@ interface RecenterButtonProps {
 
 export default function RecenterButton({ onClick }: RecenterButtonProps) {
   return (
-    <Fab
-      size="large"
-      onClick={onClick}
+    <Box
       sx={{
         position: "absolute",
         bottom: 36,
         right: 24,
         zIndex: 1000,
-        backgroundColor: "gray.100",
-        color: "kinako.900",
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.04)",
-        "&:focus": {
-          backgroundColor: "gray.100",
-        },
+        pointerEvents: "none",
       }}
     >
-      <MdMyLocation size={26} />
-    </Fab>
+      {/* 内側のボタン：クリックイベントを「有効」に戻す */}
+      <IconButton
+        onClick={onClick}
+        size="large"
+        sx={{
+          pointerEvents: "auto",
+          backgroundColor: "white",
+          color: "kinako.900",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+          "&:hover": {
+            backgroundColor: "gray.100",
+          },
+        }}
+        aria-label="現在地に戻る"
+      >
+        <MdMyLocation size={26} />
+      </IconButton>
+    </Box>
   );
 }

@@ -39,26 +39,6 @@ except Exception as e:
     adc_storage_client = None
     adc_bucket = None
 
-# クライアント2: 署名付きURL生成専用 (サービスアカウントを使用)
-# try:
-#     if not SERVICE_ACCOUNT_CREDENTIALS:
-#         # raise ValueError("SERVICE_ACCOUNT_CREDENTIALS environment variable is not set.")
-#         print("SERVICE_ACCOUNT_CREDENTIALS environment variable is not set.")
-#         sa_storage_client = None
-#         sa_bucket = None
-#     else:
-#         sa_credentials = service_account.Credentials.from_service_account_file(
-#             SERVICE_ACCOUNT_CREDENTIALS,
-#         )
-#         sa_storage_client = storage.Client(
-#             credentials=sa_credentials, project=sa_credentials.project_id
-#         )
-#         sa_bucket = sa_storage_client.bucket(GCS_BUCKET)
-# except Exception as e:
-#     print(f"ERROR: Failed to initialize SA GCS client for signing: {e}")
-#     sa_storage_client = None
-#     sa_bucket = None
-
 
 def _load_signer_credentials():
     """
