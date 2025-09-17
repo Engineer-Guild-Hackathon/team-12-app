@@ -16,7 +16,7 @@ class _GeminiSpy:
         self.called_inline = True
         return '{"object_label":"T","ai_answer":"A","ai_question":"Q"}'
 
-    def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
+    def generate_file_storage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
         self.called_files = True
         return '{"object_label":"T","ai_answer":"A","ai_question":"Q"}'
 

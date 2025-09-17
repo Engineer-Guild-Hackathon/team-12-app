@@ -38,7 +38,8 @@ class GeminiClient:
             # 古いSDKなどで未対応の場合はプロンプトのみで運用（_build_prompt がJSONを強制）
             self._gencfg_json = None
 
-    def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
+    # 現在使用していない
+    def generate_file_storage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
         """
         FileStorage(Flask/Werkzeug) を一時保存なしでメモリ読み込み → Part.from_bytes で渡す
         """
@@ -51,24 +52,13 @@ class GeminiClient:
             image_bytes = image_jpeg_file.read()
 
         mime = getattr(image_jpeg_file, "mimetype", None) or "image/jpeg"
+        return self.generate_inline(image_bytes, prompt, mime)
 
-        image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime)
-        kwargs = {}
-        if self._gencfg_json is not None:
-            kwargs["config"] = self._gencfg_json
-        resp = self._client.models.generate_content(
-            model=self._model_name,
-            contents=[image_part, prompt],
-            **kwargs,
-        )
-        text = getattr(resp, "text", None)
-        return text or str(resp)
-
-    def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
+    def generate_inline(self, image_jpeg_bytes: bytes, prompt: str, mime: str = "image/jpeg") -> str:
         """
         bytes → Part.from_bytes で渡す
         """
-        image_part = types.Part.from_bytes(data=image_jpeg_bytes, mime_type="image/jpeg")
+        image_part = types.Part.from_bytes(data=image_jpeg_bytes, mime_type=mime)
         kwargs = {}
         if self._gencfg_json is not None:
             kwargs["config"] = self._gencfg_json
