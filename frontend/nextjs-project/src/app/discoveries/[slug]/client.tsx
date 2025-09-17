@@ -25,7 +25,6 @@ export default function DiscoveryDetailClient({ slug }: { slug: string }) {
         }}
       >
         <LeafyLoader />
-        <div>discover</div>
       </Box>
     );
   if (isError || !post) return <div>投稿の読み込みに失敗しました。</div>;

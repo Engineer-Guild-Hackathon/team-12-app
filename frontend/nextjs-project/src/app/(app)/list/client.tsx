@@ -1,14 +1,20 @@
 "use client";
 
-import { Box, Typography, CircularProgress, Stack } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import React from "react";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
 import { usePosts } from "@/hooks/usePosts";
 import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams } from "next/navigation";
+import { Post } from "@/types/post";
+import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 
-export default function ListClient() {
+interface ListClientProps {
+  initialPosts: Post[];
+}
+
+export default function ListClient({ initialPosts }: ListClientProps) {
   const {
     latitude,
     longitude,
@@ -22,23 +28,28 @@ export default function ListClient() {
   // TODO: 認証情報を取得
   const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
 
-  const {
-    posts,
-    isLoading: postsIsLoading,
-    isError: postsIsError,
-  } = usePosts({
-    sort: currentSort,
-    scope: currentScope,
-    userId: user?.uid,
-    currentLocation: { latitude, longitude },
-  });
+  const { posts, isError: postsIsError } = usePosts(
+    {
+      sort: currentSort,
+      scope: currentScope,
+      userId: user?.uid,
+      currentLocation: { latitude, longitude },
+    },
+    { posts: initialPosts },
+  );
 
-  const isPageLoading = geolocationLoading || postsIsLoading;
-
-  if (isPageLoading) {
+  if (geolocationLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-        <CircularProgress />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center", // 横方向の中央揃え
+          alignItems: "center", // 縦方向の中央揃え
+          height: "100%", // 親要素の高さ全体を使う
+          width: "100%", // 親要素の幅全体を使う
+        }}
+      >
+        <LeafyLoader />
       </Box>
     );
   }

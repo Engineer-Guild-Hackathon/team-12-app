@@ -29,7 +29,6 @@ export default function FullScreenLoader({ message }: FullScreenLoaderProps) {
         <Typography sx={{ mb: 2, color: "kinako.800" }}>{message}</Typography>
       )}
       <LeafyLoader />
-      <div>overlay</div>
     </Box>
   );
 }

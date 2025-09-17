@@ -40,7 +40,6 @@ export default function Map({ posts, onMarkerClick, selectedPost }: MapProps) {
         }}
       >
         <LeafyLoader />
-        <div>map</div>
       </Box>
     );
   }

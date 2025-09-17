@@ -49,12 +49,11 @@ export default function SubmitButton({
             display: "flex",
             justifyContent: "center", // 横方向の中央揃え
             alignItems: "center", // 縦方向の中央揃え
-            height: "100%", // 親要素の高さ全体を使う
+            height: "100svh", // 親要素の高さ全体を使う
             width: "100%", // 親要素の幅全体を使う
           }}
         >
           <LeafyLoader />
-          <div>listClient</div>
         </Box>
       )}
       <Typography fontSize={20}>

@@ -1,4 +1,5 @@
 import { Post } from "@/types/post";
+import { backendFetch } from "./backendFetch";
 
 type PostsApiResponse = {
   posts: Post[];
@@ -9,15 +10,15 @@ type PostsApiResponse = {
  */
 export async function getPosts(): Promise<Post[]> {
   // usePostsで使っていたAPIキーを直接指定
-  const key = "/api/posts?limit=100&offset=0";
+  const path = "/api/posts?limit=100&offset=0";
 
-  // Next.jsのfetchはサーバーサイドで賢くキャッシュを扱ってくれます
-  // process.env.NEXT_PUBLIC_API_URLは環境に合わせて変更してください
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${key}`);
+  // 標準のfetchの代わりに、高機能なbackendFetchを使う
+  const res = await backendFetch(path, {
+    // next: { revalidate: 60 } // 60秒キャッシュするなど、Next.jsのオプションも渡せる
+  });
 
   if (!res.ok) {
-    // エラーハンドリング
-    throw new Error("Failed to fetch posts");
+    throw new Error("Failed to fetch posts from backend");
   }
 
   const data: PostsApiResponse = await res.json();

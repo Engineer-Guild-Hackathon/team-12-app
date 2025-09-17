@@ -14,7 +14,6 @@ export default function Loading() {
       }}
     >
       <LeafyLoader />
-      <div>loading.tsx</div>
     </Box>
   );
 }
