@@ -12,6 +12,7 @@ export interface AiResponse {
   ai_answer: string;
   object_label: string;
   ai_question: string;
+  grounding_urls: string[];
 }
 
 // ストアが持つ状態とアクションの型定義
@@ -89,6 +90,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
             ai_answer: imageResult.ai_response.ai_answer,
             object_label: imageResult.ai_response.object_label,
             ai_question: imageResult.ai_response.ai_question,
+            grounding_urls: imageResult.ai_response.grounding_urls ?? [],
           };
 
           set({
@@ -105,6 +107,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
             "申し訳ございませんが、現在AI解析サービスに接続できません。",
           object_label: "エラー",
           ai_question: "しばらく時間をおいて再度お試しください。",
+          grounding_urls: [],
         };
         set({ aiResponse: errorResponse });
       } finally {

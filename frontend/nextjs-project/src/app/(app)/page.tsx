@@ -1,28 +1,12 @@
-import { Suspense } from "react";
-import { Box } from "@mui/material";
+import { getPosts } from "@/libs/getPosts";
 import HomeClient from "./client";
 
-// Suspenseのローディング中に表示するコンポーネント
-function HomeLoading() {
-  return (
-    <Box
-      sx={{
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div>地図の準備をしています...</div>
-    </Box>
-  );
-}
+// page.tsx は async 関数にする
+export default async function HomePage() {
+  // 1. サーバーサイドで投稿データを取得する
+  // この await の間、Next.jsが自動的に app/(app)/loading.tsx を表示します
+  const posts = await getPosts();
 
-export default function HomePage() {
-  return (
-    <Suspense fallback={<HomeLoading />}>
-      <HomeClient />
-    </Suspense>
-  );
+  // 2. 取得したデータを initialPosts として HomeClient に渡す
+  return <HomeClient initialPosts={posts} />;
 }

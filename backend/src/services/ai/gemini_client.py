@@ -30,15 +30,19 @@ class GeminiClient:
                 required=["object_label", "ai_answer", "ai_question"],
             )
             self._gencfg_json = types.GenerateContentConfig(
-                response_mime_type="application/json",
+                # response_mime_type="application/json",
                 response_schema=JSON_SCHEMA,
+                tools=[types.Tool(google_search=types.GoogleSearch())],
             )
         except Exception:
             # この例外は想定していない
             # 古いSDKなどで未対応の場合はプロンプトのみで運用（_build_prompt がJSONを強制）
             self._gencfg_json = None
+        # 直近呼び出しで抽出したグラウンディングURL
+        self._last_grounding_urls: list[str] = []
 
-    def generate_fileStorage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
+    # 現在使用していない
+    def generate_file_storage(self, image_jpeg_file: FileStorage, prompt: str) -> str:
         """
         FileStorage(Flask/Werkzeug) を一時保存なしでメモリ読み込み → Part.from_bytes で渡す
         """
@@ -51,34 +55,55 @@ class GeminiClient:
             image_bytes = image_jpeg_file.read()
 
         mime = getattr(image_jpeg_file, "mimetype", None) or "image/jpeg"
+        return self.generate_inline(image_bytes, prompt, mime)
 
-        image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime)
-        kwargs = {}
-        if self._gencfg_json is not None:
-            kwargs["config"] = self._gencfg_json
-        resp = self._client.models.generate_content(
-            model=self._model_name,
-            contents=[image_part, prompt],
-            **kwargs,
-        )
-        text = getattr(resp, "text", None)
-        return text or str(resp)
-
-    def generate_inline(self, image_jpeg_bytes: bytes, prompt: str) -> str:
+    def generate_inline(self, image_jpeg_bytes: bytes, prompt: str, mime: str = "image/jpeg") -> str:  # noqa: C901
         """
         bytes → Part.from_bytes で渡す
         """
-        image_part = types.Part.from_bytes(data=image_jpeg_bytes, mime_type="image/jpeg")
+        image_part = types.Part.from_bytes(data=image_jpeg_bytes, mime_type=mime)
         kwargs = {}
-        if self._gencfg_json is not None:
+        if self._gencfg_json:
             kwargs["config"] = self._gencfg_json
+
         resp = self._client.models.generate_content(
             model=self._model_name,
             contents=[image_part, prompt],
             **kwargs,
         )
-        text = getattr(resp, "text", None)
-        return text or str(resp)
+
+        # 可能ならグラウンディングURLを抽出（Dictではなく内部状態に保存）
+        grounding_urls: list[str] = []
+
+        try:
+            for cand in getattr(resp, "candidates", []):
+                gm = getattr(cand, "grounding_metadata", None)
+                if gm:
+                    # citations から URL を取得
+                    for c in getattr(gm, "citations", []):
+                        uri = getattr(c, "uri", None)
+                        if isinstance(uri, str) and uri.startswith("http"):
+                            grounding_urls.append(uri)
+
+                    # grounding_chunks から URL を取得（citations がなかった場合）
+                    if not grounding_urls:
+                        chunks = getattr(gm, "grounding_chunks", [])
+                        for ch in chunks:
+                            web = getattr(ch, "web", None)
+                            uri = getattr(web, "uri", None) if web else None
+                            if isinstance(uri, str) and uri.startswith("http"):
+                                grounding_urls.append(uri)
+
+        except Exception:
+            grounding_urls = []
+
+        # グラウンディングURLを内部に保存し、文字列テキストはそのまま返す
+        self._last_grounding_urls = grounding_urls
+        text = getattr(resp, "text", "") or str(resp)
+        return text
+
+    def get_last_grounding_urls(self) -> list[str]:
+        return list(self._last_grounding_urls)
 
 
 # シングルトン的に使えるデフォルトインスタンス

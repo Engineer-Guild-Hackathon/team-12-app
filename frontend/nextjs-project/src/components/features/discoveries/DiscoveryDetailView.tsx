@@ -1,7 +1,9 @@
 "use client";
 
-import { Box, Stack } from "@mui/material";
+import { DISCOVERY_IMAGE_HEIGHT } from "@/constants/styles";
+import { Box, Stack, CardMedia } from "@mui/material";
 import { IoLeaf, IoSearch } from "react-icons/io5";
+import { PiMapPinFill } from "react-icons/pi"; // ★ 地図セクション用のアイコンをインポート
 import QuestionBubble from "@/components/ui/QuestioinBubble";
 import Section from "@/components/ui/Section";
 import DiscoveryImage from "@/components/ui/DiscoveryImage";
@@ -14,6 +16,13 @@ import { useIsPWA } from "@/hooks/useIsPWA";
 import { Post } from "@/types/post";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import { useImage } from "@/hooks/useImage";
+import dynamic from "next/dynamic"; // ★ dynamicインポート機能
+
+// ★ 地図コンポーネントを、サーバーサイドレンダリングを無効にして動的にインポート
+const StaticPostMap = dynamic(
+  () => import("@/components/features/discoveries/StaticPostMap"),
+  { ssr: false },
+);
 
 interface DiscoveryDetailViewProps {
   post: Post;
@@ -34,7 +43,7 @@ export default function DiscoveryDetailView({
   const { imageUrl, isLoading, isError } = useImage(post.img_id);
 
   return (
-    <Box sx={{ px: 3 }}>
+    <Box sx={{ px: 3, pb: 4 }}>
       <DiscoveryHeader iconName={iconName} formattedDate={formattedDate} />
       <Stack
         spacing={4}
@@ -44,8 +53,24 @@ export default function DiscoveryDetailView({
           pb: "20px",
         }}
       >
-        {isLoading && <div>画像を読み込んでいます...</div>}
-        {isError && <div>画像の読み込みに失敗しました</div>}{" "}
+        {isLoading && (
+          <CardMedia
+            component="div"
+            sx={{
+              width: "100%",
+              height: `${DISCOVERY_IMAGE_HEIGHT}px`,
+              borderRadius: 2,
+              backgroundColor: "yomogi.200",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "yomogi.600",
+            }}
+          >
+            <IoLeaf size={48} />
+          </CardMedia>
+        )}
+        {isError && <div>画像の読み込みに失敗しました</div>}
         {imageUrl && <DiscoveryImage src={imageUrl} alt={post.object_label} />}
         {/* 2. 質問 */}
         <QuestionBubble text={post.user_question} />
@@ -56,6 +81,10 @@ export default function DiscoveryDetailView({
         {/* 4. AIからの問い */}
         <Section icon={<IoSearch size={32} />} title="問い">
           {post.ai_question}
+        </Section>
+        {/* 5. はっけんした場所の地図 */}
+        <Section icon={<PiMapPinFill size={32} />} title="ちず">
+          <StaticPostMap post={post} />
         </Section>
       </Stack>
     </Box>

@@ -1,0 +1,12 @@
+name: Dispatch Deploy (calls branch workflow)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  call-deploy-on-branch:
+    permissions:
+      id-token: write   # ← callee が要求する権限
+      contents: read
+    uses: Engineer-Guild-Hackathon/team-12-app/.github/workflows/deploy.yml@chore/cd-github-actions
+    secrets: inherit

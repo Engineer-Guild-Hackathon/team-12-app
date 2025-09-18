@@ -1,20 +1,11 @@
-import { Suspense } from "react";
-import { Box, CircularProgress } from "@mui/material";
+import { getPosts } from "@/libs/getPosts";
 import ListClient from "./client";
 
-// Suspenseのローディング中に表示するコンポーネント
-function ListLoading() {
-  return (
-    <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-      <CircularProgress />
-    </Box>
-  );
-}
+// ページコンポーネントをasyncにする
+export default async function ListPage() {
+  // 1. サーバーサイドで投稿データを取得
+  const posts = await getPosts();
 
-export default function ListPage() {
-  return (
-    <Suspense fallback={<ListLoading />}>
-      <ListClient />
-    </Suspense>
-  );
+  // 2. 取得したデータをinitialPostsとしてクライアントコンポーネントに渡す
+  return <ListClient initialPosts={posts} />;
 }
