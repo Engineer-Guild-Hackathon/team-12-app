@@ -1,0 +1,129 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}   # 手動デプロイ可
+  workflow_call: {}       # 他の workflow から呼び出し可
+
+env:
+  PROJECT_ID: egh202509
+  REGION: asia-northeast1
+  REPO: holo-app-repo
+  FRONT_SVC: front-app
+  BACK_SVC: back-server
+
+  # Cloud Run 実行時の env（固定値）
+  BACKEND_BASE: https://back-server-708894055394.asia-northeast1.run.app
+  REQUIRE_ID_TOKEN: "true"
+
+jobs:
+  deploy:
+    permissions:
+      id-token: write     # WIF (OIDC) 用
+      contents: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ---- Auth via Workload Identity Federation (no key file) ----
+      - name: Auth to Google Cloud (Workload Identity Federation)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          token_format: access_token
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      # Artifact Registry への Docker 認証設定
+      - name: Configure Docker to use Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      # buildx/BuildKit で資格情報取りこぼしを防ぐため明示ログイン
+      - name: Login to Artifact Registry (explicit)
+        run: |
+          gcloud auth print-access-token | \
+            docker login -u oauth2accesstoken --password-stdin https://${{ env.REGION }}-docker.pkg.dev
+
+      - name: Show impersonated SA (from creds file)
+        run: |
+          echo "Creds path: $GOOGLE_GHA_CREDS_PATH"
+          SA=$(jq -r '.service_account_impersonation_url' "$GOOGLE_GHA_CREDS_PATH" \
+              | sed -E 's#^.*/serviceAccounts/([^:]+):.*#\1#')
+          echo "Impersonated SA: ${SA}"
+
+      # -------------------
+      # Build & Push Backend
+      # -------------------
+      - name: Build & Push backend image (amd64)
+        run: |
+          docker buildx create --use --name builder || true
+          docker buildx build \
+            --platform linux/amd64 \
+            -f .devcontainer/backend/Dockerfile \
+            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/${{ env.BACK_SVC }}:${{ github.sha }} \
+            --push .
+
+      # -------------------
+      # Build & Push Frontend
+      # -------------------
+      - name: Build & Push frontend image (amd64)
+        run: |
+          docker buildx create --use --name builder-frontend || true
+          docker buildx build \
+            --platform linux/amd64 \
+            -f .devcontainer/frontend/Dockerfile.prod \
+            -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/${{ env.FRONT_SVC }}:${{ github.sha }} \
+            --build-arg NEXT_PUBLIC_FB_API_KEY="${{ secrets.NEXT_PUBLIC_FB_API_KEY }}" \
+            --build-arg NEXT_PUBLIC_FB_AUTH_DOMAIN="${{ secrets.NEXT_PUBLIC_FB_AUTH_DOMAIN }}" \
+            --build-arg NEXT_PUBLIC_FB_PROJECT_ID="${{ secrets.NEXT_PUBLIC_FB_PROJECT_ID }}" \
+            --push .
+
+      # -------------------
+      # Deploy Backend
+      # -------------------
+      - name: Deploy backend to Cloud Run
+        run: |
+          gcloud run deploy ${{ env.BACK_SVC }} \
+            --project ${{ env.PROJECT_ID }} \
+            --region  ${{ env.REGION }} \
+            --image   ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/${{ env.BACK_SVC }}:${{ github.sha }} \
+            --no-allow-unauthenticated \
+            --service-account back-server-sa@${{ env.PROJECT_ID }}.iam.gserviceaccount.com \
+            --add-cloudsql-instances egh202509:asia-northeast1:dev-postgre-holo \
+            --port 8080 \
+            --timeout 300 \
+            --set-secrets GCP_PROJECT=gcp_project:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,GCS_BUCKET=gcs_bucket:latest,PROJECT_ID=project_id:latest,SECRET_ID=secret_id:latest,VERSION_ID=version_id:latest,GEMINI_API_KEY=gemini_api_key:latest \
+            --command sh \
+            --args=-c \
+            --args='exec gunicorn -w 2 --chdir /backend/src -b 0.0.0.0:${PORT} app:app'
+
+      # back-server を front の SA のみに開放（Invoker 付与）
+      - name: Grant front SA to invoke back-server
+        run: |
+          gcloud run services add-iam-policy-binding ${{ env.BACK_SVC }} \
+            --project ${{ env.PROJECT_ID }} \
+            --region  ${{ env.REGION }} \
+            --member serviceAccount:front-app-sa@${{ env.PROJECT_ID }}.iam.gserviceaccount.com \
+            --role roles/run.invoker
+
+      # -------------------
+      # Deploy Frontend
+      # -------------------
+      - name: Deploy frontend to Cloud Run
+        run: |
+          gcloud run deploy ${{ env.FRONT_SVC }} \
+            --project ${{ env.PROJECT_ID }} \
+            --region  ${{ env.REGION }} \
+            --image   ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/${{ env.FRONT_SVC }}:${{ github.sha }} \
+            --allow-unauthenticated \
+            --service-account front-app-sa@${{ env.PROJECT_ID }}.iam.gserviceaccount.com \
+            --set-env-vars NODE_ENV=production,BACKEND_BASE=${{ env.BACKEND_BASE }},REQUIRE_ID_TOKEN=${{ env.REQUIRE_ID_TOKEN }} \
+            --set-secrets NEXT_PUBLIC_FB_API_KEY=next_public_fb_api_key:latest,NEXT_PUBLIC_FB_AUTH_DOMAIN=next_public_fb_auth_domain:latest,NEXT_PUBLIC_FB_PROJECT_ID=next_public_fb_project_id:latest,NEXT_PUBLIC_BACKEND_ORIGIN=next_public_backend_origin:latest,NEXT_PUBLIC_SITE_ORIGIN=next_public_site_origin:latest
