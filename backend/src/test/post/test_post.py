@@ -20,6 +20,7 @@ class FakeQuery:
         return self
 
     def filter(self, *args, **_kwargs):
+        # TODO: 文字列ではなく直接取れるようになりたい
         # 簡易解釈: SQLAlchemy式の文字列表現から is_public = true を検知してフィルタ
         key = " ".join(str(a).lower() for a in args)
         if "is_public" in key and "true" in key:

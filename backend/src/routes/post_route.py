@@ -141,6 +141,7 @@ def _parse_create_post_payload(data: Dict[str, Any]) -> CreatePostDTO:
         object_label=data["object_label"].strip(),
         ai_answer=data["ai_answer"].strip(),
         ai_question=data["ai_question"].strip(),
+        # TODO: これ簡潔に書けそう
         ai_reference=ai_reference.strip() if isinstance(ai_reference, str) and ai_reference.strip() else None,
         location=data["location"].strip(),
         latitude=lat,

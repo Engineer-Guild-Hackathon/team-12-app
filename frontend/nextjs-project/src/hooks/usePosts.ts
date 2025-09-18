@@ -36,6 +36,7 @@ export function usePosts(
   const { data, error, mutate } = useSWR<PostsApiResponse>(
     swrKey,
     async () => {
+      // TODO: これ外側で関数定義したい
       // サーバーアクションをクライアントから呼ぶ（ログイン状態で分岐）
       const { posts } = user?.uid
         ? await fetchRecentPostsAction(user.uid)
