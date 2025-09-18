@@ -6,7 +6,7 @@
 
 > **注記**
 > - `POST /api/posts` では **サーバ側で `post_id` を自動生成**します。  
-> - `location` は **緯度経度からサーバ側で逆ジオコーディングして補完**します（GeoPy　を利用）。  
+> - `location` は **送信時に指定があればそれを採用**、未指定の場合は **緯度経度からサーバ側で逆ジオコーディングして補完**します（GeoPy を利用）。  
 > - リクエストの Content-Type は `application/json` を推奨（`application/x-www-form-urlencoded` / `multipart/form-data` も可）。
 
 ---
@@ -15,7 +15,7 @@
 
 | メソッド | パス                       | 概要                                        |
 |:--------|:---------------------------|:--------------------------------------------|
-| POST    | `/api/posts`               | 新規投稿の作成（`post_id`・`location` はサーバ生成） |
+| POST    | `/api/posts`               | 新規投稿の作成（`post_id` はサーバ生成、`location` は指定があれば採用し、なければサーバで補完） |
 | GET     | `/api/posts/{post_id}`     | 特定投稿を取得                               |
 | GET     | `/api/posts`               | 投稿一覧（ページング）                       |
 | GET     | `/api/posts/recent`        | 現在時刻から 15 分より前の投稿一覧           |
@@ -62,7 +62,8 @@
   "is_public": true,
   "post_rarity": 2,
   "latitude": 43.068,
-  "longitude": 141.35
+  "longitude": 141.35,
+  "location": "大丸, 北5条西4, 中央区, 札幌市, 北海道, 日本" // 任意（指定時はそのまま保存）
 }
 ```
 
@@ -71,7 +72,7 @@
 - `user_id`,`user_question`, `object_label`, `ai_answer`, `ai_question`: 空でない文字列必須  
 - `latitude`: `-90.0`〜`90.0`  
 - `longitude`: `-180.0`〜`180.0`  
-- `location`: 送らなくてよい（サーバが補完）
+- `location`: 任意。指定があれば逆ジオコーディングせず、その値を保存。未指定時はサーバが補完。
  - `ai_reference`: 送信任意（文字列）。未指定/空は保存時 `null`。
  - `is_public`: 送信任意。未指定時は `false`。`true/false` のほか `"1"/"0"`, `"on"/"off"` なども許容。
  - `post_rarity`: 送信任意。整数・0以上。未指定時は `0`。

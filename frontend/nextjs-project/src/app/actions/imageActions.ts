@@ -37,6 +37,7 @@ export async function analyzeImageAction(
             )
           : [],
       },
+      location: typeof json.location === "string" ? json.location : null,
     };
     return { data: imageAnalysisResponse };
   } catch (e) {

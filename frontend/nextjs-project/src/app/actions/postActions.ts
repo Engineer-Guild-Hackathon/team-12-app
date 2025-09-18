@@ -17,6 +17,7 @@ export type CreatePostPayload = {
   post_rarity: number;
   latitude: number;
   longitude: number;
+  location: string | null;
 };
 
 /**

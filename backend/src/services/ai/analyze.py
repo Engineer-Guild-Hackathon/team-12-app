@@ -22,7 +22,11 @@ class AnalyzeService:
 
     @staticmethod
     def analyze(
-        file: FileStorage | None, image_url: str | None, user_question: str | None
+        file: FileStorage | None,
+        image_url: str | None,
+        user_question: str | None,
+        location: str | None = None,
+        local_time_iso: str | None = None,
     ) -> Dict[str, Union[str, list[str]]]:
         """
         画像を解析してAIからの回答を返す
@@ -54,8 +58,10 @@ class AnalyzeService:
         if not mime.startswith("image/"):
             raise BadRequest("画像ファイルではありません")
 
-        # 3) プロンプトの構築
-        prompt = AnalyzeService._build_prompt(user_question)
+        # 3) プロンプトの構築（位置情報と時刻を付与可能）
+        prompt = AnalyzeService._build_prompt(
+            user_question=user_question, location=location, local_time_iso=local_time_iso
+        )
 
         # 4) 画像サイズに応じてAPIを選択
         if len(raw) <= CONFIG.INLINE_MAX_IMAGE_BYTES:
@@ -142,7 +148,7 @@ class AnalyzeService:
             return buf.getvalue()
 
     @staticmethod
-    def _build_prompt(user_question: str | None) -> str:
+    def _build_prompt(user_question: str | None, location: str | None = None, local_time_iso: str | None = None) -> str:
         """
         モデルに「厳密にJSONのみ」を返させるプロンプトを構築する
 
@@ -168,6 +174,17 @@ class AnalyzeService:
             "- ユーザーからの補助質問に「検索して」などの指示がなくても、グラウンディング（Web検索）を行ったほうが良いと判断したときはグラウンディングを行ってください。\n"
             "- グラウンディングを行った場合は、グラウンディングのURL(検索に用いた情報)をgrounding_urlsに含めてください。\n"
         )
+        context_lines: list[str] = []
+        if location:
+            context_lines.append(f"観測場所: {location}")
+        if local_time_iso:
+            context_lines.append(f"観測時刻(現地時刻): {local_time_iso}")
+        if context_lines:
+            base += (
+                "\nコンテキスト情報 (画像の解釈に役立つ参考情報):\n"
+                + "\n".join(f"- {line}" for line in context_lines)
+                + "\n"
+            )
         if user_question:
             base += f"\n補助質問（考慮してよいが、出力は上記JSONのみ）: {user_question}\n"
         return base
@@ -355,5 +372,11 @@ class AnalyzeService:
         return result
 
 
-def analyze(file: FileStorage | None, image_url: str | None, user_question: str | None) -> Dict[str, str]:
-    return AnalyzeService.analyze(file, image_url, user_question)
+def analyze(
+    file: FileStorage | None,
+    image_url: str | None,
+    user_question: str | None,
+    location: str | None = None,
+    local_time_iso: str | None = None,
+) -> Dict[str, str]:
+    return AnalyzeService.analyze(file, image_url, user_question, location=location, local_time_iso=local_time_iso)
