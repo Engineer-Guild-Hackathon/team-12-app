@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, KeyboardEvent } from "react";
-import { Box, TextField, IconButton, Paper } from "@mui/material";
+import { Box, TextField, IconButton } from "@mui/material";
 import { IoSearchOutline } from "react-icons/io5";
 
 interface SearchBarProps {
@@ -13,22 +13,7 @@ interface SearchBarProps {
  * 地図の上に重ねて固定表示する検索バー
  * スタイルは最小限。UIのルールに合わせてMUIコンポーネントを使用。
  */
-export default function SearchBar({ onSearch, initialQuery }: SearchBarProps) {
-  const [query, setQuery] = useState(initialQuery ?? "");
-
-  const triggerSearch = () => {
-    const q = query.trim();
-    if (!q) return;
-    onSearch(q);
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      triggerSearch();
-    }
-  };
-
+export function SearchBarOnMap({ onSearch, initialQuery }: SearchBarProps) {
   return (
     <Box
       sx={{
@@ -39,25 +24,71 @@ export default function SearchBar({ onSearch, initialQuery }: SearchBarProps) {
         zIndex: 1000,
         display: "flex",
         justifyContent: "center",
+        border: "1px solid",
+        borderColor: "kinako.300",
       }}
     >
-      <Paper elevation={3} sx={{ width: "100%", maxWidth: 560, p: 0.5 }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-          <TextField
-            id="search-bar"
-            fullWidth
-            size="small"
-            placeholder="検索ワードを入力"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            inputProps={{ "aria-label": "検索" }}
-          />
-          <IconButton aria-label="検索" color="primary" onClick={triggerSearch}>
-            <IoSearchOutline />
-          </IconButton>
-        </Box>
-      </Paper>
+      <SearchBarOnListPage initialQuery={initialQuery} onSearch={onSearch} />
     </Box>
   );
 }
+
+export const SearchBarOnListPage = ({
+  initialQuery,
+  onSearch,
+}: {
+  initialQuery?: string;
+  onSearch: (q: string) => void;
+}) => {
+  const [query, setQuery] = useState(initialQuery ?? "");
+  const triggerSearch = () => {
+    const q = query.trim();
+    if (!q) return;
+    onSearch(q);
+  };
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      triggerSearch();
+    }
+  };
+
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        maxWidth: 560,
+        height: "40px",
+        backgroundColor: "white",
+        borderRadius: "8px",
+        display: "flex",
+        alignItems: "center",
+        padding: "0 8px",
+      }}
+    >
+      <IconButton aria-label="検索" onClick={triggerSearch}>
+        <IoSearchOutline size={24} color="#8B7355" />
+      </IconButton>
+      <TextField
+        id="search-bar"
+        fullWidth
+        size="small"
+        placeholder="検索ワードを入力"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        inputProps={{ "aria-label": "検索" }}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              border: "none",
+            },
+            "& input": {
+              padding: "12px 8px 12px 4px",
+            },
+          },
+        }}
+      />
+    </Box>
+  );
+};

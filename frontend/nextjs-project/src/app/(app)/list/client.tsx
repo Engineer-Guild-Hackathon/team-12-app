@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Typography, Stack } from "@mui/material";
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
 import { usePosts } from "@/hooks/usePosts";
@@ -9,6 +9,8 @@ import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams } from "next/navigation";
 import { Post } from "@/types/post";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
+import { SearchBarOnListPage } from "@/components/features/search/SearchBar";
+import { searchPostsViaRouteHandler } from "@/libs/searchPosts";
 
 interface ListClientProps {
   initialPosts: Post[];
@@ -24,6 +26,9 @@ export default function ListClient({ initialPosts }: ListClientProps) {
   const { sort: currentSort } = useFilterStore();
   const searchParams = useSearchParams();
   const currentScope = searchParams.get("scope");
+  const [searchOverridePosts, setSearchOverridePosts] = useState<Post[] | null>(
+    null,
+  );
 
   // TODO: 認証情報を取得
   const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
@@ -37,6 +42,11 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     },
     { posts: initialPosts },
   );
+
+  const handleSearch = useCallback(async (q: string) => {
+    const { posts } = await searchPostsViaRouteHandler({ q, limit: 50 });
+    setSearchOverridePosts(posts);
+  }, []);
 
   if (geolocationLoading) {
     return (
@@ -71,7 +81,18 @@ export default function ListClient({ initialPosts }: ListClientProps) {
   }
 
   return (
-    <Box sx={{ px: 2.5, py: 2, overflowY: "scroll", height: "100%" }}>
+    <Box
+      sx={{
+        px: 2.5,
+        py: 2,
+        overflowY: "scroll",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
+      <SearchBarOnListPage onSearch={handleSearch} />
       <Stack spacing={1.5}>
         {(posts || []).map((post) => (
           <DiscoveryCard
