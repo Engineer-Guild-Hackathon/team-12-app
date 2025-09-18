@@ -15,6 +15,7 @@ import { useIsPWA } from "@/hooks/useIsPWA";
 import { Post } from "@/types/post";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import { useImage } from "@/hooks/useImage";
+import { useEffect } from "react";
 
 interface DiscoveryDetailViewProps {
   post: Post;
@@ -33,6 +34,12 @@ export default function DiscoveryDetailView({
     : DISCOVERY_HEADER_HEIGHT_FOR_BROWSER;
 
   const { imageUrl, isLoading, isError } = useImage(post.img_id);
+
+  useEffect(() => {
+    if (isError) {
+      throw new Error("画像の読み込みに失敗しました");
+    }
+  }, [isError]);
 
   return (
     <Box sx={{ px: 3 }}>
@@ -63,7 +70,6 @@ export default function DiscoveryDetailView({
             <IoLeaf size={48} />
           </CardMedia>
         )}
-        {isError && <div>画像の読み込みに失敗しました</div>}{" "}
         {imageUrl && <DiscoveryImage src={imageUrl} alt={post.object_label} />}
         {/* 2. 質問 */}
         <QuestionBubble text={post.user_question} />

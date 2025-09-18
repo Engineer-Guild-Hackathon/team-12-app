@@ -7,6 +7,7 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
 import { useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
@@ -37,6 +38,13 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
     { posts: initialPosts },
   );
 
+  useEffect(() => {
+    // isErrorフラグがtrueになった場合
+    if (isError) {
+      throw new Error("投稿データの取得に失敗しました。");
+    }
+  }, [isError]); // 監視対象の変数を設定
+
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   const handleMarkerClick = useCallback((post: Post) => {
@@ -46,8 +54,6 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
   const handleCloseModal = useCallback(() => {
     setSelectedPost(null);
   }, []);
-
-  if (isError) return <div>データの取得に失敗しました</div>;
 
   const posts = fetchedPosts || [];
 

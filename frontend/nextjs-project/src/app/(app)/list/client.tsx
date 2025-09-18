@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { Post } from "@/types/post";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 interface ListClientProps {
   initialPosts: Post[];
@@ -39,6 +40,18 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     { posts: initialPosts },
   );
 
+  useEffect(() => {
+    // 投稿の取得でエラーが発生した場合
+    if (postsIsError) {
+      throw new Error("投稿データの取得に失敗しました。");
+    }
+    // 現在地の取得でエラーが発生した場合
+    if (geolocationError) {
+      // geolocationErrorは文字列なのでそのままメッセージに含める
+      throw new Error(`現在地の取得に失敗しました: ${geolocationError}`);
+    }
+  }, [postsIsError, geolocationError]); // 両方のエラー状態を監視
+
   if (geolocationLoading) {
     return (
       <Box
@@ -52,22 +65,6 @@ export default function ListClient({ initialPosts }: ListClientProps) {
       >
         <LeafyLoader />
       </Box>
-    );
-  }
-
-  if (postsIsError) {
-    return (
-      <Typography color="error" sx={{ p: 4 }}>
-        投稿データの取得に失敗しました。
-      </Typography>
-    );
-  }
-
-  if (geolocationError) {
-    return (
-      <Typography color="error" sx={{ p: 4 }}>
-        現在地の取得に失敗しました: {geolocationError}
-      </Typography>
     );
   }
 
