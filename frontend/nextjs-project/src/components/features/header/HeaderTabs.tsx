@@ -6,7 +6,7 @@ import { useFilterStore } from "@/stores/filterStore";
 const tabStyles = {
   flexGrow: 1,
   borderRadius: "8px 8px 0px 0px",
-  fontSize: "1rem",
+  fontSize: { xs: "14px", sm: "16px" },
   "&.Mui-selected": {
     backgroundColor: "yomogi.800",
     color: "gray.100",

@@ -15,7 +15,7 @@ type HeaderTopProps = {
 export default function HeaderTop({
   onFilterClick,
   title = "はっけん",
-  icon = <IoLeaf />,
+  icon = <IoLeaf size={24} />,
 }: HeaderTopProps) {
   const isPWA = useIsPWA();
   const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
@@ -45,7 +45,11 @@ export default function HeaderTop({
         }}
       >
         <SvgIcon sx={{ mr: 1.5 }}>{icon}</SvgIcon>
-        <Typography variant="h6" component="div">
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ fontSize: { xs: "18px", sm: "20px" } }}
+        >
           {title}
         </Typography>
       </Box>
