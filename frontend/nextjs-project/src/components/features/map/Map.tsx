@@ -6,12 +6,11 @@ import { useMapControl } from "@/hooks/useMapControl";
 import { Post } from "@/types/post";
 import RecenterButton from "./RecenterButton";
 import { Box } from "@mui/material";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import PostMarker from "./PostMarker";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import CurrentUserMarker from "./CurrentUserMarker";
 import MapViewController from "./MapViewController";
-import MapInitialViewSetter from "./MapInitialViewSetter";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 import { useMapStore } from "@/stores/mapStore";
@@ -36,7 +35,55 @@ export default function Map({
   const { latitude, longitude, loading: geolocationLoading } = useGeolocation();
   const { map, setMap, flyTo } = useMapControl();
 
+  const { mapView, setMapView } = useMapStore();
   const { initialTarget, clearInitialTarget } = useMapStore();
+
+  const isMapInitialized = useRef(false);
+
+  const savedZoom = mapView?.zoom;
+
+  useEffect(() => {
+    if (!map) return;
+
+    // 地図の移動またはズームが終わったときに呼ばれる関数
+    const handleMapChange = () => {
+      if (!isFollowing) {
+        const center = map.getCenter();
+        const zoom = map.getZoom();
+        setMapView({ center: [center.lat, center.lng], zoom });
+      }
+    };
+
+    // イベントリスナーを登録
+    map.on("moveend", handleMapChange);
+    map.on("zoomend", handleMapChange);
+
+    // コンポーネントがアンマウントされるときにイベントリスナーを解除
+    return () => {
+      map.off("moveend", handleMapChange);
+      map.off("zoomend", handleMapChange);
+    };
+  }, [map, setMapView, isFollowing]);
+
+  useEffect(() => {
+    // mapインスタンスがない、または現在地読み込み中、または既に初期化済みの場合は何もしない
+    if (!map || geolocationLoading || isMapInitialized.current) {
+      return;
+    }
+
+    // 初期化処理は一度しか実行しないようにフラグを立てる
+    isMapInitialized.current = true;
+
+    // Zustandに保存されたmapViewがあれば、その位置とズームを復元
+    if (mapView) {
+      // setViewはアニメーションなしで瞬時に地図を移動させる
+      map.setView(mapView.center, mapView.zoom);
+    }
+    // 保存されたmapViewがなく、現在地が取得できていれば、現在地を初期位置にする
+    else if (latitude && longitude) {
+      map.setView([latitude, longitude], 16);
+    }
+  }, [map, geolocationLoading, mapView, latitude, longitude]);
 
   useEffect(() => {
     if (initialTarget && posts.length > 0 && map) {
@@ -55,8 +102,18 @@ export default function Map({
       // 5. 地図が移動を完了した時のイベント（moveend）を一度だけ監視する
       map.on("moveend", onMoveAnimationEnd);
 
+      let targetZoom: number;
+
+      // useSavedZoomフラグがtrueで、かつmapViewにzoomがあればそれを優先
+      if (initialTarget.useSavedZoom && savedZoom) {
+        targetZoom = savedZoom;
+      } else {
+        // それ以外（静的マップからの遷移など）の場合は固定値18
+        targetZoom = 18;
+      }
+
       // 6. 投稿の場所へ移動アニメーションを開始する
-      flyTo([initialTarget.lat, initialTarget.lng], 18);
+      flyTo([initialTarget.lat, initialTarget.lng], targetZoom);
 
       // 7. 該当の投稿を選択状態にする
       const postToSelect = posts.find(
@@ -75,12 +132,14 @@ export default function Map({
     setSelectedPost,
     clearInitialTarget,
     setIsFollowing,
+    savedZoom,
   ]);
 
   const handleRecenter = () => {
     if (latitude && longitude) {
       flyTo([latitude, longitude], 16);
       setIsFollowing(true);
+      setMapView(null);
     }
   };
 
@@ -172,17 +231,13 @@ export default function Map({
     );
   }
 
-  const initialPosition: [number, number] = [
-    latitude || 43.068,
-    longitude || 141.35,
-  ];
   const currentPosition: [number, number] | null =
     latitude && longitude ? [latitude, longitude] : null;
 
   return (
     <Box sx={{ height: "100%", width: "100%", position: "relative" }}>
       <MapContainer
-        center={initialPosition}
+        center={[43.068, 141.35]}
         zoom={16}
         style={{ height: "100%", width: "100%" }}
         zoomControl={false}
@@ -198,7 +253,6 @@ export default function Map({
           maxZoom={20}
         />
 
-        <MapInitialViewSetter position={initialPosition} />
         {currentPosition && (
           <MapViewController
             position={currentPosition}

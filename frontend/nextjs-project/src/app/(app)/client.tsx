@@ -6,6 +6,7 @@ import { Post } from "@/types/post";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
 import { useSearchParams } from "next/navigation";
+import { useMapStore } from "@/stores/mapStore";
 import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
 
@@ -46,7 +47,12 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
   }, [isError]); // 監視対象の変数を設定
 
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [isFollowing, setIsFollowing] = useState(true);
+  const [isFollowing, setIsFollowing] = useState(() => {
+    // コンポーネントの初期化時に一度だけZustandストアを直接参照
+    const savedMapView = useMapStore.getState().mapView;
+    // 保存されたビューがあれば追従OFF(false)、なければ追従ON(true)で開始
+    return savedMapView ? false : true;
+  });
 
   const handleMarkerClick = useCallback((post: Post) => {
     setSelectedPost(post);

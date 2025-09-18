@@ -55,7 +55,11 @@ export default function DiscoveryCardModal({
           width: `${MOBILE_MAX_WIDTH - 40}px`,
         }}
       >
-        <DiscoveryCard post={post} currentLocation={currentLocation} />
+        <DiscoveryCard
+          post={post}
+          currentLocation={currentLocation}
+          from="map"
+        />
       </Box>
     </Modal>
   );
