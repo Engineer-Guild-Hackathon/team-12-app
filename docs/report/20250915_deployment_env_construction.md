@@ -29,7 +29,7 @@ gcloud services enable artifactregistry.googleapis.com run.googleapis.com
 ```bash
 # 実行結果
 iamcredentials.googleapis.com
-Operation "operations/acat.p2-708894055394-915749c9-2486-490b-a6fd-96b4ea896996" finished successfully.
+Operation "operations/acat.p2-<PROJECT_NUMBER>-915749c9-2486-490b-a6fd-96b4ea896996" finished successfully.
 ```
 ```bash
 gcloud artifacts repositories create $REPO \
@@ -40,7 +40,7 @@ gcloud artifacts repositories create $REPO \
 ```bash
 # 実行結果
 Create request issued for: [holo-app-repo]
-Waiting for operation [projects/egh202509/locations/asia-northeast1/operations/8ccf4acc-556d-4213-9d25-011f955ea6a8] to com
+Waiting for operation [projects/<PROJECT_ID>/locations/asia-northeast1/operations/8ccf4acc-556d-4213-9d25-011f955ea6a8] to com
 plete...done.
 Created repository [holo-app-repo].
 ```
@@ -66,32 +66,33 @@ Created service account [back-server-sa].
 
 ### 0-3. 環境変数を Secret Manager に登録 (更新されるたびに実行)
 ```bash
-printf 'egh202509:asia-northeast1:dev-postgre-holo' | gcloud secrets versions add gcp_project \
-  --project=egh202509 --data-file=-
-printf 'holodb' | gcloud secrets create db_name \
-  --project="egh202509" --data-file=-
-printf 'postgres' | gcloud secrets create db_user \
-  --project="egh202509" --data-file=-
-printf 'dev-bucket-holo' | gcloud secrets create gcs_bucket \
-  --project="egh202509" --data-file=-
-printf '708894055394' | gcloud secrets create project_id \
-  --project="egh202509" --data-file=-
-printf 'holo-secret' | gcloud secrets create secret_id \
-  --project="egh202509" --data-file=-
-printf '3' | gcloud secrets create version_id \
-  --project="egh202509" --data-file=-
+printf '<CLOUD_SQL_INSTANCE>' | gcloud secrets versions add gcp_project \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<DB_NAME>' | gcloud secrets create db_name \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<DB_USER>' | gcloud secrets create db_user \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<GCS_BUCKET>' | gcloud secrets create gcs_bucket \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<PROJECT_NUMBER>' | gcloud secrets create project_id \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<SECRET_ID_VALUE>' | gcloud secrets create secret_id \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<SECRET_VERSION>' | gcloud secrets create version_id \
+  --project="${PROJECT_ID}" --data-file=-
 printf '<YOUR_REAL_GEMINI_API_KEY>' | gcloud secrets create gemini_api_key \
-  --project="egh202509" --data-file=-
+  --project="${PROJECT_ID}" --data-file=-
 printf '<YOUR_REAL_FB_API_KEY>' | gcloud secrets create next_fb_api_key \
-  --project="egh202509" --data-file=-
-printf 'egh202509.firebaseapp.com' | gcloud secrets create next_public_fb_auth_domain \
-  --project="egh202509" --data-file=-
-printf 'egh202509' | gcloud secrets create next_public_fb_project_id \
-  --project="egh202509" --data-file=-
-printf 'http://localhost:5001' | gcloud secrets create next_public_backend_origin \
-  --project="egh202509" --data-file=-
-printf 'http://localhost:3000' | gcloud secrets create next_public_site_origin \
-  --project="egh202509" --data-file=-
+  --project="${PROJECT_ID}" --data-file=-
+printf '<NEXT_PUBLIC_FB_AUTH_DOMAIN>' | gcloud secrets create next_public_fb_auth_domain \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<NEXT_PUBLIC_FB_PROJECT_ID>' | gcloud secrets create next_public_fb_project_id \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<NEXT_PUBLIC_BACKEND_ORIGIN>' | gcloud secrets create next_public_backend_origin \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<NEXT_PUBLIC_SITE_ORIGIN>' | gcloud secrets create next_public_site_origin \
+  --project="${PROJECT_ID}" --data-file=-
+printf '<DATA_STORE_ID>' | gcloud secrets create data_store_id --data-file=- --project "${PROJECT_ID}"
 ```
 ```bash
 # 実行結果
@@ -118,7 +119,7 @@ gcloud artifacts docker images list \
 ```
 ```bash
 #実行結果
-Listing items under project egh202509, location asia-northeast1, repository holo-app-repo.
+Listing items under project <PROJECT_ID>, location asia-northeast1, repository holo-app-repo.
 
 Listed 0 items.
 ```
@@ -163,8 +164,8 @@ docker buildx build \
  => => exporting attestation manifest sha256:    0.0s
  => => exporting manifest list sha256:           0.0s
  => => pushing layers                            30.8s
- => => pushing manifest for asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server:latest@sha2  1.1s
- => [auth] egh202509/holo-app-repo/back-server:pull,push token for asia-northeast1-docker.pkg.dev           0.0s
+ => => pushing manifest for asia-northeast1-docker.pkg.dev/<PROJECT_ID>/holo-app-repo/back-server:latest@sha2  1.1s
+ => [auth] <PROJECT_ID>/holo-app-repo/back-server:pull,push token for asia-northeast1-docker.pkg.dev           0.0s
 ```
 もう一度、イメージがあるかを確認すると、
 ```bash
@@ -172,10 +173,10 @@ gcloud artifacts docker images list \
   ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}
 ```
 ```bash
-Listing items under project egh202509, location asia-northeast1, repository holo-app-repo.
+Listing items under project <PROJECT_ID>, location asia-northeast1, repository holo-app-repo.
 
 IMAGE                                                               DIGEST                                                                   CREATE_TIME          UPDATE_TIME          SIZE
-asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server  sha256:(省略)  2025-09-15T19:47:16  2025-09-15T19:47:16  450365539
+asia-northeast1-docker.pkg.dev/<PROJECT_ID>/holo-app-repo/back-server  sha256:(省略)  2025-09-15T19:47:16  2025-09-15T19:47:16  450365539
 ```
 ちゃんと上がってる。
 
@@ -199,8 +200,8 @@ gcloud artifacts docker images list \
 ```bash
 # 実行結果
 IMAGE                                                               DIGEST                                                                   CREATE_TIME          UPDATE_TIME          SIZE
-asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server  sha256:b2f(略)b3ff1  2025-09-15T19:47:16  2025-09-15T19:47:16  450365539
-asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/front-app    sha256:13f(略)61bac  2025-09-15T20:03:35  2025-09-15T20:03:35  82677548
+asia-northeast1-docker.pkg.dev/<PROJECT_ID>/holo-app-repo/back-server  sha256:b2f(略)b3ff1  2025-09-15T19:47:16  2025-09-15T19:47:16  450365539
+asia-northeast1-docker.pkg.dev/<PROJECT_ID>/holo-app-repo/front-app    sha256:13f(略)61bac  2025-09-15T20:03:35  2025-09-15T20:03:35  82677548
 ```
 イメージが2個できている👍
 これは👍
@@ -211,51 +212,51 @@ asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/front-app    sha256:13f(�
 ### 3-1. バックエンド
 #### バックエンドのサービスアカウントに Secret Manager へのアクセス権を付与
 ```bash
-gcloud projects add-iam-policy-binding egh202509 \
-  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member="serviceAccount:back-server-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role="roles/secretmanager.secretAccessor"
 ```
 #### バックエンドのサービスアカウントに Cloud SQL へのアクセス権を付与
 ```bash
-gcloud projects add-iam-policy-binding egh202509 \
-  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member="serviceAccount:back-server-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role="roles/cloudsql.client"
 ```
 #### バックエンドのサービスアカウントに Cloud Storage のオブジェクト閲覧権を付与
 ```bash
-gcloud storage buckets add-iam-policy-binding gs://dev-bucket-holo \
-  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+gcloud storage buckets add-iam-policy-binding gs://<GCS_BUCKET> \
+  --member="serviceAccount:back-server-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role="roles/storage.objectViewer" \
-  --project egh202509
+  --project <PROJECT_ID>
 ```
 
 #### バックエンドのサービスアカウントに Cloud Storage のオブジェクト管理権を付与
 ```bash
-gcloud storage buckets add-iam-policy-binding gs://dev-bucket-holo \
-  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+gcloud storage buckets add-iam-policy-binding gs://<GCS_BUCKET> \
+  --member="serviceAccount:back-server-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role="roles/storage.objectAdmin" \
-  --project egh202509
+  --project <PROJECT_ID>
 ```
 
 #### 署名付きURL生成のための権限付与
 ```bash
 gcloud iam service-accounts add-iam-policy-binding \
-  back-server-sa@egh202509.iam.gserviceaccount.com \
-  --member="serviceAccount:back-server-sa@egh202509.iam.gserviceaccount.com" \
+  back-server-sa@<PROJECT_ID>.iam.gserviceaccount.com \
+  --member="serviceAccount:back-server-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role="roles/iam.serviceAccountTokenCreator" \
-  --project egh202509
+  --project <PROJECT_ID>
 ```
 
 #### バックエンドの Cloud Run サービスをデプロイ
 - backend → 認証必須　のため、`--no-allow-unauthenticated` を指定
 ```bash
 gcloud run deploy back-server \
-  --project egh202509 \
+  --project <PROJECT_ID> \
   --region asia-northeast1 \
-  --image asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server:latest \
+  --image asia-northeast1-docker.pkg.dev/<PROJECT_ID>/holo-app-repo/back-server:latest \
   --no-allow-unauthenticated \
-  --service-account back-server-sa@egh202509.iam.gserviceaccount.com \
-  --add-cloudsql-instances egh202509:asia-northeast1:dev-postgre-holo \
+  --service-account back-server-sa@<PROJECT_ID>.iam.gserviceaccount.com \
+  --add-cloudsql-instances <CLOUD_SQL_INSTANCE> \
   --port 8080 \
   --timeout 300 \
   --set-secrets GCP_PROJECT=gcp_project:latest \
@@ -266,20 +267,21 @@ gcloud run deploy back-server \
   --set-secrets SECRET_ID=secret_id:latest \
   --set-secrets VERSION_ID=version_id:latest \
   --set-secrets GEMINI_API_KEY=gemini_api_key:latest \
+  --set-secrets DATA_STORE_ID=data_store_id:latest \
   --command sh \
   --args=-c \
   --args='exec gunicorn -w 2 --chdir /backend/src -b 0.0.0.0:${PORT} app:app'
 ```
 ```bash
 # 実行結果
-Deploying container to Cloud Run service [back-server] in project [egh202509] region [asia-northeast1]
+Deploying container to Cloud Run service [back-server] in project [<PROJECT_ID>] region [asia-northeast1]
 ✓ Deploying... Done.
   ✓ Creating Revision...
   ✓ Routing traffic...
   ✓ Setting IAM Policy...
 Done.
 Service [back-server] revision [back-server-00021-b6c] has been deployed and is serving 100 percent of traffic.
-Service URL: https://back-server-708894055394.asia-northeast1.run.app
+Service URL: https://back-server-<PROJECT_NUMBER>.asia-northeast1.run.app
 ```
 これで、バックエンドの Cloud Run サービスができた。
 
@@ -290,16 +292,16 @@ FRONT_SA=""
 ```
 ```bash
 gcloud run services add-iam-policy-binding back-server \
-  --project egh202509 \
+  --project <PROJECT_ID> \
   --region  asia-northeast1 \
-  --member  "serviceAccount:front-app-sa@egh202509.iam.gserviceaccount.com" \
+  --member  "serviceAccount:front-app-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role    "roles/run.invoker"
 ```
 
 #### フロントエンドのサービスアカウントに Secret Manager へのアクセス権を付与
 ```bash
-gcloud projects add-iam-policy-binding egh202509 \
-  --member "serviceAccount:front-app-sa@egh202509.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member "serviceAccount:front-app-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
   --role   "roles/secretmanager.secretAccessor"
 ```
 
@@ -307,12 +309,12 @@ gcloud projects add-iam-policy-binding egh202509 \
 frontend → 認証不要
 ```bash
 gcloud run deploy front-app \
-  --project egh202509 \
+  --project <PROJECT_ID> \
   --region  asia-northeast1 \
-  --image   asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/front-app:latest \
+  --image   asia-northeast1-docker.pkg.dev/<PROJECT_ID>/holo-app-repo/front-app:latest \
   --allow-unauthenticated \
-  --service-account front-app-sa@egh202509.iam.gserviceaccount.com \
-  --set-env-vars NODE_ENV=production,BACKEND_BASE="https://back-server-708894055394.asia-northeast1.run.app,REQUIRE_ID_TOKEN=true" \
+  --service-account front-app-sa@<PROJECT_ID>.iam.gserviceaccount.com \
+  --set-env-vars NODE_ENV=production,BACKEND_BASE="https://back-server-<PROJECT_NUMBER>.asia-northeast1.run.app,REQUIRE_ID_TOKEN=true" \
   --set-secrets NEXT_PUBLIC_FB_API_KEY=next_public_fb_api_key:latest \
   --set-secrets NEXT_PUBLIC_FB_AUTH_DOMAIN=next_public_fb_auth_domain:latest \
   --set-secrets NEXT_PUBLIC_FB_PROJECT_ID=next_public_fb_project_id:latest \
@@ -321,21 +323,21 @@ gcloud run deploy front-app \
 ```
 ```bash
 # 実行結果
-Deploying container to Cloud Run service [front-app] in project [egh202509] region [asia-northeast1]
+Deploying container to Cloud Run service [front-app] in project [<PROJECT_ID>] region [asia-northeast1]
 ✓ Deploying... Done.
   ✓ Creating Revision...
   ✓ Routing traffic...
   ✓ Setting IAM Policy...
 Done.
 Service [front-app] revision [front-app-00002-c2x] has been deployed and is serving 100 percent of traffic.
-Service URL: https://front-app-708894055394.asia-northeast1.run.app
+Service URL: https://front-app-<PROJECT_NUMBER>.asia-northeast1.run.app
 ```
 これで、フロントエンドの Cloud Run サービスができた。
 
 ## その他
 ### フロントエンドからバックエンドの health をチェックする
 ```bash
-RONT_URL="$(gcloud run services describe front-app --project egh202509 --region asia-northeast1 --format='value(status.url)')"
+RONT_URL="$(gcloud run services describe front-app --project <PROJECT_ID> --region asia-northeast1 --format='value(status.url)')"
 curl -i "${FRONT_URL}/api/ping-back"
 ```
 ```bash
@@ -353,7 +355,7 @@ alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
 ### Cloud Run の履歴(直近200件)を確認する
 ```bash
 gcloud run services logs read back-server \
-  --project egh202509 \
+  --project <PROJECT_ID> \
   --region asia-northeast1 \
   --limit 200
 ```
@@ -368,9 +370,9 @@ gcloud artifacts docker images delete \
 ```bash
 # 実行結果
 Digests:
-- asia-northeast1-docker.pkg.dev/egh202509/holo-app-repo/back-server@sha256:<digest>
+- asia-northeast1-docker.pkg.dev/<PROJECT_ID>/holo-app-repo/back-server@sha256:<digest>
 Delete request issued.
-Waiting for operation [projects/egh202509/locations/asia-northeast1/operations/600bbb91-1ae7-43ad-b6da
+Waiting for operation [projects/<PROJECT_ID>/locations/asia-northeast1/operations/600bbb91-1ae7-43ad-b6da
 -4b9311215704] to complete...done.
 ```
 
@@ -380,12 +382,12 @@ Waiting for operation [projects/egh202509/locations/asia-northeast1/operations/6
 > 誤って設定してしまった場合は、以下のコマンドで削除する。
 ```bash
 gcloud run services update back-server \
-  --project egh202509 \
+  --project <PROJECT_ID> \
   --region asia-northeast1 \
   --remove-env-vars SERVICE_ACCOUNT_CREDENTIALS
 ```
 ```bash
 gcloud run services describe back-server \
-  --project egh202509 --region asia-northeast1 \
+  --project <PROJECT_ID> --region asia-northeast1 \
   --format="yaml(spec.template.spec.containers[0].env)"
 ```

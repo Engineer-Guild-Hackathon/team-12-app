@@ -18,6 +18,8 @@ import { Post } from "@/types/post";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import { useImage } from "@/hooks/useImage";
 import dynamic from "next/dynamic"; // ★ dynamicインポート機能
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMapStore } from "@/stores/mapStore";
 
 // ★ 地図コンポーネントを、サーバーサイドレンダリングを無効にして動的にインポート
 const StaticPostMap = dynamic(
@@ -36,6 +38,10 @@ export default function DiscoveryDetailView({
   iconName,
   formattedDate,
 }: DiscoveryDetailViewProps) {
+  const router = useRouter();
+  const setInitialTarget = useMapStore((state) => state.setInitialTarget);
+  const searchParams = useSearchParams();
+
   const isPWA = useIsPWA();
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
@@ -43,9 +49,32 @@ export default function DiscoveryDetailView({
 
   const { imageUrl, isLoading, isError } = useImage(post.img_id);
 
+  const handleBackClick = () => {
+    // ★ URLに ?from=map が含まれているかチェック
+    const fromMap = searchParams.get("from") === "map";
+
+    if (fromMap) {
+      // マップページから来た場合：Zustandに情報をセットしてマップページに戻る
+      setInitialTarget({
+        postId: post.post_id,
+        lat: post.latitude,
+        lng: post.longitude,
+        useSavedZoom: true,
+      });
+      router.push("/");
+    } else {
+      // それ以外のページから来た場合：通常のブラウザバックを実行
+      router.back();
+    }
+  };
+
   return (
     <Box sx={{ px: 3, pb: 4 }}>
-      <DiscoveryHeader iconName={iconName} formattedDate={formattedDate} />
+      <DiscoveryHeader
+        iconName={iconName}
+        formattedDate={formattedDate}
+        onBackClick={handleBackClick}
+      />
       <Stack
         spacing={4}
         sx={{
