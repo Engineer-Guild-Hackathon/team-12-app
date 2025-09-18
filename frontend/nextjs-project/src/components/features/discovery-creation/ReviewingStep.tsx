@@ -48,7 +48,7 @@ export default function ReviewingStep() {
   }
 
   return (
-    <Box sx={{ px: 3 }}>
+    <Box sx={{ px: { xs: 2, sm: 3 } }}>
       <DiscoveryHeader
         iconName={iconName}
         formattedDate={formattedDate}
@@ -127,7 +127,7 @@ export default function ReviewingStep() {
             sx={{
               color: "kinako.900",
               "& .MuiFormControlLabel-label": {
-                fontSize: 14,
+                fontSize: { xs: 13, sm: 14 },
                 lineHeight: 1.2,
               },
             }}

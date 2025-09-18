@@ -72,8 +72,8 @@ export default function ShootingStep({ onNext, onCancel }: ShootingStepProps) {
             bottom: 32,
             left: "50%",
             transform: "translateX(-50%)",
-            width: 100,
-            height: 100,
+            width: { xs: 90, sm: 100 },
+            height: { xs: 90, sm: 100 },
             border: "4px solid white",
             backgroundColor: "rgba(255, 255, 255, 0.3)",
             "&:hover": {
