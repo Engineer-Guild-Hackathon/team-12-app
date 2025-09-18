@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { DISCOVERY_IMAGE_HEIGHT } from "@/constants/styles";
-import { Box, Stack, CardMedia, Typography } from "@mui/material";
+import { Box, Stack, CardMedia } from "@mui/material";
 import { IoLeaf, IoSearch } from "react-icons/io5";
 import { PiMapPinFill } from "react-icons/pi"; // ★ 地図セクション用のアイコンをインポート
 import QuestionBubble from "@/components/ui/QuestioinBubble";
@@ -21,7 +20,6 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic"; // ★ dynamicインポート機能
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMapStore } from "@/stores/mapStore";
-import { FaLink } from "react-icons/fa";
 import ReferenceLink from "@/components/ui/ReferenceLink";
 
 // ★ 地図コンポーネントを、サーバーサイドレンダリングを無効にして動的にインポート
