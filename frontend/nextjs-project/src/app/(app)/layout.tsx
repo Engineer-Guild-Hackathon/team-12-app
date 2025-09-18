@@ -63,6 +63,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           overflowY: "hidden",
           paddingTop: `${headerHeight}px`,
           paddingBottom: `${bottomNavHeight}px`,
+          boxSizing: "border-box",
         }}
       >
         {children}
