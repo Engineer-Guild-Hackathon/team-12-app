@@ -15,6 +15,7 @@ type UseReviewingStepParams = {
   prevStep: () => void;
   latitude: number | null;
   longitude: number | null;
+  location: string | null;
 };
 
 export const useReviewingStep = (params: UseReviewingStepParams) => {
@@ -26,6 +27,7 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
     latitude,
     longitude,
     img_id,
+    location,
   } = params;
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
@@ -71,6 +73,7 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
       post_rarity: 0, // TODO: aiResponseで将来希少度を取得する
       latitude,
       longitude,
+      location: location ?? null,
     };
 
     // startTransitionでServer Actionの呼び出しをラップします。

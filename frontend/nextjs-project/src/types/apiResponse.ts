@@ -16,6 +16,8 @@ export interface ImageAnalysisResponse {
   img_id: string;
   /** AIからの回答 */
   ai_response: ImageAnalysisAnswer;
+  /** 逆ジオコーディングされた位置（可能なら） */
+  location: string | null;
 }
 
 // 画像1件のレコード
