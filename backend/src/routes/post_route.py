@@ -23,9 +23,12 @@ class CreatePostDTO:
     object_label: str
     ai_answer: str
     ai_question: str
+    ai_reference: str | None
     location: str
     latitude: float
     longitude: float
+    is_public: bool
+    post_rarity: int
 
 
 def _bad_request(msg: str, detail: str | None = None):
@@ -99,6 +102,37 @@ def _parse_create_post_payload(data: Dict[str, Any]) -> CreatePostDTO:
     if not (-180.0 <= lng <= 180.0):
         raise ValueError("longitude は -180〜180 の範囲で指定してください")
 
+    # 任意フィールド
+    ai_reference = data.get("ai_reference")
+    if ai_reference is not None and not isinstance(ai_reference, str):
+        raise ValueError("ai_reference は文字列で指定してください")
+
+    # is_public のパース（デフォルト False）
+    is_public_raw = data.get("is_public", False)
+    if isinstance(is_public_raw, bool):
+        is_public = is_public_raw
+    elif isinstance(is_public_raw, str):
+        s = is_public_raw.strip().lower()
+        if s in ("true", "1", "yes", "on"):  # よくある truthy
+            is_public = True
+        elif s in ("false", "0", "no", "off", ""):  # falsy
+            is_public = False
+        else:
+            raise ValueError("is_public は true/false で指定してください")
+    elif isinstance(is_public_raw, (int, float)):
+        is_public = bool(int(is_public_raw))
+    else:
+        raise ValueError("is_public の型が不正です")
+
+    # post_rarity のパース（0 以上の整数、デフォルト 0）
+    post_rarity_raw = data.get("post_rarity", 0)
+    try:
+        post_rarity_int = int(post_rarity_raw)
+    except Exception:
+        raise ValueError("post_rarity は整数で指定してください")
+    if post_rarity_int < 0:
+        raise ValueError("post_rarity は 0 以上で指定してください")
+
     return CreatePostDTO(
         post_id=post_id,
         user_id=data["user_id"].strip(),
@@ -107,9 +141,13 @@ def _parse_create_post_payload(data: Dict[str, Any]) -> CreatePostDTO:
         object_label=data["object_label"].strip(),
         ai_answer=data["ai_answer"].strip(),
         ai_question=data["ai_question"].strip(),
+        # TODO: これ簡潔に書けそう
+        ai_reference=ai_reference.strip() if isinstance(ai_reference, str) and ai_reference.strip() else None,
         location=data["location"].strip(),
         latitude=lat,
         longitude=lng,
+        is_public=is_public,
+        post_rarity=post_rarity_int,
     )
 
 
@@ -156,9 +194,12 @@ def create_post():
             object_label=dto.object_label,
             ai_answer=dto.ai_answer,
             ai_question=dto.ai_question,
+            ai_reference=dto.ai_reference,
             location=dto.location,
             latitude=dto.latitude,
             longitude=dto.longitude,
+            is_public=dto.is_public,
+            post_rarity=dto.post_rarity,
         )
         if created is None:
             return jsonify({"error": "保存に失敗しました"}), 500
@@ -205,6 +246,30 @@ def list_recent_posts():
         now = datetime.now(timezone.utc)
         cutoff = now - timedelta(minutes=15)
         posts = PostService.list_posts_before(cutoff)
+        return jsonify({"posts": posts, "before": cutoff.isoformat(), "now": now.isoformat()}), 200
+    except RuntimeError as e:
+        return jsonify({"error": "DB初期化エラー", "detail": str(e)}), 503
+
+
+@post_bp.route("/api/posts/recent", methods=["POST"])
+def list_recent_posts_with_visibility():
+    """現在時刻から15分前より前の投稿一覧を返す（POST、可視性フィルタ）
+    入力: { "user_id": "string" }
+    - 他人の投稿: is_public=true のみ
+    - 自分の投稿: 公開/非公開ともに含む
+    """
+    data = _get_request_data()
+    if not isinstance(data, dict):
+        return _bad_request("リクエストボディが不正です")
+    current_user_id = data.get("user_id")
+    if not isinstance(current_user_id, str) or not current_user_id.strip():
+        return _bad_request("user_id が空でない文字列を指定")
+    current_user_id = current_user_id.strip()
+
+    try:
+        now = datetime.now(timezone.utc)
+        cutoff = now - timedelta(minutes=15)
+        posts = PostService.list_posts_before_with_visibility(cutoff, current_user_id=current_user_id)
         return jsonify({"posts": posts, "before": cutoff.isoformat(), "now": now.isoformat()}), 200
     except RuntimeError as e:
         return jsonify({"error": "DB初期化エラー", "detail": str(e)}), 503

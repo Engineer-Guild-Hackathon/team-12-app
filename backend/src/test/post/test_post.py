@@ -19,7 +19,12 @@ class FakeQuery:
     def order_by(self, *_args, **_kwargs):
         return self
 
-    def filter(self, *_args, **_kwargs):
+    def filter(self, *args, **_kwargs):
+        # TODO: 文字列ではなく直接取れるようになりたい
+        # 簡易解釈: SQLAlchemy式の文字列表現から is_public = true を検知してフィルタ
+        key = " ".join(str(a).lower() for a in args)
+        if "is_public" in key and "true" in key:
+            self._rows = [r for r in self._rows if getattr(r, "is_public", False) is True]
         return self
 
     def limit(self, *_args, **_kwargs):
@@ -145,6 +150,10 @@ def test_create_post_success(patch_session_engine, sample_payload):
     assert result["user_question"] == "Q"
     assert result["latitude"] == sample_payload["latitude"]
     assert "date" in result and result["date"] is not None
+    # 新フィールドのデフォルト確認
+    assert result.get("ai_reference") is None
+    assert result.get("is_public") is False
+    assert result.get("post_rarity") == 0
 
 
 def test_create_post_commit_failure_returns_none(patch_session_engine, sample_payload):
@@ -173,9 +182,12 @@ def test_get_post_found(patch_session_engine, sample_payload):
         object_label="TGT",
         ai_answer="ANS",
         ai_question="TOI",
+        ai_reference=None,
         location="札幌市 中央区",
         latitude=43.068,
         longitude=141.35,
+        is_public=False,
+        post_rarity=0,
         date=dt.datetime.now(dt.timezone.utc),
         updated_at=dt.datetime.now(dt.timezone.utc),
     )
@@ -184,6 +196,8 @@ def test_get_post_found(patch_session_engine, sample_payload):
     assert got is not None
     assert got["post_id"] == str(sample_payload["post_id"])
     assert got["location"].startswith("札幌市")
+    assert got.get("is_public") is False
+    assert got.get("post_rarity") == 0
 
 
 def test_get_post_not_found(patch_session_engine, sample_payload):
@@ -202,7 +216,8 @@ def test_get_post_raises_when_session_not_ready(monkeypatch, sample_payload):
 # ----------------------------
 # list_posts / list_posts_before
 # ----------------------------
-def test_list_posts_returns_dicts(patch_session_engine):
+def test_list_posts_returns_public_only(patch_session_engine):
+    # 公開投稿
     row1 = SimpleNamespace(
         post_id=uuid.uuid4(),
         user_id="string_type_user_id",
@@ -211,12 +226,16 @@ def test_list_posts_returns_dicts(patch_session_engine):
         object_label="T1",
         ai_answer="A1",
         ai_question="TOI1",
+        ai_reference="ref1",
         location="札幌市1",
         latitude=43.1,
         longitude=141.1,
+        is_public=True,
+        post_rarity=2,
         date=dt.datetime.now(dt.timezone.utc),
         updated_at=dt.datetime.now(dt.timezone.utc),
     )
+    # 非公開投稿（フィルタで除外される想定）
     row2 = SimpleNamespace(
         post_id=uuid.uuid4(),
         user_id="string_type_user_id",
@@ -225,40 +244,68 @@ def test_list_posts_returns_dicts(patch_session_engine):
         object_label="T2",
         ai_answer="A2",
         ai_question="TOI2",
+        ai_reference=None,
         location="札幌市2",
         latitude=43.2,
         longitude=141.2,
+        is_public=False,
+        post_rarity=0,
         date=dt.datetime.now(dt.timezone.utc),
         updated_at=dt.datetime.now(dt.timezone.utc),
     )
+    # 公開/非公開を混在させて投入し、FakeQuery.filter が is_public=true を解釈して除外することを検証
     patch_session_engine.factory = lambda: FakeSession(query_rows=[row1, row2])
     got = PostService.list_posts(limit=10, offset=0)
     assert isinstance(got, list)
-    assert len(got) == 2
+    assert len(got) == 1  # 公開投稿のみ
     assert got[0]["user_question"] == "Q1"
-    assert got[1]["object_label"] == "T2"
+    assert got[0].get("is_public") is True
 
 
-def test_list_posts_before_filters_old(patch_session_engine):
-    old = SimpleNamespace(
+def test_list_posts_before_filters_old_and_public(patch_session_engine):
+    # 古い公開投稿（表示される）
+    old_public = SimpleNamespace(
         post_id=uuid.uuid4(),
         user_id="string_type_user_id",
         img_id=uuid.uuid4(),
-        user_question="old",
+        user_question="old_public",
         object_label="t",
         ai_answer="a",
         ai_question="TOI",
+        ai_reference="ref-old",
         location="loc",
         latitude=1.0,
         longitude=2.0,
+        is_public=True,
+        post_rarity=0,
         date=dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=2),
         updated_at=dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=1),
     )
-    patch_session_engine.factory = lambda: FakeSession(query_rows=[old])
+    # 古い非公開投稿（フィルタで除外される）
+    old_private = SimpleNamespace(
+        post_id=uuid.uuid4(),
+        user_id="string_type_user_id",
+        img_id=uuid.uuid4(),
+        user_question="old_private",
+        object_label="t",
+        ai_answer="a",
+        ai_question="TOI",
+        ai_reference="ref-old",
+        location="loc",
+        latitude=1.0,
+        longitude=2.0,
+        is_public=False,
+        post_rarity=0,
+        date=dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=2),
+        updated_at=dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=1),
+    )
+    # 公開/非公開を混在させて投入し、FakeQuery.filter が is_public=true を解釈して非公開を除外することを検証
+    patch_session_engine.factory = lambda: FakeSession(query_rows=[old_public, old_private])
     cutoff = dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=15)
     got = PostService.list_posts_before(cutoff)
     assert len(got) == 1
-    assert got[0]["user_question"] == "old"
+    assert got[0]["user_question"] == "old_public"
+    assert got[0]["is_public"] is True
 
 
 def test_list_posts_raises_when_session_not_ready(monkeypatch):

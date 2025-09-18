@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
 import { formatTimestampForClient } from "@/utils/formatDate";
 import DiscoveryImage from "@/components/ui/DiscoveryImage";
@@ -29,9 +29,11 @@ export default function ReviewingStep() {
   // TODO: useDiscoveryCreationStoreに型付けを行う
   const params = useDiscoveryCreationStore();
   const currentLocation = useGeolocation();
-  const { handleSave } = useReviewingStep({ ...params, ...currentLocation });
+  const { handleSave, isPublic, setIsPublic } = useReviewingStep({
+    ...params,
+    ...currentLocation,
+  });
   const { photoData, user_question, aiResponse, prevStep } = params;
-  const [isPublic, setIsPublic] = useState(true);
   const isPWA = useIsPWA();
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
