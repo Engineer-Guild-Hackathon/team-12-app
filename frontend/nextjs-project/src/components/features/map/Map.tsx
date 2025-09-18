@@ -40,6 +40,8 @@ export default function Map({
 
   const isMapInitialized = useRef(false);
 
+  const savedZoom = mapView?.zoom;
+
   useEffect(() => {
     if (!map) return;
 
@@ -103,8 +105,8 @@ export default function Map({
       let targetZoom: number;
 
       // useSavedZoomフラグがtrueで、かつmapViewにzoomがあればそれを優先
-      if (initialTarget.useSavedZoom && mapView?.zoom) {
-        targetZoom = mapView.zoom;
+      if (initialTarget.useSavedZoom && savedZoom) {
+        targetZoom = savedZoom;
       } else {
         // それ以外（静的マップからの遷移など）の場合は固定値18
         targetZoom = 18;
@@ -130,6 +132,7 @@ export default function Map({
     setSelectedPost,
     clearInitialTarget,
     setIsFollowing,
+    savedZoom,
   ]);
 
   const handleRecenter = () => {
