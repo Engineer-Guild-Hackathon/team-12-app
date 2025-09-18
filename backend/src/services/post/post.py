@@ -25,10 +25,14 @@ class Post(Base):
     object_label = sa.Column(sa.Text, nullable=False)
     ai_answer = sa.Column(sa.Text, nullable=False)
     ai_question = sa.Column(sa.Text, nullable=False)
+    ai_reference = sa.Column(sa.Text, nullable=True)
     location = sa.Column(sa.Text, nullable=False)
 
     latitude = sa.Column(sa.Float, nullable=False)
     longitude = sa.Column(sa.Float, nullable=False)
+
+    is_public = sa.Column(sa.Boolean, nullable=False, server_default=sa.sql.expression.false())
+    post_rarity = sa.Column(sa.Integer, nullable=False, server_default=sa.text("0"))
 
     date = sa.Column(
         sa.TIMESTAMP(timezone=True),
@@ -58,6 +62,9 @@ class PostService:
         location: str,
         latitude: float,
         longitude: float,
+        ai_reference: str | None = None,
+        is_public: bool = False,
+        post_rarity: int = 0,
         **kwargs,
     ) -> Optional[Dict[str, Any]]:
         """新しい Post を保存し、作成結果を返す"""
@@ -74,9 +81,12 @@ class PostService:
                     object_label=object_label,
                     ai_answer=ai_answer,
                     ai_question=ai_question,
+                    ai_reference=ai_reference,
                     location=location,
                     latitude=latitude,
                     longitude=longitude,
+                    is_public=is_public if is_public is not None else False,
+                    post_rarity=post_rarity if post_rarity is not None else 0,
                 )
 
                 if "date" in kwargs:
@@ -94,9 +104,12 @@ class PostService:
                     "object_label": post.object_label,
                     "ai_answer": post.ai_answer,
                     "ai_question": post.ai_question,
+                    "ai_reference": post.ai_reference,
                     "location": post.location,
                     "latitude": post.latitude,
                     "longitude": post.longitude,
+                    "is_public": post.is_public,
+                    "post_rarity": post.post_rarity,
                     "date": post.date.isoformat() if post.date else None,
                     "updated_at": post.updated_at.isoformat() if post.updated_at else None,
                 }
@@ -124,21 +137,31 @@ class PostService:
                 "object_label": post.object_label,
                 "ai_answer": post.ai_answer,
                 "ai_question": post.ai_question,
+                "ai_reference": post.ai_reference,
                 "location": post.location,
                 "latitude": post.latitude,
                 "longitude": post.longitude,
+                "is_public": post.is_public,
+                "post_rarity": post.post_rarity,
                 "date": post.date.isoformat() if post.date else None,
                 "updated_at": post.updated_at.isoformat() if post.updated_at else None,
             }
 
     @staticmethod
     def list_posts(limit: int = 10, offset: int = 0) -> List[Dict[str, Any]]:
-        """Post を複数件取得"""
+        """Post を複数件取得（公開投稿のみ）"""
         if SessionLocal is None or engine is None:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            posts = session.query(Post).order_by(Post.date.desc()).limit(limit).offset(offset).all()
+            posts = (
+                session.query(Post)
+                .filter(Post.is_public.is_(True))
+                .order_by(Post.date.desc())
+                .limit(limit)
+                .offset(offset)
+                .all()
+            )
             return [
                 {
                     "post_id": str(p.post_id),
@@ -148,9 +171,12 @@ class PostService:
                     "object_label": p.object_label,
                     "ai_answer": p.ai_answer,
                     "ai_question": p.ai_question,
+                    "ai_reference": p.ai_reference,
                     "location": p.location,
                     "latitude": p.latitude,
                     "longitude": p.longitude,
+                    "is_public": p.is_public,
+                    "post_rarity": p.post_rarity,
                     "date": p.date.isoformat() if p.date else None,
                     "updated_at": p.updated_at.isoformat() if p.updated_at else None,
                 }
@@ -159,12 +185,18 @@ class PostService:
 
     @staticmethod
     def list_posts_before(cutoff: datetime.datetime) -> List[Dict[str, Any]]:
-        """指定した日時より前に作成された投稿を返す"""
+        """指定した日時より前に作成された投稿を返す（公開投稿のみ）"""
         if SessionLocal is None or engine is None:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            rows = session.query(Post).filter(Post.date < cutoff).order_by(Post.date.desc()).all()
+            rows = (
+                session.query(Post)
+                .filter(Post.date < cutoff)
+                .filter(Post.is_public.is_(True))
+                .order_by(Post.date.desc())
+                .all()
+            )
             return [
                 {
                     "post_id": str(p.post_id),
@@ -174,9 +206,58 @@ class PostService:
                     "object_label": p.object_label,
                     "ai_answer": p.ai_answer,
                     "ai_question": p.ai_question,
+                    "ai_reference": p.ai_reference,
                     "location": p.location,
                     "latitude": p.latitude,
                     "longitude": p.longitude,
+                    "is_public": p.is_public,
+                    "post_rarity": p.post_rarity,
+                    "date": p.date.isoformat() if p.date else None,
+                    "updated_at": p.updated_at.isoformat() if p.updated_at else None,
+                }
+                for p in rows
+            ]
+
+    @staticmethod
+    def list_posts_before_with_visibility(
+        cutoff: datetime.datetime,
+        current_user_id: str,
+    ) -> List[Dict[str, Any]]:
+        """
+        可視性ルールで投稿を返す。
+        - 自分の投稿: 時刻制限なしで全件
+        - 他人の投稿: cutoff より前 かつ is_public=true のみ
+        """
+        if SessionLocal is None or engine is None:
+            raise RuntimeError("Database is not initialized")
+
+        with SessionLocal() as session:
+            rows = (
+                session.query(Post)
+                .filter(
+                    sa.or_(
+                        Post.user_id == current_user_id,
+                        sa.and_(Post.is_public.is_(True), Post.date < cutoff),
+                    )
+                )
+                .order_by(Post.date.desc())
+                .all()
+            )
+            return [
+                {
+                    "post_id": str(p.post_id),
+                    "user_id": str(p.user_id),
+                    "img_id": str(p.img_id),
+                    "user_question": p.user_question,
+                    "object_label": p.object_label,
+                    "ai_answer": p.ai_answer,
+                    "ai_question": p.ai_question,
+                    "ai_reference": p.ai_reference,
+                    "location": p.location,
+                    "latitude": p.latitude,
+                    "longitude": p.longitude,
+                    "is_public": p.is_public,
+                    "post_rarity": p.post_rarity,
                     "date": p.date.isoformat() if p.date else None,
                     "updated_at": p.updated_at.isoformat() if p.updated_at else None,
                 }

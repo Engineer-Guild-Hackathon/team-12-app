@@ -1,7 +1,8 @@
 # Posts API 使用マニュアル
 
 本書は、`/api/posts` 系エンドポイントの **リクエスト方法・引数・例・戻り値** をまとめたものです。  
-実装は Flask + SQLAlchemy。保存スキーマは以下（必須のみ抜粋）：`post_id(UUID)`, `user_id`, `img_id(UUID)`, `user_question`, `object_label`, `ai_answer`, `ai_question`, `location`, `latitude(double)`, `longitude(double)` ほか。
+実装は Flask + SQLAlchemy。保存スキーマは以下（主要フィールド）：
+`post_id(UUID)`, `user_id`, `img_id(UUID)`, `user_question`, `object_label`, `ai_answer`, `ai_question`, `ai_reference(任意)`, `location`, `latitude(double)`, `longitude(double)`, `is_public(boolean, default=false)`, `post_rarity(integer, default=0)` ほか。
 
 > **注記**
 > - `POST /api/posts` では **サーバ側で `post_id` を自動生成**します。  
@@ -18,6 +19,7 @@
 | GET     | `/api/posts/{post_id}`     | 特定投稿を取得                               |
 | GET     | `/api/posts`               | 投稿一覧（ページング）                       |
 | GET     | `/api/posts/recent`        | 現在時刻から 15 分より前の投稿一覧           |
+| POST    | `/api/posts/recent`        | 同上（可視性フィルタ付き、`user_id` を受け取る） |
 | DELETE  | `/api/posts/{post_id}`     | 投稿と関連画像を削除                         |
 
 ---
@@ -56,6 +58,9 @@
   "object_label": "写真の対象物名のテキスト",
   "ai_answer": "LLMの回答内容のテキスト",
   "ai_question": "LLMからの「問い」のテキスト",
+  "ai_reference": "https://example.com/reference-article",  
+  "is_public": true,
+  "post_rarity": 2,
   "latitude": 43.068,
   "longitude": 141.35
 }
@@ -67,6 +72,9 @@
 - `latitude`: `-90.0`〜`90.0`  
 - `longitude`: `-180.0`〜`180.0`  
 - `location`: 送らなくてよい（サーバが補完）
+ - `ai_reference`: 送信任意（文字列）。未指定/空は保存時 `null`。
+ - `is_public`: 送信任意。未指定時は `false`。`true/false` のほか `"1"/"0"`, `"on"/"off"` なども許容。
+ - `post_rarity`: 送信任意。整数・0以上。未指定時は `0`。
 
 ### レスポンス例（201）
 
@@ -80,9 +88,12 @@
     "object_label": "写真の対象物名のテキスト",
     "ai_answer": "LLMの回答内容のテキスト",
     "ai_question": "LLMからの「問い」のテキスト",
+    "ai_reference": "https://example.com/reference-article",
     "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
     "latitude": 43.068,
     "longitude": 141.35,
+    "is_public": true,
+    "post_rarity": 2,
     "date": "2025-09-11T06:07:50.252702+00:00",
     "updated_at": "2025-09-11T06:07:50.252702+00:00"
   }
@@ -101,13 +112,18 @@
 ### curl 例
 
 ```bash
-curl -X POST http://localhost:5001/api/posts   -H "Content-Type: application/json"   -d '{
+curl -X POST http://localhost:5001/api/posts \
+  -H "Content-Type: application/json" \
+  -d '{
     "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
     "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
     "user_question": "LLMに質問したい内容のテキスト",
     "object_label": "写真の対象物名のテキスト",
     "ai_answer": "LLMの回答内容のテキスト",
     "ai_question": "LLMからの「問い」のテキスト",
+    "ai_reference": "https://example.com/reference-article",
+    "is_public": true,
+    "post_rarity": 2,
     "latitude": 43.068,
     "longitude": 141.35
   }'
@@ -132,9 +148,12 @@ curl -X POST http://localhost:5001/api/posts   -H "Content-Type: application/jso
     "object_label": "写真の対象物名のテキスト",
     "ai_answer": "LLMの回答内容のテキスト",
     "ai_question": "LLMからの「問い」のテキスト",
+    "ai_reference": null,
     "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
     "latitude": 43.068,
     "longitude": 141.35,
+    "is_public": false,
+    "post_rarity": 0,
     "date": "2025-09-11T06:07:50.252702+00:00",
     "updated_at": "2025-09-11T06:07:50.252702+00:00"
   }
@@ -157,6 +176,10 @@ curl http://localhost:5001/api/posts/c008f66e-f15b-4cf9-a5be-892dae037726
 
 ## 3) GET `/api/posts` — 一覧（ページング）
 
+### 説明
+- **公開投稿（`is_public = true`）のみ**を返します。
+- 非公開投稿は表示されません。
+
 ### クエリパラメータ
 - `limit`（1〜100、デフォルト 10）  
 - `offset`（0 以上、デフォルト 0）
@@ -174,9 +197,12 @@ curl http://localhost:5001/api/posts/c008f66e-f15b-4cf9-a5be-892dae037726
       "object_label": "写真の対象物名のテキスト",
       "ai_answer": "LLMの回答内容のテキスト",
       "ai_question": "LLMからの「問い」のテキスト",
+      "ai_reference": null,
       "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
       "latitude": 43.068,
       "longitude": 141.35,
+      "is_public": true,
+      "post_rarity": 0,
       "date": "2025-09-11T06:07:50.252702+00:00",
       "updated_at": "2025-09-11T06:07:50.252702+00:00"
     }
@@ -203,7 +229,8 @@ curl "http://localhost:5001/api/posts?limit=10&offset=0"
 ## 4) GET `/api/posts/recent` — 15 分より前の投稿
 
 ### 説明
-- サーバ時刻 `now` から 15 分前より **前** に作成された投稿一覧を返します。  
+- サーバ時刻 `now` から 15 分前より **前** に作成された投稿一覧を返します。
+- **公開投稿（`is_public = true`）のみ**を返します。
 - レスポンスには `before`（カットオフ時刻）と `now` も含まれます。
 
 ### レスポンス例（200）
@@ -219,9 +246,12 @@ curl "http://localhost:5001/api/posts?limit=10&offset=0"
       "object_label": "写真の対象物名のテキスト",
       "ai_answer": "LLMの回答内容のテキスト",
       "ai_question": "LLMからの「問い」のテキスト",
+      "ai_reference": null,
       "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
       "latitude": 43.068,
       "longitude": 141.35,
+      "is_public": true,
+      "post_rarity": 0,
       "date": "2025-09-11T06:07:50.252702+00:00",
       "updated_at": "2025-09-11T06:07:50.252702+00:00"
     }
@@ -239,7 +269,67 @@ curl http://localhost:5001/api/posts/recent
 
 ---
 
-## 5) DELETE `/api/posts/{post_id}` — 投稿と画像の削除
+## 5) POST `/api/posts/recent` — 15 分より前の投稿（可視性フィルタ付き）
+
+### 説明
+- 入力として `user_id`（文字列）を受け取り、以下のルールで返します。
+  - 他人の投稿: `is_public = true` かつ 「15 分より前」の投稿のみ返す
+  - 自分の投稿: 時間制限なしで、公開/非公開を問わず「全件」を返す（15 分以内の最新投稿も含む）
+- レスポンス形式は GET 版と同様で、`before` と `now` を含みます。
+
+### リクエスト（JSON）
+
+```json
+{
+  "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb"
+}
+```
+
+### レスポンス例（200）
+
+```json
+{
+  "posts": [
+    {
+      "post_id": "c008f66e-f15b-4cf9-a5be-892dae037726",
+      "user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb",
+      "img_id": "22204310-037b-4b57-bf98-d90c58d40b4d",
+      "user_question": "...",
+      "object_label": "...",
+      "ai_answer": "...",
+      "ai_question": "...",
+      "ai_reference": null,
+      "location": "...",
+      "latitude": 43.068,
+      "longitude": 141.35,
+      "is_public": false,
+      "post_rarity": 0,
+      "date": "2025-09-11T06:07:50.252702+00:00",
+      "updated_at": "2025-09-11T06:07:50.252702+00:00"
+    }
+  ],
+  "before": "2025-09-11T05:52:50.000000+00:00",
+  "now": "2025-09-11T06:07:50.000000+00:00"
+}
+```
+
+### 失敗例（400）
+
+```json
+{ "error": "user_id は空でない文字列を指定" }
+```
+
+### curl 例
+
+```bash
+curl -X POST http://localhost:5001/api/posts/recent \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "47b6774b-24bb-425d-ba19-04c19b4086eb"}'
+```
+
+---
+
+## 6) DELETE `/api/posts/{post_id}` — 投稿と画像の削除
 
 ### 説明
 - 指定 `post_id` を物理削除します。  

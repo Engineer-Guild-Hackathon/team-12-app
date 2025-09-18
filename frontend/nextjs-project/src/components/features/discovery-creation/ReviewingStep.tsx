@@ -1,7 +1,14 @@
 "use client";
 
-import { Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
-import React, { useState } from "react";
+import {
+  Box,
+  Stack,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+} from "@mui/material";
+import Link from "next/link";
+import React from "react";
 import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
 import { formatTimestampForClient } from "@/utils/formatDate";
 import DiscoveryImage from "@/components/ui/DiscoveryImage";
@@ -22,9 +29,11 @@ export default function ReviewingStep() {
   // TODO: useDiscoveryCreationStoreに型付けを行う
   const params = useDiscoveryCreationStore();
   const currentLocation = useGeolocation();
-  const { handleSave } = useReviewingStep({ ...params, ...currentLocation });
+  const { handleSave, isPublic, setIsPublic } = useReviewingStep({
+    ...params,
+    ...currentLocation,
+  });
   const { photoData, user_question, aiResponse, prevStep } = params;
-  const [isPublic, setIsPublic] = useState(true);
   const isPWA = useIsPWA();
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
@@ -60,7 +69,40 @@ export default function ReviewingStep() {
 
         <Stack spacing={2.5} pb={2.5}>
           <Section icon={<IoLeaf size={32} />} title="はっけん">
-            {aiResponse.ai_answer}
+            <Typography
+              variant="body2"
+              component="div"
+              sx={{ display: "block" }}
+            >
+              {aiResponse.ai_answer}
+            </Typography>
+            {Array.isArray(aiResponse.grounding_urls) &&
+              aiResponse.grounding_urls.length > 0 && (
+                <Box sx={{ mt: 1 }}>
+                  <Link
+                    href={aiResponse.grounding_urls[0]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Typography
+                      variant="body2"
+                      component="div"
+                      sx={{
+                        display: "block",
+                        textDecoration: "underline",
+                        color: "kinako.900",
+                        "&:hover": {
+                          color: "primary.main",
+                        },
+                        transition: "color 0.2s ease-in-out",
+                      }}
+                    >
+                      AIが参考にしたサイト
+                    </Typography>
+                  </Link>
+                </Box>
+              )}
           </Section>
 
           <Section icon={<IoSearch size={32} />} title="問い">

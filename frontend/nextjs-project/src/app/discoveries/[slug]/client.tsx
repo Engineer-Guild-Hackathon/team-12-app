@@ -2,7 +2,7 @@
 
 import React from "react";
 import { formatTimestampForServer } from "@/utils/formatDate";
-import DiscoveryDetailView from "@/components/features/discovery-creation/DiscoveryDetailView";
+import DiscoveryDetailView from "@/components/features/discoveries/DiscoveryDetailView";
 import { usePostDetail } from "@/hooks/usePostDetail";
 import { Box } from "@mui/material";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート

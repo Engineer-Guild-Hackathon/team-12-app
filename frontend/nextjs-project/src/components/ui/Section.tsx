@@ -13,9 +13,23 @@ export default function Section({ icon, title, children }: SectionProps) {
     <Stack spacing={1.5}>
       <SectionHeader icon={icon} title={title} />
 
-      <Typography variant="body1" sx={{ fontSize: 16, px: 1.5 }}>
-        {children}
-      </Typography>
+      {/*
+          childrenの型をチェックします。
+          もし、ただの文字列や数値であれば、これまで通り<Typography>でラップします。
+          もし、Reactコンポーネント（オブジェクト）であれば、そのまま描画します。
+          これにより、<p><div>...</div></p> という不正なHTML構造を防ぎます。
+        */}
+      {typeof children === "string" || typeof children === "number" ? (
+        <Typography
+          variant="body1"
+          sx={{ fontSize: 16, px: 1.5, whiteSpace: "pre-wrap" }}
+        >
+          {children}
+        </Typography>
+      ) : (
+        // childrenがコンポーネントの場合は、ラッパーなしで直接レンダリング
+        children
+      )}
     </Stack>
   );
 }
