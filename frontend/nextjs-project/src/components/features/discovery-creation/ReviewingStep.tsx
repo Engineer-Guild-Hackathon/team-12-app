@@ -7,7 +7,6 @@ import {
   FormControlLabel,
   Typography,
 } from "@mui/material";
-import Link from "next/link";
 import React from "react";
 import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
 import { formatTimestampForClient } from "@/utils/formatDate";
@@ -24,6 +23,7 @@ import SubmitButton from "@/components/ui/SubmitButton";
 import { useReviewingStep } from "@/hooks/useReviewingStep";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useIsPWA } from "@/hooks/useIsPWA";
+import ReferenceLink from "@/components/ui/ReferenceLink";
 
 export default function ReviewingStep() {
   // TODO: useDiscoveryCreationStoreに型付けを行う
@@ -76,33 +76,7 @@ export default function ReviewingStep() {
             >
               {aiResponse.ai_answer}
             </Typography>
-            {Array.isArray(aiResponse.grounding_urls) &&
-              aiResponse.grounding_urls.length > 0 && (
-                <Box sx={{ mt: 1 }}>
-                  <Link
-                    href={aiResponse.grounding_urls[0]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Typography
-                      variant="body2"
-                      component="div"
-                      sx={{
-                        display: "block",
-                        textDecoration: "underline",
-                        color: "kinako.900",
-                        "&:hover": {
-                          color: "primary.main",
-                        },
-                        transition: "color 0.2s ease-in-out",
-                      }}
-                    >
-                      AIが参考にしたサイト
-                    </Typography>
-                  </Link>
-                </Box>
-              )}
+            <ReferenceLink url={aiResponse.grounding_urls?.[0]} />
           </Section>
 
           <Section icon={<IoSearch size={32} />} title="問い">

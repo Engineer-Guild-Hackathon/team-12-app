@@ -21,6 +21,8 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic"; // ★ dynamicインポート機能
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMapStore } from "@/stores/mapStore";
+import { FaLink } from "react-icons/fa";
+import ReferenceLink from "@/components/ui/ReferenceLink";
 
 // ★ 地図コンポーネントを、サーバーサイドレンダリングを無効にして動的にインポート
 const StaticPostMap = dynamic(
@@ -115,32 +117,7 @@ export default function DiscoveryDetailView({
           {post.ai_answer}
         </Section>
         {/* 3.1 参考にしたサイト */}
-        {post.ai_reference && (
-          <Box sx={{ mt: 1 }}>
-            <Link
-              href={post.ai_reference}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "none" }}
-            >
-              <Typography
-                variant="body2"
-                component="div"
-                sx={{
-                  display: "block",
-                  textDecoration: "underline",
-                  color: "kinako.900",
-                  "&:hover": {
-                    color: "primary.main",
-                  },
-                  transition: "color 0.2s ease-in-out",
-                }}
-              >
-                AIが参考にしたサイト
-              </Typography>
-            </Link>
-          </Box>
-        )}
+        <ReferenceLink url={post.ai_reference} />
         {/* 4. AIからの問い */}
         <Section icon={<IoSearch size={32} />} title="問い">
           {post.ai_question}
