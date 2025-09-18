@@ -36,7 +36,6 @@ export default function Map({
   const { map, setMap, flyTo } = useMapControl();
 
   const { mapView, setMapView } = useMapStore();
-  console.log(mapView);
   const { initialTarget, clearInitialTarget } = useMapStore();
 
   const isMapInitialized = useRef(false);
