@@ -6,6 +6,7 @@ import { Post } from "@/types/post";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
 import { useSearchParams } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
 
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
@@ -24,8 +25,8 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
   const searchParams = useSearchParams();
   const currentScope = searchParams.get("scope");
 
-  // TODO: 認証情報を取得
-  const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
+  // 認証情報を取得
+  const user = useAuthStore((state) => state.user);
 
   const { posts: fetchedPosts, isError } = usePosts(
     {

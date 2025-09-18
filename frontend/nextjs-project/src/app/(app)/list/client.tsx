@@ -9,6 +9,7 @@ import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams } from "next/navigation";
 import { Post } from "@/types/post";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
+import { useAuthStore } from "@/stores/authStore";
 
 interface ListClientProps {
   initialPosts: Post[];
@@ -25,8 +26,8 @@ export default function ListClient({ initialPosts }: ListClientProps) {
   const searchParams = useSearchParams();
   const currentScope = searchParams.get("scope");
 
-  // TODO: 認証情報を取得
-  const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
+  // 認証情報を取得
+  const user = useAuthStore((state) => state.user);
 
   const { posts, isError: postsIsError } = usePosts(
     {
