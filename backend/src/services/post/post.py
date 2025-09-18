@@ -223,15 +223,23 @@ class PostService:
         cutoff: datetime.datetime,
         current_user_id: str,
     ) -> List[Dict[str, Any]]:
-        """cutoff より前の投稿のうち、他人は公開のみ/自分は全件を返す"""
+        """
+        可視性ルールで投稿を返す。
+        - 自分の投稿: 時刻制限なしで全件
+        - 他人の投稿: cutoff より前 かつ is_public=true のみ
+        """
         if SessionLocal is None or engine is None:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
             rows = (
                 session.query(Post)
-                .filter(Post.date < cutoff)
-                .filter(sa.or_(Post.is_public.is_(True), Post.user_id == current_user_id))
+                .filter(
+                    sa.or_(
+                        Post.user_id == current_user_id,
+                        sa.and_(Post.is_public.is_(True), Post.date < cutoff),
+                    )
+                )
                 .order_by(Post.date.desc())
                 .all()
             )
