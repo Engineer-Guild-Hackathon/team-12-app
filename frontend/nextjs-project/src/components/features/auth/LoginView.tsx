@@ -16,18 +16,18 @@ export default function LoginView() {
         minHeight: "100svh",
         height: "100svh",
         justifyContent: "space-evenly",
-        py: 8,
+        py: 10,
       }}
     >
       <Stack spacing={2} sx={{ alignItems: "center" }}>
-        <Image src={logo} alt="Logo" width={200} height={113} />
+        <Image src={logo} alt="Logo" width={180} />
         <Typography
           variant="h3"
           sx={{
-            fontSize: 20,
+            fontSize: { xs: 18, sm: 20 },
             color: "kinako.800",
             textAlign: "center",
-            lineHeight: 1.8,
+            lineHeight: { xs: 1.6, sm: 1.8 },
           }}
         >
           道端に光る「どうして？」を
