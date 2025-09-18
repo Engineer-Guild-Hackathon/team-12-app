@@ -20,7 +20,7 @@ export default function LoginPage() {
     }
   }, [user, initialized, router]);
 
-  if (!initialized) {
+  if (!initialized || user !== null) {
     return <OverlayLoader />;
   }
 
