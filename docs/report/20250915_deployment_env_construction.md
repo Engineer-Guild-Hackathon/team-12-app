@@ -267,6 +267,7 @@ gcloud run deploy back-server \
   --set-secrets SECRET_ID=secret_id:latest \
   --set-secrets VERSION_ID=version_id:latest \
   --set-secrets GEMINI_API_KEY=gemini_api_key:latest \
+  --set-secrets DATA_STORE_ID=data_store_id:latest \
   --command sh \
   --args=-c \
   --args='exec gunicorn -w 2 --chdir /backend/src -b 0.0.0.0:${PORT} app:app'
