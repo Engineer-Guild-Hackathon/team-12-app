@@ -22,7 +22,7 @@ const navActionStyles = {
     color: "kinako.900",
   },
   "& .MuiBottomNavigationAction-label": {
-    fontSize: "0.875rem",
+    fontSize: { xs: 12, sm: 14 },
   },
 };
 

@@ -15,7 +15,7 @@ type HeaderTopProps = {
 export default function HeaderTop({
   onFilterClick,
   title = "はっけん",
-  icon = <IoLeaf size={24} />,
+  icon = <IoLeaf size={23} />,
 }: HeaderTopProps) {
   const isPWA = useIsPWA();
   const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
