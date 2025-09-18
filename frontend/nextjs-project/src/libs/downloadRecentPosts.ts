@@ -3,7 +3,10 @@
 import { fetchRecentPublicPostsAction } from "@/app/actions/getRecentAndPostUserIdActions";
 import { Post } from "@/types/post";
 
-type SanitizedPost = Omit<Post, "post_id" | "img_id" | "user_id">;
+type SanitizedPost = Omit<
+  Post,
+  "post_id" | "img_id" | "user_id" | "post_rarity" | "is_public"
+>;
 
 function sanitizePosts(posts: Post[]): SanitizedPost[] {
   return posts.map((post) => {
