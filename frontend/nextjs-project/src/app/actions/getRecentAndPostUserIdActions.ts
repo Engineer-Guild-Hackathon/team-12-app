@@ -32,3 +32,21 @@ export async function fetchRecentPostsAction(
   const json = (await res.json()) as RecentPostsResponse;
   return json;
 }
+
+/**
+ * 公開投稿のみ（GET /api/posts/recent）を取得するサーバーアクション。
+ */
+export async function fetchRecentPublicPostsAction(): Promise<RecentPostsResponse> {
+  const res = await backendFetch(`/api/posts/recent`, {
+    method: "GET",
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(text || `Backend API returned HTTP ${res.status}`);
+  }
+
+  const json = (await res.json()) as RecentPostsResponse;
+  return json;
+}

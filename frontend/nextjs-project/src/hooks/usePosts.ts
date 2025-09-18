@@ -5,7 +5,10 @@ import { useMemo } from "react";
 import { Post } from "@/types/post";
 import { calculateDistance } from "@/utils/calculateDistance";
 import { useAuthStore } from "@/stores/authStore";
-import { fetchRecentPostsAction } from "@/app/actions/getRecentAndPostUserIdActions";
+import {
+  fetchRecentPostsAction,
+  fetchRecentPublicPostsAction,
+} from "@/app/actions/getRecentAndPostUserIdActions";
 
 type PostsApiResponse = {
   posts: Post[];
@@ -33,8 +36,10 @@ export function usePosts(
   const { data, error, mutate } = useSWR<PostsApiResponse>(
     swrKey,
     async () => {
-      // サーバーアクションをクライアントから呼ぶ
-      const { posts } = await fetchRecentPostsAction(user?.uid ?? "");
+      // サーバーアクションをクライアントから呼ぶ（ログイン状態で分岐）
+      const { posts } = user?.uid
+        ? await fetchRecentPostsAction(user.uid)
+        : await fetchRecentPublicPostsAction();
       return { posts } satisfies PostsApiResponse;
     },
     {
