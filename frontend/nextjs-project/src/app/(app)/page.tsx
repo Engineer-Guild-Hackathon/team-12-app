@@ -1,5 +1,5 @@
 import HomeClient from "./client";
-import { getPosts } from "@/libs/data";
+import { getPosts } from "@/libs/getPosts";
 
 // page.tsx は async 関数にする
 export default async function HomePage() {
