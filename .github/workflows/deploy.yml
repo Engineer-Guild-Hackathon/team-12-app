@@ -100,7 +100,7 @@ jobs:
             --add-cloudsql-instances egh202509:asia-northeast1:dev-postgre-holo \
             --port 8080 \
             --timeout 300 \
-            --set-secrets GCP_PROJECT=gcp_project:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,GCS_BUCKET=gcs_bucket:latest,PROJECT_ID=project_id:latest,SECRET_ID=secret_id:latest,VERSION_ID=version_id:latest,GEMINI_API_KEY=gemini_api_key:latest \
+            --set-secrets GCP_PROJECT=gcp_project:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,GCS_BUCKET=gcs_bucket:latest,PROJECT_ID=project_id:latest,SECRET_ID=secret_id:latest,VERSION_ID=version_id:latest,GEMINI_API_KEY=gemini_api_key:latest,DATA_STORE_ID=data_store_id:latest \
             --command sh \
             --args=-c \
             --args='exec gunicorn -w 2 --chdir /backend/src -b 0.0.0.0:${PORT} app:app'
