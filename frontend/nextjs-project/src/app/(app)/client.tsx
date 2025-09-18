@@ -7,6 +7,8 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
 import { useSearchParams } from "next/navigation";
 import { useMapStore } from "@/stores/mapStore";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
@@ -25,8 +27,8 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
   const searchParams = useSearchParams();
   const currentScope = searchParams.get("scope");
 
-  // TODO: 認証情報を取得
-  const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
+  // 認証情報を取得
+  const user = useAuthStore((state) => state.user);
 
   const { posts: fetchedPosts, isError } = usePosts(
     {
@@ -36,6 +38,13 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
     },
     { posts: initialPosts },
   );
+
+  useEffect(() => {
+    // isErrorフラグがtrueになった場合
+    if (isError) {
+      throw new Error("投稿データの取得に失敗しました。");
+    }
+  }, [isError]); // 監視対象の変数を設定
 
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isFollowing, setIsFollowing] = useState(() => {
@@ -53,8 +62,6 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
   const handleCloseModal = useCallback(() => {
     setSelectedPost(null);
   }, []);
-
-  if (isError) return <div>データの取得に失敗しました</div>;
 
   const posts = fetchedPosts || [];
 
