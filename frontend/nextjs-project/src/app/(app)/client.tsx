@@ -6,6 +6,8 @@ import { Post } from "@/types/post";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
 import { useSearchParams } from "next/navigation";
+import SearchBar from "@/components/features/search/SearchBar";
+import { searchPostsViaRouteHandler } from "@/libs/searchPosts";
 
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
@@ -38,6 +40,10 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
 
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isFollowing, setIsFollowing] = useState(true);
+  const [searchOverridePosts, setSearchOverridePosts] = useState<Post[] | null>(
+    null,
+  );
+  const [searching, setSearching] = useState(false);
 
   const handleMarkerClick = useCallback((post: Post) => {
     setSelectedPost(post);
@@ -48,12 +54,31 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
     setSelectedPost(null);
   }, []);
 
+  const handleSearch = useCallback(async (q: string) => {
+    try {
+      setSearching(true);
+      const { posts } = await searchPostsViaRouteHandler({ q, limit: 50 });
+      setSearchOverridePosts(posts);
+      // 何か選択されていたら解除
+      setSelectedPost(null);
+      // 追従を一旦OFFに（検索結果に視線を移すため。移動制御は別途）
+      setIsFollowing(false);
+    } catch (e) {
+      console.error(e);
+      // 失敗時は上書きを解除して通常一覧に戻す
+      setSearchOverridePosts(null);
+    } finally {
+      setSearching(false);
+    }
+  }, []);
+
   if (isError) return <div>データの取得に失敗しました</div>;
 
-  const posts = fetchedPosts || [];
+  const posts = searchOverridePosts ?? fetchedPosts ?? [];
 
   return (
     <Box sx={{ height: "100%", width: "100%", position: "relative" }}>
+      <SearchBar onSearch={handleSearch} />
       <Map
         posts={posts}
         onMarkerClick={handleMarkerClick}
