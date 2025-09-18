@@ -149,12 +149,19 @@ class PostService:
 
     @staticmethod
     def list_posts(limit: int = 10, offset: int = 0) -> List[Dict[str, Any]]:
-        """Post を複数件取得"""
+        """Post を複数件取得（公開投稿のみ）"""
         if SessionLocal is None or engine is None:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            posts = session.query(Post).order_by(Post.date.desc()).limit(limit).offset(offset).all()
+            posts = (
+                session.query(Post)
+                .filter(Post.is_public.is_(True))
+                .order_by(Post.date.desc())
+                .limit(limit)
+                .offset(offset)
+                .all()
+            )
             return [
                 {
                     "post_id": str(p.post_id),
@@ -178,12 +185,18 @@ class PostService:
 
     @staticmethod
     def list_posts_before(cutoff: datetime.datetime) -> List[Dict[str, Any]]:
-        """指定した日時より前に作成された投稿を返す"""
+        """指定した日時より前に作成された投稿を返す（公開投稿のみ）"""
         if SessionLocal is None or engine is None:
             raise RuntimeError("Database is not initialized")
 
         with SessionLocal() as session:
-            rows = session.query(Post).filter(Post.date < cutoff).order_by(Post.date.desc()).all()
+            rows = (
+                session.query(Post)
+                .filter(Post.date < cutoff)
+                .filter(Post.is_public.is_(True))
+                .order_by(Post.date.desc())
+                .all()
+            )
             return [
                 {
                     "post_id": str(p.post_id),

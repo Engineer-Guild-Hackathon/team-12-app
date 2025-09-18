@@ -176,6 +176,10 @@ curl http://localhost:5001/api/posts/c008f66e-f15b-4cf9-a5be-892dae037726
 
 ## 3) GET `/api/posts` — 一覧（ページング）
 
+### 説明
+- **公開投稿（`is_public = true`）のみ**を返します。
+- 非公開投稿は表示されません。
+
 ### クエリパラメータ
 - `limit`（1〜100、デフォルト 10）  
 - `offset`（0 以上、デフォルト 0）
@@ -197,7 +201,7 @@ curl http://localhost:5001/api/posts/c008f66e-f15b-4cf9-a5be-892dae037726
       "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
       "latitude": 43.068,
       "longitude": 141.35,
-      "is_public": false,
+      "is_public": true,
       "post_rarity": 0,
       "date": "2025-09-11T06:07:50.252702+00:00",
       "updated_at": "2025-09-11T06:07:50.252702+00:00"
@@ -225,7 +229,8 @@ curl "http://localhost:5001/api/posts?limit=10&offset=0"
 ## 4) GET `/api/posts/recent` — 15 分より前の投稿
 
 ### 説明
-- サーバ時刻 `now` から 15 分前より **前** に作成された投稿一覧を返します。  
+- サーバ時刻 `now` から 15 分前より **前** に作成された投稿一覧を返します。
+- **公開投稿（`is_public = true`）のみ**を返します。
 - レスポンスには `before`（カットオフ時刻）と `now` も含まれます。
 
 ### レスポンス例（200）
@@ -241,9 +246,12 @@ curl "http://localhost:5001/api/posts?limit=10&offset=0"
       "object_label": "写真の対象物名のテキスト",
       "ai_answer": "LLMの回答内容のテキスト",
       "ai_question": "LLMからの「問い」のテキスト",
+      "ai_reference": null,
       "location": "大丸, 北5条西4, 中央区, 札幌市, 石狩振興局, 北海道, 060-0005, 日本",
       "latitude": 43.068,
       "longitude": 141.35,
+      "is_public": true,
+      "post_rarity": 0,
       "date": "2025-09-11T06:07:50.252702+00:00",
       "updated_at": "2025-09-11T06:07:50.252702+00:00"
     }
