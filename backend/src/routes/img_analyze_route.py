@@ -122,6 +122,7 @@ def create_image_and_analyze():
             "ai_answer": "...",
             "ai_question": "..."
         }
+        "location": "...",
     }
     """
     # 入力取得

@@ -35,6 +35,8 @@ class AnalyzeService:
             file: アップロードされた画像ファイル
             image_url: 画像のURL
             user_question: 補助的な質問
+            location: 位置情報
+            local_time_iso: 現地時刻
 
         Returns:
             {"object_label": str, "ai_answer": str, "ai_question": str, "grounding_urls": list[str]} の辞書
@@ -154,6 +156,8 @@ class AnalyzeService:
 
         Args:
             user_question: 補助的な質問（オプション）
+            location: 位置情報（任意、逆ジオで得られた住所等）
+            local_time_iso: 現地時刻（ISO 8601、任意）
 
         Returns:
             構築されたプロンプト文字列
