@@ -10,24 +10,12 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import AuthInitializer from "@/components/features/auth/AuthInitializer";
-import { headers } from "next/headers";
 
 export async function generateViewport(): Promise<Viewport> {
-  const headersList = await headers();
-  const userAgent = headersList.get("user-agent") || "";
-  const isMobile = /Mobi|Android|iPhone/i.test(userAgent);
-
-  // isMobileの結果に基づいてviewportオブジェクトを返す
-  if (isMobile) {
-    return {
-      width: 440,
-    };
-  } else {
-    return {
-      width: "device-width",
-      initialScale: 1,
-    };
-  }
+  return {
+    width: "device-width",
+    initialScale: 1,
+  };
 }
 
 export async function generateMetadata(): Promise<Metadata> {

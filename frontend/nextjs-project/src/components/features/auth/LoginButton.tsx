@@ -30,7 +30,7 @@ export default function LoginButton() {
       disabled={busy}
       sx={{
         width: "100%",
-        maxWidth: 340, // 固定幅ではなく最大幅にするのがおすすめ
+        maxWidth: { xs: 320, sm: 340 }, // 固定幅ではなく最大幅にするのがおすすめ
         borderRadius: 200,
         backgroundColor: "yomogi.800",
         color: "gray.100",
@@ -49,8 +49,10 @@ export default function LoginButton() {
         },
       }}
     >
-      <Typography fontSize={20}>はじめる</Typography>
-      <Typography fontSize={12}>Googleアカウントで認証する</Typography>
+      <Typography fontSize={{ xs: 20, sm: 24 }}>はじめる</Typography>
+      <Typography fontSize={{ xs: 12, sm: 14 }}>
+        Googleアカウントで認証する
+      </Typography>
     </Button>
   );
 }

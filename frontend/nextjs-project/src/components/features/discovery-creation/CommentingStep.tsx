@@ -49,7 +49,7 @@ export default function CommentingStep({
   };
 
   return (
-    <Box sx={{ px: 3 }}>
+    <Box sx={{ px: { xs: 2, sm: 3 } }}>
       <DiscoveryHeader
         iconName={iconName}
         formattedDate={formattedDate}
@@ -81,6 +81,7 @@ export default function CommentingStep({
             "& .MuiOutlinedInput-root": {
               backgroundColor: "gray.100",
               borderRadius: "8px",
+              fontSize: { xs: 14, sm: 16 },
 
               "&:hover .MuiOutlinedInput-notchedOutline": {
                 border: "none",
@@ -98,6 +99,7 @@ export default function CommentingStep({
             },
             "& .MuiFormHelperText-root": {
               color: "kinako.800",
+              fontSize: { xs: 12, sm: 14 },
             },
           }}
         />

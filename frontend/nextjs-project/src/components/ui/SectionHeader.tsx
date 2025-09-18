@@ -18,7 +18,7 @@ export default function SectionHeader({ icon, title }: SectionHeaderProps) {
       <Typography
         variant="h6"
         component="div"
-        sx={{ fontSize: 24, color: "kinako.900" }}
+        sx={{ fontSize: { xs: 20, sm: 24 }, color: "kinako.900" }}
       >
         {title}
       </Typography>

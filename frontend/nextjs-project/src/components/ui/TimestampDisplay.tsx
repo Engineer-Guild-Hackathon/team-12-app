@@ -16,7 +16,7 @@ export default function TimestampDisplay({
 }: TimestampDisplayProps) {
   let textColor = "kinako.900";
   let iconColor = "tamago.600";
-  let fontSize = 20;
+  let fontSize = { xs: 18, sm: 20 };
   let flexGrow = 1;
 
   if (variant === "transparent") {
@@ -24,7 +24,7 @@ export default function TimestampDisplay({
     iconColor = "white";
   }
   if (variant === "small") {
-    fontSize = 18;
+    fontSize = { xs: 16, sm: 18 };
     flexGrow = 0;
   }
 
