@@ -6,16 +6,21 @@ import { Post } from "@/types/post";
 type SanitizedPost = Omit<Post, "post_id" | "img_id" | "user_id">;
 
 function sanitizePosts(posts: Post[]): SanitizedPost[] {
-  return posts.map(
-    ({
-      post_id: _a,
-      img_id: _b,
-      user_id: _c,
-      is_public: _d,
-      post_rarity: _e,
-      ...rest
-    }) => rest,
-  );
+  return posts.map((post) => {
+    return {
+      user_question: post.user_question,
+      ai_answer: post.ai_answer,
+      ai_question: post.ai_question,
+      object_label: post.object_label,
+      ai_reference: post.ai_reference,
+      location: post.location,
+      latitude: post.latitude,
+      longitude: post.longitude,
+      is_public: post.is_public,
+      date: post.date,
+      updated_at: post.updated_at,
+    };
+  });
 }
 
 function triggerJsonDownload(data: unknown, filename: string) {
