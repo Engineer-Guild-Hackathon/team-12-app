@@ -55,7 +55,7 @@ const CurrentUserMarker: React.FC<CurrentUserMarkerProps> = ({ position }) => {
               width: "32px",
               height: "32px",
               borderRadius: "50%",
-              backgroundColor: "#322508",
+              backgroundColor: "#1976d2",
             }}
           />
           {/* 内側の中心点 */}
@@ -68,7 +68,7 @@ const CurrentUserMarker: React.FC<CurrentUserMarkerProps> = ({ position }) => {
               width: "16px",
               height: "16px",
               borderRadius: "50%",
-              backgroundColor: "#322508",
+              backgroundColor: "#1976d2",
               border: "2px solid white",
               boxShadow: "0 0 5px rgba(0,0,0,0.3)",
             }}

@@ -32,7 +32,6 @@ export default function LoginButton() {
         width: "100%",
         maxWidth: 340, // 固定幅ではなく最大幅にするのがおすすめ
         borderRadius: 200,
-        marginTop: "80px",
         backgroundColor: "yomogi.800",
         color: "gray.100",
         display: "flex",
