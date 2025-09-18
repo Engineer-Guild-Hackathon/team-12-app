@@ -100,8 +100,18 @@ export default function Map({
       // 5. 地図が移動を完了した時のイベント（moveend）を一度だけ監視する
       map.on("moveend", onMoveAnimationEnd);
 
+      let targetZoom: number;
+
+      // useSavedZoomフラグがtrueで、かつmapViewにzoomがあればそれを優先
+      if (initialTarget.useSavedZoom && mapView?.zoom) {
+        targetZoom = mapView.zoom;
+      } else {
+        // それ以外（静的マップからの遷移など）の場合は固定値18
+        targetZoom = 18;
+      }
+
       // 6. 投稿の場所へ移動アニメーションを開始する
-      flyTo([initialTarget.lat, initialTarget.lng], 18);
+      flyTo([initialTarget.lat, initialTarget.lng], targetZoom);
 
       // 7. 該当の投稿を選択状態にする
       const postToSelect = posts.find(

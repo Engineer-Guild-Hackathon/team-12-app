@@ -22,6 +22,7 @@ import { IoLeaf } from "react-icons/io5";
 interface DiscoveryCardProps {
   post: Post;
   currentLocation: { latitude: number | null; longitude: number | null };
+  from?: string;
 }
 
 // 距離を分かりやすい文字列にフォーマットする関数
@@ -36,9 +37,14 @@ const formatDistance = (meters: number | null) => {
 export default function DiscoveryCard({
   post,
   currentLocation,
+  from,
 }: DiscoveryCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isOnScreen = useOnScreen(cardRef); // カードが画面上にあるか監視
+
+  const detailPageHref = from
+    ? `/discoveries/${post.post_id}?from=${from}`
+    : `/discoveries/${post.post_id}`;
 
   // 投稿時間とアイコンを取得
   const { iconName, formattedDate } = formatTimestampForClient(
@@ -78,7 +84,7 @@ export default function DiscoveryCard({
     >
       <CardActionArea
         component={Link}
-        href={`/discoveries/${post.post_id}`}
+        href={detailPageHref}
         sx={{
           flexGrow: 1,
           display: "flex",

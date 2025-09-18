@@ -5,6 +5,7 @@ interface MapTarget {
   postId: string;
   lat: number;
   lng: number;
+  useSavedZoom?: boolean;
 }
 
 interface MapView {
