@@ -1,5 +1,6 @@
 "use client";
 import { createTheme } from "@mui/material/styles";
+import { isMobile } from "./utils/isMobile";
 
 const theme = createTheme({
   cssVariables: true,
@@ -52,7 +53,7 @@ const theme = createTheme({
       main: "#FFFFFF",
     },
     background: {
-      default: "#CCD6A6",
+      default: isMobile() ? "#F6F1E6" : "#CCD6A6",
     },
   },
 });

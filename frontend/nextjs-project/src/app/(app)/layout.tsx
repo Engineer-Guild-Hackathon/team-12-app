@@ -15,6 +15,7 @@ import DiscoveryCreationFlow from "@/components/features/discovery-creation/Disc
 import { useIsPWA } from "@/hooks/useIsPWA";
 import LoginGuideModal from "@/components/features/auth/LoginGuideModal";
 import { useAuthStore } from "@/stores/authStore";
+import { usePathname } from "next/navigation";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const currentStep = useDiscoveryCreationStore((state) => state.currentStep);
@@ -22,8 +23,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const handleLoginGuideModal = useAuthStore((s) => s.handleLoginGuideModal);
 
   const closeModal = () => handleLoginGuideModal(false);
+  const pathname = usePathname();
   const isPWA = useIsPWA();
-  const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
+
+  let headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
+  if (pathname === "/setting") {
+    headerHeight -= 48;
+  }
   const bottomNavHeight = isPWA
     ? BOTTOM_NAV_HEIGHT
     : BOTTOM_NAV_HEIGHT_FOR_BROWSER;
