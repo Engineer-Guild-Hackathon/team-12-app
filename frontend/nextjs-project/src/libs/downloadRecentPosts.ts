@@ -6,7 +6,16 @@ import { Post } from "@/types/post";
 type SanitizedPost = Omit<Post, "post_id" | "img_id" | "user_id">;
 
 function sanitizePosts(posts: Post[]): SanitizedPost[] {
-  return posts.map(({ post_id: _a, img_id: _b, user_id: _c, ...rest }) => rest);
+  return posts.map(
+    ({
+      post_id: _a,
+      img_id: _b,
+      user_id: _c,
+      is_public: _d,
+      post_rarity: _e,
+      ...rest
+    }) => rest,
+  );
 }
 
 function triggerJsonDownload(data: unknown, filename: string) {
