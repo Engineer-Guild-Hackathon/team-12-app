@@ -16,20 +16,20 @@ const tabStyles = {
 export default function HeaderTabs() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { sort: savedSort } = useFilterStore();
+  const { sort: savedSort, searchQuery } = useFilterStore();
 
   // scopeは常にURLから取得
   const currentScope = searchParams.get("scope");
-  const currentQuery = searchParams.get("q");
 
   // --- 地図タブ(/)のURLを生成 ---
   const mapParams = new URLSearchParams();
   if (currentScope) {
     mapParams.set("scope", currentScope);
   }
-  if (currentQuery) {
-    mapParams.set("q", currentQuery);
-  }
+  // TODO:UI対応後復帰
+  // if (currentQuery) {
+  //   mapParams.set("q", currentQuery);
+  // }
   const mapHref = `/?${mapParams.toString()}`.replace(/\?$/, ""); // 末尾の?を削除
 
   // --- 一覧タブ(/list)のURLを生成 ---
@@ -40,8 +40,8 @@ export default function HeaderTabs() {
   if (savedSort) {
     listParams.set("sort", savedSort);
   }
-  if (currentQuery) {
-    listParams.set("q", currentQuery);
+  if (searchQuery) {
+    listParams.set("q", searchQuery);
   }
   const listHref = `/list?${listParams.toString()}`.replace(/\?$/, ""); // 末尾の?を削除
 

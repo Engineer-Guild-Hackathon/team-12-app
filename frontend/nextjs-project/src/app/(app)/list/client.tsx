@@ -26,21 +26,37 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     loading: geolocationLoading,
     error: geolocationError,
   } = useGeolocation();
-  const { sort: currentSort } = useFilterStore();
-  const { searchQuery, handleSearch, handleQueryChange } = useListSearchBar();
+  const {
+    searchQuery: storeQuery,
+    setSearchQuery,
+    sort: currentSort,
+  } = useFilterStore();
+  const { handleSearch, handleQueryChange } = useListSearchBar();
   const searchParams = useSearchParams();
   const currentScope = searchParams.get("scope");
+
+  useEffect(() => {
+    const urlQuery = searchParams.get("q") ?? "";
+    // URLの状態とストアの状態が異なる場合のみ、ストアを更新
+    if (urlQuery !== storeQuery) {
+      setSearchQuery(urlQuery);
+    }
+  }, [searchParams, storeQuery, setSearchQuery]);
 
   // 認証情報を取得
   const user = useAuthStore((state) => state.user);
 
-  const { posts, isError: postsIsError } = usePosts(
+  const {
+    posts,
+    isError: postsIsError,
+    isLoading: postsIsLoading,
+  } = usePosts(
     {
       sort: currentSort,
       scope: currentScope,
       userId: user?.uid,
       currentLocation: { latitude, longitude },
-      query: searchQuery,
+      query: storeQuery,
     },
     { posts: initialPosts },
   );
@@ -57,7 +73,7 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     }
   }, [postsIsError, geolocationError]); // 両方のエラー状態を監視
 
-  if (geolocationLoading) {
+  if (geolocationLoading || postsIsLoading) {
     return (
       <Box
         sx={{
@@ -86,7 +102,7 @@ export default function ListClient({ initialPosts }: ListClientProps) {
       }}
     >
       <SearchBarOnListPage
-        initialQuery={searchQuery}
+        initialQuery={storeQuery}
         onSearch={handleSearch}
         onQueryChange={handleQueryChange}
       />

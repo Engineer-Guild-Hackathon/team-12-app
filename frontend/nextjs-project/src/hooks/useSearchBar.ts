@@ -4,6 +4,8 @@ import { useCallback, Dispatch, SetStateAction, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Post } from "@/types/post";
 import { useFilterStore } from "@/stores/filterStore";
+import { useSWRConfig } from "swr";
+import { useAuthStore } from "@/stores/authStore";
 
 type UseHomeSearchBarProps = {
   setSelectedPost: Dispatch<SetStateAction<Post | null>>;
@@ -27,15 +29,6 @@ export function useHomeSearchBar({
   const router = useRouter();
   const pathname = usePathname();
   const { searchQuery, setSearchQuery } = useFilterStore();
-
-  // URL -> store 同期（ページ遷移や手動でのクエリ変更に追随）
-  useEffect(() => {
-    const urlQ = searchParams.get("q") ?? "";
-    if (urlQ !== searchQuery) {
-      setSearchQuery(urlQ);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
 
   const handleSearch = useCallback(
     async (q: string) => {
@@ -88,6 +81,8 @@ export function useListSearchBar(): UseSearchBarReturn {
   const router = useRouter();
   const pathname = usePathname();
   const { searchQuery, setSearchQuery } = useFilterStore();
+  const { mutate } = useSWRConfig();
+  const user = useAuthStore((state) => state.user);
 
   // URL -> store 同期
   useEffect(() => {
@@ -111,11 +106,25 @@ export function useListSearchBar(): UseSearchBarReturn {
   const handleQueryChange = useCallback(
     (q: string) => {
       if (q.trim() === "") {
+        const oldQuery = searchQuery;
+
+        // 1. URLとストアの状態をリセット
         setSearchQuery("");
         const params = new URLSearchParams(searchParams.toString());
         params.delete("q");
         const qs = params.toString();
         router.replace(qs ? `${pathname}?${qs}` : pathname);
+
+        // 2. 不要になった古い検索結果のキャッシュをSWRから手動で削除
+        if (oldQuery.trim().length > 0) {
+          const oldSearchKey = [
+            "search",
+            user?.uid ? user.uid : "public",
+            oldQuery.trim(),
+          ].join(":");
+          // 第2引数にundefinedを渡すとキャッシュが削除される
+          mutate(oldSearchKey, undefined, { revalidate: false });
+        }
       }
     },
     [pathname, router, searchParams, setSearchQuery],
