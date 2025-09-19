@@ -9,7 +9,7 @@ import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams } from "next/navigation";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 import { SearchBarOnListPage } from "@/components/features/search/SearchBar";
-import { useListSearchBar } from "@/hooks/useListSearchBar";
+import { useListSearchBar } from "@/hooks/useSearchBar";
 
 import { Post } from "@/types/post";
 import { useAuthStore } from "@/stores/authStore";
