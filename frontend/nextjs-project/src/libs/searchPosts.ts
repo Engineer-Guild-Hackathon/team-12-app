@@ -6,8 +6,8 @@ type SearchResponse = {
 
 /**
  * フロント内の内部API（Route Handler）経由で検索を行う。
- * ここでは window.fetch を使うが、コンポーネントからは直接呼ばず、
- * サーバーアクションやハンドラーからのみ利用する想定。
+ * ここでは window.fetch を使い、クライアント側のフック（例: usePosts）や
+ * サーバーアクション、ハンドラーなどから利用される。
  */
 export async function searchPostsViaRouteHandler(params: {
   q: string;
