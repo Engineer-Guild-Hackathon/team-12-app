@@ -111,6 +111,7 @@ export default function DiscoveryDetailView({
         <DiscoveryHeader
           iconName={iconName}
           formattedDate={formattedDate}
+          isShownDeleteButton={isPostOwner}
           onBackClick={handleBackClick}
           onDeleteClick={openDeleteConfirmModal}
         />
@@ -294,6 +295,7 @@ const DeleteCompleteModal = ({
   open: boolean;
   closeModal: () => void;
 }) => {
+  // TODO: Dialogを使っているかつ正確なデザインにする
   return (
     <Dialog
       open={open}
