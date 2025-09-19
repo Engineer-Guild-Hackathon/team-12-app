@@ -58,16 +58,16 @@ export default function DiscoveryDetailView({
   const isPostOwner = user?.uid === post.user_id;
   const {
     deleteDiscovery,
-    isDeleteModalOpen,
-    openDeleteModal,
-    closeDeleteModal,
+    isDeleteConfirmModalOpen,
+    openDeleteConfirmModal,
+    closeDeleteConfirmModal,
     isDeleteCompleteModalOpen,
     closeDeleteCompleteModal,
     isProcessingDelete,
   } = useDiscoveryDelete();
-  const handleDeleteDiscovery = () => {
-    deleteDiscovery(post.post_id);
-    closeDeleteModal();
+  const handleDeleteDiscovery = async () => {
+    await deleteDiscovery(post.post_id);
+    closeDeleteConfirmModal();
   };
   const router = useRouter();
   const setInitialTarget = useMapStore((state) => state.setInitialTarget);
@@ -112,6 +112,7 @@ export default function DiscoveryDetailView({
           iconName={iconName}
           formattedDate={formattedDate}
           onBackClick={handleBackClick}
+          onDeleteClick={openDeleteConfirmModal}
         />
         <Stack
           spacing={4}
@@ -188,8 +189,8 @@ export default function DiscoveryDetailView({
         </Stack>
       </Box>
       <DeleteConfirmModal
-        open={isDeleteModalOpen}
-        closeModal={closeDeleteModal}
+        open={isDeleteConfirmModalOpen}
+        closeModal={closeDeleteConfirmModal}
         deleteDiscovery={handleDeleteDiscovery}
       />
       <DeleteCompleteModal

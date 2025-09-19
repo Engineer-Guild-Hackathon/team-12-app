@@ -4,15 +4,16 @@ import { useState } from "react";
 
 export const useDiscoveryDelete = () => {
   const router = useRouter();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
+    useState<boolean>(false);
   const [isDeleteCompleteModalOpen, setIsDeleteCompleteModalOpen] =
     useState<boolean>(false);
   const [isProcessingDelete, setIsProcessingDelete] = useState<boolean>(false);
-  const openDeleteModal = () => {
-    setIsDeleteModalOpen(true);
+  const openDeleteConfirmModal = () => {
+    setIsDeleteConfirmModalOpen(true);
   };
-  const closeDeleteModal = () => {
-    setIsDeleteModalOpen(false);
+  const closeDeleteConfirmModal = () => {
+    setIsDeleteConfirmModalOpen(false);
   };
   const openDeleteCompleteModal = () => {
     setIsDeleteCompleteModalOpen(true);
@@ -49,9 +50,9 @@ export const useDiscoveryDelete = () => {
 
   return {
     deleteDiscovery,
-    isDeleteModalOpen,
-    openDeleteModal,
-    closeDeleteModal,
+    isDeleteConfirmModalOpen,
+    openDeleteConfirmModal,
+    closeDeleteConfirmModal,
     isDeleteCompleteModalOpen,
     closeDeleteCompleteModal,
     isProcessingDelete,
