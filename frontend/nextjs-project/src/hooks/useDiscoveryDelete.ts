@@ -20,6 +20,7 @@ export const useDiscoveryDelete = () => {
       return;
     }
     if (result.data) {
+      // TODO: アラートじゃなくてモーダルにする
       alert("投稿が削除されました");
       router.back();
       return;
