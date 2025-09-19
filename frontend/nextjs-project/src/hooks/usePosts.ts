@@ -4,11 +4,12 @@ import useSWR from "swr";
 import { useMemo } from "react";
 import { Post } from "@/types/post";
 import { calculateDistance } from "@/utils/calculateDistance";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuthStore, AuthState } from "@/stores/authStore";
 import {
   fetchRecentPostsAction,
   fetchRecentPublicPostsAction,
 } from "@/app/actions/getRecentAndPostUserIdActions";
+import { searchPostsViaRouteHandler } from "@/libs/searchPosts";
 
 type PostsApiResponse = {
   posts: Post[];
@@ -19,6 +20,7 @@ type UsePostsParams = {
   scope?: string | null;
   userId?: string | null; // 「自分」を判定するためのユーザーID
   currentLocation?: { latitude: number | null; longitude: number | null }; // 「近い順」ソート用
+  query?: string | null; // 検索クエリ（空文字列やnullは検索なし）
 };
 
 /**
@@ -30,14 +32,29 @@ export function usePosts(
   params: UsePostsParams = {},
   fallbackData?: PostsApiResponse,
 ) {
-  const { sort, scope, userId, currentLocation } = params;
-  const user = useAuthStore((s) => s.user);
-  const swrKey = user?.uid ? `recent:${user.uid}` : `recent:public`;
+  const { sort, scope, userId, currentLocation, query } = params;
+  const user = useAuthStore((s: AuthState) => s.user);
+  const normalizedQuery = (query ?? "").trim();
+  const isSearchMode = normalizedQuery.length > 0;
+  const swrKey = isSearchMode
+    ? ["search", user?.uid ? user.uid : "public", normalizedQuery].join(":")
+    : user?.uid
+      ? `recent:${user.uid}`
+      : `recent:public`;
   const { data, error, mutate } = useSWR<PostsApiResponse>(
     swrKey,
     async () => {
       // TODO: これ外側で関数定義したい
       // サーバーアクションをクライアントから呼ぶ（ログイン状態で分岐）
+      // 検索クエリがある場合は検索APIを利用
+      if (isSearchMode) {
+        const { posts } = await searchPostsViaRouteHandler({
+          q: normalizedQuery,
+        });
+        return { posts } satisfies PostsApiResponse;
+      }
+
+      // 検索クエリがない場合は最近の投稿を取得（ログイン状態で分岐）
       const { posts } = user?.uid
         ? await fetchRecentPostsAction(user.uid)
         : await fetchRecentPublicPostsAction();
@@ -49,7 +66,8 @@ export function usePosts(
       // キャッシュにデータがあれば、マウント時に再検証しない
       revalidateOnMount: false,
       suspense: true,
-      fallbackData: fallbackData,
+      // 検索時はfallbackDataを使わない（前回の一覧を誤表示しないため）
+      fallbackData: isSearchMode ? undefined : fallbackData,
     },
   );
 
@@ -61,7 +79,9 @@ export function usePosts(
     // --- 1. スコープによるフィルタリング ---
     let postsToFilter = data.posts;
     if (scope === "mine") {
-      postsToFilter = data.posts.filter((post) => post.user_id === userId);
+      postsToFilter = data.posts.filter(
+        (post: Post) => post.user_id === userId,
+      );
     }
 
     // --- 2. ソート順による並び替え ---

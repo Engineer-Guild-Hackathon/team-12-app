@@ -1,19 +1,24 @@
 "use client";
 
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, ChangeEvent } from "react";
 import { Box, TextField, IconButton } from "@mui/material";
 import { IoSearchOutline } from "react-icons/io5";
 
 interface SearchBarProps {
   onSearch: (q: string) => void;
   initialQuery?: string;
+  onQueryChange?: (q: string) => void; // 入力中のクエリ（空文字は自動リセット用）
 }
 
 /**
  * 地図の上に重ねて固定表示する検索バー
  * スタイルは最小限。UIのルールに合わせてMUIコンポーネントを使用。
  */
-export function SearchBarOnMap({ onSearch, initialQuery }: SearchBarProps) {
+export function SearchBarOnMap({
+  onSearch,
+  initialQuery,
+  onQueryChange,
+}: SearchBarProps) {
   return (
     <Box
       sx={{
@@ -28,7 +33,11 @@ export function SearchBarOnMap({ onSearch, initialQuery }: SearchBarProps) {
         borderColor: "kinako.300",
       }}
     >
-      <SearchBarOnListPage initialQuery={initialQuery} onSearch={onSearch} />
+      <SearchBarOnListPage
+        initialQuery={initialQuery}
+        onSearch={onSearch}
+        onQueryChange={onQueryChange}
+      />
     </Box>
   );
 }
@@ -36,9 +45,11 @@ export function SearchBarOnMap({ onSearch, initialQuery }: SearchBarProps) {
 export const SearchBarOnListPage = ({
   initialQuery,
   onSearch,
+  onQueryChange,
 }: {
   initialQuery?: string;
   onSearch: (q: string) => void;
+  onQueryChange?: (q: string) => void;
 }) => {
   const [query, setQuery] = useState(initialQuery ?? "");
   const triggerSearch = () => {
@@ -50,6 +61,13 @@ export const SearchBarOnListPage = ({
     if (e.key === "Enter") {
       e.preventDefault();
       triggerSearch();
+    }
+  };
+  const handleChange = (value: string) => {
+    setQuery(value);
+    // 入力が空になったら、親に空文字を通知（自動リセット用）
+    if (onQueryChange) {
+      onQueryChange(value);
     }
   };
 
@@ -75,7 +93,9 @@ export const SearchBarOnListPage = ({
         size="small"
         placeholder="検索ワードを入力"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          handleChange(e.target.value)
+        }
         onKeyDown={handleKeyDown}
         inputProps={{ "aria-label": "検索" }}
         sx={{
