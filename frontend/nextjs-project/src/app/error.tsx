@@ -2,6 +2,7 @@
 
 import { Box, Button, Typography } from "@mui/material";
 import { IoReload } from "react-icons/io5";
+import { useRouter } from "next/navigation";
 
 export default function Error({
   error,
@@ -10,6 +11,8 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+
   return (
     <Box
       sx={{
@@ -29,7 +32,7 @@ export default function Error({
 
       <Button
         variant="outlined"
-        onClick={() => reset()}
+        onClick={() => router.back()}
         sx={{
           mt: 3,
           px: 6,
@@ -40,7 +43,7 @@ export default function Error({
           borderRadius: 100,
         }}
       >
-        <IoReload size={24} />
+        前のページへ戻る
       </Button>
     </Box>
   );

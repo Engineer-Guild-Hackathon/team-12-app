@@ -92,9 +92,13 @@ export default function DiscoveryHeader({
 
         {isShownDeleteButton ? (
           <IconButton
-            color="inherit"
             onClick={onDeleteClick}
-            sx={{ width: 40, height: 40, borderRadius: "50%" }}
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              color: "kinako.900",
+            }}
           >
             <PiTrash />
           </IconButton>

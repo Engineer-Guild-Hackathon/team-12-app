@@ -7,10 +7,9 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  Button,
   Typography,
 } from "@mui/material";
-import { IoLeaf, IoSearch, IoClose } from "react-icons/io5";
+import { IoLeaf, IoSearch } from "react-icons/io5";
 import Link from "next/link";
 import {
   DISCOVERY_IMAGE_HEIGHT,
@@ -36,6 +35,9 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic"; // ★ dynamicインポート機能
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMapStore } from "@/stores/mapStore";
+import SubmitButton from "@/components/ui/SubmitButton";
+import { MOBILE_MAX_WIDTH } from "@/constants/styles";
+import { IoCloseOutline } from "react-icons/io5";
 
 // ★ 地図コンポーネントを、サーバーサイドレンダリングを無効にして動的にインポート
 const StaticPostMap = dynamic(
@@ -61,8 +63,6 @@ export default function DiscoveryDetailView({
     isDeleteConfirmModalOpen,
     openDeleteConfirmModal,
     closeDeleteConfirmModal,
-    isDeleteCompleteModalOpen,
-    closeDeleteCompleteModal,
     isProcessingDelete,
   } = useDiscoveryDelete();
   const handleDeleteDiscovery = async () => {
@@ -194,10 +194,6 @@ export default function DiscoveryDetailView({
         closeModal={closeDeleteConfirmModal}
         deleteDiscovery={handleDeleteDiscovery}
       />
-      <DeleteCompleteModal
-        open={isDeleteCompleteModalOpen}
-        closeModal={closeDeleteCompleteModal}
-      />
       {isProcessingDelete && <OverlayLoader />}
     </>
   );
@@ -215,25 +211,26 @@ const DeleteConfirmModal = ({
   return (
     <Dialog
       open={open}
+      disableScrollLock={true}
+      onClose={closeModal}
       slotProps={{
         paper: {
           sx: {
-            width: "400px",
-            p: "40px 32px",
+            width: "calc(100% - 40px)",
+            maxWidth: `${MOBILE_MAX_WIDTH - 40}px`,
+            p: { xs: "32px 28px", sm: "40px 32px" },
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            gap: "20px",
-            borderRadius: "16px",
+            gap: { xs: "16px", sm: "20px" },
+            borderRadius: 4,
           },
         },
       }}
       keepMounted
     >
-      <Box
-        sx={{ display: "flex", flexDirection: "row-reverse", height: "12px" }}
-      >
-        <IoClose size={20} onClick={closeModal} cursor="pointer" />
+      <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
+        <IoCloseOutline size={28} onClick={closeModal} cursor="pointer" />
       </Box>
       <DialogContent
         sx={{
@@ -249,94 +246,27 @@ const DeleteConfirmModal = ({
         <Typography
           variant="h2"
           component="h2"
-          sx={{ textAlign: "center", fontSize: 24, color: "kinako.900" }}
+          sx={{
+            textAlign: "center",
+            fontSize: { xs: 20, sm: 24 },
+            color: "kinako.900",
+          }}
         >
           はっけんを削除しますか？
         </Typography>
         <Typography
           variant="h4"
           component="h4"
-          sx={{ fontSize: 14, color: "kinako.800" }}
+          sx={{ fontSize: { xs: 13, sm: 14 }, color: "kinako.800" }}
         >
           一度削除すると、元に戻すことはできません
         </Typography>
       </DialogContent>
       <DialogActions sx={{ justifyContent: "center", padding: "0" }}>
-        <Button
-          variant="contained"
-          onClick={deleteDiscovery}
-          autoFocus
-          sx={{
-            backgroundColor: "kinako.900",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "kinako.700",
-            },
-            padding: "8px 16px",
-            height: "56px",
-            width: "100%",
-            borderRadius: "200px",
-            textTransform: "none",
-            fontSize: "20px",
-            alignSelf: "center",
-          }}
-        >
+        <SubmitButton onClick={deleteDiscovery} sx={{ width: "100%" }}>
           削除する
-        </Button>
+        </SubmitButton>
       </DialogActions>
-    </Dialog>
-  );
-};
-
-const DeleteCompleteModal = ({
-  open,
-  closeModal,
-}: {
-  open: boolean;
-  closeModal: () => void;
-}) => {
-  // TODO: Dialogを使っているかつ正確なデザインにする
-  return (
-    <Dialog
-      open={open}
-      slotProps={{
-        paper: {
-          sx: {
-            width: "400px",
-            p: "40px 32px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: "20px",
-            borderRadius: "16px",
-          },
-        },
-      }}
-    >
-      <Box
-        sx={{ display: "flex", flexDirection: "row-reverse", height: "12px" }}
-      >
-        <IoClose size={20} onClick={closeModal} cursor="pointer" />
-      </Box>
-      <DialogContent
-        sx={{
-          textAlign: "center",
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-          padding: "0",
-          overflow: "visible",
-          mb: "20px",
-        }}
-      >
-        <Typography
-          variant="h2"
-          component="h2"
-          sx={{ textAlign: "center", fontSize: 24, color: "kinako.900" }}
-        >
-          はっけんを削除しました
-        </Typography>
-      </DialogContent>
     </Dialog>
   );
 };

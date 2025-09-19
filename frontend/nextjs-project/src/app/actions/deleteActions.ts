@@ -1,6 +1,7 @@
 "use server";
 
 import { backendFetch } from "@/libs/backendFetch";
+import { revalidatePath } from "next/cache";
 
 export type DeletePostResult = {
   status: "deleted";
@@ -44,6 +45,12 @@ export async function deletePostAction(
     if (json?.status !== "deleted" || typeof json?.post_id !== "string") {
       throw new Error("Invalid response structure from Delete Post API");
     }
+
+    // ★ 成功した場合、関連するページのキャッシュを無効化
+    // 投稿一覧に影響する可能性のあるページパスを指定
+    revalidatePath("/"); // ホームページ（マップ）
+    revalidatePath("/list"); // 発見リストページ
+    revalidatePath(`/discoveries/${json.post_id}`);
 
     const data: DeletePostResult = {
       status: "deleted",

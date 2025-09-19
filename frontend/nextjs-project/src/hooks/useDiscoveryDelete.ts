@@ -1,45 +1,43 @@
 import { deletePostAction } from "@/app/actions/deleteActions";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { mutate } from "swr";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "next/navigation";
 
 export const useDiscoveryDelete = () => {
-  const router = useRouter();
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
     useState<boolean>(false);
-  const [isDeleteCompleteModalOpen, setIsDeleteCompleteModalOpen] =
-    useState<boolean>(false);
   const [isProcessingDelete, setIsProcessingDelete] = useState<boolean>(false);
+  const user = useAuthStore((state) => state.user);
+  const router = useRouter();
+
   const openDeleteConfirmModal = () => {
     setIsDeleteConfirmModalOpen(true);
   };
   const closeDeleteConfirmModal = () => {
     setIsDeleteConfirmModalOpen(false);
   };
-  const openDeleteCompleteModal = () => {
-    setIsDeleteCompleteModalOpen(true);
-  };
-  const closeDeleteCompleteModal = () => {
-    setIsDeleteCompleteModalOpen(false);
-    router.back();
-  };
 
   const deleteDiscovery = async (post_id: string) => {
+    setIsProcessingDelete(true);
     try {
-      setIsProcessingDelete(true);
       // server actionsを直接呼び出す
       const result = await deletePostAction(post_id);
-      if (!result.error && !result.data) {
-        alert("不明なエラーが発生しました。もう一度お試しください。");
-        return;
-      }
-      if (result.data) {
-        // TODO: アラートじゃなくてモーダルにする
-        openDeleteCompleteModal();
-        return;
-      }
       if (result.error) {
         alert(`投稿の削除に失敗しました ${result.error}`);
       }
+      if (!result.data) {
+        alert("不明なエラーが発生しました。もう一度お試しください。");
+        return;
+      }
+
+      alert(`投稿の削除に成功しました`);
+
+      router.back();
+
+      // 一覧ページのキャッシュのみを更新する
+      const listKey = user?.uid ? `recent:${user.uid}` : `recent:public`;
+      mutate(listKey);
     } catch (error) {
       console.error(error);
       alert("投稿の削除に失敗しました");
@@ -53,8 +51,6 @@ export const useDiscoveryDelete = () => {
     isDeleteConfirmModalOpen,
     openDeleteConfirmModal,
     closeDeleteConfirmModal,
-    isDeleteCompleteModalOpen,
-    closeDeleteCompleteModal,
     isProcessingDelete,
   };
 };

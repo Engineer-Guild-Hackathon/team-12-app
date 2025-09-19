@@ -33,6 +33,7 @@ export function usePosts(
   const { sort, scope, userId, currentLocation } = params;
   const user = useAuthStore((s) => s.user);
   const swrKey = user?.uid ? `recent:${user.uid}` : `recent:public`;
+
   const { data, error, mutate } = useSWR<PostsApiResponse>(
     swrKey,
     async () => {
@@ -46,8 +47,6 @@ export function usePosts(
     {
       refreshInterval: 30000,
       dedupingInterval: 30000,
-      // キャッシュにデータがあれば、マウント時に再検証しない
-      revalidateOnMount: false,
       suspense: true,
       fallbackData: fallbackData,
     },
