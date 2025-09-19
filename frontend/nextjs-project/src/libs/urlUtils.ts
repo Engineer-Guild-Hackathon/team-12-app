@@ -70,6 +70,7 @@ export async function getTitleFromUrl(url: string): Promise<string> {
     } catch (e) {
       console.warn(
         `Strict decoding with ${finalCharset} for ${url} failed. Retrying in non-fatal mode.`,
+        e,
       );
       const decoder = new TextDecoder(finalCharset, { fatal: false });
       html = decoder.decode(view);
