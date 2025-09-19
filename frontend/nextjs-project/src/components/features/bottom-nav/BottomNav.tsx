@@ -57,23 +57,23 @@ export default function BottomNav() {
         <NavActionButton
           label="はっけん"
           href="/"
-          activeIcon={<IoLeaf size={32} />}
-          inactiveIcon={<IoLeafOutline size={32} />}
+          activeIcon={<IoLeaf size={30} />}
+          inactiveIcon={<IoLeafOutline size={30} />}
         />
         <RecordButton />
         {user === null ? (
           <NavActionButton
             label="ログイン"
             href="/login"
-            activeIcon={<IoLogIn size={32} />}
-            inactiveIcon={<IoLogInOutline size={32} />}
+            activeIcon={<IoLogIn size={30} />}
+            inactiveIcon={<IoLogInOutline size={30} />}
           />
         ) : (
           <NavActionButton
             label="せってい"
             href="/setting"
-            activeIcon={<IoPerson size={32} />}
-            inactiveIcon={<IoPersonOutline size={32} />}
+            activeIcon={<IoPerson size={30} />}
+            inactiveIcon={<IoPersonOutline size={30} />}
           />
         )}
       </BottomNavigation>

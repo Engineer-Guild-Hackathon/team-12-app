@@ -28,7 +28,7 @@ export default function RecordButton() {
         <Box
           sx={{
             position: "absolute",
-            top: -28,
+            top: { xs: -20, sm: -28 },
             padding: "3px",
             border: "2px solid",
             borderColor: "yomogi.800",
@@ -42,13 +42,15 @@ export default function RecordButton() {
             sx={{
               backgroundColor: "yomogi.800",
               borderRadius: "50%",
-              width: 84,
-              height: 84,
+              width: { xs: 76, sm: 84 },
+              height: { xs: 76, sm: 84 },
               color: "gray.100",
             }}
           >
             <PiCamera size={36} />
-            <Typography sx={{ fontSize: "0.875rem" }}>きろく</Typography>
+            <Typography sx={{ fontSize: { xs: 12, sm: 14 } }}>
+              きろく
+            </Typography>
           </Stack>
         </Box>
       }

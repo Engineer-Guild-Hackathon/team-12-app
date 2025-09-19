@@ -6,6 +6,9 @@ import { Post } from "@/types/post";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
 import { useSearchParams } from "next/navigation";
+import { useMapStore } from "@/stores/mapStore";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 import dynamic from "next/dynamic";
 import DiscoveryCardModal from "@/components/features/map/DiscoveryCardModal";
@@ -24,8 +27,8 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
   const searchParams = useSearchParams();
   const currentScope = searchParams.get("scope");
 
-  // TODO: 認証情報を取得
-  const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
+  // 認証情報を取得
+  const user = useAuthStore((state) => state.user);
 
   const { posts: fetchedPosts, isError } = usePosts(
     {
@@ -36,17 +39,29 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
     { posts: initialPosts },
   );
 
+  useEffect(() => {
+    // isErrorフラグがtrueになった場合
+    if (isError) {
+      throw new Error("投稿データの取得に失敗しました。");
+    }
+  }, [isError]); // 監視対象の変数を設定
+
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [isFollowing, setIsFollowing] = useState(() => {
+    // コンポーネントの初期化時に一度だけZustandストアを直接参照
+    const savedMapView = useMapStore.getState().mapView;
+    // 保存されたビューがあれば追従OFF(false)、なければ追従ON(true)で開始
+    return savedMapView ? false : true;
+  });
 
   const handleMarkerClick = useCallback((post: Post) => {
     setSelectedPost(post);
+    setIsFollowing(false);
   }, []);
 
   const handleCloseModal = useCallback(() => {
     setSelectedPost(null);
   }, []);
-
-  if (isError) return <div>データの取得に失敗しました</div>;
 
   const posts = fetchedPosts || [];
 
@@ -56,6 +71,9 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
         posts={posts}
         onMarkerClick={handleMarkerClick}
         selectedPost={selectedPost}
+        setSelectedPost={setSelectedPost}
+        isFollowing={isFollowing}
+        setIsFollowing={setIsFollowing}
       />
 
       <DiscoveryCardModal

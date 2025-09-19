@@ -3,7 +3,7 @@ from __future__ import annotations
 import io
 import json
 import unicodedata
-from typing import Any, Dict
+from typing import Any, Dict, Union
 from urllib.parse import unquote
 
 import magic
@@ -21,7 +21,13 @@ class AnalyzeService:
     """画像解析をGemini APIで実行するサービスクラス"""
 
     @staticmethod
-    def analyze(file: FileStorage | None, image_url: str | None, user_question: str | None) -> Dict[str, str]:
+    def analyze(
+        file: FileStorage | None,
+        image_url: str | None,
+        user_question: str | None,
+        location: str | None = None,
+        local_time_iso: str | None = None,
+    ) -> Dict[str, Union[str, list[str]]]:
         """
         画像を解析してAIからの回答を返す
 
@@ -29,9 +35,11 @@ class AnalyzeService:
             file: アップロードされた画像ファイル
             image_url: 画像のURL
             user_question: 補助的な質問
+            location: 位置情報
+            local_time_iso: 現地時刻
 
         Returns:
-            {"object_label": str, "ai_answer": str, "ai_question": str} の辞書
+            {"object_label": str, "ai_answer": str, "ai_question": str, "grounding_urls": list[str]} の辞書
 
         Raises:
             BadRequest: 無効な画像やリクエスト
@@ -52,8 +60,10 @@ class AnalyzeService:
         if not mime.startswith("image/"):
             raise BadRequest("画像ファイルではありません")
 
-        # 3) プロンプトの構築
-        prompt = AnalyzeService._build_prompt(user_question)
+        # 3) プロンプトの構築（位置情報と時刻を付与可能）
+        prompt = AnalyzeService._build_prompt(
+            user_question=user_question, location=location, local_time_iso=local_time_iso
+        )
 
         # 4) 画像サイズに応じてAPIを選択
         if len(raw) <= CONFIG.INLINE_MAX_IMAGE_BYTES:
@@ -140,12 +150,14 @@ class AnalyzeService:
             return buf.getvalue()
 
     @staticmethod
-    def _build_prompt(user_question: str | None) -> str:
+    def _build_prompt(user_question: str | None, location: str | None = None, local_time_iso: str | None = None) -> str:
         """
         モデルに「厳密にJSONのみ」を返させるプロンプトを構築する
 
         Args:
             user_question: 補助的な質問（オプション）
+            location: 位置情報（任意、逆ジオで得られた住所等）
+            local_time_iso: 現地時刻（ISO 8601、任意）
 
         Returns:
             構築されたプロンプト文字列
@@ -163,13 +175,26 @@ class AnalyzeService:
             "- フィールド名は必ず object_label / ai_answer / ai_question。\n"
             "- すべて文字列。改行はそのまま文字列内に含めてよい。\n"
             "- JSON以外のテキスト・コードブロック・Markdown記法は禁止。\n"
+            "- ユーザーからの補助質問に「検索して」などの指示がなくても、グラウンディング（Web検索）を行ったほうが良いと判断したときはグラウンディングを行ってください。\n"
+            "- グラウンディングを行った場合は、グラウンディングのURL(検索に用いた情報)をgrounding_urlsに含めてください。\n"
         )
+        context_lines: list[str] = []
+        if location:
+            context_lines.append(f"観測場所: {location}")
+        if local_time_iso:
+            context_lines.append(f"観測時刻(現地時刻): {local_time_iso}")
+        if context_lines:
+            base += (
+                "\nコンテキスト情報 (画像の解釈に役立つ参考情報):\n"
+                + "\n".join(f"- {line}" for line in context_lines)
+                + "\n"
+            )
         if user_question:
             base += f"\n補助質問（考慮してよいが、出力は上記JSONのみ）: {user_question}\n"
         return base
 
     @staticmethod
-    def _parse_answer_to_dict(ai_response: str) -> Dict[str, str]:
+    def _parse_answer_to_dict(ai_response: str) -> Dict[str, Union[str, list[str]]]:
         """
         モデルからの文字列応答をJSONとしてパースし、辞書に変換する
 
@@ -177,7 +202,7 @@ class AnalyzeService:
             ai_response: モデルからの応答文字列
 
         Returns:
-            {"object_label": str, "ai_answer": str, "ai_question": str} の辞書
+            {"object_label": str, "ai_answer": str, "ai_question": str, "grounding_urls": list[str]} の辞書
 
         Raises:
             BadRequest: 無効なJSON形式
@@ -200,10 +225,20 @@ class AnalyzeService:
                 raise BadRequest(
                     "AIの出力が必要なJSON形式（object_label, ai_answer, ai_questionの各文字列）になっていません"
                 )
+        # grounding_urls は省略可。存在すれば list[str]、無ければ [] を設定
+        grounding = obj.get("grounding_urls")
+        if isinstance(grounding, list):
+            urls: list[str] = []
+            for u in grounding:
+                if isinstance(u, str):
+                    urls.append(u)
+            obj["grounding_urls"] = urls
+        else:
+            obj["grounding_urls"] = []
         return obj
 
     @staticmethod
-    def _gemini_request_by_base64(raw: bytes | Any, prompt: str) -> Dict[str, str]:
+    def _gemini_request_by_base64(raw: bytes | Any, prompt: str) -> Dict[str, Union[str, list[str]]]:
         """
         Base64エンコードした画像でGemini APIを呼び出す（小さい画像用）
 
@@ -219,10 +254,21 @@ class AnalyzeService:
 
         # Gemini API呼び出し
         ai_response = gemini.generate_inline(jpeg_bytes, prompt)
-        return AnalyzeService._parse_answer_to_dict(ai_response)
+        result = AnalyzeService._parse_answer_to_dict(ai_response)
+        # GeminiClient が最後に抽出した grounding_urls をDictに付与
+        try:
+            urls = gemini.get_last_grounding_urls()
+            if isinstance(urls, list):
+                result["grounding_urls"] = [u for u in urls if isinstance(u, str)]
+        except Exception:
+            # 取得できない場合は既定の [] を維持
+            pass
+        return result
 
     @staticmethod
-    def _gemini_request_by_filesAPI(file: FileStorage, raw: bytes | Any, prompt: str) -> Dict[str, str]:
+    def _gemini_request_by_filesAPI(  # noqa: C901
+        file: FileStorage, raw: bytes | Any, prompt: str
+    ) -> Dict[str, Union[str, list[str]]]:
         """
         Files APIを使用してGemini APIを呼び出す（大きい画像用）
 
@@ -256,8 +302,9 @@ class AnalyzeService:
                 required=["object_label", "ai_answer", "ai_question"],
             )
             GENCFG_JSON = types.GenerateContentConfig(
-                response_mime_type="application/json",
+                # response_mime_type="application/json",
                 response_schema=JSON_SCHEMA,
+                tools=[types.Tool(google_search=types.GoogleSearch())],
             )
         except Exception:
             # 古いSDK等で未対応の場合はNoneにしてプロンプトのみで運用
@@ -287,14 +334,53 @@ class AnalyzeService:
         kwargs = {}
         if GENCFG_JSON is not None:
             kwargs["config"] = GENCFG_JSON
+
         response = client.models.generate_content(
             model=CONFIG.GEMINI_MODEL,
             contents=[uploaded_file, prompt],
             **kwargs,
         )
-        ai_response = getattr(response, "text", "") or ""
-        return AnalyzeService._parse_answer_to_dict(ai_response)
+
+        grounding_urls: list[str] = []
+
+        try:
+            # candidates と groundingMetadata の取得
+            candidates = getattr(response, "candidates", [])
+            for cand in candidates:
+                gm = cand.get("groundingMetadata")
+                if gm:
+                    # citations から URL を取得
+                    citations = gm.get("citations", [])
+                    for c in citations:
+                        uri = c.get("uri")
+                        if isinstance(uri, str) and uri.startswith("http"):
+                            grounding_urls.append(uri)
+
+                    # grounding_chunks から URL を取得（citations がなかった場合）
+                    if not grounding_urls:
+                        chunks = gm.get("groundingChunks", [])
+                        for ch in chunks:
+                            web = ch.get("web")
+                            if web:
+                                uri = web.get("uri")
+                                if isinstance(uri, str) and uri.startswith("http"):
+                                    grounding_urls.append(uri)
+
+        except Exception:
+            grounding_urls = []
+
+        # レスポンステキストをDictに変換し、grounding_urlsをDictに付与して返す
+        ai_response = getattr(response, "text", "") or str(response)
+        result = AnalyzeService._parse_answer_to_dict(ai_response)
+        result["grounding_urls"] = grounding_urls
+        return result
 
 
-def analyze(file: FileStorage | None, image_url: str | None, user_question: str | None) -> Dict[str, str]:
-    return AnalyzeService.analyze(file, image_url, user_question)
+def analyze(
+    file: FileStorage | None,
+    image_url: str | None,
+    user_question: str | None,
+    location: str | None = None,
+    local_time_iso: str | None = None,
+) -> Dict[str, str]:
+    return AnalyzeService.analyze(file, image_url, user_question, location=location, local_time_iso=local_time_iso)

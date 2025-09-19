@@ -6,6 +6,8 @@ export interface ImageAnalysisAnswer {
   ai_answer: string;
   /** AIが生成した問い */
   ai_question: string;
+  /** グラウンディングで参照したURLの配列（0件可） */
+  grounding_urls: string[];
 }
 
 /** 画像解析API レスポンス */
@@ -14,6 +16,8 @@ export interface ImageAnalysisResponse {
   img_id: string;
   /** AIからの回答 */
   ai_response: ImageAnalysisAnswer;
+  /** 逆ジオコーディングされた位置（可能なら） */
+  location: string | null;
 }
 
 // 画像1件のレコード

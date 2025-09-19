@@ -6,7 +6,10 @@ import { backendFetch } from "@/libs/backendFetch";
 
 /**
  * 画像と質問をFlaskに送信し、AIの解析結果を取得するためのサーバーアクション。
- * @param formData FormDataオブジェクト。'img_file'と'user_question'を含む必要がある。
+ * - 送信必須: 'img_file', 'user_question'
+ * - 送信任意: 'latitude', 'longitude'（数値を文字列として）
+ * レスポンスには 'img_id', 'ai_response', 'location'(任意) が含まれます。
+ * @param formData FormDataオブジェクト。
  * @returns 成功した場合は { data: ImageAnalysisResponse }, 失敗した場合は { error: string }
  */
 export async function analyzeImageAction(
@@ -31,7 +34,13 @@ export async function analyzeImageAction(
         object_label: json.ai_response.object_label || "",
         ai_answer: json.ai_response.ai_answer || "",
         ai_question: json.ai_response.ai_question || "",
+        grounding_urls: Array.isArray(json.ai_response.grounding_urls)
+          ? json.ai_response.grounding_urls.filter(
+              (u: unknown) => typeof u === "string",
+            )
+          : [],
       },
+      location: typeof json.location === "string" ? json.location : null,
     };
     return { data: imageAnalysisResponse };
   } catch (e) {

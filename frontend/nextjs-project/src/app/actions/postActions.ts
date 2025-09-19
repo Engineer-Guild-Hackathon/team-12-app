@@ -12,8 +12,12 @@ export type CreatePostPayload = {
   object_label: string;
   ai_answer: string;
   ai_question: string;
+  ai_reference: string | null;
+  is_public: boolean;
+  post_rarity: number;
   latitude: number;
   longitude: number;
+  location: string | null;
 };
 
 /**

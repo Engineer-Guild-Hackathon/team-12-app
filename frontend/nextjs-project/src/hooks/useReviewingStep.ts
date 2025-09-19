@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTransition, useEffect } from "react";
+import { useTransition, useEffect, useState } from "react";
 import { AiResponse } from "@/stores/discoveryCreationStore";
 import { createPostAction, CreatePostPayload } from "@/app/actions/postActions";
 import { useAuthStore } from "@/stores/authStore";
@@ -15,6 +15,7 @@ type UseReviewingStepParams = {
   prevStep: () => void;
   latitude: number | null;
   longitude: number | null;
+  location: string | null;
 };
 
 export const useReviewingStep = (params: UseReviewingStepParams) => {
@@ -26,9 +27,11 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
     latitude,
     longitude,
     img_id,
+    location,
   } = params;
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  const [isPublic, setIsPublic] = useState<boolean>(true);
 
   // ログインせずに撮影機能は使用できないため想定していないが念のため
   // if節だと条件付きhook呼び出しのためuseEffectを使う
@@ -61,8 +64,16 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
       object_label: aiResponse.object_label,
       ai_answer: aiResponse.ai_answer,
       ai_question: aiResponse.ai_question,
+      ai_reference:
+        Array.isArray(aiResponse.grounding_urls) &&
+        aiResponse.grounding_urls.length > 0
+          ? aiResponse.grounding_urls[0]
+          : null,
+      is_public: Boolean(isPublic),
+      post_rarity: 0, // TODO: aiResponseで将来希少度を取得する
       latitude,
       longitude,
+      location: location ?? null,
     };
 
     // startTransitionでServer Actionの呼び出しをラップします。
@@ -86,5 +97,7 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
   return {
     handleSave,
     isLoading: isPending,
+    isPublic,
+    setIsPublic,
   };
 };

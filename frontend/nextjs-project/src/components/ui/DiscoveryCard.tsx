@@ -22,6 +22,7 @@ import { IoLeaf } from "react-icons/io5";
 interface DiscoveryCardProps {
   post: Post;
   currentLocation: { latitude: number | null; longitude: number | null };
+  from?: string;
 }
 
 // 距離を分かりやすい文字列にフォーマットする関数
@@ -36,9 +37,14 @@ const formatDistance = (meters: number | null) => {
 export default function DiscoveryCard({
   post,
   currentLocation,
+  from,
 }: DiscoveryCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isOnScreen = useOnScreen(cardRef); // カードが画面上にあるか監視
+
+  const detailPageHref = from
+    ? `/discoveries/${post.post_id}?from=${from}`
+    : `/discoveries/${post.post_id}`;
 
   // 投稿時間とアイコンを取得
   const { iconName, formattedDate } = formatTimestampForClient(
@@ -78,14 +84,14 @@ export default function DiscoveryCard({
     >
       <CardActionArea
         component={Link}
-        href={`/discoveries/${post.post_id}`}
+        href={detailPageHref}
         sx={{
           flexGrow: 1,
           display: "flex",
           flexDirection: "row",
-          gap: 2,
+          gap: { xs: 1.5, sm: 2 },
           alignItems: "flex-start",
-          p: 2.5,
+          p: { xs: 2.1, sm: 2.5 },
           width: "100%",
           height: "100%",
         }}
@@ -98,10 +104,10 @@ export default function DiscoveryCard({
             alt={post.object_label}
             sx={{
               objectFit: "cover",
-              width: "100px",
-              height: "100px",
-              minWidth: "100px",
-              minHeight: "100px",
+              width: { xs: "90px", sm: "100px" },
+              height: { xs: "90px", sm: "100px" },
+              minWidth: { xs: "90px", sm: "100px" },
+              minHeight: { xs: "90px", sm: "100px" },
               borderRadius: 2,
             }}
           />
@@ -123,7 +129,7 @@ export default function DiscoveryCard({
               alignItems: "center",
             }}
           >
-            <IoLeaf size={40} />
+            <IoLeaf size={32} />
           </CardMedia>
         )}
         <CardContent
@@ -154,7 +160,7 @@ export default function DiscoveryCard({
             <Typography
               variant="h6"
               component="div"
-              sx={{ fontSize: 14, color: "kinako.800" }}
+              sx={{ fontSize: { xs: 12, sm: 14 }, color: "kinako.800" }}
             >
               {formatDistance(distance)}
             </Typography>
@@ -164,7 +170,7 @@ export default function DiscoveryCard({
             variant="h6"
             component="div"
             sx={{
-              fontSize: 14,
+              fontSize: { xs: 12, sm: 14 },
               overflow: "hidden",
               textOverflow: "ellipsis",
               display: "-webkit-box",

@@ -20,7 +20,10 @@ export default function Header({ onFilterClick }: HeaderProps) {
   const pathname = usePathname();
   const showTabs = pathname === "/" || pathname === "/list";
   const isPWA = useIsPWA();
-  const headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
+  let headerHeight = isPWA ? HEADER_HEIGHT : HEADER_HEIGHT_FOR_BROWSER;
+  if (pathname === "/setting") {
+    headerHeight -= 48;
+  }
 
   let headerTitle: string;
   let headerIcon: React.ReactNode;

@@ -6,7 +6,7 @@ import { createCustomIcon } from "@/utils/createCustomIcon";
 interface PostMarkerProps {
   post: Post;
   isSelected: boolean;
-  onMarkerClick: (post: Post) => void;
+  onMarkerClick?: (post: Post) => void;
 }
 
 const PostMarker: React.FC<PostMarkerProps> = ({
@@ -22,7 +22,7 @@ const PostMarker: React.FC<PostMarkerProps> = ({
       position={[post.latitude, post.longitude]}
       icon={icon}
       eventHandlers={{
-        click: () => onMarkerClick(post),
+        click: () => onMarkerClick?.(post),
       }}
     />
   );

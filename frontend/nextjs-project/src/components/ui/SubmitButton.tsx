@@ -56,7 +56,7 @@ export default function SubmitButton({
           <LeafyLoader />
         </Box>
       )}
-      <Typography fontSize={20}>
+      <Typography fontSize={{ xs: 16, sm: 18 }}>
         {isLoading ? loadingText : children}
       </Typography>
     </StyledSubmitButton>

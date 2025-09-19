@@ -52,10 +52,15 @@ export default function DiscoveryCardModal({
       <Box
         sx={{
           pb: `${bottomNavHeight + 40}px`,
-          width: `${MOBILE_MAX_WIDTH - 40}px`,
+          width: "calc(100% - 24px)",
+          maxWidth: `${MOBILE_MAX_WIDTH - 40}px`,
         }}
       >
-        <DiscoveryCard post={post} currentLocation={currentLocation} />
+        <DiscoveryCard
+          post={post}
+          currentLocation={currentLocation}
+          from="map"
+        />
       </Box>
     </Modal>
   );
