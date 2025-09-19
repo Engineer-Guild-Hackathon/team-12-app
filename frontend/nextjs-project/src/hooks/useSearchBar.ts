@@ -15,6 +15,12 @@ type UseHomeSearchBarReturn = {
   handleQueryChange: (q: string) => void;
 };
 
+type UseListSearchBarReturn = {
+  searchQuery: string;
+  handleSearch: (q: string) => void;
+  handleQueryChange: (q: string) => void;
+};
+
 /**
  * SearchBar用の検索状態とハンドラーを管理するフック
  */
@@ -55,6 +61,48 @@ export function useHomeSearchBar({
       }
     },
     [pathname, router, searchParams, setSearchQuery],
+  );
+
+  return {
+    searchQuery,
+    handleSearch,
+    handleQueryChange,
+  };
+}
+
+/**
+ * リストページ用のSearchBar状態とハンドラーを管理するフック
+ */
+export function useListSearchBar(): UseListSearchBarReturn {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [searchQuery, setSearchQuery] = useState<string>(
+    searchParams.get("q") ?? "",
+  );
+
+  const handleSearch = useCallback(
+    async (q: string) => {
+      setSearchQuery(q);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("q", q);
+      router.replace(`${pathname}?${params.toString()}`);
+    },
+    [pathname, router, searchParams],
+  );
+
+  const handleQueryChange = useCallback(
+    (q: string) => {
+      if (q.trim() === "") {
+        setSearchQuery("");
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("q");
+        const qs = params.toString();
+        router.replace(qs ? `${pathname}?${qs}` : pathname);
+      }
+    },
+    [pathname, router, searchParams],
   );
 
   return {
