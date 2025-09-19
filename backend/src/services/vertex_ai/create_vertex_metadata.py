@@ -5,6 +5,12 @@ import os
 import sys
 from pathlib import Path
 
+from google.cloud import discoveryengine
+
+# サービス層のモジュールとモデルをインポート
+from src.services.image.image import GCS_BUCKET, Image, adc_bucket
+from src.services.post.post import Post, SessionLocal
+
 # プロジェクトルートをPythonパスに追加
 try:
     BASE_DIR = Path(__file__).resolve().parents[3]
@@ -12,14 +18,51 @@ try:
 except IndexError:
     sys.exit("ERROR: Could not determine the project's base directory.")
 
-# サービス層のモジュールとモデルをインポート
-from src.services.image.image import GCS_BUCKET, Image, adc_bucket
-from src.services.post.post import Post, SessionLocal
-
 OUTPUT_FILENAME = "metadata.jsonl"
 GCS_METADATA_FOLDER = "metadata"  # GCS上のアップロード先フォルダ
 # Vertex AI SearchがサポートするMIMEタイプのリスト
 SUPPORTED_MIME_TYPES = {"image/jpeg", "image/png", "image/webp"}
+
+# Vertex AI Search用の設定
+GCP_PROJECT_ID = os.environ.get("PROJECT_ID")
+GCP_LOCATION = os.environ.get("GCP_LOCATION", "global")
+DATA_STORE_ID = os.environ.get("DATA_STORE_ID")
+
+def trigger_import(gcs_uri: str):
+    """
+    指定されたGCS URIから、Vertex AI Searchデータストアへのインポートをトリガーする
+    """
+    print(f"Triggering import for data store '{DATA_STORE_ID}' from '{gcs_uri}'...")
+    try:
+        # ドキュメントを操作するためのクライアントを初期化
+        client = discoveryengine.DocumentServiceClient()
+
+        # データストアの完全なパス
+        parent = client.branch_path(
+            project=GCP_PROJECT_ID,
+            location=GCP_LOCATION,
+            data_store=DATA_STORE_ID,
+            branch="default_branch",
+        )
+
+        request = discoveryengine.ImportDocumentsRequest(
+            parent=parent,
+            gcs_source=discoveryengine.GcsSource(input_uris=[gcs_uri]),
+            # FULLモードは、既存のインデックスをすべて削除し完全に置き換える
+            reconciliation_mode=discoveryengine.ImportDocumentsRequest.ReconciliationMode.FULL,
+        )
+
+        # インポート処理を開始
+        operation = client.import_documents(request=request)
+        print(f"Waiting for import operation '{operation.operation.name}' to complete...")
+
+        # 処理が完了するまで待機（必要に応じてタイムアウトを設定）
+        response = operation.result()
+
+        print(f"Import completed successfully. Error samples: {response.error_samples}")
+
+    except Exception as e:
+        print(f"ERROR: Failed to trigger Vertex AI Search import: {e}")
 
 
 def main():
@@ -80,6 +123,7 @@ def main():
     print(f"Generated {OUTPUT_FILENAME} with {processed_count} entries successfully.")
 
     # --- GCSへのアップロード ---
+    gcs_uri = f"gs://{GCS_BUCKET}/{GCS_METADATA_FOLDER}/{OUTPUT_FILENAME}"
     try:
         blob_name = f"{GCS_METADATA_FOLDER}/{OUTPUT_FILENAME}"
         blob = adc_bucket.blob(blob_name)
@@ -96,6 +140,8 @@ def main():
         if os.path.exists(OUTPUT_FILENAME):
             os.remove(OUTPUT_FILENAME)
             print(f"Cleaned up local file: {OUTPUT_FILENAME}")
+    # Vertex AI Searchへの再インポートをトリガー
+    trigger_import(gcs_uri)
 
 
 if __name__ == "__main__":
