@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useCallback, Dispatch, SetStateAction } from "react";
+import { useCallback, Dispatch, SetStateAction, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Post } from "@/types/post";
+import { useFilterStore } from "@/stores/filterStore";
 
 type UseHomeSearchBarProps = {
   setSelectedPost: Dispatch<SetStateAction<Post | null>>;
@@ -25,8 +26,16 @@ export function useHomeSearchBar({
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const { searchQuery, setSearchQuery } = useFilterStore();
 
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") ?? "");
+  // URL -> store 同期（ページ遷移や手動でのクエリ変更に追随）
+  useEffect(() => {
+    const urlQ = searchParams.get("q") ?? "";
+    if (urlQ !== searchQuery) {
+      setSearchQuery(urlQ);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleSearch = useCallback(
     async (q: string) => {
@@ -40,7 +49,14 @@ export function useHomeSearchBar({
       // 追従を一旦OFFに（検索結果に視線を移すため。移動制御は別途）
       setIsFollowing(false);
     },
-    [pathname, router, searchParams, setSelectedPost, setIsFollowing],
+    [
+      pathname,
+      router,
+      searchParams,
+      setSelectedPost,
+      setIsFollowing,
+      setSearchQuery,
+    ],
   );
 
   const handleQueryChange = useCallback(
@@ -71,10 +87,16 @@ export function useListSearchBar(): UseSearchBarReturn {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const { searchQuery, setSearchQuery } = useFilterStore();
 
-  const [searchQuery, setSearchQuery] = useState<string>(
-    searchParams.get("q") ?? "",
-  );
+  // URL -> store 同期
+  useEffect(() => {
+    const urlQ = searchParams.get("q") ?? "";
+    if (urlQ !== searchQuery) {
+      setSearchQuery(urlQ);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleSearch = useCallback(
     async (q: string) => {
@@ -83,7 +105,7 @@ export function useListSearchBar(): UseSearchBarReturn {
       params.set("q", q);
       router.replace(`${pathname}?${params.toString()}`);
     },
-    [pathname, router, searchParams],
+    [pathname, router, searchParams, setSearchQuery],
   );
 
   const handleQueryChange = useCallback(
@@ -96,7 +118,7 @@ export function useListSearchBar(): UseSearchBarReturn {
         router.replace(qs ? `${pathname}?${qs}` : pathname);
       }
     },
-    [pathname, router, searchParams],
+    [pathname, router, searchParams, setSearchQuery],
   );
 
   return {

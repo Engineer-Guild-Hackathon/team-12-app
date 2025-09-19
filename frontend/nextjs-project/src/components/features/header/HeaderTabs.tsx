@@ -20,11 +20,15 @@ export default function HeaderTabs() {
 
   // scopeは常にURLから取得
   const currentScope = searchParams.get("scope");
+  const currentQuery = searchParams.get("q");
 
   // --- 地図タブ(/)のURLを生成 ---
   const mapParams = new URLSearchParams();
   if (currentScope) {
     mapParams.set("scope", currentScope);
+  }
+  if (currentQuery) {
+    mapParams.set("q", currentQuery);
   }
   const mapHref = `/?${mapParams.toString()}`.replace(/\?$/, ""); // 末尾の?を削除
 
@@ -35,6 +39,9 @@ export default function HeaderTabs() {
   }
   if (savedSort) {
     listParams.set("sort", savedSort);
+  }
+  if (currentQuery) {
+    listParams.set("q", currentQuery);
   }
   const listHref = `/list?${listParams.toString()}`.replace(/\?$/, ""); // 末尾の?を削除
 
