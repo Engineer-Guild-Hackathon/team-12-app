@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import { IoLeaf, IoSearch } from "react-icons/io5";
-import Link from "next/link";
 import {
   DISCOVERY_IMAGE_HEIGHT,
   DISCOVERY_IMAGE_HEIGHT_XS,
@@ -38,6 +37,7 @@ import { useMapStore } from "@/stores/mapStore";
 import SubmitButton from "@/components/ui/SubmitButton";
 import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 import { IoCloseOutline } from "react-icons/io5";
+import ReferenceLink from "@/components/ui/ReferenceLink";
 
 // ★ 地図コンポーネントを、サーバーサイドレンダリングを無効にして動的にインポート
 const StaticPostMap = dynamic(
@@ -153,32 +153,8 @@ export default function DiscoveryDetailView({
             {post.ai_answer}
           </Section>
           {/* 3.1 参考にしたサイト */}
-          {post.ai_reference && (
-            <Box sx={{ mt: 1 }}>
-              <Link
-                href={post.ai_reference}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: "none" }}
-              >
-                <Typography
-                  variant="body2"
-                  component="div"
-                  sx={{
-                    display: "block",
-                    textDecoration: "underline",
-                    color: "kinako.900",
-                    "&:hover": {
-                      color: "primary.main",
-                    },
-                    transition: "color 0.2s ease-in-out",
-                  }}
-                >
-                  AIが参考にしたサイト
-                </Typography>
-              </Link>
-            </Box>
-          )}
+          <ReferenceLink url={post.ai_reference} />
+
           {/* 4. AIからの問い */}
           <Section icon={<IoSearch size={30} />} title="問い">
             {post.ai_question}
