@@ -23,12 +23,16 @@ interface DiscoveryCreationState {
   aiResponse: AiResponse | null;
   isGenerating: boolean;
   img_id: string;
+  latitude: number | null;
+  longitude: number | null;
+  location: string | null;
   startCreation: () => void;
   nextStep: () => void;
   prevStep: () => void;
   cancelCreation: () => void;
   setPhotoData: (data: string) => void;
   setUserQuestion: (user_question: string) => void;
+  setLocation: (lat: number | null, lon: number | null) => void;
   generateAiResponse: () => Promise<void>;
 }
 
@@ -42,6 +46,9 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
     aiResponse: null,
     isGenerating: false,
     img_id: "",
+    latitude: null,
+    longitude: null,
+    location: null,
 
     // アクション
     startCreation: () =>
@@ -51,12 +58,17 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
         user_question: null,
         aiResponse: null,
         img_id: "",
+        latitude: null,
+        longitude: null,
+        location: null,
       }),
-    setPhotoData: (data) => set({ photoData: data }),
-    setUserQuestion: (user_question) => set({ user_question }),
+    setPhotoData: (data: string) => set({ photoData: data }),
+    setUserQuestion: (user_question: string) => set({ user_question }),
+    setLocation: (lat: number | null, lon: number | null) =>
+      set({ latitude: lat, longitude: lon }),
 
     generateAiResponse: async () => {
-      const { photoData, user_question } = get();
+      const { photoData, user_question, latitude, longitude } = get();
 
       if (!photoData || !user_question) {
         console.warn("Photo data or user question is missing.");
@@ -73,6 +85,13 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
         const file = await urlToFile(photoData, "photo.jpg");
         form.append("img_file", file);
         form.append("user_question", user_question);
+        // null出ないとき位置を追加
+        if (typeof latitude === "number") {
+          form.append("latitude", String(latitude));
+        }
+        if (typeof longitude === "number") {
+          form.append("longitude", String(longitude));
+        }
 
         // 2. 作成したServer Actionを直接呼び出す
         const result = await analyzeImageAction(form);
@@ -96,6 +115,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
           set({
             aiResponse,
             img_id: imageResult.img_id,
+            location: imageResult.location ?? null,
           });
           console.log("AIからの応答を取得しました。");
         }
@@ -117,7 +137,7 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
     },
 
     nextStep: () =>
-      set((state) => {
+      set((state: DiscoveryCreationState) => {
         if (state.currentStep === "shooting")
           return { currentStep: "commenting" };
         if (state.currentStep === "commenting")
@@ -129,12 +149,15 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
             user_question: null,
             aiResponse: null,
             img_id: "",
+            latitude: null,
+            longitude: null,
+            location: null,
           };
-        return {};
+        return {} as Partial<DiscoveryCreationState>;
       }),
 
     prevStep: () =>
-      set((state) => {
+      set((state: DiscoveryCreationState) => {
         if (state.currentStep === "reviewing")
           return { currentStep: "commenting" };
         if (state.currentStep === "commenting")
@@ -146,8 +169,11 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
             user_question: null,
             aiResponse: null,
             img_id: "",
+            latitude: null,
+            longitude: null,
+            location: null,
           };
-        return {};
+        return {} as Partial<DiscoveryCreationState>;
       }),
 
     cancelCreation: () =>
@@ -157,6 +183,9 @@ export const useDiscoveryCreationStore = create<DiscoveryCreationState>(
         user_question: null,
         aiResponse: null,
         img_id: "",
+        latitude: null,
+        longitude: null,
+        location: null,
       }),
   }),
 );

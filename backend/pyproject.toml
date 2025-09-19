@@ -21,6 +21,7 @@ python-dotenv = "^1.1.1"
 python-magic = "^0.4.27"
 geopy = "^2.4.1"
 google-cloud-discoveryengine = "^0.13.11"
+timezonefinder = "^8.0.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.5.2"

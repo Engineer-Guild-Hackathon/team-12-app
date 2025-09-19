@@ -177,9 +177,13 @@ def create_post():
     try:
         # post_id を作成
         data["post_id"] = str(uuid.uuid4())
-        # 位置情報の住所を逆ジオコーディングで取得して補完
-        location = _reverse_geocode(data["latitude"], data["longitude"])
-        data["location"] = location
+        # 位置情報の住所を補完: リクエストに location があればそれを優先。無ければ逆ジオコーディング。
+        req_location = data.get("location")
+        if isinstance(req_location, str) and req_location.strip():
+            data["location"] = req_location.strip()
+        else:
+            location = _reverse_geocode(data["latitude"], data["longitude"])
+            data["location"] = location
         # 入力バリデーション
         dto = _parse_create_post_payload(data)
     except ValueError as e:
