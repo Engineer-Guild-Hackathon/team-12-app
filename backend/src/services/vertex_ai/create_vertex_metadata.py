@@ -83,7 +83,7 @@ def main():
             query = session.query(Post, Image).join(Image, Post.img_id == Image.img_id)
 
             # 正常に保存された画像のみを対象とする
-            results = query.filter(Image.status == "stored").all()
+            results = query.filter(Image.status == "stored", Post.is_public).all()
 
             print(f"Found {len(results)} valid posts to process.")
 
