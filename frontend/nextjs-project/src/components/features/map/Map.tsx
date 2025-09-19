@@ -202,6 +202,15 @@ export default function Map({
         border: none; /* Leafletのデフォルトの枠線を消す */
       }
 
+      /* PR用マーカーの基本スタイル */
+      .custom-marker-pr-default,
+      .custom-marker-pr-selected {
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        border: none;
+      }
+
       /* 通常時のマーカーアイコン */
       .custom-marker-default {
         background-image: url('/marker.svg');
@@ -210,6 +219,16 @@ export default function Map({
       /* 選択時のマーカーアイコン */
       .custom-marker-selected {
         background-image: url('/selected-marker.svg');
+      }
+
+      /* PR通常時のマーカーアイコン（紫） */
+      .custom-marker-pr-default {
+        background-image: url('/pr_marker.svg');
+      }
+
+      /* PR選択時のマーカーアイコン（紫選択） */
+      .custom-marker-pr-selected {
+        background-image: url('/pr_selected_marker.svg');
       }
   `;
     document.head.appendChild(styleElement);
