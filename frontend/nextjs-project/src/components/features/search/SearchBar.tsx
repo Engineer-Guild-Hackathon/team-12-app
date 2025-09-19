@@ -3,6 +3,7 @@
 import { useState, KeyboardEvent, ChangeEvent } from "react";
 import { Box, TextField, IconButton } from "@mui/material";
 import { IoSearchOutline } from "react-icons/io5";
+import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 
 interface SearchBarProps {
   onSearch: (q: string) => void;
@@ -24,13 +25,16 @@ export function SearchBarOnMap({
       sx={{
         position: "absolute",
         top: 12,
-        left: 12,
-        right: 12,
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: `${MOBILE_MAX_WIDTH - 40}px`,
+        height: "40px",
         zIndex: 1000,
         display: "flex",
         justifyContent: "center",
         border: "1px solid",
         borderColor: "kinako.300",
+        borderRadius: 2,
       }}
     >
       <SearchBarOnListPage
@@ -74,18 +78,21 @@ export const SearchBarOnListPage = ({
   return (
     <Box
       sx={{
-        width: "100%",
-        maxWidth: 560,
+        width: `100%`,
         height: "40px",
         backgroundColor: "white",
-        borderRadius: "8px",
+        borderRadius: 2,
         display: "flex",
         alignItems: "center",
         padding: "0 8px",
       }}
     >
-      <IconButton aria-label="検索" onClick={triggerSearch}>
-        <IoSearchOutline size={24} color="#8B7355" />
+      <IconButton
+        aria-label="検索"
+        onClick={triggerSearch}
+        sx={{ color: "kinako.700" }}
+      >
+        <IoSearchOutline size={24} />
       </IconButton>
       <TextField
         id="search-bar"
@@ -104,7 +111,8 @@ export const SearchBarOnListPage = ({
               border: "none",
             },
             "& input": {
-              padding: "12px 8px 12px 4px",
+              padding: "0",
+              color: "kinako.900",
             },
           },
         }}
