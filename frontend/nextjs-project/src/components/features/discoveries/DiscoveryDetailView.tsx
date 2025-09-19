@@ -1,6 +1,10 @@
 "use client";
 
-import { DISCOVERY_IMAGE_HEIGHT } from "@/constants/styles";
+import Link from "next/link";
+import {
+  DISCOVERY_IMAGE_HEIGHT,
+  DISCOVERY_IMAGE_HEIGHT_XS,
+} from "@/constants/styles";
 import { Box, Stack, CardMedia } from "@mui/material";
 import { IoLeaf, IoSearch } from "react-icons/io5";
 import { PiMapPinFill } from "react-icons/pi"; // ★ 地図セクション用のアイコンをインポート
@@ -76,7 +80,7 @@ export default function DiscoveryDetailView({
   };
 
   return (
-    <Box sx={{ px: 3, pb: 4 }}>
+    <Box sx={{ px: { xs: 2, sm: 3 }, pb: 4 }}>
       <DiscoveryHeader
         iconName={iconName}
         formattedDate={formattedDate}
@@ -95,7 +99,10 @@ export default function DiscoveryDetailView({
             component="div"
             sx={{
               width: "100%",
-              height: `${DISCOVERY_IMAGE_HEIGHT}px`,
+              height: {
+                xs: `${DISCOVERY_IMAGE_HEIGHT_XS}px`,
+                sm: `${DISCOVERY_IMAGE_HEIGHT}px`,
+              },
               borderRadius: 2,
               backgroundColor: "yomogi.200",
               display: "flex",
@@ -112,18 +119,18 @@ export default function DiscoveryDetailView({
         <QuestionBubble text={post.user_question} />
         {/* 3. AIからの回答 (はっけん) */}
         <Box>
-          <Section icon={<IoLeaf size={32} />} title="はっけん">
+          <Section icon={<IoLeaf size={30} />} title="はっけん">
             {post.ai_answer}
           </Section>
           {/* 3.1 参考にしたサイト */}
           <ReferenceLink url={post.ai_reference} />
         </Box>
         {/* 4. AIからの問い */}
-        <Section icon={<IoSearch size={32} />} title="問い">
+        <Section icon={<IoSearch size={30} />} title="問い">
           {post.ai_question}
         </Section>
         {/* 5. はっけんした場所の地図 */}
-        <Section icon={<PiMapPinFill size={32} />} title="ちず">
+        <Section icon={<PiMapPinFill size={30} />} title="ちず">
           <StaticPostMap post={post} />
         </Section>
       </Stack>

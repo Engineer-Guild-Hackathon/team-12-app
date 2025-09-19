@@ -1,8 +1,18 @@
 "use client";
 import { createTheme } from "@mui/material/styles";
+import { isMobile } from "./utils/isMobile";
 
 const theme = createTheme({
   cssVariables: true,
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 410,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
   typography: {
     fontFamily: [
       "var(--font-yomogi)",
@@ -52,7 +62,7 @@ const theme = createTheme({
       main: "#FFFFFF",
     },
     background: {
-      default: "#CCD6A6",
+      default: isMobile() ? "#F6F1E6" : "#CCD6A6",
     },
   },
 });

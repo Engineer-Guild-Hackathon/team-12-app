@@ -69,7 +69,14 @@ export default function ListClient({ initialPosts }: ListClientProps) {
   }
 
   return (
-    <Box sx={{ px: 2.5, py: 2, overflowY: "scroll", height: "100%" }}>
+    <Box
+      sx={{
+        px: { xs: 2, sm: 2.5 },
+        py: 2,
+        overflowY: "scroll",
+        height: "100%",
+      }}
+    >
       <Stack spacing={1.5}>
         {(posts || []).map((post) => (
           <DiscoveryCard

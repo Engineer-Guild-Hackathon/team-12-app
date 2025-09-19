@@ -22,7 +22,11 @@ export default function Section({ icon, title, children }: SectionProps) {
       {typeof children === "string" || typeof children === "number" ? (
         <Typography
           variant="body1"
-          sx={{ fontSize: 16, px: 1.5, whiteSpace: "pre-wrap" }}
+          sx={{
+            fontSize: { xs: 14, sm: 16 },
+            px: { xs: 1, sm: 1.5 },
+            whiteSpace: "pre-wrap",
+          }}
         >
           {children}
         </Typography>

@@ -10,8 +10,8 @@ import { TimeOfDayIcon } from "@/utils/formatDate";
  * @returns React.ReactElement or null
  */
 export default function getIconComponent(iconName: TimeOfDayIcon) {
-  if (iconName === "sun") return <MdSunny size={20} />;
-  if (iconName === "sunset") return <TbSunset2 size={20} />;
-  if (iconName === "moon") return <RiMoonClearFill size={20} />;
+  if (iconName === "sun") return <MdSunny size={18} />;
+  if (iconName === "sunset") return <TbSunset2 size={18} />;
+  if (iconName === "moon") return <RiMoonClearFill size={18} />;
   return null;
 }
