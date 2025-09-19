@@ -13,6 +13,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import SubmitButton from "@/components/ui/SubmitButton";
 import { useIsPWA } from "@/hooks/useIsPWA";
 import OverlayLoader from "@/components/features/loading/OverlayLoader";
+import { isInvalidQuestion } from "@/utils/isInvalidQuestion";
+import { red } from "@mui/material/colors";
+
+const MAX_USER_QUESTION_LENGTH = 200;
 
 interface CommentingStepProps {
   photo: string | null;
@@ -35,7 +39,9 @@ export default function CommentingStep({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormInputs>();
+  } = useForm<FormInputs>({
+    mode: "onChange",
+  });
   const isPWA = useIsPWA();
   const discoveryHeaderHeight = isPWA
     ? DISCOVERY_HEADER_HEIGHT
@@ -76,7 +82,20 @@ export default function CommentingStep({
             errors.user_question?.message ||
             "気づいたことやふしぎに思ったことを自由に書き出して、はっけんについてAIに聞いてみましょう"
           }
-          {...register("user_question", { required: "コメントは入力必須です" })}
+          {...register("user_question", {
+            required: "コメントは入力必須です",
+            maxLength: {
+              value: MAX_USER_QUESTION_LENGTH,
+              message: `コメントは${MAX_USER_QUESTION_LENGTH}文字以内で入力してください`,
+            },
+            pattern: {
+              value: /^[^<>"]+$/,
+              message: "入力できない記号が含まれています",
+            },
+            validate: (value) =>
+              !isInvalidQuestion(value) ||
+              "不適切な表現が含まれる可能性があります",
+          })}
           sx={{
             "& .MuiOutlinedInput-root": {
               backgroundColor: "gray.100",
@@ -100,6 +119,9 @@ export default function CommentingStep({
             "& .MuiFormHelperText-root": {
               color: "kinako.800",
               fontSize: { xs: 12, sm: 14 },
+              "&.Mui-error": {
+                color: red[300],
+              },
             },
           }}
         />
