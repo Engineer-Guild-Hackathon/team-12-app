@@ -1,25 +1,12 @@
-"use client";
+import { Metadata } from "next";
+import LoginClient from "./client";
 
-import LoginView from "@/components/features/auth/LoginView";
-import { useAuthStore } from "@/stores/authStore";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import OverlayLoader from "@/components/features/loading/OverlayLoader";
+export const metadata: Metadata = {
+  title: "holo - AIカメラと問いで作る新しい散歩地図",
+  description:
+    "散歩×地図×AIカメラで、日常の「どうして？」を見つけにいくサービスです。あなたの「はっけん」をマップに記録・共有しましょう。",
+};
 
 export default function LoginPage() {
-  const status = useAuthStore((state) => state.status);
-  const router = useRouter();
-
-  useEffect(() => {
-    // 認証済みになったらトップページへリダイレクト
-    if (status === "authenticated") {
-      router.replace("/");
-    }
-  }, [status, router]);
-
-  // 状態が「未認証」で確定するまでは、問答無用ですべてローディング画面
-  if (status !== "unauthenticated") {
-    return <OverlayLoader />;
-  }
-  return <LoginView />;
+  return <LoginClient />;
 }

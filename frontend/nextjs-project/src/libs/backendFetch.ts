@@ -66,7 +66,19 @@ export async function backendFetch(
   // path は "/..." 前提。BASE の末尾スラは除去済み
   const url = `${BASE}${path}`;
   const method = (init?.method ?? "GET").toUpperCase();
-  const cache = init?.cache ?? "no-store";
+  // キャッシュ戦略を決定するロジック
+  const cacheOptions: RequestInit = {};
+
+  if (init?.next?.revalidate !== undefined) {
+    // revalidateが指定されている場合は、それを最優先する
+    cacheOptions.next = init.next;
+  } else if (init?.cache) {
+    // cacheが明示的に指定されている場合は、それを使う
+    cacheOptions.cache = init.cache;
+  } else {
+    // どちらも指定されていない場合は、デフォルトでno-storeにする
+    cacheOptions.cache = "no-store";
+  }
 
   const headers = pickHeaders(init?.headers);
   const signed = await idTokenHeaderFor(url);
@@ -86,7 +98,7 @@ export async function backendFetch(
     method,
     headers,
     body,
-    cache,
+    ...cacheOptions,
     redirect: "manual",
   });
 }
