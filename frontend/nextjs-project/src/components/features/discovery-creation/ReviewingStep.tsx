@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Stack,
-  Checkbox,
-  FormControlLabel,
-  Typography,
-} from "@mui/material";
+import { Box, Stack, Checkbox, FormControlLabel } from "@mui/material";
 import React from "react";
 import DiscoveryHeader from "@/components/ui/DiscoveryHeader";
 import { formatTimestampForClient } from "@/utils/formatDate";
@@ -48,41 +42,33 @@ export default function ReviewingStep() {
   }
 
   return (
-    <Box sx={{ px: 3 }}>
+    <Box sx={{ px: 3, pb: 4 }}>
       <DiscoveryHeader
         iconName={iconName}
         formattedDate={formattedDate}
         onBackClick={prevStep}
       />
       <Stack
-        spacing={3.5}
+        spacing={4}
         sx={{
           color: "kinako.900",
-          pt: `${discoveryHeaderHeight + 16}px`,
-          pb: "56px",
+          pt: `${discoveryHeaderHeight + 20}px`,
+          pb: "20",
         }}
       >
-        <Stack spacing={3}>
-          <DiscoveryImage src={photoData} alt={user_question} />
-          <QuestionBubble text={user_question} />
-        </Stack>
-
-        <Stack spacing={2.5} pb={2.5}>
+        <DiscoveryImage src={photoData} alt={user_question} />
+        <QuestionBubble text={user_question} />
+        {/* AIからの回答 (はっけん) */}
+        <Box>
           <Section icon={<IoLeaf size={32} />} title="はっけん">
-            <Typography
-              variant="body2"
-              component="div"
-              sx={{ display: "block" }}
-            >
-              {aiResponse.ai_answer}
-            </Typography>
-            <ReferenceLink url={aiResponse.grounding_urls?.[0]} />
+            {aiResponse.ai_answer}
           </Section>
-
-          <Section icon={<IoSearch size={32} />} title="問い">
-            {aiResponse.ai_question}
-          </Section>
-        </Stack>
+          {/* 3.1 参考にしたサイト */}
+          <ReferenceLink url={aiResponse.grounding_urls?.[0]} />
+        </Box>
+        <Section icon={<IoSearch size={32} />} title="問い">
+          {aiResponse.ai_question}
+        </Section>
 
         <Stack spacing={2}>
           <FormControlLabel

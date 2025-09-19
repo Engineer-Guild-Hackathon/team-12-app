@@ -111,11 +111,13 @@ export default function DiscoveryDetailView({
         {/* 2. 質問 */}
         <QuestionBubble text={post.user_question} />
         {/* 3. AIからの回答 (はっけん) */}
-        <Section icon={<IoLeaf size={32} />} title="はっけん">
-          {post.ai_answer}
-        </Section>
-        {/* 3.1 参考にしたサイト */}
-        <ReferenceLink url={post.ai_reference} />
+        <Box>
+          <Section icon={<IoLeaf size={32} />} title="はっけん">
+            {post.ai_answer}
+          </Section>
+          {/* 3.1 参考にしたサイト */}
+          <ReferenceLink url={post.ai_reference} />
+        </Box>
         {/* 4. AIからの問い */}
         <Section icon={<IoSearch size={32} />} title="問い">
           {post.ai_question}

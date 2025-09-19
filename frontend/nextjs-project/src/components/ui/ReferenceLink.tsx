@@ -1,39 +1,28 @@
 "use client";
 
 import { useUrlTitle } from "@/hooks/useUrlTitle";
-import { Box, CircularProgress, Link, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Link,
+  SxProps,
+  Theme,
+  Typography,
+} from "@mui/material";
 import { FaLink } from "react-icons/fa";
 
 type ReferenceLinkProps = {
   url: string | null | undefined;
+  sx?: SxProps<Theme>;
 };
 
-export default function ReferenceLink({ url }: ReferenceLinkProps) {
+export default function ReferenceLink({ url, sx }: ReferenceLinkProps) {
   const { title, isLoading } = useUrlTitle(url);
 
-  // URLが存在しない場合は何も表示しない
   if (!url) {
     return null;
   }
 
-  // ローディング中の表示
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 0.5,
-          mt: 1,
-          height: "20px",
-        }}
-      >
-        <CircularProgress size={14} sx={{ color: "kinako.900" }} />
-      </Box>
-    );
-  }
-
-  // 表示するテキスト（タイトルが取得できなければURL）
   const displayText = title || url;
 
   return (
@@ -43,35 +32,46 @@ export default function ReferenceLink({ url }: ReferenceLinkProps) {
         alignItems: "center",
         gap: 0.5,
         mt: 1,
+        ml: 2,
         color: "kinako.700",
+        ...sx,
       }}
     >
-      <FaLink size={12} />
-      <Typography variant="caption" sx={{ color: "kinako.900" }}>
-        参考URL：
-      </Typography>
-      <Link
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ textDecoration: "none", maxWidth: "calc(100% - 100px)" }}
-      >
-        <Typography
-          variant="caption"
-          component="div"
-          title={displayText} // マウスオーバーで全文表示
-          sx={{
-            textDecoration: "underline",
-            color: "kinako.900",
-            "&:hover": { color: "primary.main" },
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {displayText}
-        </Typography>
-      </Link>
+      {isLoading ? (
+        <CircularProgress size={14} sx={{ color: "kinako.900", mt: 1 }} />
+      ) : (
+        <>
+          <FaLink size={12} />
+          <Typography
+            variant="caption"
+            sx={{ color: "kinako.900", whiteSpace: "nowrap" }}
+          >
+            参考URL：
+          </Typography>
+          <Link
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none", maxWidth: "calc(100% - 100px)" }}
+          >
+            <Typography
+              variant="caption"
+              component="div"
+              title={displayText}
+              sx={{
+                textDecoration: "underline",
+                color: "kinako.900",
+                "&:hover": { color: "primary.main" },
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {displayText}
+            </Typography>
+          </Link>
+        </>
+      )}
     </Box>
   );
 }
