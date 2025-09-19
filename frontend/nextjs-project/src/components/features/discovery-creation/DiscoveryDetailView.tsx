@@ -45,6 +45,8 @@ export default function DiscoveryDetailView({
     isDeleteModalOpen,
     openDeleteModal,
     closeDeleteModal,
+    isDeleteCompleteModalOpen,
+    closeDeleteCompleteModal,
   } = useDiscoveryDelete();
   const handleDeleteDiscovery = () => {
     deleteDiscovery(post.post_id);
@@ -113,6 +115,10 @@ export default function DiscoveryDetailView({
         open={isDeleteModalOpen}
         closeModal={closeDeleteModal}
         deleteDiscovery={handleDeleteDiscovery}
+      />
+      <DeleteCompleteModal
+        open={isDeleteCompleteModalOpen}
+        closeModal={closeDeleteCompleteModal}
       />
     </>
   );
@@ -201,4 +207,53 @@ const DeleteConfirmModal = ({
       </DialogActions>
     </Dialog>
   );
+};
+
+const DeleteCompleteModal = ({
+  open,
+  closeModal,
+}: {
+  open: boolean;
+  closeModal: () => void;
+}) => {
+  <Dialog
+    open={open}
+    slotProps={{
+      paper: {
+        sx: {
+          width: "400px",
+          p: "40px 32px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          gap: "20px",
+          borderRadius: "16px",
+        },
+      },
+    }}
+    keepMounted
+  >
+    <Box sx={{ display: "flex", flexDirection: "row-reverse", height: "12px" }}>
+      <IoClose size={20} onClick={closeModal} cursor="pointer" />
+    </Box>
+    <DialogContent
+      sx={{
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px",
+        padding: "0",
+        overflow: "visible",
+        mb: "20px",
+      }}
+    >
+      <Typography
+        variant="h2"
+        component="h2"
+        sx={{ textAlign: "center", fontSize: 24, color: "kinako.900" }}
+      >
+        はっけんを削除しました
+      </Typography>
+    </DialogContent>
+  </Dialog>;
 };

@@ -5,12 +5,22 @@ import { useState } from "react";
 export const useDiscoveryDelete = () => {
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [isDeleteCompleteModalOpen, setIsDeleteCompleteModalOpen] =
+    useState<boolean>(false);
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
+  const openDeleteCompleteModal = () => {
+    setIsDeleteCompleteModalOpen(true);
+  };
+  const closeDeleteCompleteModal = () => {
+    setIsDeleteCompleteModalOpen(false);
+    router.back();
+  };
+
   const deleteDiscovery = async (post_id: string) => {
     // TODO: ローディングマークつける
     // server actionsを直接呼び出す
@@ -21,8 +31,7 @@ export const useDiscoveryDelete = () => {
     }
     if (result.data) {
       // TODO: アラートじゃなくてモーダルにする
-      alert("投稿が削除されました");
-      router.back();
+      openDeleteCompleteModal();
       return;
     }
     if (result.error) {
@@ -35,5 +44,7 @@ export const useDiscoveryDelete = () => {
     isDeleteModalOpen,
     openDeleteModal,
     closeDeleteModal,
+    isDeleteCompleteModalOpen,
+    closeDeleteCompleteModal,
   };
 };
