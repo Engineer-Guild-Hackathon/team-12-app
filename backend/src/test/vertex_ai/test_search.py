@@ -43,6 +43,7 @@ def mock_search_response():
 # テストケース
 # -------------------------------------------------------------
 
+
 # --- search_by_text のテスト ---
 # @patchデコレータを使い、テスト中だけSearchServiceClientをモックに差し替える
 @patch("src.services.vertex_ai.search.SearchServiceClient")
@@ -62,6 +63,7 @@ def test_search_by_text_success(mock_client, sample_search_query, mock_search_re
     # モッククライアントのsearchメソッドが、偽のレスポンスを返すように設定
     mock_instance = mock_client.return_value
     mock_instance.search.return_value = mock_search_response
+
 
 @patch("src.services.vertex_ai.search.SearchServiceClient")
 def test_search_by_text_no_results(mock_client, sample_search_query, monkeypatch):

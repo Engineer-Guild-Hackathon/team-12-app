@@ -1,4 +1,5 @@
 """Example tool for deleting posts and their images via simple web form."""
+
 import json
 import logging
 import os
@@ -7,7 +8,6 @@ import uuid
 from typing import List, Tuple
 
 from flask import Flask, render_template, request
-
 from src.services.image.image import ImageService
 from src.services.post.post import PostService
 

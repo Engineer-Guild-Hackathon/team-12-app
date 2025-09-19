@@ -22,7 +22,7 @@ API_ENDPOINT = (
 class SearchService:
     """Vertex AI Searchを使って関連投稿を検索するサービスクラス"""
 
-    @staticmethod # この関数は調整中
+    @staticmethod  # この関数は調整中
     def find_related_posts(post_id: uuid.UUID, num_results: int = 5) -> Optional[List[str]]:
         """
         指定されたpost_idに類似した投稿のIDリストを返す。
