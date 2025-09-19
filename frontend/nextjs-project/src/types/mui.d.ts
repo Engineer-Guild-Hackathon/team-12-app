@@ -6,6 +6,7 @@ declare module "@mui/material/styles" {
     yomogi: Palette["primary"];
     tamago: Palette["primary"];
     gray: Palette["primary"];
+    sumire: Palette["primary"];
   }
 
   interface PaletteOptions {
@@ -13,6 +14,7 @@ declare module "@mui/material/styles" {
     yomogi?: PaletteOptions["primary"];
     tamago?: PaletteOptions["primary"];
     gray?: PaletteOptions["primary"];
+    sumire?: PaletteOptions["primary"];
   }
 
   interface PaletteColor {

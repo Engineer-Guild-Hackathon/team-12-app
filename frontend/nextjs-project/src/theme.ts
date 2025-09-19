@@ -61,6 +61,9 @@ const theme = createTheme({
       "900": "#000000",
       main: "#FFFFFF",
     },
+    sumire: {
+      main: "#824E93",
+    },
     background: {
       default: isMobile() ? "#F6F1E6" : "#CCD6A6",
     },
