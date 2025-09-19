@@ -16,8 +16,10 @@ export const metadata: Metadata = {
     // ★ OGP画像のURLを絶対パスで指定
     images: [
       {
-        url: "/logo.svg",
-        alt: "holo アプリのロゴ",
+        url: "https://storage.googleapis.com/public-bucket-holo/EGH_202509.png",
+        width: 1200,
+        height: 675,
+        alt: "holo アプリの紹介画像",
       },
     ],
     type: "website",
@@ -25,11 +27,13 @@ export const metadata: Metadata = {
 
   // --- Twitterカード設定 ---
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "holo - AIカメラと問いで作る新しい散歩地図",
     description:
       "散歩×地図×AIカメラで、日常の「どうして？」を見つけにいくサービスです。",
-    images: ["/logo.svg"],
+    images: [
+      "https://storage.googleapis.com/public-bucket-holo/EGH_202509.png",
+    ],
   },
 };
 
