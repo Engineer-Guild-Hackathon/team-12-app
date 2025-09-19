@@ -11,14 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import { IoLeaf, IoSearch, IoClose } from "react-icons/io5";
-import { DISCOVERY_IMAGE_HEIGHT } from "@/constants/styles";
 import Link from "next/link";
 import {
   DISCOVERY_IMAGE_HEIGHT,
   DISCOVERY_IMAGE_HEIGHT_XS,
 } from "@/constants/styles";
-import { Box, Stack, CardMedia, Typography } from "@mui/material";
-import { IoLeaf, IoSearch } from "react-icons/io5";
 import { PiMapPinFill } from "react-icons/pi"; // ★ 地図セクション用のアイコンをインポート
 import QuestionBubble from "@/components/ui/QuestioinBubble";
 import Section from "@/components/ui/Section";
