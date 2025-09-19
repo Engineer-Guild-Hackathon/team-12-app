@@ -70,7 +70,8 @@ function RecommendedContent({ post }: RecommendedSectionProps) {
   }, [searchedPosts, allPosts, post.post_id]);
 
   // 正しく取得・フィルタリングして0件の時はセクションごと非表示
-  const shouldHideSection = !validatedRecommendations || validatedRecommendations.length === 0;
+  const shouldHideSection =
+    !validatedRecommendations || validatedRecommendations.length === 0;
 
   if (shouldHideSection) return null;
 
