@@ -13,9 +13,38 @@ type RecommendedSectionProps = {
   post: Post;
 };
 
+const RecommendPlaceHolder = () => {
+  const theme = useTheme();
+
+  return (
+    <Stack spacing={1.5}>
+      {Array.from({ length: 2 }, (_, index) => (
+        <CardMedia
+          key={index}
+          component="div"
+          sx={{
+            width: "100%",
+            height: "140px",
+            borderRadius: 3,
+            // 白
+            backgroundColor: "gray.100",
+            display: "flex",
+            gap: 2,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {Array.from({ length: 3 }, (_, index) => (
+            <IoLeaf key={index} size={24} color={theme.palette.yomogi["400"]} />
+          ))}
+        </CardMedia>
+      ))}
+    </Stack>
+  );
+};
+
 export default function RecommendedSection({ post }: RecommendedSectionProps) {
   const { latitude, longitude } = useGeolocation();
-  const theme = useTheme();
 
   const query = useMemo(() => {
     const label = (post.object_label ?? "").trim();
@@ -44,35 +73,7 @@ export default function RecommendedSection({ post }: RecommendedSectionProps) {
   }, [data?.posts, post.post_id]);
 
   if (!recommended || recommended.length === 0) {
-    return (
-      <Stack spacing={1.5}>
-        {Array.from({ length: 2 }, (_, index) => (
-          <CardMedia
-            key={index}
-            component="div"
-            sx={{
-              width: "100%",
-              height: "140px",
-              borderRadius: 3,
-              // 白
-              backgroundColor: "gray.100",
-              display: "flex",
-              gap: 2,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {Array.from({ length: 3 }, (_, index) => (
-              <IoLeaf
-                key={index}
-                size={24}
-                color={theme.palette.yomogi["400"]}
-              />
-            ))}
-          </CardMedia>
-        ))}
-      </Stack>
-    );
+    return <RecommendPlaceHolder />;
   }
 
   return (
