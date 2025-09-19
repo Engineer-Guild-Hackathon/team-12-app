@@ -9,11 +9,11 @@
 ---
 ## デモ / プレゼン資料 (決勝発表用)
 - デモURL: [デモアプリ (Cloud Run デプロイ済み)](https://front-app-708894055394.asia-northeast1.run.app/)
-- プレゼンURL: [プレゼン共有リンク (決勝発表用)](https://www.canva.com/design/DAGzSSSvAhI/Ez1ez1ucViRoiqvadjzzLg/view?utm_content=DAGzSSSvAhI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hd27973a38d)
+- プレゼンURL: [プレゼン共有リンク (決勝発表用)](https://www.canva.com/design/DAGyvV7xHEw/HdBF_WemKPQ5FikKThroBQ/view?utm_content=DAGyvV7xHEw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he880c6234f)
 
 ## デモ　/ プレゼン資料 (予選発表用)
 - デモURL: [デモ動画 (予選発表用)](https://drive.google.com/file/d/1O-P8ADvdTSPMdaQi1md53s76T8jFakQn/view?usp=share_link)
-- プレゼンURL：[プレゼン共有リンク (予選発表用)](https://www.canva.com/design/DAGyvV7xHEw/HdBF_WemKPQ5FikKThroBQ/view?utm_content=DAGyvV7xHEw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he880c6234f)
+- プレゼンURL：[プレゼン共有リンク (予選発表用)](docs/slide_backup/EGH_202509_予選.pdf)
 
 
 ## 開発環境の構築方法
