@@ -8,7 +8,7 @@ import {
 import { Box, IconButton } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import React from "react";
-import { PiTrash } from "react-icons/pi";
+import { PiTrash, PiLockKeyFill } from "react-icons/pi";
 import TimestampDisplay from "./TimestampDisplay";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import BackButton from "./BackButton";
@@ -20,6 +20,7 @@ interface DiscoveryHeaderProps {
   formattedDate: string;
   variant?: "default" | "transparent";
   isShownDeleteButton?: boolean;
+  isShownPrivateIcon?: boolean;
   onBackClick?: () => void;
   onDeleteClick?: () => void;
 }
@@ -29,6 +30,7 @@ export default function DiscoveryHeader({
   formattedDate,
   variant = "default",
   isShownDeleteButton = false,
+  isShownPrivateIcon = false,
   onBackClick,
   onDeleteClick,
 }: DiscoveryHeaderProps) {
@@ -75,37 +77,72 @@ export default function DiscoveryHeader({
           width: "100%",
         }}
       >
-        <BackButton
-          sx={{
-            width: 40,
-            height: 40,
-            color: variant === "transparent" ? "white" : "kinako.900",
-          }}
-          onClick={onBackClick}
-        />
-
-        <TimestampDisplay
-          icon={iconComponent}
-          formattedDate={formattedDate}
-          variant={variant}
-        />
-
-        {isShownDeleteButton ? (
-          <IconButton
-            onClick={onDeleteClick}
+        <Box sx={{ width: 80, height: 40 }}>
+          <BackButton
             sx={{
               width: 40,
               height: 40,
-              borderRadius: "50%",
-              color: "kinako.900",
+              color: variant === "transparent" ? "white" : "kinako.900",
             }}
-          >
-            <PiTrash />
-          </IconButton>
-        ) : (
-          // デザインの配置の都合上空箱設置
-          <Box sx={{ width: 40, height: 40 }} />
-        )}
+            onClick={onBackClick}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            flexGrow: 1,
+          }}
+        >
+          <TimestampDisplay
+            icon={iconComponent}
+            formattedDate={formattedDate}
+            variant={variant}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            width: 80,
+            height: 40,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            gap: 0.5,
+          }}
+        >
+          {isShownPrivateIcon && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                color: variant === "transparent" ? "white" : "kinako.900",
+                fontSize: 16,
+              }}
+            >
+              <PiLockKeyFill size={24} />
+            </Box>
+          )}
+          {isShownDeleteButton ? (
+            <IconButton
+              onClick={onDeleteClick}
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                color: variant === "transparent" ? "white" : "kinako.900",
+              }}
+            >
+              <PiTrash />
+            </IconButton>
+          ) : (
+            !isShownPrivateIcon && (
+              // デザインの配置の都合上空箱設置（isPublicでない場合のみ）
+              <Box sx={{ width: 40, height: 40 }} />
+            )
+          )}
+        </Box>
       </Box>
     </Box>
   );
