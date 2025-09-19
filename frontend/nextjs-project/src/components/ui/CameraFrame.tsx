@@ -1,4 +1,7 @@
-import { DISCOVERY_IMAGE_HEIGHT } from "@/constants/styles";
+import {
+  DISCOVERY_IMAGE_HEIGHT,
+  DISCOVERY_IMAGE_HEIGHT_XS,
+} from "@/constants/styles";
 import { Box } from "@mui/material";
 
 export default function CameraFrame() {
@@ -18,7 +21,10 @@ export default function CameraFrame() {
         transform: "translateY(-50%)",
         left: 0,
         width: "100%",
-        height: `${DISCOVERY_IMAGE_HEIGHT}px`,
+        height: {
+          xs: `${DISCOVERY_IMAGE_HEIGHT_XS}px`,
+          sm: `${DISCOVERY_IMAGE_HEIGHT}px`,
+        },
         pointerEvents: "none",
         borderRadius: "16px",
       }}

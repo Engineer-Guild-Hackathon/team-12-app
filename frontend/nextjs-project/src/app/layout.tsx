@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Yomogi } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
@@ -11,22 +11,31 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import AuthInitializer from "@/components/features/auth/AuthInitializer";
 
+export async function generateViewport(): Promise<Viewport> {
+  return {
+    width: "device-width",
+    initialScale: 1,
+  };
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title:
+      "holo -道端に光る「どうして？」を見つけにいこう。 AIカメラと問いで作る新しい散歩地図。",
+    description:
+      "散歩×地図×AIカメラで、日常の「どうして？」を見つけにいくサービスです。",
+    icons: {
+      icon: "/favicon_leaf.svg",
+    },
+  };
+}
+
 const yomogi = Yomogi({
   weight: ["400"],
   subsets: ["latin"],
   display: "swap",
   variable: "--font-yomogi",
 });
-
-export const metadata: Metadata = {
-  title:
-    "holo-道端に光る「どうして？」を見つけにいこう。 AIカメラと問いで作る新しい散歩地図。",
-  description:
-    "散歩×地図×AIカメラで、日常の「どうして？」を見つけにいくサービスです。",
-  icons: {
-    icon: "/favicon_leaf.svg",
-  },
-};
 
 export default function RootLayout({
   children,

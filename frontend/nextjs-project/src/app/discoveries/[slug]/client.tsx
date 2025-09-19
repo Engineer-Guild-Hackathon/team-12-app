@@ -6,11 +6,23 @@ import DiscoveryDetailView from "@/components/features/discoveries/DiscoveryDeta
 import { usePostDetail } from "@/hooks/usePostDetail";
 import { Box } from "@mui/material";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
+import { useEffect } from "react";
 
 export default function DiscoveryDetailClient({ slug }: { slug: string }) {
   const { post, isLoading, isError } = usePostDetail(slug);
 
-  if (isLoading)
+  useEffect(() => {
+    // isErrorフラグがtrueになった場合
+    if (isError) {
+      throw new Error("投稿データの取得に失敗しました。");
+    }
+    // ローディングが完了したのにpostデータが存在しない場合
+    if (!isLoading && !post) {
+      throw new Error("指定された投稿が見つかりませんでした。");
+    }
+  }, [isError, isLoading, post]); // 監視対象の変数を設定
+
+  if (isLoading) {
     return (
       <Box
         sx={{
@@ -27,8 +39,11 @@ export default function DiscoveryDetailClient({ slug }: { slug: string }) {
         <LeafyLoader />
       </Box>
     );
-  if (isError || !post) return <div>投稿の読み込みに失敗しました。</div>;
-
+  }
+  if (!post) {
+    // ガード節
+    return null;
+  }
   const { iconName, formattedDate } = formatTimestampForServer(post.date);
 
   return (

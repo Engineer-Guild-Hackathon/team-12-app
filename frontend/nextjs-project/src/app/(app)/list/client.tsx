@@ -12,6 +12,8 @@ import { SearchBarOnListPage } from "@/components/features/search/SearchBar";
 import { useListSearchBar } from "@/hooks/useListSearchBar";
 
 import { Post } from "@/types/post";
+import { useAuthStore } from "@/stores/authStore";
+import { useEffect } from "react";
 
 interface ListClientProps {
   initialPosts: Post[];
@@ -29,8 +31,8 @@ export default function ListClient({ initialPosts }: ListClientProps) {
   const searchParams = useSearchParams();
   const currentScope = searchParams.get("scope");
 
-  // TODO: 認証情報を取得
-  const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
+  // 認証情報を取得
+  const user = useAuthStore((state) => state.user);
 
   const { posts, isError: postsIsError } = usePosts(
     {
@@ -42,6 +44,18 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     },
     { posts: initialPosts },
   );
+
+  useEffect(() => {
+    // 投稿の取得でエラーが発生した場合
+    if (postsIsError) {
+      throw new Error("投稿データの取得に失敗しました。");
+    }
+    // 現在地の取得でエラーが発生した場合
+    if (geolocationError) {
+      // geolocationErrorは文字列なのでそのままメッセージに含める
+      throw new Error(`現在地の取得に失敗しました: ${geolocationError}`);
+    }
+  }, [postsIsError, geolocationError]); // 両方のエラー状態を監視
 
   if (geolocationLoading) {
     return (
@@ -59,26 +73,10 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     );
   }
 
-  if (postsIsError) {
-    return (
-      <Typography color="error" sx={{ p: 4 }}>
-        投稿データの取得に失敗しました。
-      </Typography>
-    );
-  }
-
-  if (geolocationError) {
-    return (
-      <Typography color="error" sx={{ p: 4 }}>
-        現在地の取得に失敗しました: {geolocationError}
-      </Typography>
-    );
-  }
-
   return (
     <Box
       sx={{
-        px: 2.5,
+        px: { xs: 2, sm: 2.5 },
         py: 2,
         overflowY: "scroll",
         height: "100%",

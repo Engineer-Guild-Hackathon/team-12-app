@@ -1,6 +1,6 @@
 "use client"; // 子にインタラクティブな要素を持つため
 
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import logo from "../../../../public/logo.png"; // パスを調整
 import LoginButton from "./LoginButton"; // ボタンコンポーネントをインポート
@@ -14,45 +14,46 @@ export default function LoginView() {
         flexDirection: "column",
         alignItems: "center",
         minHeight: "100svh",
-        paddingTop: "240px",
-        px: "12%",
+        height: "100svh",
+        justifyContent: "space-evenly",
+        py: 10,
       }}
     >
-      <Box sx={{ mb: "24px" }}>
-        <Image src={logo} alt="Logo" width={200} height={113} />
-      </Box>
-      <Typography
-        variant="h3"
-        sx={{
-          fontSize: 20,
-          color: "kinako.800",
-          mt: 2,
-          textAlign: "center",
-          lineHeight: 1.8,
-        }}
-      >
-        道端に光る「どうして？」を
-        <br />
-        見つけにいこう。
-        <br />
-        AIカメラと問いで作る
-        <br />
-        新しい散歩地図。
-      </Typography>
-      <LoginButton />
-      <Link href="/">
+      <Stack spacing={2} sx={{ alignItems: "center" }}>
+        <Image src={logo} alt="Logo" width={180} />
         <Typography
-          variant="body2"
+          variant="h3"
           sx={{
+            fontSize: { xs: 18, sm: 20 },
             color: "kinako.800",
-            mt: 3,
             textAlign: "center",
-            textDecoration: "underline",
+            lineHeight: { xs: 1.6, sm: 1.8 },
           }}
         >
-          ログインせずに使う
+          道端に光る「どうして？」を
+          <br />
+          見つけにいこう。
+          <br />
+          AIカメラと問いで作る
+          <br />
+          新しい散歩地図。
         </Typography>
-      </Link>
+      </Stack>
+      <Stack spacing={2} sx={{ alignItems: "center", width: "100%" }}>
+        <LoginButton />
+        <Link href="/">
+          <Typography
+            variant="body2"
+            sx={{
+              color: "kinako.800",
+              textAlign: "center",
+              textDecoration: "underline",
+            }}
+          >
+            ログインせずに使う
+          </Typography>
+        </Link>
+      </Stack>
     </Box>
   );
 }

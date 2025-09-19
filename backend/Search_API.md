@@ -63,9 +63,12 @@ GET /api/search?q=%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC&limit=5
       "target": "写真の対象物名のテキスト",
       "answer": "LLMの回答内容のテキスト",
       "toi": "LLMからの「問い」のテキスト",
+      "ai_reference": "LLMがweb検索で用いたページのURL",
       "location": "大丸, 北5条西4, 中央区, 札幌市, 北海道, 060-0005, 日本",
       "latitude": 43.068,
       "longitude": 141.35,
+      "is_public": true,
+      "post_rarity": 0,
       "date": "2025-09-11T06:07:50.252702+00:00",
       "updated_at": "2025-09-11T06:07:50.252702+00:00"
     }

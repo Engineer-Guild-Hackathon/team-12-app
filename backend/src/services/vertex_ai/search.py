@@ -22,7 +22,7 @@ API_ENDPOINT = (
 class SearchService:
     """Vertex AI Searchを使って関連投稿を検索するサービスクラス"""
 
-    @staticmethod
+    @staticmethod  # この関数は調整中
     def find_related_posts(post_id: uuid.UUID, num_results: int = 5) -> Optional[List[str]]:
         """
         指定されたpost_idに類似した投稿のIDリストを返す。
@@ -79,11 +79,9 @@ class SearchService:
 
         try:
             client = SearchServiceClient(client_options=ClientOptions(api_endpoint=API_ENDPOINT))
-            serving_config = client.serving_config_path(
-                project=GCP_PROJECT_ID,
-                location=GCP_LOCATION,
-                data_store=DATA_STORE_ID,
-                serving_config="default_config",
+            serving_config = (
+                f"projects/{GCP_PROJECT_ID}/locations/{GCP_LOCATION}/"
+                f"collections/{COLLECTION_ID}/dataStores/{DATA_STORE_ID}/servingConfigs/default_config"
             )
 
             request = SearchRequest(

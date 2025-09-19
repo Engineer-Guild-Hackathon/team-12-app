@@ -27,7 +27,7 @@ export default function QuestionBubble({ text }: QuestionBubbleProps) {
         },
       }}
     >
-      <Typography variant="body1" sx={{ fontSize: 14 }}>
+      <Typography variant="body1" sx={{ fontSize: { xs: 13, sm: 15 } }}>
         {text}
       </Typography>
     </Paper>

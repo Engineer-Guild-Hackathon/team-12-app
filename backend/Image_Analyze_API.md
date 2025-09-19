@@ -18,7 +18,7 @@
 | メソッド | パス | 概要 |
 |:--------:|:----|:----|
 | POST | `/v1/analyze` | 画像（ファイル or gs://URL）を解析し、**JSON 3フィールド**を返す |
-| POST | `/api/image_analyze` | 画像を保存し（GCS+DB）、保存した `gs://` で解析して結果 + `img_id` を返す |
+| POST | `/api/image_analyze` | 画像を保存し（GCS+DB）、保存した `gs://` で解析して結果 + `img_id` + `location` を返す |
 
 ---
 
@@ -99,7 +99,9 @@ curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/i
 ### リクエスト（multipart/form-data）
 - `img_file`: 画像ファイル（**必須**）  
 - `user_question`: テキスト（**必須**）  
-未指定の場合は 400 を返します。 
+- `latitude`: 緯度（任意、数値。指定があれば逆ジオコーディングします）  
+- `longitude`: 経度（任意、数値。指定があれば逆ジオコーディングします）  
+未指定の場合は 400 を返します（`latitude` / `longitude` は任意）。 
 
 ### レスポンス例（200）
 ```json
@@ -109,7 +111,8 @@ curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/i
     "object_label": "検知した物体の名前（簡潔）",
     "ai_answer": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",
     "ai_question": "その物体に関する興味深い問いを1つ（日本語）"
-  }
+  },
+  "location": "大丸, 北5条西4, 中央区, 札幌市, 北海道, 日本"  
 }
 ```
 
@@ -136,7 +139,11 @@ curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/i
 
 ### curl 例
 ```bash
-curl -X POST http://localhost:5001/api/image_analyze   -F "img_file=@/path/to/photo.jpg"   -F "user_question=この魚の特徴を教えて"
+curl -X POST http://localhost:5001/api/image_analyze \
+  -F "img_file=@/path/to/photo.jpg" \
+  -F "user_question=この魚の特徴を教えて" \
+  -F "latitude=43.068" \
+  -F "longitude=141.35"
 ```
 
 ---
@@ -184,6 +191,7 @@ console.log(data.img_id, data.ai_response);
 - **MIME 検出とバリデーション**：`python-magic` でファイルタイプの検出。`image/*` 以外は拒否。空データも拒否。   
 - **サイズに応じた呼び分け**：小さい画像は **JPEG に縮小**して **インライン**（Base64/バイナリ）投稿。大きい画像は **Files API** で一旦アップロード後にモデル生成。どちらも最終出力は **JSON 3フィールド**にパース。   
 - **JSON スキーマ強制**：新しい SDK では `response_mime_type="application/json"` と `response_schema` による構造化出力を指定（未対応環境ではフォールバック）。
+- **位置情報と時刻の文脈注入**：`latitude`/`longitude` が与えられた場合は Geopy で逆ジオコーディングし、`timezonefinder` でタイムゾーンを推定、現地時刻（ISO 8601）をプロンプトに含めてモデルへ渡します。
 
 ---
 
