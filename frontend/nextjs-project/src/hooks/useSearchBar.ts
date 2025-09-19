@@ -127,7 +127,7 @@ export function useListSearchBar(): UseSearchBarReturn {
         }
       }
     },
-    [pathname, router, searchParams, setSearchQuery],
+    [pathname, router, searchParams, setSearchQuery, searchQuery, user, mutate],
   );
 
   return {
