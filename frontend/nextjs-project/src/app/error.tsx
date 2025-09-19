@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 
 export default function Error({
   error,
-  _reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
