@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   DISCOVERY_IMAGE_HEIGHT,
   DISCOVERY_IMAGE_HEIGHT_XS,
