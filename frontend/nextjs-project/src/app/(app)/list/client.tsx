@@ -7,8 +7,11 @@ import DiscoveryCard from "@/components/ui/DiscoveryCard";
 import { usePosts } from "@/hooks/usePosts";
 import { useFilterStore } from "@/stores/filterStore";
 import { useSearchParams } from "next/navigation";
-import { Post } from "@/types/post";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
+import { SearchBarOnListPage } from "@/components/features/search/SearchBar";
+import { useListSearchBar } from "@/hooks/useSearchBar";
+
+import { Post } from "@/types/post";
 import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
 
@@ -23,19 +26,37 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     loading: geolocationLoading,
     error: geolocationError,
   } = useGeolocation();
-  const { sort: currentSort } = useFilterStore();
+  const {
+    searchQuery: storeQuery,
+    setSearchQuery,
+    sort: currentSort,
+  } = useFilterStore();
+  const { handleSearch, handleQueryChange } = useListSearchBar();
   const searchParams = useSearchParams();
   const currentScope = searchParams.get("scope");
+
+  useEffect(() => {
+    const urlQuery = searchParams.get("q") ?? "";
+    // URLの状態とストアの状態が異なる場合のみ、ストアを更新
+    if (urlQuery !== storeQuery) {
+      setSearchQuery(urlQuery);
+    }
+  }, [searchParams, storeQuery, setSearchQuery]);
 
   // 認証情報を取得
   const user = useAuthStore((state) => state.user);
 
-  const { posts, isError: postsIsError } = usePosts(
+  const {
+    posts,
+    isError: postsIsError,
+    isLoading: postsIsLoading,
+  } = usePosts(
     {
       sort: currentSort,
       scope: currentScope,
       userId: user?.uid,
       currentLocation: { latitude, longitude },
+      query: storeQuery,
     },
     { posts: initialPosts },
   );
@@ -52,7 +73,7 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     }
   }, [postsIsError, geolocationError]); // 両方のエラー状態を監視
 
-  if (geolocationLoading) {
+  if (geolocationLoading || postsIsLoading) {
     return (
       <Box
         sx={{
@@ -75,10 +96,18 @@ export default function ListClient({ initialPosts }: ListClientProps) {
         py: 2,
         overflowY: "scroll",
         height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
       }}
     >
+      <SearchBarOnListPage
+        initialQuery={storeQuery}
+        onSearch={handleSearch}
+        onQueryChange={handleQueryChange}
+      />
       <Stack spacing={1.5}>
-        {(posts || []).map((post) => (
+        {(posts || []).map((post: Post) => (
           <DiscoveryCard
             key={post.post_id}
             post={post}

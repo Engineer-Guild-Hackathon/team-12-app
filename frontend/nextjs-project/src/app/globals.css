@@ -17,7 +17,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 100px #85934e inset !important;
-  -webkit-text-fill-color: white !important;
-  caret-color: #5d4037 !important;
+  -webkit-box-shadow: 0 0 0 100px var(--mui-palette-common-white) inset !important;
+  -webkit-text-fill-color: var(--mui-palette-kinako-900) !important;
+  caret-color: var(--mui-palette-kinako-900) !important;
 }

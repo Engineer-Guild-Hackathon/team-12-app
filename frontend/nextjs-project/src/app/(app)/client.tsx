@@ -7,6 +7,7 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import { usePosts } from "@/hooks/usePosts";
 import { useSearchParams } from "next/navigation";
 import { useMapStore } from "@/stores/mapStore";
+import { useHomeSearchBar } from "@/hooks/useSearchBar";
 import { useAuthStore } from "@/stores/authStore";
 import { useEffect } from "react";
 
@@ -30,28 +31,16 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
   // 認証情報を取得
   const user = useAuthStore((state) => state.user);
 
-  const { posts: fetchedPosts, isError } = usePosts(
-    {
-      scope: currentScope,
-      userId: user?.uid,
-      currentLocation: { latitude, longitude },
-    },
-    { posts: initialPosts },
-  );
-
-  useEffect(() => {
-    // isErrorフラグがtrueになった場合
-    if (isError) {
-      throw new Error("投稿データの取得に失敗しました。");
-    }
-  }, [isError]); // 監視対象の変数を設定
-
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isFollowing, setIsFollowing] = useState(() => {
     // コンポーネントの初期化時に一度だけZustandストアを直接参照
     const savedMapView = useMapStore.getState().mapView;
     // 保存されたビューがあれば追従OFF(false)、なければ追従ON(true)で開始
     return savedMapView ? false : true;
+  });
+  const { searchQuery, handleSearch, handleQueryChange } = useHomeSearchBar({
+    setSelectedPost,
+    setIsFollowing,
   });
 
   const handleMarkerClick = useCallback((post: Post) => {
@@ -63,7 +52,23 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
     setSelectedPost(null);
   }, []);
 
+  const { posts: fetchedPosts, isError } = usePosts(
+    {
+      scope: currentScope,
+      userId: user?.uid,
+      currentLocation: { latitude, longitude },
+      query: searchQuery,
+    },
+    { posts: initialPosts },
+  );
   const posts = fetchedPosts || [];
+
+  useEffect(() => {
+    // isErrorフラグがtrueになった場合
+    if (isError) {
+      throw new Error("投稿データの取得に失敗しました。");
+    }
+  }, [isError]); // 監視対象の変数を設定
 
   return (
     <Box sx={{ height: "100%", width: "100%", position: "relative" }}>
@@ -74,6 +79,9 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
         setSelectedPost={setSelectedPost}
         isFollowing={isFollowing}
         setIsFollowing={setIsFollowing}
+        initialQuery={searchQuery}
+        onSearch={handleSearch}
+        onQueryChange={handleQueryChange}
       />
 
       <DiscoveryCardModal
