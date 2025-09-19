@@ -25,8 +25,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMapStore } from "@/stores/mapStore";
 import ReferenceLink from "@/components/ui/ReferenceLink";
 import RecommendedSection from "@/components/features/discoveries/RecommendedSection";
-import sprout from "../../../../public/sprout.svg";
-import Image from "next/image";
 
 // ★ 地図コンポーネントを、サーバーサイドレンダリングを無効にして動的にインポート
 const StaticPostMap = dynamic(
@@ -137,12 +135,7 @@ export default function DiscoveryDetailView({
         </Section>
       </Stack>
       {/* 6. おすすめ */}
-      <Section
-        icon={<Image src={sprout} alt="" width={30} height={30} />}
-        title="おすすめ"
-      >
-        <RecommendedSection post={post} />
-      </Section>
+      <RecommendedSection post={post} />
     </Box>
   );
 }

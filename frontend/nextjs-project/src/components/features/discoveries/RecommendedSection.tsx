@@ -8,6 +8,9 @@ import { Post } from "@/types/post";
 // 検索は usePosts の query を用いる
 import { IoLeaf } from "react-icons/io5";
 import { usePosts } from "@/hooks/usePosts";
+import Section from "@/components/ui/Section";
+import Image from "next/image";
+import sprout from "../../../../public/sprout.svg";
 
 type RecommendedSectionProps = {
   post: Post;
@@ -45,6 +48,7 @@ const RecommendPlaceHolder = () => {
 
 function RecommendedContent({ post }: RecommendedSectionProps) {
   const { latitude, longitude } = useGeolocation();
+  const theme = useTheme();
   const query = useMemo(() => {
     const label = (post.object_label ?? "").trim();
     const date = (post.date ?? "").toString().trim();
@@ -65,27 +69,71 @@ function RecommendedContent({ post }: RecommendedSectionProps) {
       .slice(0, 2);
   }, [searchedPosts, allPosts, post.post_id]);
 
-  if (!validatedRecommendations || validatedRecommendations.length === 0) {
-    return <RecommendPlaceHolder />;
-  }
+  // 正しく取得・フィルタリングして0件の時はセクションごと非表示
+  const shouldHideSection =
+    (searchedPosts && searchedPosts.length === 0) ||
+    (searchedPosts &&
+      searchedPosts.length > 0 &&
+      (validatedRecommendations?.length ?? 0) === 0);
+
+  if (shouldHideSection) return null;
+
+  const placeholdersCount = Math.max(
+    0,
+    2 - (validatedRecommendations?.length ?? 0),
+  );
 
   return (
-    <Stack spacing={1.5}>
-      {validatedRecommendations.map((p) => (
-        <DiscoveryCard
-          key={p.post_id}
-          post={p}
-          currentLocation={{ latitude, longitude }}
-          from="detail"
-        />
-      ))}
-    </Stack>
+    <Section
+      icon={<Image src={sprout} alt="" width={30} height={30} />}
+      title="おすすめ"
+    >
+      <Stack spacing={1.5}>
+        {(validatedRecommendations ?? []).map((p) => (
+          <DiscoveryCard
+            key={p.post_id}
+            post={p}
+            currentLocation={{ latitude, longitude }}
+            from="detail"
+          />
+        ))}
+        {Array.from({ length: placeholdersCount }, (_, index) => (
+          <CardMedia
+            key={`ph-${index}`}
+            component="div"
+            sx={{
+              width: "100%",
+              height: "140px",
+              borderRadius: 3,
+              backgroundColor: "gray.100",
+              display: "flex",
+              gap: 2,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {Array.from({ length: 3 }, (__, i) => (
+              <IoLeaf key={i} size={24} color={theme.palette.yomogi["400"]} />
+            ))}
+          </CardMedia>
+        ))}
+      </Stack>
+    </Section>
   );
 }
 
 export default function RecommendedSection({ post }: RecommendedSectionProps) {
   return (
-    <Suspense fallback={<RecommendPlaceHolder />}>
+    <Suspense
+      fallback={
+        <Section
+          icon={<Image src={sprout} alt="" width={30} height={30} />}
+          title="おすすめ"
+        >
+          <RecommendPlaceHolder />
+        </Section>
+      }
+    >
       <RecommendedContent post={post} />
     </Suspense>
   );
