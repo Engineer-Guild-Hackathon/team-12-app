@@ -112,6 +112,7 @@ export default function DiscoveryDetailView({
           iconName={iconName}
           formattedDate={formattedDate}
           isShownDeleteButton={isPostOwner}
+          isShownPrivateIcon={!post.is_public}
           onBackClick={handleBackClick}
           onDeleteClick={openDeleteConfirmModal}
         />
