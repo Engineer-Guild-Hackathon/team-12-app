@@ -36,11 +36,15 @@ export function usePosts(
   const user = useAuthStore((s: AuthState) => s.user);
   const normalizedQuery = (query ?? "").trim();
   const isSearchMode = normalizedQuery.length > 0;
+  // これは検索ブランチで実装したswrKeyです
   const swrKey = isSearchMode
     ? ["search", user?.uid ? user.uid : "public", normalizedQuery].join(":")
     : user?.uid
       ? `recent:${user.uid}`
       : `recent:public`;
+  // 最新のmainブランチのswrKeyです
+  // const swrKey = user?.uid ? `recent:${user.uid}` : `recent:public`;
+
   const { data, error, mutate } = useSWR<PostsApiResponse>(
     swrKey,
     async () => {
@@ -63,8 +67,6 @@ export function usePosts(
     {
       refreshInterval: 30000,
       dedupingInterval: 30000,
-      // キャッシュにデータがあれば、マウント時に再検証しない
-      revalidateOnMount: false,
       suspense: true,
       // 検索時はfallbackDataを使わない（前回の一覧を誤表示しないため）
       fallbackData: isSearchMode ? undefined : fallbackData,

@@ -5,9 +5,10 @@ import {
   MOBILE_MAX_WIDTH,
   DISCOVERY_HEADER_HEIGHT_FOR_BROWSER,
 } from "@/constants/styles";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import React from "react";
+import { PiTrash } from "react-icons/pi";
 import TimestampDisplay from "./TimestampDisplay";
 import { TimeOfDayIcon } from "@/utils/formatDate";
 import BackButton from "./BackButton";
@@ -18,14 +19,18 @@ interface DiscoveryHeaderProps {
   iconName: TimeOfDayIcon;
   formattedDate: string;
   variant?: "default" | "transparent";
+  isShownDeleteButton?: boolean;
   onBackClick?: () => void;
+  onDeleteClick?: () => void;
 }
 
 export default function DiscoveryHeader({
   iconName,
   formattedDate,
   variant = "default",
+  isShownDeleteButton = false,
   onBackClick,
+  onDeleteClick,
 }: DiscoveryHeaderProps) {
   const isPWA = useIsPWA();
   const discoveryHeaderHeight = isPWA
@@ -85,7 +90,22 @@ export default function DiscoveryHeader({
           variant={variant}
         />
 
-        <Box sx={{ width: 40, height: 40 }} />
+        {isShownDeleteButton ? (
+          <IconButton
+            onClick={onDeleteClick}
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              color: "kinako.900",
+            }}
+          >
+            <PiTrash />
+          </IconButton>
+        ) : (
+          // デザインの配置の都合上空箱設置
+          <Box sx={{ width: 40, height: 40 }} />
+        )}
       </Box>
     </Box>
   );

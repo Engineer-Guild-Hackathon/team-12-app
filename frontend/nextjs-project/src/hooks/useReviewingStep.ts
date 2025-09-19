@@ -5,6 +5,7 @@ import { useTransition, useEffect, useState } from "react";
 import { AiResponse } from "@/stores/discoveryCreationStore";
 import { createPostAction, CreatePostPayload } from "@/app/actions/postActions";
 import { useAuthStore } from "@/stores/authStore";
+import { useSWRConfig } from "swr";
 
 type UseReviewingStepParams = {
   photoData: string | null;
@@ -31,6 +32,7 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
   } = params;
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  const { mutate } = useSWRConfig();
   const [isPublic, setIsPublic] = useState<boolean>(true);
 
   // ログインせずに撮影機能は使用できないため想定していないが念のため
@@ -88,6 +90,15 @@ export const useReviewingStep = (params: UseReviewingStepParams) => {
       }
 
       if (result.data) {
+        // 1. 更新すべきSWRキーを特定
+        const swrKeyToMutate = user?.uid
+          ? `recent:${user.uid}`
+          : `recent:public`;
+
+        // 2. SWRキャッシュに再検証を命令
+        // これにより、次に一覧ページに戻ったときに最新のデータが即座に表示される
+        mutate(swrKeyToMutate);
+
         nextStep();
         router.push(`/discoveries/${result.data.post_id}`);
       }
