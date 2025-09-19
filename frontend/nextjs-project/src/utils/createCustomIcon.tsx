@@ -5,11 +5,21 @@ import L from "leaflet";
  * @param isSelected マーカーが選択されているかどうか
  * @returns Leafletのカスタムアイコンインスタンス
  */
-export const createCustomIcon = (isSelected: boolean = false) => {
-  // isSelectedに応じて、適用するCSSクラス名を切り替える
-  const iconClassName = isSelected
-    ? "custom-marker-selected"
-    : "custom-marker-default";
+export const createCustomIcon = (
+  isSelected: boolean = false,
+  isPr: boolean = false,
+) => {
+  // isSelected / isPr に応じて、適用するCSSクラス名を切り替える
+  let iconClassName: string;
+  if (isPr) {
+    iconClassName = isSelected
+      ? "custom-marker-pr-selected"
+      : "custom-marker-pr-default";
+  } else {
+    iconClassName = isSelected
+      ? "custom-marker-selected"
+      : "custom-marker-default";
+  }
 
   return L.divIcon({
     className: iconClassName,

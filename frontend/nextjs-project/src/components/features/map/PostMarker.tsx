@@ -14,8 +14,12 @@ const PostMarker: React.FC<PostMarkerProps> = ({
   isSelected,
   onMarkerClick,
 }) => {
-  // isSelected の状態が変わったときだけアイコンを再生成する
-  const icon = useMemo(() => createCustomIcon(isSelected), [isSelected]);
+  // isSelected / isPr の状態が変わったときだけアイコンを再生成する
+  const isPr = post.user_id === "11111111-1111-1111-1111-111111111111";
+  const icon = useMemo(
+    () => createCustomIcon(isSelected, isPr),
+    [isSelected, isPr],
+  );
 
   return (
     <Marker

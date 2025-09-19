@@ -42,7 +42,9 @@ export default function StaticPostMap({ post }: StaticPostMapProps) {
     styleElement.innerHTML = `
     /* 両方のマーカーに共通の基本スタイル */
     .custom-marker-default,
-    .custom-marker-selected {
+    .custom-marker-selected,
+    .custom-marker-pr-default,
+    .custom-marker-pr-selected {
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
@@ -58,6 +60,16 @@ export default function StaticPostMap({ post }: StaticPostMapProps) {
     /* 選択時のマーカーアイコン */
     .custom-marker-selected {
       background-image: url('/selected-marker.svg');
+    }
+
+    /* PR通常時のマーカーアイコン（紫） */
+    .custom-marker-pr-default {
+      background-image: url('/pr_marker.svg');
+    }
+
+    /* PR選択時のマーカーアイコン（紫選択） */
+    .custom-marker-pr-selected {
+      background-image: url('/pr_selected_marker.svg');
     }
     `;
     document.head.appendChild(styleElement);

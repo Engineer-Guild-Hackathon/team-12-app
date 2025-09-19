@@ -9,12 +9,13 @@ import {
   DialogActions,
   Typography,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { IoLeaf, IoSearch } from "react-icons/io5";
 import {
   DISCOVERY_IMAGE_HEIGHT,
   DISCOVERY_IMAGE_HEIGHT_XS,
 } from "@/constants/styles";
-import { PiMapPinFill } from "react-icons/pi"; // ★ 地図セクション用のアイコンをインポート
+import { PiMapPinFill, PiStarFill } from "react-icons/pi"; // ★ 地図セクション用のアイコンをインポート
 import QuestionBubble from "@/components/ui/QuestioinBubble";
 import Section from "@/components/ui/Section";
 import DiscoveryImage from "@/components/ui/DiscoveryImage";
@@ -57,8 +58,11 @@ export default function DiscoveryDetailView({
   iconName,
   formattedDate,
 }: DiscoveryDetailViewProps) {
+  const theme = useTheme();
   const user = useAuthStore((state) => state.user);
   const isPostOwner = user?.uid === post.user_id;
+  const isPr = post.user_id === "11111111-1111-1111-1111-111111111111";
+  const prIconColor = isPr ? theme.palette.sumire.main : undefined;
   const {
     deleteDiscovery,
     isDeleteConfirmModalOpen,
@@ -151,22 +155,37 @@ export default function DiscoveryDetailView({
           {/* 2. 質問 */}
           <QuestionBubble text={post.user_question} />
           {/* 3. AIからの回答 (はっけん) */}
-          <Section icon={<IoLeaf size={30} />} title="はっけん">
+          <Section
+            icon={
+              isPr ? (
+                <PiStarFill size={30} color={theme.palette.sumire.main} />
+              ) : (
+                <IoLeaf size={30} />
+              )
+            }
+            title={isPr ? "はっけん（PR）" : "はっけん"}
+          >
             {post.ai_answer}
           </Section>
           {/* 3.1 参考にしたサイト */}
           <ReferenceLink url={post.ai_reference} />
           {/* 4. AIからの問い */}
-          <Section icon={<IoSearch size={30} />} title="問い">
+          <Section
+            icon={<IoSearch size={30} color={prIconColor} />}
+            title="問い"
+          >
             {post.ai_question}
           </Section>
           {/* 5. はっけんした場所の地図 */}
-          <Section icon={<PiMapPinFill size={30} />} title="ちず">
+          <Section
+            icon={<PiMapPinFill size={30} color={prIconColor} />}
+            title="ちず"
+          >
             <StaticPostMap post={post} />
           </Section>
         </Stack>
-        {/* 6. おすすめ */}
-        <RecommendedSection post={post} />
+        {/* 6. おすすめ（PR投稿は非表示） */}
+        {!isPr && <RecommendedSection post={post} />}
       </Box>
       <DeleteConfirmModal
         open={isDeleteConfirmModalOpen}
