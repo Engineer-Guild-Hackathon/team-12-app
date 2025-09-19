@@ -3,9 +3,9 @@ import { fetchPostById } from "@/libs/postUtils";
 
 export const GET = async (
   _req: Request,
-  { params }: { params: { post_id: string } },
+  { params }: { params: Promise<{ post_id: string }> },
 ) => {
-  const { post_id } = params;
+  const { post_id } = await params;
 
   // ★ 実際の処理は共通関数に任せる
   const post = await fetchPostById(post_id);
