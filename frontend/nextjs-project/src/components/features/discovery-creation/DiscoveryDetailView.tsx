@@ -26,6 +26,7 @@ import { TimeOfDayIcon } from "@/utils/formatDate";
 import { useImage } from "@/hooks/useImage";
 import { useAuthStore } from "@/stores/authStore";
 import { useDiscoveryDelete } from "@/hooks/useDiscoveryDelete";
+import OverlayLoader from "../loading/OverlayLoader";
 
 interface DiscoveryDetailViewProps {
   post: Post;
@@ -47,6 +48,7 @@ export default function DiscoveryDetailView({
     closeDeleteModal,
     isDeleteCompleteModalOpen,
     closeDeleteCompleteModal,
+    isProcessingDelete,
   } = useDiscoveryDelete();
   const handleDeleteDiscovery = () => {
     deleteDiscovery(post.post_id);
@@ -120,6 +122,7 @@ export default function DiscoveryDetailView({
         open={isDeleteCompleteModalOpen}
         closeModal={closeDeleteCompleteModal}
       />
+      {isProcessingDelete && <OverlayLoader />}
     </>
   );
 }
@@ -216,44 +219,47 @@ const DeleteCompleteModal = ({
   open: boolean;
   closeModal: () => void;
 }) => {
-  <Dialog
-    open={open}
-    slotProps={{
-      paper: {
-        sx: {
-          width: "400px",
-          p: "40px 32px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          gap: "20px",
-          borderRadius: "16px",
+  return (
+    <Dialog
+      open={open}
+      slotProps={{
+        paper: {
+          sx: {
+            width: "400px",
+            p: "40px 32px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "20px",
+            borderRadius: "16px",
+          },
         },
-      },
-    }}
-    keepMounted
-  >
-    <Box sx={{ display: "flex", flexDirection: "row-reverse", height: "12px" }}>
-      <IoClose size={20} onClick={closeModal} cursor="pointer" />
-    </Box>
-    <DialogContent
-      sx={{
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        gap: "12px",
-        padding: "0",
-        overflow: "visible",
-        mb: "20px",
       }}
     >
-      <Typography
-        variant="h2"
-        component="h2"
-        sx={{ textAlign: "center", fontSize: 24, color: "kinako.900" }}
+      <Box
+        sx={{ display: "flex", flexDirection: "row-reverse", height: "12px" }}
       >
-        はっけんを削除しました
-      </Typography>
-    </DialogContent>
-  </Dialog>;
+        <IoClose size={20} onClick={closeModal} cursor="pointer" />
+      </Box>
+      <DialogContent
+        sx={{
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+          padding: "0",
+          overflow: "visible",
+          mb: "20px",
+        }}
+      >
+        <Typography
+          variant="h2"
+          component="h2"
+          sx={{ textAlign: "center", fontSize: 24, color: "kinako.900" }}
+        >
+          はっけんを削除しました
+        </Typography>
+      </DialogContent>
+    </Dialog>
+  );
 };

@@ -7,6 +7,7 @@ export const useDiscoveryDelete = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isDeleteCompleteModalOpen, setIsDeleteCompleteModalOpen] =
     useState<boolean>(false);
+  const [isProcessingDelete, setIsProcessingDelete] = useState<boolean>(false);
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };
@@ -22,20 +23,27 @@ export const useDiscoveryDelete = () => {
   };
 
   const deleteDiscovery = async (post_id: string) => {
-    // TODO: ローディングマークつける
-    // server actionsを直接呼び出す
-    const result = await deletePostAction(post_id);
-    if (!result.error && !result.data) {
-      alert("不明なエラーが発生しました。もう一度お試しください。");
-      return;
-    }
-    if (result.data) {
-      // TODO: アラートじゃなくてモーダルにする
-      openDeleteCompleteModal();
-      return;
-    }
-    if (result.error) {
-      alert(`投稿の削除に失敗しました ${result.error}`);
+    try {
+      setIsProcessingDelete(true);
+      // server actionsを直接呼び出す
+      const result = await deletePostAction(post_id);
+      if (!result.error && !result.data) {
+        alert("不明なエラーが発生しました。もう一度お試しください。");
+        return;
+      }
+      if (result.data) {
+        // TODO: アラートじゃなくてモーダルにする
+        openDeleteCompleteModal();
+        return;
+      }
+      if (result.error) {
+        alert(`投稿の削除に失敗しました ${result.error}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("投稿の削除に失敗しました");
+    } finally {
+      setIsProcessingDelete(false);
     }
   };
 
@@ -46,5 +54,6 @@ export const useDiscoveryDelete = () => {
     closeDeleteModal,
     isDeleteCompleteModalOpen,
     closeDeleteCompleteModal,
+    isProcessingDelete,
   };
 };
