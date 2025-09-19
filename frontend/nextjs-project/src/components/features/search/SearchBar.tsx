@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, KeyboardEvent, ChangeEvent } from "react";
-import { Box, TextField, IconButton } from "@mui/material";
+import { Box, TextField, IconButton, useTheme } from "@mui/material";
 import { IoSearchOutline } from "react-icons/io5";
 import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 
@@ -55,6 +55,7 @@ export const SearchBarOnListPage = ({
   onSearch: (q: string) => void;
   onQueryChange?: (q: string) => void;
 }) => {
+  const theme = useTheme();
   const [query, setQuery] = useState(initialQuery ?? "");
   const triggerSearch = () => {
     const q = query.trim();
@@ -112,7 +113,11 @@ export const SearchBarOnListPage = ({
             },
             "& input": {
               padding: "0",
-              color: "kinako.900",
+              height: "100%",
+              fontSize: "16px", // フォントサイズ指定
+              boxSizing: "border-box",
+              color: "kinako.900", // 入力文字色
+              caretColor: "kinako.900", // カーソル色
             },
           },
         }}
