@@ -9,7 +9,7 @@ import { useAuthStore } from "@/stores/authStore";
 
 // 選択肢の定義
 const sortOptions = [
-  { value: "recommended", label: "おすすめ順" },
+  // { value: "recommended", label: "おすすめ順" }, // 一旦非表示
   { value: "nearest", label: "近い順" },
   { value: "newest", label: "新しい順" },
   { value: "oldest", label: "古い順" },
