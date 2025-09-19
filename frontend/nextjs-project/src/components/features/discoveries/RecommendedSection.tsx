@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { Suspense, useMemo } from "react";
 import { Stack, CardMedia, useTheme } from "@mui/material";
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { Post } from "@/types/post";
-import useSWR from "swr";
-import { searchPostsViaRouteHandler } from "@/libs/searchPosts";
+// 検索は usePosts の query を用いる
 import { IoLeaf } from "react-icons/io5";
+import { usePosts } from "@/hooks/usePosts";
 
 type RecommendedSectionProps = {
   post: Post;
@@ -43,42 +43,35 @@ const RecommendPlaceHolder = () => {
   );
 };
 
-export default function RecommendedSection({ post }: RecommendedSectionProps) {
+function RecommendedContent({ post }: RecommendedSectionProps) {
   const { latitude, longitude } = useGeolocation();
-
   const query = useMemo(() => {
     const label = (post.object_label ?? "").trim();
     const date = (post.date ?? "").toString().trim();
     return [label, date].filter(Boolean).join(" ");
   }, [post.object_label, post.date]);
 
-  const { data } = useSWR(
-    query ? ["recommended", query] : null,
-    async () => {
-      const { posts } = await searchPostsViaRouteHandler({
-        q: query,
-        limit: 4,
-      });
-      return { posts } as { posts: Post[] };
-    },
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: 30000,
-    },
-  );
+  const { posts: searchedPosts } = usePosts({ query });
 
-  const recommended = useMemo(() => {
-    const items = data?.posts ?? [];
-    return items.filter((p) => p.post_id !== post.post_id).slice(0, 2);
-  }, [data?.posts, post.post_id]);
+  // usePosts を検索なし（query未指定）で呼び、存在検証用の一覧を取得
+  const { posts: allPosts } = usePosts({});
 
-  if (!recommended || recommended.length === 0) {
+  const validatedRecommendations = useMemo(() => {
+    const items = searchedPosts ?? [];
+    const validIdSet = new Set((allPosts ?? []).map((p) => p.post_id));
+    const isNotShownPost = (p: Post) => p.post_id !== post.post_id;
+    return items
+      .filter((p) => isNotShownPost(p) && validIdSet.has(p.post_id))
+      .slice(0, 2);
+  }, [searchedPosts, allPosts, post.post_id]);
+
+  if (!validatedRecommendations || validatedRecommendations.length === 0) {
     return <RecommendPlaceHolder />;
   }
 
   return (
     <Stack spacing={1.5}>
-      {recommended.map((p) => (
+      {validatedRecommendations.map((p) => (
         <DiscoveryCard
           key={p.post_id}
           post={p}
@@ -87,5 +80,13 @@ export default function RecommendedSection({ post }: RecommendedSectionProps) {
         />
       ))}
     </Stack>
+  );
+}
+
+export default function RecommendedSection({ post }: RecommendedSectionProps) {
+  return (
+    <Suspense fallback={<RecommendPlaceHolder />}>
+      <RecommendedContent post={post} />
+    </Suspense>
   );
 }
