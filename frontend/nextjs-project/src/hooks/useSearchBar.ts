@@ -9,13 +9,7 @@ type UseHomeSearchBarProps = {
   setIsFollowing: Dispatch<SetStateAction<boolean>>;
 };
 
-type UseHomeSearchBarReturn = {
-  searchQuery: string;
-  handleSearch: (q: string) => void;
-  handleQueryChange: (q: string) => void;
-};
-
-type UseListSearchBarReturn = {
+type UseSearchBarReturn = {
   searchQuery: string;
   handleSearch: (q: string) => void;
   handleQueryChange: (q: string) => void;
@@ -27,7 +21,7 @@ type UseListSearchBarReturn = {
 export function useHomeSearchBar({
   setSelectedPost,
   setIsFollowing,
-}: UseHomeSearchBarProps): UseHomeSearchBarReturn {
+}: UseHomeSearchBarProps): UseSearchBarReturn {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -73,7 +67,7 @@ export function useHomeSearchBar({
 /**
  * リストページ用のSearchBar状態とハンドラーを管理するフック
  */
-export function useListSearchBar(): UseListSearchBarReturn {
+export function useListSearchBar(): UseSearchBarReturn {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();

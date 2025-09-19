@@ -7,8 +7,8 @@ import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 
 export interface SearchBarProps {
   onSearch: (q: string) => void;
-  initialQuery?: string;
-  onQueryChange?: (q: string) => void; // 入力中のクエリ（空文字は自動リセット用）
+  initialQuery: string;
+  onQueryChange: (q: string) => void; // 入力中のクエリ（空文字は自動リセット用）
 }
 
 /**
@@ -51,11 +51,11 @@ export const SearchBarOnListPage = ({
   onSearch,
   onQueryChange,
 }: {
-  initialQuery?: string;
+  initialQuery: string;
   onSearch: (q: string) => void;
-  onQueryChange?: (q: string) => void;
+  onQueryChange: (q: string) => void;
 }) => {
-  const [query, setQuery] = useState(initialQuery ?? "");
+  const [query, setQuery] = useState(initialQuery);
   const triggerSearch = () => {
     const q = query.trim();
     if (!q) return;
@@ -70,8 +70,8 @@ export const SearchBarOnListPage = ({
   const handleChange = (value: string) => {
     setQuery(value);
     // 入力が空になったら、親に空文字を通知（自動リセット用）
-    if (onQueryChange) {
-      onQueryChange(value);
+    if (value.trim() === "") {
+      onQueryChange("");
     }
   };
 
@@ -104,7 +104,6 @@ export const SearchBarOnListPage = ({
           handleChange(e.target.value)
         }
         onKeyDown={handleKeyDown}
-        inputProps={{ "aria-label": "検索" }}
         sx={{
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
