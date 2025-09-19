@@ -38,6 +38,7 @@ import SubmitButton from "@/components/ui/SubmitButton";
 import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 import { IoCloseOutline } from "react-icons/io5";
 import ReferenceLink from "@/components/ui/ReferenceLink";
+import RecommendedSection from "@/components/features/discoveries/RecommendedSection";
 
 // ★ 地図コンポーネントを、サーバーサイドレンダリングを無効にして動的にインポート
 const StaticPostMap = dynamic(
@@ -155,7 +156,6 @@ export default function DiscoveryDetailView({
           </Section>
           {/* 3.1 参考にしたサイト */}
           <ReferenceLink url={post.ai_reference} />
-
           {/* 4. AIからの問い */}
           <Section icon={<IoSearch size={30} />} title="問い">
             {post.ai_question}
@@ -165,6 +165,8 @@ export default function DiscoveryDetailView({
             <StaticPostMap post={post} />
           </Section>
         </Stack>
+        {/* 6. おすすめ */}
+        <RecommendedSection post={post} />
       </Box>
       <DeleteConfirmModal
         open={isDeleteConfirmModalOpen}

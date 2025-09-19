@@ -28,6 +28,7 @@ GCP_PROJECT_ID = os.environ.get("PROJECT_ID")
 GCP_LOCATION = os.environ.get("GCP_LOCATION", "global")
 DATA_STORE_ID = os.environ.get("DATA_STORE_ID")
 
+
 def trigger_import(gcs_uri: str):
     """
     指定されたGCS URIから、Vertex AI Searchデータストアへのインポートをトリガーする
