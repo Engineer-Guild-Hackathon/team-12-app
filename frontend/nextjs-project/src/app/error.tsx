@@ -1,12 +1,11 @@
 "use client";
 
 import { Box, Button, Typography } from "@mui/material";
-import { IoReload } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 
 export default function Error({
   error,
-  reset,
+  _reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
