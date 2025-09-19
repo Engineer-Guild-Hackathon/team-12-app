@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import DiscoveryDetailClient from "./client";
 import { Post } from "@/types/post";
 import { fetchPostById } from "@/libs/postUtils";
@@ -63,6 +64,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function DiscoveryDetailPage({ params }: Props) {
   const { slug } = await params;
   const post = await getPostData(slug);
+
+  if (!post) {
+    notFound();
+  }
 
   return <DiscoveryDetailClient post={post} />;
 }

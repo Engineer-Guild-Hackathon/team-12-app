@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { getPosts } from "@/libs/getPosts";
 import ListClient from "./client";
 
