@@ -6,7 +6,7 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import DiscoveryCard from "@/components/ui/DiscoveryCard";
 import { usePosts } from "@/hooks/usePosts";
 import { useFilterStore } from "@/stores/filterStore";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 import { SearchBarOnListPage } from "@/components/features/search/SearchBar";
 
@@ -25,8 +25,12 @@ export default function ListClient({ initialPosts }: ListClientProps) {
   } = useGeolocation();
   const { sort: currentSort } = useFilterStore();
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const currentScope = searchParams.get("scope");
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>(
+    searchParams.get("q") ?? "",
+  );
 
   // TODO: 認証情報を取得
   const user = { uid: "123e4567-e89b-12d3-a456-426614174000" };
@@ -42,15 +46,28 @@ export default function ListClient({ initialPosts }: ListClientProps) {
     { posts: initialPosts },
   );
 
-  const handleSearch = useCallback(async (q: string) => {
-    setSearchQuery(q);
-  }, []);
+  const handleSearch = useCallback(
+    async (q: string) => {
+      setSearchQuery(q);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("q", q);
+      router.replace(`${pathname}?${params.toString()}`);
+    },
+    [pathname, router, searchParams],
+  );
 
-  const handleQueryChange = useCallback((q: string) => {
-    if (q.trim() === "") {
-      setSearchQuery("");
-    }
-  }, []);
+  const handleQueryChange = useCallback(
+    (q: string) => {
+      if (q.trim() === "") {
+        setSearchQuery("");
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("q");
+        const qs = params.toString();
+        router.replace(qs ? `${pathname}?${qs}` : pathname);
+      }
+    },
+    [pathname, router, searchParams],
+  );
 
   if (geolocationLoading) {
     return (
@@ -97,6 +114,7 @@ export default function ListClient({ initialPosts }: ListClientProps) {
       }}
     >
       <SearchBarOnListPage
+        initialQuery={searchQuery}
         onSearch={handleSearch}
         onQueryChange={handleQueryChange}
       />
