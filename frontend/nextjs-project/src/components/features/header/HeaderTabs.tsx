@@ -16,7 +16,7 @@ const tabStyles = {
 export default function HeaderTabs() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { sort: savedSort } = useFilterStore();
+  const { sort: savedSort, searchQuery } = useFilterStore();
 
   // scopeは常にURLから取得
   const currentScope = searchParams.get("scope");
@@ -26,6 +26,10 @@ export default function HeaderTabs() {
   if (currentScope) {
     mapParams.set("scope", currentScope);
   }
+  // TODO:UI対応後復帰
+  // if (currentQuery) {
+  //   mapParams.set("q", currentQuery);
+  // }
   const mapHref = `/?${mapParams.toString()}`.replace(/\?$/, ""); // 末尾の?を削除
 
   // --- 一覧タブ(/list)のURLを生成 ---
@@ -35,6 +39,9 @@ export default function HeaderTabs() {
   }
   if (savedSort) {
     listParams.set("sort", savedSort);
+  }
+  if (searchQuery) {
+    listParams.set("q", searchQuery);
   }
   const listHref = `/list?${listParams.toString()}`.replace(/\?$/, ""); // 末尾の?を削除
 

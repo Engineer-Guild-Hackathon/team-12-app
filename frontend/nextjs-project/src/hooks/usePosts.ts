@@ -36,40 +36,44 @@ export function usePosts(
   const user = useAuthStore((s: AuthState) => s.user);
   const normalizedQuery = (query ?? "").trim();
   const isSearchMode = normalizedQuery.length > 0;
+  // これは検索ブランチで実装したswrKeyです
   const swrKey = isSearchMode
     ? ["search", user?.uid ? user.uid : "public", normalizedQuery].join(":")
     : user?.uid
       ? `recent:${user.uid}`
       : `recent:public`;
-  const { data, error, mutate } = useSWR<PostsApiResponse>(
-    swrKey,
-    async () => {
-      // TODO: これ外側で関数定義したい
-      // サーバーアクションをクライアントから呼ぶ（ログイン状態で分岐）
-      // 検索クエリがある場合は検索APIを利用
-      if (isSearchMode) {
-        const { posts } = await searchPostsViaRouteHandler({
-          q: normalizedQuery,
-        });
-        return { posts } satisfies PostsApiResponse;
-      }
 
-      // 検索クエリがない場合は最近の投稿を取得（ログイン状態で分岐）
-      const { posts } = user?.uid
-        ? await fetchRecentPostsAction(user.uid)
-        : await fetchRecentPublicPostsAction();
-      return { posts } satisfies PostsApiResponse;
-    },
-    {
-      refreshInterval: 30000,
-      dedupingInterval: 30000,
-      // キャッシュにデータがあれば、マウント時に再検証しない
-      revalidateOnMount: false,
-      suspense: true,
-      // 検索時はfallbackDataを使わない（前回の一覧を誤表示しないため）
-      fallbackData: isSearchMode ? undefined : fallbackData,
-    },
-  );
+  const { data, error, mutate, isLoading, isValidating } =
+    useSWR<PostsApiResponse>(
+      swrKey,
+      async () => {
+        // TODO: これ外側で関数定義したい
+        // サーバーアクションをクライアントから呼ぶ（ログイン状態で分岐）
+        // 検索クエリがある場合は検索APIを利用
+        if (isSearchMode) {
+          const { posts } = await searchPostsViaRouteHandler({
+            q: normalizedQuery,
+          });
+          return { posts } satisfies PostsApiResponse;
+        }
+
+        // 検索クエリがない場合は最近の投稿を取得（ログイン状態で分岐）
+        const { posts } = user?.uid
+          ? await fetchRecentPostsAction(user.uid)
+          : await fetchRecentPublicPostsAction();
+        return { posts } satisfies PostsApiResponse;
+      },
+      {
+        // 検索モードの時は、キャッシュを使わず常に再検証する
+        revalidateOnFocus: isSearchMode ? true : false,
+        revalidateOnMount: isSearchMode ? true : true,
+        dedupingInterval: isSearchMode ? 0 : 30000,
+        refreshInterval: 30000,
+        suspense: true,
+        // 検索時はfallbackDataを使わない（前回の一覧を誤表示しないため）
+        fallbackData: isSearchMode ? undefined : fallbackData,
+      },
+    );
 
   const filteredPosts = useMemo(() => {
     if (!data?.posts) {
@@ -130,6 +134,7 @@ export function usePosts(
   return {
     posts: filteredPosts, // フィルタリング・ソート済みの結果を返す
     isError: error,
+    isLoading: isLoading || isValidating,
     mutate,
   };
 }

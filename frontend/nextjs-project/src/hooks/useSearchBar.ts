@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, useCallback, Dispatch, SetStateAction } from "react";
+import { useCallback, Dispatch, SetStateAction, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Post } from "@/types/post";
+import { useFilterStore } from "@/stores/filterStore";
+import { useSWRConfig } from "swr";
+import { useAuthStore } from "@/stores/authStore";
 
 type UseHomeSearchBarProps = {
   setSelectedPost: Dispatch<SetStateAction<Post | null>>;
@@ -25,8 +28,7 @@ export function useHomeSearchBar({
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") ?? "");
+  const { searchQuery, setSearchQuery } = useFilterStore();
 
   const handleSearch = useCallback(
     async (q: string) => {
@@ -40,7 +42,14 @@ export function useHomeSearchBar({
       // 追従を一旦OFFに（検索結果に視線を移すため。移動制御は別途）
       setIsFollowing(false);
     },
-    [pathname, router, searchParams, setSelectedPost, setIsFollowing],
+    [
+      pathname,
+      router,
+      searchParams,
+      setSelectedPost,
+      setIsFollowing,
+      setSearchQuery,
+    ],
   );
 
   const handleQueryChange = useCallback(
@@ -71,10 +80,18 @@ export function useListSearchBar(): UseSearchBarReturn {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+  const { searchQuery, setSearchQuery } = useFilterStore();
+  const { mutate } = useSWRConfig();
+  const user = useAuthStore((state) => state.user);
 
-  const [searchQuery, setSearchQuery] = useState<string>(
-    searchParams.get("q") ?? "",
-  );
+  // URL -> store 同期
+  useEffect(() => {
+    const urlQ = searchParams.get("q") ?? "";
+    if (urlQ !== searchQuery) {
+      setSearchQuery(urlQ);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleSearch = useCallback(
     async (q: string) => {
@@ -83,20 +100,34 @@ export function useListSearchBar(): UseSearchBarReturn {
       params.set("q", q);
       router.replace(`${pathname}?${params.toString()}`);
     },
-    [pathname, router, searchParams],
+    [pathname, router, searchParams, setSearchQuery],
   );
 
   const handleQueryChange = useCallback(
     (q: string) => {
       if (q.trim() === "") {
+        const oldQuery = searchQuery;
+
+        // 1. URLとストアの状態をリセット
         setSearchQuery("");
         const params = new URLSearchParams(searchParams.toString());
         params.delete("q");
         const qs = params.toString();
         router.replace(qs ? `${pathname}?${qs}` : pathname);
+
+        // 2. 不要になった古い検索結果のキャッシュをSWRから手動で削除
+        if (oldQuery.trim().length > 0) {
+          const oldSearchKey = [
+            "search",
+            user?.uid ? user.uid : "public",
+            oldQuery.trim(),
+          ].join(":");
+          // 第2引数にundefinedを渡すとキャッシュが削除される
+          mutate(oldSearchKey, undefined, { revalidate: false });
+        }
       }
     },
-    [pathname, router, searchParams],
+    [pathname, router, searchParams, setSearchQuery, searchQuery, user, mutate],
   );
 
   return {

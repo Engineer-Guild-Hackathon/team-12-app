@@ -8,6 +8,36 @@ import {
   User,
 } from "firebase/auth";
 
+// このキーが localStorage にあれば、認証済み状態
+const AUTH_CACHE_KEY = "auth-cached-flag";
+
+function setCache(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(AUTH_CACHE_KEY, "true");
+  } catch {
+    /* noop */
+  }
+}
+
+function removeCache(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(AUTH_CACHE_KEY);
+  } catch {
+    /* noop */
+  }
+}
+
+function hasCache(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return localStorage.getItem(AUTH_CACHE_KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
 export type AuthState = {
   user: User | null;
   status: "idle" | "loading" | "authenticated" | "unauthenticated";
@@ -43,8 +73,23 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     set({ initializing: true });
 
+    // キャッシュがあれば、認証済み状態の表示にする
+    if (hasCache()) {
+      set({
+        initialized: true,
+        initializing: false,
+        status: "authenticated",
+      });
+    }
+
     // 1) auth の状態とトークン更新を一手に担う
     const unsub = onIdTokenChanged(auth, (user) => {
+      if (user) {
+        setCache();
+      } else {
+        removeCache();
+      }
+
       set({
         user,
         status: user ? "authenticated" : "unauthenticated",
@@ -56,6 +101,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     // 2) 複数タブ同期
     const onStorage = (e: StorageEvent) => {
+      if (e.key === AUTH_CACHE_KEY && e.newValue === null) {
+        // 別タブでログアウト
+        try {
+          set({ user: null, status: "unauthenticated" });
+        } catch {
+          /* noop */
+        }
+      }
+
       if (e.key?.startsWith("firebase:authUser")) {
         // onIdTokenChanged が走る想定。エラーの時のconsole用で残す
       }
@@ -103,6 +157,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   signOut: async () => {
     try {
       await firebaseSignOut(auth);
+      removeCache();
       set({ user: null, status: "unauthenticated", error: undefined });
     } catch (err) {
       console.error("[auth.signOut] failed:", err);
