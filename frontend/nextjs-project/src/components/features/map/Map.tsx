@@ -14,8 +14,12 @@ import MapViewController from "./MapViewController";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import LeafyLoader from "@/components/features/loading/LeafyLoader"; // 作成したローダーをインポート
 import { useMapStore } from "@/stores/mapStore";
+import {
+  SearchBarOnMap,
+  SearchBarProps,
+} from "@/components/features/search/SearchBar";
 
-interface MapProps {
+interface MapProps extends SearchBarProps {
   posts: Post[];
   onMarkerClick: (post: Post) => void;
   selectedPost: Post | null;
@@ -31,6 +35,9 @@ export default function Map({
   setSelectedPost,
   isFollowing,
   setIsFollowing,
+  onSearch,
+  initialQuery,
+  onQueryChange,
 }: MapProps) {
   const { latitude, longitude, loading: geolocationLoading } = useGeolocation();
   const { map, setMap, flyTo } = useMapControl();
@@ -236,6 +243,11 @@ export default function Map({
 
   return (
     <Box sx={{ height: "100%", width: "100%", position: "relative" }}>
+      <SearchBarOnMap
+        initialQuery={initialQuery}
+        onSearch={onSearch}
+        onQueryChange={onQueryChange}
+      />
       <MapContainer
         center={[43.068, 141.35]}
         zoom={16}

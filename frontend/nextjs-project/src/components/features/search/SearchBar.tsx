@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, KeyboardEvent, ChangeEvent } from "react";
-import { Box, TextField, IconButton, useTheme } from "@mui/material";
+import { Box, TextField, IconButton } from "@mui/material";
 import { IoSearchOutline } from "react-icons/io5";
 import { MOBILE_MAX_WIDTH } from "@/constants/styles";
 
-interface SearchBarProps {
+export interface SearchBarProps {
   onSearch: (q: string) => void;
   initialQuery?: string;
   onQueryChange?: (q: string) => void; // 入力中のクエリ（空文字は自動リセット用）
@@ -55,7 +55,6 @@ export const SearchBarOnListPage = ({
   onSearch: (q: string) => void;
   onQueryChange?: (q: string) => void;
 }) => {
-  const theme = useTheme();
   const [query, setQuery] = useState(initialQuery ?? "");
   const triggerSearch = () => {
     const q = query.trim();
