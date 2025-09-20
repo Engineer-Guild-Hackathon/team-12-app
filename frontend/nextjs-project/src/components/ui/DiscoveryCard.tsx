@@ -117,10 +117,10 @@ export default function DiscoveryCard({
             // componentを"div"に変更
             component="div"
             sx={{
-              width: "100px",
-              height: "100px",
-              minWidth: "100px",
-              minHeight: "100px",
+              width: { xs: "90px", sm: "100px" },
+              height: { xs: "90px", sm: "100px" },
+              minWidth: { xs: "90px", sm: "100px" },
+              minHeight: { xs: "90px", sm: "100px" },
               borderRadius: 2,
               color: "yomogi.600", // アイコンの色を設定
               backgroundColor: "yomogi.200", // テーマの色に合わせて調整
