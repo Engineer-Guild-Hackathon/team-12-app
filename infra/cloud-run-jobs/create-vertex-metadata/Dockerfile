@@ -34,4 +34,4 @@ COPY backend/src/services/vertex_ai /backend/src/services/vertex_ai
 COPY backend/src/utils/db/ /backend/src/utils/db/
 
 # エントリポイント：バッチを 1 回実行して正常終了
-ENTRYPOINT ["python", "-u", "src/services/vertex_ai/create_vertex_metadata.py"]
+ENTRYPOINT ["python", "-m", "src.services.vertex_ai.create_vertex_metadata"]
