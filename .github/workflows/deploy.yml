@@ -1,8 +1,8 @@
 name: Deploy to Cloud Run
 
 on:
-  push:
-    branches: [ main ]
+  # push:                 # プロジェクトが終了したため、main ブランチに push 時に自動デプロイされないようにコメントアウト
+  #   branches: [ main ]
   workflow_dispatch: {}   # 手動デプロイ可
   workflow_call: {}       # 他の workflow から呼び出し可
 
