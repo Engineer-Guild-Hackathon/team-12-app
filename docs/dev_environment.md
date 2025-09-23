@@ -71,7 +71,7 @@ source ~/.zshrc
 gcloud auth application-default login
 ```
 7. ADC のパスを .env に書き出す  
-プロジェクト (`team-12-app`) のルート直下に移動して、.envに書き出してください。
+プロジェクト (`team-12-app`) のルート直下に移動して、`.env` に書き出してください（存在しない場合は自動で作成されます）。
 ```bash
 echo "ADC_JSON=$HOME/.config/gcloud/application_default_credentials.json" >> .env
 ```
@@ -97,10 +97,10 @@ gcloud init
 ```shell
 gcloud auth application-default login
 ```
-6. ADC のパスを gcloud.adc.env に書き出す (PowerShell)  
-プロジェクト (`team-12-app`) のルート直下に移動して、`.env`に書き出してください。
+6. ADC のパスを `.env` に書き出す (PowerShell)  
+プロジェクト (`team-12-app`) のルート直下に移動して、`.env` に書き出してください。（ファイルが無い場合は自動生成されます）
 ```shell
-"ADC_JSON=$env:APPDATA\gcloud\application_default_credentials.json" >> gcloud.adc.env
+"ADC_JSON=$env:APPDATA\gcloud\application_default_credentials.json" >> .env
 ```
 
 #### Ubuntu（WSL）
@@ -148,7 +148,7 @@ gcloud auth application-default login --no-launch-browser
 10. 6~7と同様に、URLからログインし、認証コードをターミナルにペーストする。
 
 11. ADC のパスを .env に書き出す  
-プロジェクト (`team-12-app`) のルート直下に移動して、.envに書き出してください。
+プロジェクト (`team-12-app`) のルート直下に移動して、`.env` に書き出してください。
 ```bash
 echo "ADC_JSON=$HOME/.config/gcloud/application_default_credentials.json" >> .env
 ```
@@ -156,6 +156,33 @@ echo "ADC_JSON=$HOME/.config/gcloud/application_default_credentials.json" >> .en
 
 - 詳しいインストールの説明はこちらから：[gcloud CLI をインストールする | Google Cloud SDK](https://cloud.google.com/sdk/docs/install?hl=ja#windows)
 
+## 0-4. プロジェクト共通の環境変数ファイルを整える
+開発・本番いずれの Compose 実行でも以下のファイルを利用します。リポジトリをクローンしたら、各サンプルを基に設定してください。
+
+1. `.env`
+   - 上記で出力した `ADC_JSON` を必ず記載します。ngrok を併用する場合は `NGROK_AUTHTOKEN` も設定してください。
+     ```env
+     ADC_JSON=/absolute/path/to/application_default_credentials.json
+     NGROK_AUTHTOKEN=xxxxxxxxxxxx # 必要な場合のみ
+     ```
+
+2. `backend.env`
+   - `backend.env.sample` をコピーし、Cloud SQL 接続や GCS バケットなどの値を入力します。
+     ```bash
+     cp backend.env.sample backend.env
+     ```
+
+3. `frontend.env`
+   - `frontend.env.sample` をコピーし、Firebase 認証情報やフロントエンドの公開 URL を設定します。
+     ```bash
+     cp frontend.env.sample frontend.env
+     ```
+
+4. `service_account.json`
+   - Cloud Storage や Cloud SQL にアクセス可能なサービスアカウントキーをルート直下に配置します。
+
+5. `ngrok.yml`
+   - 既定で front-app をトンネリングする設定になっています。必要があればホスト名などを調整してください。
 
 ## 1. リモートリポジトリをクローン
 以下のコマンドを実行して，リモートリポジトリをローカル環境にクローンする。
@@ -245,11 +272,10 @@ Git の操作はコンテナ外で行ってください。
 
 ### コンテナを停止する場合
 ```bash
-docker compose -f compose.yaml -f compose.dev stop
+docker compose -f compose.yaml -f compose.dev.yaml stop
 ```
 
 ### コンテナを停止＋削除する場合
 ```bash
-docker compose -f compose.yaml -f compose.dev down
+docker compose -f compose.yaml -f compose.dev.yaml down
 ```
-
