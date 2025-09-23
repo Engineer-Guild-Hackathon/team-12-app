@@ -10,12 +10,12 @@
 ## 2. デモ / プレゼン資料
 ### 2-1. 決勝発表用
 - デモURL: [デモアプリ (Cloud Run デプロイ済み・2025年9月23日停止済み)](https://front-app-708894055394.asia-northeast1.run.app/)
-- デモ動画: [デモ動画 (決勝発表用)](https://drive.google.com/file/d/1Z4mJ3Yk2rYHk9X1nU6jH8jv0b2c3F7eE/view?usp=share_link)
+- デモ動画: [デモ動画 (決勝発表用)](https://drive.google.com/file/d/1uO9lhTS2n9bt4ZvIRGVgkgwbNnNLEL7d/view?usp=sharing)
 - プレゼンURL: [プレゼンPDF資料 (アニメーションなし)](docs/slide_backup/EGH_202509_決勝.pdf)
 - プレゼンURL: [プレゼン共有リンク (Canva・アニメーションあり)](https://www.canva.com/design/DAGyvV7xHEw/HdBF_WemKPQ5FikKThroBQ/view?utm_content=DAGyvV7xHEw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he880c6234f)
 
 ### 2-2. 予選発表用
-- デモURL: [デモ動画 (予選発表用)](https://drive.google.com/file/d/1O-P8ADvdTSPMdaQi1md53s76T8jFakQn/view?usp=share_link)
+- デモURL: [デモ動画 (予選発表用)](https://drive.google.com/file/d/1oRHnKcRD7-Yz_82n_xhppw6-B5NPwmzq/view?usp=sharing)
 - プレゼンURL：[プレゼンPDF資料 (アニメーションなし)](docs/slide_backup/EGH_202509_予選.pdf)
 
 ## 3. 環境構築方法
