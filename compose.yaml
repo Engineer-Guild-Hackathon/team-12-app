@@ -26,7 +26,7 @@ services:
     container_name: back-server
     working_dir: /backend
     env_file:
-      - gcloud.env
+      - backend.env
     environment:
       GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/adc.json
       SERVICE_ACCOUNT_CREDENTIALS: /var/secrets/service_account.json
