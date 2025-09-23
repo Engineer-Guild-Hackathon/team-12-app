@@ -1,15 +1,17 @@
 # 開発環境構築
 
 作成日：2025年9月8日(月)  
+更新日：2025年9月23日(火)  
 作成者：泉知成 (@Tomopu)
 
 ## 開発環境
 | 項目 | 説明 |
 | ---- | ---- |
-| エディタ | Virtual Studio Code (VSCode) |
-| 開発ツール | Git + Docker + DevContainer |
-| 開発言語・フレームワーク | Flask 3.1.0  (Python 3.12.11), Next.js 15.5.2 (TypeScript 5.9.2) |
-| データベース | PostgreSQL |
+| エディタ | Visual Studio Code (VSCode) / Cursor |
+| 開発ツール | Git / Docker / DevContainer / docker compose / GitHub Actions |
+| 開発言語・フレームワーク | Python 3.12.11 / Flask 3.1.0 / SQLAlchemy / TypeScript 5.9.2 / Next.js 15.5.2 |
+| ライブラリ・SDK | Google Cloud Storage / Google Secret Manager / pg8000 / google-cloud-sql-connector ほか |
+| データベース | PostgreSQL (Cloud SQL) |
 
 ## 0. 前準備
 ### 0-1. Dockerの環境構築
@@ -200,12 +202,12 @@ VSCodeの「コマンドパレット」を F1キー(または**Windows／Linux**
 - **日本語**:「開発コンテナー: コンテナーを再度開く」
 - **英語**:「Dev Containers: Reopen in Container」
 
-![vscode-0](./imgs/dev_environment/vscode-0.png)
+<img width="700" alt="vscode-0" src="./imgs/dev_environment/vscode-0.png">
 
 次に、起動する開発コンテナーを選択すると、コンテナが立ち上がり、コンテナ内がVSCode上に表示されます。
  - バックエンドの開発 → **back-server**
  - フロントエンドの開発 → **front-app**
-![vscode-1](./imgs/dev_environment/vscode-1.png)
+<img width="700" alt="vscode-1" src="./imgs/dev_environment/vscode-1.png">
 
 以下のような画面になると成功です。
 コンテナ内で編集した内容は、ファイルをセーブすることで、ホスト側の同じファイルにも自動で反映されます。
@@ -265,7 +267,8 @@ Git の操作はコンテナ外で行ってください。
 
 ![vscode-3](./imgs/dev_environment/vscode-3.png)
 ↓
-![vscode-4](./imgs/dev_environment/vscode-4.png)
+
+<img width="700" alt="vscode-4" src="./imgs/dev_environment/vscode-4.png">
 
 ## 5. コンテナの停止・削除
 以下のコマンドを実行することで、コンテナを停止・削除することができます。
