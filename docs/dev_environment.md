@@ -1,15 +1,17 @@
 # 開発環境構築
 
 作成日：2025年9月8日(月)  
+更新日：2025年9月23日(火)  
 作成者：泉知成 (@Tomopu)
 
 ## 開発環境
 | 項目 | 説明 |
 | ---- | ---- |
-| エディタ | Virtual Studio Code (VSCode) |
-| 開発ツール | Git + Docker + DevContainer |
-| 開発言語・フレームワーク | Flask 3.1.0  (Python 3.12.11), Next.js 15.5.2 (TypeScript 5.9.2) |
-| データベース | PostgreSQL |
+| エディタ | Visual Studio Code (VSCode) / Cursor |
+| 開発ツール | Git / Docker / DevContainer / docker compose / GitHub Actions |
+| 開発言語・フレームワーク | Python 3.12.11 / Flask 3.1.0 / SQLAlchemy / TypeScript 5.9.2 / Next.js 15.5.2 |
+| ライブラリ・SDK | Google Cloud Storage / Google Secret Manager / pg8000 / google-cloud-sql-connector ほか |
+| データベース | PostgreSQL (Cloud SQL) |
 
 ## 0. 前準備
 ### 0-1. Dockerの環境構築
@@ -71,7 +73,7 @@ source ~/.zshrc
 gcloud auth application-default login
 ```
 7. ADC のパスを .env に書き出す  
-プロジェクト (`team-12-app`) のルート直下に移動して、.envに書き出してください。
+プロジェクト (`team-12-app`) のルート直下に移動して、`.env` に書き出してください（存在しない場合は自動で作成されます）。
 ```bash
 echo "ADC_JSON=$HOME/.config/gcloud/application_default_credentials.json" >> .env
 ```
@@ -97,10 +99,10 @@ gcloud init
 ```shell
 gcloud auth application-default login
 ```
-6. ADC のパスを gcloud.adc.env に書き出す (PowerShell)  
-プロジェクト (`team-12-app`) のルート直下に移動して、`.env`に書き出してください。
+6. ADC のパスを `.env` に書き出す (PowerShell)  
+プロジェクト (`team-12-app`) のルート直下に移動して、`.env` に書き出してください。（ファイルが無い場合は自動生成されます）
 ```shell
-"ADC_JSON=$env:APPDATA\gcloud\application_default_credentials.json" >> gcloud.adc.env
+"ADC_JSON=$env:APPDATA\gcloud\application_default_credentials.json" >> .env
 ```
 
 #### Ubuntu（WSL）
@@ -148,7 +150,7 @@ gcloud auth application-default login --no-launch-browser
 10. 6~7と同様に、URLからログインし、認証コードをターミナルにペーストする。
 
 11. ADC のパスを .env に書き出す  
-プロジェクト (`team-12-app`) のルート直下に移動して、.envに書き出してください。
+プロジェクト (`team-12-app`) のルート直下に移動して、`.env` に書き出してください。
 ```bash
 echo "ADC_JSON=$HOME/.config/gcloud/application_default_credentials.json" >> .env
 ```
@@ -156,6 +158,33 @@ echo "ADC_JSON=$HOME/.config/gcloud/application_default_credentials.json" >> .en
 
 - 詳しいインストールの説明はこちらから：[gcloud CLI をインストールする | Google Cloud SDK](https://cloud.google.com/sdk/docs/install?hl=ja#windows)
 
+## 0-4. プロジェクト共通の環境変数ファイルを整える
+開発・本番いずれの Compose 実行でも以下のファイルを利用します。リポジトリをクローンしたら、各サンプルを基に設定してください。
+
+1. `.env`
+   - 上記で出力した `ADC_JSON` を必ず記載します。ngrok を併用する場合は `NGROK_AUTHTOKEN` も設定してください。
+     ```env
+     ADC_JSON=/absolute/path/to/application_default_credentials.json
+     NGROK_AUTHTOKEN=xxxxxxxxxxxx # 必要な場合のみ
+     ```
+
+2. `backend.env`
+   - `backend.env.sample` をコピーし、Cloud SQL 接続や GCS バケットなどの値を入力します。
+     ```bash
+     cp backend.env.sample backend.env
+     ```
+
+3. `frontend.env`
+   - `frontend.env.sample` をコピーし、Firebase 認証情報やフロントエンドの公開 URL を設定します。
+     ```bash
+     cp frontend.env.sample frontend.env
+     ```
+
+4. `service_account.json`
+   - Cloud Storage や Cloud SQL にアクセス可能なサービスアカウントキーをルート直下に配置します。
+
+5. `ngrok.yml`
+   - 既定で front-app をトンネリングする設定になっています。必要があればホスト名などを調整してください。
 
 ## 1. リモートリポジトリをクローン
 以下のコマンドを実行して，リモートリポジトリをローカル環境にクローンする。
@@ -173,12 +202,12 @@ VSCodeの「コマンドパレット」を F1キー(または**Windows／Linux**
 - **日本語**:「開発コンテナー: コンテナーを再度開く」
 - **英語**:「Dev Containers: Reopen in Container」
 
-![vscode-0](./imgs/dev_environment/vscode-0.png)
+<img width="700" alt="vscode-0" src="./imgs/dev_environment/vscode-0.png">
 
 次に、起動する開発コンテナーを選択すると、コンテナが立ち上がり、コンテナ内がVSCode上に表示されます。
  - バックエンドの開発 → **back-server**
  - フロントエンドの開発 → **front-app**
-![vscode-1](./imgs/dev_environment/vscode-1.png)
+<img width="700" alt="vscode-1" src="./imgs/dev_environment/vscode-1.png">
 
 以下のような画面になると成功です。
 コンテナ内で編集した内容は、ファイルをセーブすることで、ホスト側の同じファイルにも自動で反映されます。
@@ -238,18 +267,18 @@ Git の操作はコンテナ外で行ってください。
 
 ![vscode-3](./imgs/dev_environment/vscode-3.png)
 ↓
-![vscode-4](./imgs/dev_environment/vscode-4.png)
+
+<img width="700" alt="vscode-4" src="./imgs/dev_environment/vscode-4.png">
 
 ## 5. コンテナの停止・削除
 以下のコマンドを実行することで、コンテナを停止・削除することができます。
 
 ### コンテナを停止する場合
 ```bash
-docker compose -f compose.yaml -f compose.dev stop
+docker compose -f compose.yaml -f compose.dev.yaml stop
 ```
 
 ### コンテナを停止＋削除する場合
 ```bash
-docker compose -f compose.yaml -f compose.dev down
+docker compose -f compose.yaml -f compose.dev.yaml down
 ```
-
