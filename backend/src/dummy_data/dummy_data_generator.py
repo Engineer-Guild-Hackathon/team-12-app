@@ -208,6 +208,19 @@ dummy_data_list = [
         "longitude": 135.783000,
         "date": "2025-08-03T04:22:00Z",  # 8/3 13:22 JST
     },
+    {
+        "img_path": "/backend/src/dummy_data/dummy_images/dummy_cat_1.jpg",
+        "post_id": "f4e5d6c7-b8a9-0a1b-2c3d-4e5f6a7b8c9d",
+        "user_id": "79b94756-f960-a5ca-1374-06dec8752641",
+        "user_question": "タヌキみたいな模様の猫見つけた！",
+        "object_label": "タヌキのような模様の猫",
+        "ai_answer": "この画像には、タヌキのような模様を持つ猫が写っています。猫の毛色は茶色や黒のまだら模様で、目は大きくて愛らしいです。タヌキのような模様の猫は、一般的に「タヌキ猫」と呼ばれ、特に日本では人気のある猫の一種です。彼らはその独特な外見から、しばしば「タヌキ」と間違えられることがありますが、実際には猫です。",
+        "ai_question": "タヌキ猫の特徴や性格について教えてください。",
+        "ai_reference": "https://ja.wikipedia.org/wiki/%E3%82%BF%E3%83%8C%E3%82%AD",
+        "latitude": 35.039370,
+        "longitude": 135.729243,
+        "date": "2025-07-15T03:30:00Z",  # 7/15 12:30 JST
+    }
 ]
 
 
