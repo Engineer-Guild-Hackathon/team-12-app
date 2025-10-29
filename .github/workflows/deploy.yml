@@ -1,10 +1,10 @@
 name: Deploy to Cloud Run
 
 on:
-  # push:                 # プロジェクトが終了したため、main ブランチに push 時に自動デプロイされないようにコメントアウト
+  # push:                 # main ブランチ push で自動デプロイしたい場合はコメントアウトを外す
   #   branches: [ main ]
-  workflow_dispatch: {}   # 手動デプロイ可
-  workflow_call: {}       # 他の workflow から呼び出し可
+  workflow_dispatch: {}   # 手動デプロイ可（ボタン押下で実行）
+  # workflow_call: {}       # 他の workflow から呼び出したい場合はコメントアウトを外す
 
 env:
   PROJECT_ID: egh202509
