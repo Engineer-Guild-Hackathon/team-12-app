@@ -1,0 +1,4242 @@
+[
+  {
+    "img_id": "a72beba3-ae88-47a2-8a8d-64ff0ea6d538",
+    "gcs_uri": "gs://dev-bucket-holo/images/a72beba3-ae88-47a2-8a8d-64ff0ea6d538.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 1787599,
+    "sha256_hex": "6fef3b4c5160f76e8b5fede7c444103dc128adccd877d2673f748ec4595327a0",
+    "status": "stored",
+    "created_at": "2025-09-13T02:03:33.109931+00:00",
+    "updated_at": "2025-09-13T02:03:34.909807+00:00"
+  },
+  {
+    "img_id": "5ad6598c-cb1b-4dc1-a403-4d5ff8af691f",
+    "gcs_uri": "gs://dev-bucket-holo/images/5ad6598c-cb1b-4dc1-a403-4d5ff8af691f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2457576,
+    "sha256_hex": "8da21d679ba8731e786b4c6363c1f1ef7a88da6977133a19890cfcd60733907a",
+    "status": "stored",
+    "created_at": "2025-09-13T02:03:37.849912+00:00",
+    "updated_at": "2025-09-13T02:03:40.635860+00:00"
+  },
+  {
+    "img_id": "72d65014-5533-43d1-9edb-f5677d06de4a",
+    "gcs_uri": "gs://dev-bucket-holo/images/72d65014-5533-43d1-9edb-f5677d06de4a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 1866664,
+    "sha256_hex": "cbc6828d976a7bf9103346c9a0aa3e7e0d89864a9601aefb9c4d19b1add6aa2f",
+    "status": "stored",
+    "created_at": "2025-09-13T02:03:43.395038+00:00",
+    "updated_at": "2025-09-13T02:03:47.684859+00:00"
+  },
+  {
+    "img_id": "7dcc861b-343c-4197-b0b1-379d708008de",
+    "gcs_uri": "gs://dev-bucket-holo/images/7dcc861b-343c-4197-b0b1-379d708008de.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2382725,
+    "sha256_hex": "c87b683aff690711f5f828a08a74a28896f14767f74e4377142dcec40740ea67",
+    "status": "stored",
+    "created_at": "2025-09-13T02:03:51.230170+00:00",
+    "updated_at": "2025-09-13T02:03:53.225705+00:00"
+  },
+  {
+    "img_id": "c40b5f70-4a7f-4ae6-b7d4-f75b158c2d76",
+    "gcs_uri": "gs://dev-bucket-holo/images/c40b5f70-4a7f-4ae6-b7d4-f75b158c2d76.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2062852,
+    "sha256_hex": "743a3624f6dff76cb5e3f779fe47caa27bb53d29b9ddef4f816c3d7d9e1b54f1",
+    "status": "stored",
+    "created_at": "2025-09-13T02:03:55.984916+00:00",
+    "updated_at": "2025-09-13T02:03:57.115442+00:00"
+  },
+  {
+    "img_id": "93ca895a-99b9-4bc3-93a9-3fa7d65827ff",
+    "gcs_uri": "gs://dev-bucket-holo/images/93ca895a-99b9-4bc3-93a9-3fa7d65827ff.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2216848,
+    "sha256_hex": "463b4930b9525b046837bca0090bb44eb13025d82fcc68c80395f960c2f61044",
+    "status": "stored",
+    "created_at": "2025-09-13T02:04:00.320103+00:00",
+    "updated_at": "2025-09-13T02:04:01.419735+00:00"
+  },
+  {
+    "img_id": "861d3629-fc95-4afd-9387-577d8b51514b",
+    "gcs_uri": "gs://dev-bucket-holo/images/861d3629-fc95-4afd-9387-577d8b51514b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2182546,
+    "sha256_hex": "fd7f3703cca27b72afa2dc99ac3ea3efe0cdb27c4d8575eb085d8364a47dc6f5",
+    "status": "stored",
+    "created_at": "2025-09-13T02:04:04.689896+00:00",
+    "updated_at": "2025-09-13T02:04:05.804934+00:00"
+  },
+  {
+    "img_id": "4878db7a-50fe-46bc-91f9-e814ba7d3cf6",
+    "gcs_uri": "gs://dev-bucket-holo/images/4878db7a-50fe-46bc-91f9-e814ba7d3cf6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 918076,
+    "sha256_hex": "2448e3d0022912aeeba86d4bbc349f545a9965c75cabf25f01e05b93a3214206",
+    "status": "stored",
+    "created_at": "2025-09-13T02:04:08.664877+00:00",
+    "updated_at": "2025-09-13T02:04:09.594949+00:00"
+  },
+  {
+    "img_id": "be63140b-cfac-48d1-b41a-bf7d32187a1d",
+    "gcs_uri": "gs://dev-bucket-holo/images/be63140b-cfac-48d1-b41a-bf7d32187a1d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 136799,
+    "sha256_hex": "d907df24f323fe2c6727c81408715ff106bc3effc6dedeeaa3170ca8e9db47a1",
+    "status": "stored",
+    "created_at": "2025-09-13T02:05:31.175096+00:00",
+    "updated_at": "2025-09-13T02:05:32.610484+00:00"
+  },
+  {
+    "img_id": "69b1035e-98fa-4874-ac15-c1165d33518b",
+    "gcs_uri": "gs://dev-bucket-holo/images/69b1035e-98fa-4874-ac15-c1165d33518b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 114831,
+    "sha256_hex": "03ae4078043710d78cf598348946c1203635205bcc24684c62710d791e8bd4b2",
+    "status": "stored",
+    "created_at": "2025-09-13T09:17:08.953860+00:00",
+    "updated_at": "2025-09-13T09:17:10.257222+00:00"
+  },
+  {
+    "img_id": "069532fb-157e-4753-add0-b44d7ecbb2c8",
+    "gcs_uri": "gs://dev-bucket-holo/images/069532fb-157e-4753-add0-b44d7ecbb2c8.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 73107,
+    "sha256_hex": "659097bea18ce9548d5f5ccad1a6395402094aa623db411eab4676f052d5cb85",
+    "status": "stored",
+    "created_at": "2025-09-13T09:21:36.330920+00:00",
+    "updated_at": "2025-09-13T09:21:37.413478+00:00"
+  },
+  {
+    "img_id": "2ede7da2-b225-423a-821c-041b6d4007c9",
+    "gcs_uri": "gs://dev-bucket-holo/images/2ede7da2-b225-423a-821c-041b6d4007c9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 57673,
+    "sha256_hex": "39cbbeb9c7ea47b527a8d389bc8049a8eb3a6d9b425e90c42822845beba781ac",
+    "status": "stored",
+    "created_at": "2025-09-13T09:22:24.444836+00:00",
+    "updated_at": "2025-09-13T09:22:25.041666+00:00"
+  },
+  {
+    "img_id": "d417dc1a-ffaa-482a-85f8-9a3503e20e5c",
+    "gcs_uri": "gs://dev-bucket-holo/images/d417dc1a-ffaa-482a-85f8-9a3503e20e5c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 52758,
+    "sha256_hex": "104b511cf8dc05d2518465cb3452fd3f61d5d912222d0caeebd07626d49d50f3",
+    "status": "stored",
+    "created_at": "2025-09-13T09:23:55.182562+00:00",
+    "updated_at": "2025-09-13T09:23:56.160753+00:00"
+  },
+  {
+    "img_id": "254d37f2-e441-4746-849f-a6de31b7e22d",
+    "gcs_uri": "gs://dev-bucket-holo/images/254d37f2-e441-4746-849f-a6de31b7e22d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 56678,
+    "sha256_hex": "2989b21de53f5a7149653192e806c1ff245f9d1e7b65f1f164dece2968be0dcd",
+    "status": "stored",
+    "created_at": "2025-09-13T09:24:42.604640+00:00",
+    "updated_at": "2025-09-13T09:24:43.125650+00:00"
+  },
+  {
+    "img_id": "296c69b6-dcce-47bc-84f5-7005aa58acc4",
+    "gcs_uri": "gs://dev-bucket-holo/images/296c69b6-dcce-47bc-84f5-7005aa58acc4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 48571,
+    "sha256_hex": "740e60ea80c7f06dc1ae1940d94ee51678e09a9122438fe1a6538655f2946b8f",
+    "status": "stored",
+    "created_at": "2025-09-13T09:28:33.682316+00:00",
+    "updated_at": "2025-09-13T09:28:34.340258+00:00"
+  },
+  {
+    "img_id": "030ceed3-6940-4fcf-8e4a-c126de1b8a07",
+    "gcs_uri": "gs://dev-bucket-holo/images/030ceed3-6940-4fcf-8e4a-c126de1b8a07.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 59794,
+    "sha256_hex": "16714e7b1d364d032d2d6ead4c32e6a9aeb32a1ccf1734d6cbf1df07a8e650d6",
+    "status": "stored",
+    "created_at": "2025-09-13T09:31:55.518466+00:00",
+    "updated_at": "2025-09-13T09:31:56.185689+00:00"
+  },
+  {
+    "img_id": "d43f9d6f-33a6-4a7d-8841-c7742e20a60f",
+    "gcs_uri": "gs://dev-bucket-holo/images/d43f9d6f-33a6-4a7d-8841-c7742e20a60f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 1775,
+    "sha256_hex": "24e147221d1888a57009aa479193676d3b190a2aa3f750cc86ad39ebed9f3ae6",
+    "status": "stored",
+    "created_at": "2025-09-15T04:24:21.081963+00:00",
+    "updated_at": "2025-09-15T04:24:23.233693+00:00"
+  },
+  {
+    "img_id": "a0edc7ff-4a05-4f4b-9a74-8dcf00b5c6e1",
+    "gcs_uri": "gs://dev-bucket-holo/images/a0edc7ff-4a05-4f4b-9a74-8dcf00b5c6e1.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 1738,
+    "sha256_hex": "03c79fc5d286ae22bdec14916a7c6e845542ab2ffa92234727ed3ee2cc31af51",
+    "status": "stored",
+    "created_at": "2025-09-15T04:29:35.763570+00:00",
+    "updated_at": "2025-09-15T04:29:36.604797+00:00"
+  },
+  {
+    "img_id": "05fa402f-8077-4169-b2b5-61b2a6b7f115",
+    "gcs_uri": "gs://dev-bucket-holo/images/05fa402f-8077-4169-b2b5-61b2a6b7f115.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 1716,
+    "sha256_hex": "7005862860acf05bfd347f10921f92734fa00789abba37a3559fb4b5e916a519",
+    "status": "stored",
+    "created_at": "2025-09-15T04:41:30.061371+00:00",
+    "updated_at": "2025-09-15T04:41:31.959288+00:00"
+  },
+  {
+    "img_id": "887aba57-9924-4408-99f7-f706d5641995",
+    "gcs_uri": "gs://dev-bucket-holo/images/887aba57-9924-4408-99f7-f706d5641995.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2688,
+    "sha256_hex": "630a968171dab59e1be0665367676ef9dfd9862d9e6878f3e956ba288c62ce11",
+    "status": "stored",
+    "created_at": "2025-09-15T08:19:00.918161+00:00",
+    "updated_at": "2025-09-15T08:19:01.157948+00:00"
+  },
+  {
+    "img_id": "0a9bbbff-a1b0-42a0-8b86-74dbdd403e48",
+    "gcs_uri": "gs://dev-bucket-holo/images/0a9bbbff-a1b0-42a0-8b86-74dbdd403e48.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 21781,
+    "sha256_hex": "8155e504722db9776d0e08487a2b493a25b9b0f6fbdd40e47d7535edddebc5d8",
+    "status": "stored",
+    "created_at": "2025-09-15T07:40:30.349925+00:00",
+    "updated_at": "2025-09-15T07:40:31.162865+00:00"
+  },
+  {
+    "img_id": "bb74436a-d22d-406a-8b90-038d65e8a41f",
+    "gcs_uri": "gs://dev-bucket-holo/images/bb74436a-d22d-406a-8b90-038d65e8a41f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2688,
+    "sha256_hex": "630a968171dab59e1be0665367676ef9dfd9862d9e6878f3e956ba288c62ce11",
+    "status": "stored",
+    "created_at": "2025-09-15T08:06:03.794798+00:00",
+    "updated_at": "2025-09-15T08:06:04.654186+00:00"
+  },
+  {
+    "img_id": "0b9d79c1-8e90-4d95-938e-02546d65adaa",
+    "gcs_uri": "gs://dev-bucket-holo/images/0b9d79c1-8e90-4d95-938e-02546d65adaa.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2688,
+    "sha256_hex": "630a968171dab59e1be0665367676ef9dfd9862d9e6878f3e956ba288c62ce11",
+    "status": "stored",
+    "created_at": "2025-09-15T08:17:52.307780+00:00",
+    "updated_at": "2025-09-15T08:17:52.674914+00:00"
+  },
+  {
+    "img_id": "963fd4ef-11cc-4a63-ae33-53957e1620d3",
+    "gcs_uri": "gs://dev-bucket-holo/images/963fd4ef-11cc-4a63-ae33-53957e1620d3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2688,
+    "sha256_hex": "630a968171dab59e1be0665367676ef9dfd9862d9e6878f3e956ba288c62ce11",
+    "status": "stored",
+    "created_at": "2025-09-15T08:18:05.606150+00:00",
+    "updated_at": "2025-09-15T08:18:05.898696+00:00"
+  },
+  {
+    "img_id": "4caac709-5c08-4367-9c4b-3a2414976468",
+    "gcs_uri": "gs://dev-bucket-holo/images/4caac709-5c08-4367-9c4b-3a2414976468.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 22101,
+    "sha256_hex": "27788b7e05b4167ececb3f48185617af19bbc4466793e97e89ddbc49549689d9",
+    "status": "stored",
+    "created_at": "2025-09-15T08:40:25.262535+00:00",
+    "updated_at": "2025-09-15T08:40:26.209832+00:00"
+  },
+  {
+    "img_id": "30054a21-5a1b-4785-9033-fc0d796787eb",
+    "gcs_uri": "gs://dev-bucket-holo/images/30054a21-5a1b-4785-9033-fc0d796787eb.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 28145,
+    "sha256_hex": "67436e5c1cbe9aeeefd19207f3335396e8458d0c40e9ee4334c42a9cfc0303fe",
+    "status": "stored",
+    "created_at": "2025-09-15T08:51:12.517942+00:00",
+    "updated_at": "2025-09-15T08:51:13.266221+00:00"
+  },
+  {
+    "img_id": "f4fda4d6-d457-4689-9d2e-3c2a873c88f5",
+    "gcs_uri": "gs://dev-bucket-holo/images/f4fda4d6-d457-4689-9d2e-3c2a873c88f5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2688,
+    "sha256_hex": "630a968171dab59e1be0665367676ef9dfd9862d9e6878f3e956ba288c62ce11",
+    "status": "stored",
+    "created_at": "2025-09-15T08:52:40.728415+00:00",
+    "updated_at": "2025-09-15T08:52:41.511179+00:00"
+  },
+  {
+    "img_id": "d92709bd-1ec8-44ed-8d13-610278d90350",
+    "gcs_uri": "gs://dev-bucket-holo/images/d92709bd-1ec8-44ed-8d13-610278d90350.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2688,
+    "sha256_hex": "630a968171dab59e1be0665367676ef9dfd9862d9e6878f3e956ba288c62ce11",
+    "status": "stored",
+    "created_at": "2025-09-15T09:39:08.423239+00:00",
+    "updated_at": "2025-09-15T09:39:09.589930+00:00"
+  },
+  {
+    "img_id": "7e3d6ca6-1191-437f-b7ba-f5d802ae2efc",
+    "gcs_uri": "gs://dev-bucket-holo/images/7e3d6ca6-1191-437f-b7ba-f5d802ae2efc.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 1835,
+    "sha256_hex": "959af21632ea047a4949072bb2cd50d25ba971a43429875134148cefa55d14d4",
+    "status": "stored",
+    "created_at": "2025-09-16T00:32:04.683878+00:00",
+    "updated_at": "2025-09-16T00:32:05.451846+00:00"
+  },
+  {
+    "img_id": "b9e5e392-4051-4d9c-afaa-6a5ed51d6726",
+    "gcs_uri": "gs://dev-bucket-holo/images/b9e5e392-4051-4d9c-afaa-6a5ed51d6726.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 47183,
+    "sha256_hex": "ad3ced3665da9ef5dbc9439f31f6ff26a02e795ddccfe8e9987453bcffabbece",
+    "status": "failed",
+    "created_at": "2025-09-16T09:20:13.045248+00:00",
+    "updated_at": "2025-09-16T09:20:13.196395+00:00"
+  },
+  {
+    "img_id": "f45925ed-c534-4967-aa79-23697373994c",
+    "gcs_uri": "gs://dev-bucket-holo/images/f45925ed-c534-4967-aa79-23697373994c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 90797,
+    "sha256_hex": "b4dcf4854186436c527d3dbc64b34dfbf96a2c9cad9bb357bdf26d92cf4a7fd7",
+    "status": "stored",
+    "created_at": "2025-09-16T09:50:22.292909+00:00",
+    "updated_at": "2025-09-16T09:50:22.471463+00:00"
+  },
+  {
+    "img_id": "c4b3fca4-2e3d-43fd-b93d-1d3f0c3b49ad",
+    "gcs_uri": "gs://dev-bucket-holo/images/c4b3fca4-2e3d-43fd-b93d-1d3f0c3b49ad.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 43363,
+    "sha256_hex": "1d6ac56a1993c86b71b8760ff0b711f6fd0c8c1b0f3a29962434ced54e940985",
+    "status": "stored",
+    "created_at": "2025-09-16T09:59:44.789212+00:00",
+    "updated_at": "2025-09-16T09:59:45.514414+00:00"
+  },
+  {
+    "img_id": "2ae196c8-2e25-4b85-91a5-3a1f98eb3920",
+    "gcs_uri": "gs://dev-bucket-holo/images/2ae196c8-2e25-4b85-91a5-3a1f98eb3920.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 47052,
+    "sha256_hex": "8b3dcc1a927105b50b855b6e413e8f09e0501ce48e86ed79b79faf8fe4bd9a07",
+    "status": "stored",
+    "created_at": "2025-09-16T10:28:08.364155+00:00",
+    "updated_at": "2025-09-16T10:28:08.580970+00:00"
+  },
+  {
+    "img_id": "b4bc59e1-c5f1-46f9-a0de-476728c917ad",
+    "gcs_uri": "gs://dev-bucket-holo/images/b4bc59e1-c5f1-46f9-a0de-476728c917ad.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 58045,
+    "sha256_hex": "b1ce54f9a182bca77e435d49c4e81535adbb942d9f153dab901892a3c955bd2f",
+    "status": "stored",
+    "created_at": "2025-09-16T10:32:48.337625+00:00",
+    "updated_at": "2025-09-16T10:32:49.085797+00:00"
+  },
+  {
+    "img_id": "c75d6dbb-4caa-4c42-86f4-cdeded5bcde0",
+    "gcs_uri": "gs://dev-bucket-holo/images/c75d6dbb-4caa-4c42-86f4-cdeded5bcde0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 47052,
+    "sha256_hex": "8b3dcc1a927105b50b855b6e413e8f09e0501ce48e86ed79b79faf8fe4bd9a07",
+    "status": "stored",
+    "created_at": "2025-09-16T10:44:18.533555+00:00",
+    "updated_at": "2025-09-16T10:44:18.710368+00:00"
+  },
+  {
+    "img_id": "bd67f53f-ac2f-4515-bf84-5b8029a51b3f",
+    "gcs_uri": "gs://dev-bucket-holo/images/bd67f53f-ac2f-4515-bf84-5b8029a51b3f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 36932,
+    "sha256_hex": "bd6bc04e91850c2ebf21e624ddabbfcac3853377966c67ca61730a956cc90fdf",
+    "status": "stored",
+    "created_at": "2025-09-16T10:45:15.388953+00:00",
+    "updated_at": "2025-09-16T10:45:15.477357+00:00"
+  },
+  {
+    "img_id": "8c63b255-ef96-4396-a792-e4ac54a56fb8",
+    "gcs_uri": "gs://dev-bucket-holo/images/8c63b255-ef96-4396-a792-e4ac54a56fb8.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 25093,
+    "sha256_hex": "6a2439556dc99a97050b0fcf968732fc83d0687174b8c197cc8f4fef1f73c85f",
+    "status": "stored",
+    "created_at": "2025-09-16T10:49:14.101219+00:00",
+    "updated_at": "2025-09-16T10:49:14.295972+00:00"
+  },
+  {
+    "img_id": "e793584f-9323-4a3f-a3bd-8742c25c5184",
+    "gcs_uri": "gs://dev-bucket-holo/images/e793584f-9323-4a3f-a3bd-8742c25c5184.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 26629,
+    "sha256_hex": "4ddecfea7960c5679137b3dcd7c56c525fc5d8ffad2511324bdbf0e389ff7c91",
+    "status": "stored",
+    "created_at": "2025-09-16T10:55:09.190591+00:00",
+    "updated_at": "2025-09-16T10:55:09.977152+00:00"
+  },
+  {
+    "img_id": "95586aa4-f220-43c9-aa77-9f574797996b",
+    "gcs_uri": "gs://dev-bucket-holo/images/95586aa4-f220-43c9-aa77-9f574797996b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37439,
+    "sha256_hex": "6fab791bc7bd18fe34ed4ce00cbf5af9c665d9af02847933c3c1ca4f4135a9fc",
+    "status": "stored",
+    "created_at": "2025-09-16T11:01:22.368572+00:00",
+    "updated_at": "2025-09-16T11:01:22.579310+00:00"
+  },
+  {
+    "img_id": "c7da7256-1df6-48cc-8755-d47ef4a1ce25",
+    "gcs_uri": "gs://dev-bucket-holo/images/c7da7256-1df6-48cc-8755-d47ef4a1ce25.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37439,
+    "sha256_hex": "6fab791bc7bd18fe34ed4ce00cbf5af9c665d9af02847933c3c1ca4f4135a9fc",
+    "status": "stored",
+    "created_at": "2025-09-16T11:01:39.287816+00:00",
+    "updated_at": "2025-09-16T11:01:39.376090+00:00"
+  },
+  {
+    "img_id": "5ad2f6a7-d628-4868-8e27-14ef9a621d2f",
+    "gcs_uri": "gs://dev-bucket-holo/images/5ad2f6a7-d628-4868-8e27-14ef9a621d2f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27827,
+    "sha256_hex": "e5b6d42a9f7b6a9a8903d52a483bdc90801019f5fd9f13083fd115cce92cd067",
+    "status": "stored",
+    "created_at": "2025-09-16T11:07:39.971931+00:00",
+    "updated_at": "2025-09-16T11:07:40.227896+00:00"
+  },
+  {
+    "img_id": "be993df2-1783-4d5f-be2c-64e67120790a",
+    "gcs_uri": "gs://dev-bucket-holo/images/be993df2-1783-4d5f-be2c-64e67120790a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T11:31:57.256046+00:00",
+    "updated_at": "2025-09-16T11:31:58.189291+00:00"
+  },
+  {
+    "img_id": "6e81b5f4-4262-4a4d-a43f-fe45400926c3",
+    "gcs_uri": "gs://dev-bucket-holo/images/6e81b5f4-4262-4a4d-a43f-fe45400926c3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 25854,
+    "sha256_hex": "c7ff67e9f7e3eb7cabdc21fc3bbf1e2a1c462b07993d6b662ceecbc84b20270b",
+    "status": "stored",
+    "created_at": "2025-09-16T11:33:21.665706+00:00",
+    "updated_at": "2025-09-16T11:33:21.855884+00:00"
+  },
+  {
+    "img_id": "5ce1fcf5-616b-42a9-a063-70e6ecfa8930",
+    "gcs_uri": "gs://dev-bucket-holo/images/5ce1fcf5-616b-42a9-a063-70e6ecfa8930.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T11:40:06.207143+00:00",
+    "updated_at": "2025-09-16T11:40:06.727077+00:00"
+  },
+  {
+    "img_id": "0aea6740-bde1-4c76-88f5-99edffbbf16c",
+    "gcs_uri": "gs://dev-bucket-holo/images/0aea6740-bde1-4c76-88f5-99edffbbf16c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T11:51:41.619194+00:00",
+    "updated_at": "2025-09-16T11:51:42.102995+00:00"
+  },
+  {
+    "img_id": "053d3450-ff14-4592-84ad-0b39c30e503e",
+    "gcs_uri": "gs://dev-bucket-holo/images/053d3450-ff14-4592-84ad-0b39c30e503e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T11:51:56.352049+00:00",
+    "updated_at": "2025-09-16T11:51:56.651267+00:00"
+  },
+  {
+    "img_id": "ed4cae53-45c3-437e-be3f-18c56a9af0c0",
+    "gcs_uri": "gs://dev-bucket-holo/images/ed4cae53-45c3-437e-be3f-18c56a9af0c0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T11:52:47.698573+00:00",
+    "updated_at": "2025-09-16T11:52:47.959036+00:00"
+  },
+  {
+    "img_id": "dac7f0f3-4e18-4d59-969f-5cee8333cf56",
+    "gcs_uri": "gs://dev-bucket-holo/images/dac7f0f3-4e18-4d59-969f-5cee8333cf56.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T11:53:20.319049+00:00",
+    "updated_at": "2025-09-16T11:53:20.609290+00:00"
+  },
+  {
+    "img_id": "426425db-5589-4cc9-b038-c74e6883fee5",
+    "gcs_uri": "gs://dev-bucket-holo/images/426425db-5589-4cc9-b038-c74e6883fee5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T11:56:33.397103+00:00",
+    "updated_at": "2025-09-16T11:56:33.671906+00:00"
+  },
+  {
+    "img_id": "902620ae-bcbf-4a7d-97a9-1e0eab68aaf8",
+    "gcs_uri": "gs://dev-bucket-holo/images/902620ae-bcbf-4a7d-97a9-1e0eab68aaf8.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T12:00:43.562999+00:00",
+    "updated_at": "2025-09-16T12:00:44.135042+00:00"
+  },
+  {
+    "img_id": "b48cdddd-6fbc-4c35-97d9-729d4e0a9b8e",
+    "gcs_uri": "gs://dev-bucket-holo/images/b48cdddd-6fbc-4c35-97d9-729d4e0a9b8e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T12:04:22.056043+00:00",
+    "updated_at": "2025-09-16T12:04:22.322479+00:00"
+  },
+  {
+    "img_id": "e47b83f4-2e9b-4e0d-98b3-8b92ae3c5da2",
+    "gcs_uri": "gs://dev-bucket-holo/images/e47b83f4-2e9b-4e0d-98b3-8b92ae3c5da2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T12:05:05.063646+00:00",
+    "updated_at": "2025-09-16T12:05:05.331096+00:00"
+  },
+  {
+    "img_id": "85dbb7dd-5de7-4650-b1df-7a74f20efbd4",
+    "gcs_uri": "gs://dev-bucket-holo/images/85dbb7dd-5de7-4650-b1df-7a74f20efbd4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T12:05:19.007724+00:00",
+    "updated_at": "2025-09-16T12:05:19.251547+00:00"
+  },
+  {
+    "img_id": "054f5793-398d-4841-9c12-9e5b4e79ba9d",
+    "gcs_uri": "gs://dev-bucket-holo/images/054f5793-398d-4841-9c12-9e5b4e79ba9d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T12:05:29.168420+00:00",
+    "updated_at": "2025-09-16T12:05:29.417235+00:00"
+  },
+  {
+    "img_id": "7f5d3a75-6781-4b67-90fe-9c4b9d653c8b",
+    "gcs_uri": "gs://dev-bucket-holo/images/7f5d3a75-6781-4b67-90fe-9c4b9d653c8b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 29451,
+    "sha256_hex": "dd6ab08c65afe1cd4680c51ba4466710fba46f734f4827749ccdf2119f0f876e",
+    "status": "stored",
+    "created_at": "2025-09-16T12:11:51.068810+00:00",
+    "updated_at": "2025-09-16T12:11:51.775665+00:00"
+  },
+  {
+    "img_id": "0e732a2d-c988-44e6-8f64-c63a8427d817",
+    "gcs_uri": "gs://dev-bucket-holo/images/0e732a2d-c988-44e6-8f64-c63a8427d817.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T12:25:24.357283+00:00",
+    "updated_at": "2025-09-16T12:25:24.773998+00:00"
+  },
+  {
+    "img_id": "9a2ddacf-42ae-41c0-9375-48f33067d39b",
+    "gcs_uri": "gs://dev-bucket-holo/images/9a2ddacf-42ae-41c0-9375-48f33067d39b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-16T12:25:40.963319+00:00",
+    "updated_at": "2025-09-16T12:25:41.209592+00:00"
+  },
+  {
+    "img_id": "5df90814-d3e3-48f2-9fb7-359dd7560383",
+    "gcs_uri": "gs://dev-bucket-holo/images/5df90814-d3e3-48f2-9fb7-359dd7560383.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 22769,
+    "sha256_hex": "abe9cbd7431a8335312a1549a90f692e0cc4598ff87e3dfab2dd3a7b3da48993",
+    "status": "stored",
+    "created_at": "2025-09-16T12:56:41.588715+00:00",
+    "updated_at": "2025-09-16T12:56:42.286991+00:00"
+  },
+  {
+    "img_id": "17516c21-a948-4ab6-8bc4-5e74ac16c6b7",
+    "gcs_uri": "gs://dev-bucket-holo/images/17516c21-a948-4ab6-8bc4-5e74ac16c6b7.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 46216,
+    "sha256_hex": "fed485722ef80d94fac362967576c488c192283885fae2fdd735a4323058e67b",
+    "status": "stored",
+    "created_at": "2025-09-16T15:48:23.829729+00:00",
+    "updated_at": "2025-09-16T15:48:24.536308+00:00"
+  },
+  {
+    "img_id": "5566955f-e417-4c9f-85bb-f52e04aaff93",
+    "gcs_uri": "gs://dev-bucket-holo/images/5566955f-e417-4c9f-85bb-f52e04aaff93.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 46216,
+    "sha256_hex": "fed485722ef80d94fac362967576c488c192283885fae2fdd735a4323058e67b",
+    "status": "stored",
+    "created_at": "2025-09-16T15:48:41.075600+00:00",
+    "updated_at": "2025-09-16T15:48:41.360102+00:00"
+  },
+  {
+    "img_id": "a15a5f23-a0b7-42ff-9b03-1c9ec18cc1dd",
+    "gcs_uri": "gs://dev-bucket-holo/images/a15a5f23-a0b7-42ff-9b03-1c9ec18cc1dd.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 32662,
+    "sha256_hex": "8e798c3001ce49fbea941a035583442d81af0493acc4e8968427f7b8af6304d1",
+    "status": "stored",
+    "created_at": "2025-09-16T16:02:29.904432+00:00",
+    "updated_at": "2025-09-16T16:02:30.669500+00:00"
+  },
+  {
+    "img_id": "00c33341-ed63-4bd7-ae09-53b013f728cc",
+    "gcs_uri": "gs://dev-bucket-holo/images/00c33341-ed63-4bd7-ae09-53b013f728cc.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-17T02:36:45.062622+00:00",
+    "updated_at": "2025-09-17T02:36:45.699335+00:00"
+  },
+  {
+    "img_id": "4f5c5f3f-b99d-4226-87c2-4940161433c5",
+    "gcs_uri": "gs://dev-bucket-holo/images/4f5c5f3f-b99d-4226-87c2-4940161433c5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-17T02:42:49.580601+00:00",
+    "updated_at": "2025-09-17T02:42:50.012243+00:00"
+  },
+  {
+    "img_id": "3f2d786f-d196-49d2-8ba9-572d49a92ed2",
+    "gcs_uri": "gs://dev-bucket-holo/images/3f2d786f-d196-49d2-8ba9-572d49a92ed2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-17T02:49:20.903800+00:00",
+    "updated_at": "2025-09-17T02:49:21.566711+00:00"
+  },
+  {
+    "img_id": "fab395ee-a5db-4d11-96f0-761624508b10",
+    "gcs_uri": "gs://dev-bucket-holo/images/fab395ee-a5db-4d11-96f0-761624508b10.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 31303,
+    "sha256_hex": "79101adbe09c2c2b9639aaf3b95ddee73578123e188be3ba01f4b2fea95b3eeb",
+    "status": "stored",
+    "created_at": "2025-09-17T03:46:17.632483+00:00",
+    "updated_at": "2025-09-17T03:46:18.273007+00:00"
+  },
+  {
+    "img_id": "8644c41a-a2fa-4604-a52d-fae8b524e70b",
+    "gcs_uri": "gs://dev-bucket-holo/images/8644c41a-a2fa-4604-a52d-fae8b524e70b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 31303,
+    "sha256_hex": "79101adbe09c2c2b9639aaf3b95ddee73578123e188be3ba01f4b2fea95b3eeb",
+    "status": "stored",
+    "created_at": "2025-09-17T03:48:34.320757+00:00",
+    "updated_at": "2025-09-17T03:48:34.953525+00:00"
+  },
+  {
+    "img_id": "7927d9a6-a110-400e-9620-4886e5a7bbaf",
+    "gcs_uri": "gs://dev-bucket-holo/images/7927d9a6-a110-400e-9620-4886e5a7bbaf.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 31303,
+    "sha256_hex": "79101adbe09c2c2b9639aaf3b95ddee73578123e188be3ba01f4b2fea95b3eeb",
+    "status": "stored",
+    "created_at": "2025-09-17T03:49:41.940129+00:00",
+    "updated_at": "2025-09-17T03:49:42.585300+00:00"
+  },
+  {
+    "img_id": "78ced8ea-4c8d-4460-a731-570ea882247a",
+    "gcs_uri": "gs://dev-bucket-holo/images/78ced8ea-4c8d-4460-a731-570ea882247a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 31303,
+    "sha256_hex": "79101adbe09c2c2b9639aaf3b95ddee73578123e188be3ba01f4b2fea95b3eeb",
+    "status": "stored",
+    "created_at": "2025-09-17T03:52:31.380748+00:00",
+    "updated_at": "2025-09-17T03:52:32.001723+00:00"
+  },
+  {
+    "img_id": "14821339-b049-4493-9815-6378d77f4e7f",
+    "gcs_uri": "gs://dev-bucket-holo/images/14821339-b049-4493-9815-6378d77f4e7f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 31303,
+    "sha256_hex": "79101adbe09c2c2b9639aaf3b95ddee73578123e188be3ba01f4b2fea95b3eeb",
+    "status": "stored",
+    "created_at": "2025-09-17T04:05:46.533379+00:00",
+    "updated_at": "2025-09-17T04:05:47.208783+00:00"
+  },
+  {
+    "img_id": "593a250f-663f-4183-b562-e48462a55a43",
+    "gcs_uri": "gs://dev-bucket-holo/images/593a250f-663f-4183-b562-e48462a55a43.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 31303,
+    "sha256_hex": "79101adbe09c2c2b9639aaf3b95ddee73578123e188be3ba01f4b2fea95b3eeb",
+    "status": "stored",
+    "created_at": "2025-09-17T04:12:21.656604+00:00",
+    "updated_at": "2025-09-17T04:12:22.307862+00:00"
+  },
+  {
+    "img_id": "6cbab957-3eb6-40f2-9934-9f2b5567477c",
+    "gcs_uri": "gs://dev-bucket-holo/images/6cbab957-3eb6-40f2-9934-9f2b5567477c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 31303,
+    "sha256_hex": "79101adbe09c2c2b9639aaf3b95ddee73578123e188be3ba01f4b2fea95b3eeb",
+    "status": "stored",
+    "created_at": "2025-09-17T04:21:16.700984+00:00",
+    "updated_at": "2025-09-17T04:21:17.376580+00:00"
+  },
+  {
+    "img_id": "0a721e11-1f93-48ee-aa20-82c739f9aae5",
+    "gcs_uri": "gs://dev-bucket-holo/images/0a721e11-1f93-48ee-aa20-82c739f9aae5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 34872,
+    "sha256_hex": "cd2899094d3c27b66d587be03a20c85d68c5fb025b80d7b0ecdb584f9d8120b2",
+    "status": "stored",
+    "created_at": "2025-09-17T04:38:13.141094+00:00",
+    "updated_at": "2025-09-17T04:38:13.777890+00:00"
+  },
+  {
+    "img_id": "956206dc-96fb-4cef-9e15-15d77070e0db",
+    "gcs_uri": "gs://dev-bucket-holo/images/956206dc-96fb-4cef-9e15-15d77070e0db.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 35277,
+    "sha256_hex": "9e2f64567ee9b93308486f6232d3c6b7fb6e46257d1c5e0b7bfe20db849a5c13",
+    "status": "stored",
+    "created_at": "2025-09-17T04:48:03.615579+00:00",
+    "updated_at": "2025-09-17T04:48:04.324989+00:00"
+  },
+  {
+    "img_id": "b1d0dd23-a215-48fc-80f0-85a93f576941",
+    "gcs_uri": "gs://dev-bucket-holo/images/b1d0dd23-a215-48fc-80f0-85a93f576941.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 35277,
+    "sha256_hex": "9e2f64567ee9b93308486f6232d3c6b7fb6e46257d1c5e0b7bfe20db849a5c13",
+    "status": "stored",
+    "created_at": "2025-09-17T04:55:07.967495+00:00",
+    "updated_at": "2025-09-17T04:55:08.600938+00:00"
+  },
+  {
+    "img_id": "0b783b2e-4564-4a69-a6a1-72f738937445",
+    "gcs_uri": "gs://dev-bucket-holo/images/0b783b2e-4564-4a69-a6a1-72f738937445.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 35277,
+    "sha256_hex": "9e2f64567ee9b93308486f6232d3c6b7fb6e46257d1c5e0b7bfe20db849a5c13",
+    "status": "stored",
+    "created_at": "2025-09-17T05:05:45.258214+00:00",
+    "updated_at": "2025-09-17T05:05:45.944079+00:00"
+  },
+  {
+    "img_id": "7f4ee9c7-2adb-47df-b0b8-88fad11adbcd",
+    "gcs_uri": "gs://dev-bucket-holo/images/7f4ee9c7-2adb-47df-b0b8-88fad11adbcd.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 76677,
+    "sha256_hex": "f02653fafff1ee51ae5f95092a58aaa9a64f110e4a162abc6f2eadeaa5d5cc7b",
+    "status": "stored",
+    "created_at": "2025-09-17T06:17:41.931284+00:00",
+    "updated_at": "2025-09-17T06:17:42.124913+00:00"
+  },
+  {
+    "img_id": "54bee29d-9014-4884-a85f-5cfa4dd576a9",
+    "gcs_uri": "gs://dev-bucket-holo/images/54bee29d-9014-4884-a85f-5cfa4dd576a9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 45153,
+    "sha256_hex": "5da6a9f20c6ad851f0f297e779b24d0a1405ea2e27d7449842006d445a1f3325",
+    "status": "stored",
+    "created_at": "2025-09-17T06:42:26.427898+00:00",
+    "updated_at": "2025-09-17T06:42:27.040312+00:00"
+  },
+  {
+    "img_id": "7b6f1a7b-8943-48f0-a54c-a0fe97cbeb25",
+    "gcs_uri": "gs://dev-bucket-holo/images/7b6f1a7b-8943-48f0-a54c-a0fe97cbeb25.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 98182,
+    "sha256_hex": "6f2676494d9c9815c8b630340266f978c6644f15076ab1d36cf0f569d6988958",
+    "status": "stored",
+    "created_at": "2025-09-17T06:52:11.361426+00:00",
+    "updated_at": "2025-09-17T06:52:11.555482+00:00"
+  },
+  {
+    "img_id": "438177be-a121-48e2-a8b9-b604954dcf75",
+    "gcs_uri": "gs://dev-bucket-holo/images/438177be-a121-48e2-a8b9-b604954dcf75.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 51177,
+    "sha256_hex": "1754e3d356f2183ef97f841b726a030e3673ea610789e972c9e53b63f1015364",
+    "status": "stored",
+    "created_at": "2025-09-17T06:52:24.236123+00:00",
+    "updated_at": "2025-09-17T06:52:24.879679+00:00"
+  },
+  {
+    "img_id": "97474856-eedb-4db3-92e5-d904e4f3bfdc",
+    "gcs_uri": "gs://dev-bucket-holo/images/97474856-eedb-4db3-92e5-d904e4f3bfdc.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 51177,
+    "sha256_hex": "1754e3d356f2183ef97f841b726a030e3673ea610789e972c9e53b63f1015364",
+    "status": "stored",
+    "created_at": "2025-09-17T06:53:41.342459+00:00",
+    "updated_at": "2025-09-17T06:53:41.938450+00:00"
+  },
+  {
+    "img_id": "5c91d1ec-f651-482e-ab3d-1000daa0b232",
+    "gcs_uri": "gs://dev-bucket-holo/images/5c91d1ec-f651-482e-ab3d-1000daa0b232.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 51177,
+    "sha256_hex": "1754e3d356f2183ef97f841b726a030e3673ea610789e972c9e53b63f1015364",
+    "status": "stored",
+    "created_at": "2025-09-17T07:02:54.777181+00:00",
+    "updated_at": "2025-09-17T07:02:55.364560+00:00"
+  },
+  {
+    "img_id": "a2000930-ea62-4a7b-9f7d-7dae6882df5e",
+    "gcs_uri": "gs://dev-bucket-holo/images/a2000930-ea62-4a7b-9f7d-7dae6882df5e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 49973,
+    "sha256_hex": "1a84e14c5c732009dd47666e55b656a11dd437e256f2d188f6ac18b41d8f024a",
+    "status": "stored",
+    "created_at": "2025-09-17T07:12:39.181365+00:00",
+    "updated_at": "2025-09-17T07:12:39.642591+00:00"
+  },
+  {
+    "img_id": "14d513bd-1270-4363-82c5-3828ab339f78",
+    "gcs_uri": "gs://dev-bucket-holo/images/14d513bd-1270-4363-82c5-3828ab339f78.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 49973,
+    "sha256_hex": "1a84e14c5c732009dd47666e55b656a11dd437e256f2d188f6ac18b41d8f024a",
+    "status": "stored",
+    "created_at": "2025-09-17T07:14:02.006445+00:00",
+    "updated_at": "2025-09-17T07:14:02.351466+00:00"
+  },
+  {
+    "img_id": "e81bb40c-bb62-46e2-94dc-dbf41d6bf632",
+    "gcs_uri": "gs://dev-bucket-holo/images/e81bb40c-bb62-46e2-94dc-dbf41d6bf632.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 24439,
+    "sha256_hex": "1536b4d5822ecd58fcb2dc81cb8ce5823cf49439eb9583335a612c31264e72bd",
+    "status": "stored",
+    "created_at": "2025-09-17T07:42:49.662910+00:00",
+    "updated_at": "2025-09-17T07:42:50.343081+00:00"
+  },
+  {
+    "img_id": "69e4ce86-a6d7-47af-af2d-bf741b2a99e0",
+    "gcs_uri": "gs://dev-bucket-holo/images/69e4ce86-a6d7-47af-af2d-bf741b2a99e0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 18611,
+    "sha256_hex": "6d5f4a12d5c3d59ca29e908cd477f1bdcb2da6284e52eafcd398f56a3c414075",
+    "status": "stored",
+    "created_at": "2025-09-17T07:43:34.135042+00:00",
+    "updated_at": "2025-09-17T07:43:34.399404+00:00"
+  },
+  {
+    "img_id": "e69ccfd9-fdf9-4ff4-bf6c-2317cc63dc29",
+    "gcs_uri": "gs://dev-bucket-holo/images/e69ccfd9-fdf9-4ff4-bf6c-2317cc63dc29.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-17T07:48:47.235402+00:00",
+    "updated_at": "2025-09-17T07:48:48.188218+00:00"
+  },
+  {
+    "img_id": "0186bcd1-ddee-4dd9-9253-a8165c772606",
+    "gcs_uri": "gs://dev-bucket-holo/images/0186bcd1-ddee-4dd9-9253-a8165c772606.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 34305,
+    "sha256_hex": "77883a747a48fcc5bc87316a3bfc24f4381a9c8d3642f4fb4be2b797860fd6c5",
+    "status": "stored",
+    "created_at": "2025-09-17T08:15:48.709585+00:00",
+    "updated_at": "2025-09-17T08:15:48.918258+00:00"
+  },
+  {
+    "img_id": "0dabb9fc-12d6-4c03-804f-d053e91d8c8b",
+    "gcs_uri": "gs://dev-bucket-holo/images/0dabb9fc-12d6-4c03-804f-d053e91d8c8b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 74160,
+    "sha256_hex": "8cfc2eb73b3142d3d5ba8365a1369ef40f4657146265b9952c0b09fcbaa9575e",
+    "status": "stored",
+    "created_at": "2025-09-17T10:30:56.212675+00:00",
+    "updated_at": "2025-09-17T10:30:56.312390+00:00"
+  },
+  {
+    "img_id": "6cf4345f-5c86-4ba6-9103-dd54d154bb8d",
+    "gcs_uri": "gs://dev-bucket-holo/images/6cf4345f-5c86-4ba6-9103-dd54d154bb8d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 79948,
+    "sha256_hex": "b41ab4a73f814e5f4a7564a360ae7f879d7e7991ef22703b986eec3dcb45909b",
+    "status": "stored",
+    "created_at": "2025-09-17T10:11:09.366529+00:00",
+    "updated_at": "2025-09-17T10:11:09.571950+00:00"
+  },
+  {
+    "img_id": "a0fa9e7c-e18d-4b4e-8879-402fc1d3b89f",
+    "gcs_uri": "gs://dev-bucket-holo/images/a0fa9e7c-e18d-4b4e-8879-402fc1d3b89f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 56019,
+    "sha256_hex": "696a55ee03a90710cfaf06df14b810245bb3a3630157ca602cfef52f5b2673fd",
+    "status": "stored",
+    "created_at": "2025-09-17T10:14:48.162539+00:00",
+    "updated_at": "2025-09-17T10:14:48.240203+00:00"
+  },
+  {
+    "img_id": "e58b04c1-cb37-4fda-99d9-ced9f7ba22cc",
+    "gcs_uri": "gs://dev-bucket-holo/images/e58b04c1-cb37-4fda-99d9-ced9f7ba22cc.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 77395,
+    "sha256_hex": "cd250ccc25cf8362d2af608d17b85f0ccad4009a31cd3474f31d43832221e7f3",
+    "status": "stored",
+    "created_at": "2025-09-17T10:15:29.701227+00:00",
+    "updated_at": "2025-09-17T10:15:29.897956+00:00"
+  },
+  {
+    "img_id": "f44cdddc-5afc-475d-9889-c3f5d3f1fe37",
+    "gcs_uri": "gs://dev-bucket-holo/images/f44cdddc-5afc-475d-9889-c3f5d3f1fe37.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 16996,
+    "sha256_hex": "25d3e05c7b752770f8cffda225ce7dfc4a9f0a3b445313b19e243345caa285de",
+    "status": "stored",
+    "created_at": "2025-09-17T10:15:38.548816+00:00",
+    "updated_at": "2025-09-17T10:15:38.622797+00:00"
+  },
+  {
+    "img_id": "fd09d358-b396-4e96-9a25-3c79f0d690c7",
+    "gcs_uri": "gs://dev-bucket-holo/images/fd09d358-b396-4e96-9a25-3c79f0d690c7.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 66879,
+    "sha256_hex": "31be1f09740a0a8d90380a5bf259f5c7d5eb2d9e36f002ced96693bd5e2b6f55",
+    "status": "stored",
+    "created_at": "2025-09-17T10:21:52.107893+00:00",
+    "updated_at": "2025-09-17T10:21:52.233958+00:00"
+  },
+  {
+    "img_id": "4c852f0c-bdb2-4018-9875-c9a39d541c75",
+    "gcs_uri": "gs://dev-bucket-holo/images/4c852f0c-bdb2-4018-9875-c9a39d541c75.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 74160,
+    "sha256_hex": "8cfc2eb73b3142d3d5ba8365a1369ef40f4657146265b9952c0b09fcbaa9575e",
+    "status": "stored",
+    "created_at": "2025-09-17T10:30:29.614351+00:00",
+    "updated_at": "2025-09-17T10:30:29.788636+00:00"
+  },
+  {
+    "img_id": "ad6c45bb-e596-444a-a5e8-ec113ccf8f17",
+    "gcs_uri": "gs://dev-bucket-holo/images/ad6c45bb-e596-444a-a5e8-ec113ccf8f17.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 47826,
+    "sha256_hex": "f32a594864464a4b1134ec51c0d30e6d7b06ed7d7283cfdeb1a25cace2a8a0e1",
+    "status": "stored",
+    "created_at": "2025-09-17T10:31:49.119597+00:00",
+    "updated_at": "2025-09-17T10:31:49.283296+00:00"
+  },
+  {
+    "img_id": "42539ba2-de43-446e-a747-be24966a8a0b",
+    "gcs_uri": "gs://dev-bucket-holo/images/42539ba2-de43-446e-a747-be24966a8a0b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 81447,
+    "sha256_hex": "45d2c3a0fa8df46bd6ccfb30fb89295c19221eec80bf32b95ab1d43acd754bdd",
+    "status": "stored",
+    "created_at": "2025-09-17T10:33:57.125590+00:00",
+    "updated_at": "2025-09-17T10:33:57.213619+00:00"
+  },
+  {
+    "img_id": "b3758b4f-8904-4db3-9bc6-b53a21ad407f",
+    "gcs_uri": "gs://dev-bucket-holo/images/b3758b4f-8904-4db3-9bc6-b53a21ad407f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 54527,
+    "sha256_hex": "daa0eb55792d29f82eca615448bf43957991c95fc2ce386d07bf71635a50303d",
+    "status": "stored",
+    "created_at": "2025-09-17T10:36:39.789382+00:00",
+    "updated_at": "2025-09-17T10:36:39.929317+00:00"
+  },
+  {
+    "img_id": "6e76ec09-14df-44e6-aeff-a76c66836d5d",
+    "gcs_uri": "gs://dev-bucket-holo/images/6e76ec09-14df-44e6-aeff-a76c66836d5d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 67133,
+    "sha256_hex": "57e0ffe2040679add96dc1281f97929c2b85b08bb11ca77668a079c86e37e47d",
+    "status": "stored",
+    "created_at": "2025-09-17T10:37:43.056964+00:00",
+    "updated_at": "2025-09-17T10:37:43.208081+00:00"
+  },
+  {
+    "img_id": "388c8111-4070-4cc2-acff-5b2347b14eb1",
+    "gcs_uri": "gs://dev-bucket-holo/images/388c8111-4070-4cc2-acff-5b2347b14eb1.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 68425,
+    "sha256_hex": "12a7fb48102e0240c6bd404d997276195fd0890edf2650a90a9c4ab66a9cc1ee",
+    "status": "stored",
+    "created_at": "2025-09-17T10:38:54.252106+00:00",
+    "updated_at": "2025-09-17T10:38:54.450803+00:00"
+  },
+  {
+    "img_id": "155137c2-ef00-4245-b06a-a5f804c160f8",
+    "gcs_uri": "gs://dev-bucket-holo/images/155137c2-ef00-4245-b06a-a5f804c160f8.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 53387,
+    "sha256_hex": "ab2e30009911ffb98723229e3548f9cfdcb4de7b7dcffac8bf47b7c62ff3d6a8",
+    "status": "stored",
+    "created_at": "2025-09-17T10:41:14.355799+00:00",
+    "updated_at": "2025-09-17T10:41:14.454038+00:00"
+  },
+  {
+    "img_id": "134eed0e-16f8-44cc-a116-30016635e44b",
+    "gcs_uri": "gs://dev-bucket-holo/images/134eed0e-16f8-44cc-a116-30016635e44b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 52147,
+    "sha256_hex": "6e205e688a44bb3fa1e107f9e1ab166176333780ef53fa03375c31ff4a57020b",
+    "status": "stored",
+    "created_at": "2025-09-17T10:42:18.983088+00:00",
+    "updated_at": "2025-09-17T10:42:19.099676+00:00"
+  },
+  {
+    "img_id": "72c77dc4-cc11-4634-8a47-c6b66b209e88",
+    "gcs_uri": "gs://dev-bucket-holo/images/72c77dc4-cc11-4634-8a47-c6b66b209e88.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 102259,
+    "sha256_hex": "73c8a34a5d6734d4b388172e48d90f4c9c3fa7bc5b37ca5bd3b1a17a83605007",
+    "status": "stored",
+    "created_at": "2025-09-17T10:48:01.236780+00:00",
+    "updated_at": "2025-09-17T10:48:01.340965+00:00"
+  },
+  {
+    "img_id": "75eedbcb-2101-4455-b37f-f709105c58e0",
+    "gcs_uri": "gs://dev-bucket-holo/images/75eedbcb-2101-4455-b37f-f709105c58e0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 44064,
+    "sha256_hex": "54e6d1bae9e548b5b846ba8f90ba52a4bbf5f945e8e6014c28d097acdb753ec1",
+    "status": "stored",
+    "created_at": "2025-09-17T10:48:09.523470+00:00",
+    "updated_at": "2025-09-17T10:48:09.674462+00:00"
+  },
+  {
+    "img_id": "4f1cd739-8552-4581-aeec-b031ba0b39cd",
+    "gcs_uri": "gs://dev-bucket-holo/images/4f1cd739-8552-4581-aeec-b031ba0b39cd.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 53195,
+    "sha256_hex": "a4ee35152a82c4ea139f9113f3ad998fde37257a07dad10348de98d473b394da",
+    "status": "stored",
+    "created_at": "2025-09-17T10:48:37.326437+00:00",
+    "updated_at": "2025-09-17T10:48:37.422859+00:00"
+  },
+  {
+    "img_id": "a8160d82-7a00-42e0-ac41-87277f09d9b8",
+    "gcs_uri": "gs://dev-bucket-holo/images/a8160d82-7a00-42e0-ac41-87277f09d9b8.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 97005,
+    "sha256_hex": "60718be7ce1fc1b9be00d0aea63904b9b65439a24502b127efb3d0ac1d2be84a",
+    "status": "stored",
+    "created_at": "2025-09-17T10:54:07.445254+00:00",
+    "updated_at": "2025-09-17T10:54:07.588833+00:00"
+  },
+  {
+    "img_id": "7c3a9c72-8c08-4ffb-b9ab-f24a102ab907",
+    "gcs_uri": "gs://dev-bucket-holo/images/7c3a9c72-8c08-4ffb-b9ab-f24a102ab907.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 29061,
+    "sha256_hex": "2cdf7eb6d7fcb2b9aa23e982fc22937d46871a28fa87c1dfc7af29af6db57905",
+    "status": "stored",
+    "created_at": "2025-09-17T13:06:18.273516+00:00",
+    "updated_at": "2025-09-17T13:06:19.090235+00:00"
+  },
+  {
+    "img_id": "c05d0b4c-f008-497f-9767-92e99d8d4204",
+    "gcs_uri": "gs://dev-bucket-holo/images/c05d0b4c-f008-497f-9767-92e99d8d4204.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-17T13:08:40.551140+00:00",
+    "updated_at": "2025-09-17T13:08:40.800115+00:00"
+  },
+  {
+    "img_id": "1fc63d32-3ad0-4263-9165-94b28be6a928",
+    "gcs_uri": "gs://dev-bucket-holo/images/1fc63d32-3ad0-4263-9165-94b28be6a928.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-17T13:11:02.998813+00:00",
+    "updated_at": "2025-09-17T13:11:03.271154+00:00"
+  },
+  {
+    "img_id": "64c6ecbb-3942-41fe-9789-b26e4384bb76",
+    "gcs_uri": "gs://dev-bucket-holo/images/64c6ecbb-3942-41fe-9789-b26e4384bb76.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-17T13:11:42.650779+00:00",
+    "updated_at": "2025-09-17T13:11:43.116427+00:00"
+  },
+  {
+    "img_id": "f17eb440-4424-49e1-9578-ae7c8618dde3",
+    "gcs_uri": "gs://dev-bucket-holo/images/f17eb440-4424-49e1-9578-ae7c8618dde3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-17T13:12:20.478888+00:00",
+    "updated_at": "2025-09-17T13:12:20.940505+00:00"
+  },
+  {
+    "img_id": "3c4f80e1-8c8e-4bd6-898a-d0af34259877",
+    "gcs_uri": "gs://dev-bucket-holo/images/3c4f80e1-8c8e-4bd6-898a-d0af34259877.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 133622,
+    "sha256_hex": "34aa80e48cdc4b00f20ae1576892f484e52ccd3af4a5c302d266247a5e67cb0e",
+    "status": "stored",
+    "created_at": "2025-09-18T00:16:33.380155+00:00",
+    "updated_at": "2025-09-18T00:16:33.623747+00:00"
+  },
+  {
+    "img_id": "20626dda-2fa5-4318-ba46-d98ec85b1e6f",
+    "gcs_uri": "gs://dev-bucket-holo/images/20626dda-2fa5-4318-ba46-d98ec85b1e6f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 39992,
+    "sha256_hex": "d8d84418d3af5c537cf64d2f66e8ab82be483f1142fd59aea94347264ab4a7af",
+    "status": "stored",
+    "created_at": "2025-09-18T00:45:29.247974+00:00",
+    "updated_at": "2025-09-18T00:45:29.450819+00:00"
+  },
+  {
+    "img_id": "88af1b20-d853-46a6-bd51-e01bb3247b7a",
+    "gcs_uri": "gs://dev-bucket-holo/images/88af1b20-d853-46a6-bd51-e01bb3247b7a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 35181,
+    "sha256_hex": "911738da524471271c880e9a4d0cd58b3707f51e8b93ec32f42f741b0b0cfb2a",
+    "status": "stored",
+    "created_at": "2025-09-18T03:30:22.117829+00:00",
+    "updated_at": "2025-09-18T03:30:23.709867+00:00"
+  },
+  {
+    "img_id": "e98980c9-ec24-4f74-8bec-7da446a84757",
+    "gcs_uri": "gs://dev-bucket-holo/images/e98980c9-ec24-4f74-8bec-7da446a84757.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37194,
+    "sha256_hex": "86989dae4e156490967e52cfffa8682bccccae259e8a3eb15ae7f20250d5376d",
+    "status": "stored",
+    "created_at": "2025-09-18T07:48:03.771411+00:00",
+    "updated_at": "2025-09-18T07:48:03.948851+00:00"
+  },
+  {
+    "img_id": "bb67ffa8-4f2e-4fb3-b665-3572a85bfc9c",
+    "gcs_uri": "gs://dev-bucket-holo/images/bb67ffa8-4f2e-4fb3-b665-3572a85bfc9c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 73060,
+    "sha256_hex": "543bce7fe03ba72d4835d915986c8d949798463bfac1748dea5fd184643df98b",
+    "status": "stored",
+    "created_at": "2025-09-18T07:58:20.450265+00:00",
+    "updated_at": "2025-09-18T07:58:20.589801+00:00"
+  },
+  {
+    "img_id": "13109ee0-dd0d-4ee7-aeac-0e70a2fe76b0",
+    "gcs_uri": "gs://dev-bucket-holo/images/13109ee0-dd0d-4ee7-aeac-0e70a2fe76b0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 86694,
+    "sha256_hex": "43d50507eccb438aab63bb419a49380a4055b7dc1a0d554b6df6069b1955332a",
+    "status": "stored",
+    "created_at": "2025-09-18T07:58:41.253119+00:00",
+    "updated_at": "2025-09-18T07:58:41.343580+00:00"
+  },
+  {
+    "img_id": "36c344b7-0391-47ba-a31e-e7d50ff21875",
+    "gcs_uri": "gs://dev-bucket-holo/images/36c344b7-0391-47ba-a31e-e7d50ff21875.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 81740,
+    "sha256_hex": "5eb0a4a91b64d3bcc4dfce7a530a6f16575a7fb8cd31756dbc72bfb5b84dd278",
+    "status": "stored",
+    "created_at": "2025-09-18T08:13:23.403147+00:00",
+    "updated_at": "2025-09-18T08:13:23.611215+00:00"
+  },
+  {
+    "img_id": "ebc1635f-5151-4e90-8a75-38a9e9db2eb4",
+    "gcs_uri": "gs://dev-bucket-holo/images/ebc1635f-5151-4e90-8a75-38a9e9db2eb4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 33250,
+    "sha256_hex": "189d319b0a4a659354f61054532331894d8efd7bfa2484d87719e7a16bdbc106",
+    "status": "stored",
+    "created_at": "2025-09-18T08:26:53.662304+00:00",
+    "updated_at": "2025-09-18T08:26:54.685628+00:00"
+  },
+  {
+    "img_id": "729106b3-a0e4-460f-9790-a58c8711eb46",
+    "gcs_uri": "gs://dev-bucket-holo/images/729106b3-a0e4-460f-9790-a58c8711eb46.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 33250,
+    "sha256_hex": "189d319b0a4a659354f61054532331894d8efd7bfa2484d87719e7a16bdbc106",
+    "status": "stored",
+    "created_at": "2025-09-18T08:28:00.774003+00:00",
+    "updated_at": "2025-09-18T08:28:01.691785+00:00"
+  },
+  {
+    "img_id": "59942848-b66c-4fc3-bcf8-a357721200dc",
+    "gcs_uri": "gs://dev-bucket-holo/images/59942848-b66c-4fc3-bcf8-a357721200dc.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2312,
+    "sha256_hex": "2424a9607e335e49218a2e9e9d33b99fa2a728a99e837afddc7b0aff81a1b582",
+    "status": "stored",
+    "created_at": "2025-09-18T08:43:14.614604+00:00",
+    "updated_at": "2025-09-18T08:43:14.827245+00:00"
+  },
+  {
+    "img_id": "8da6ef80-03b1-4662-869c-23ddeb8aefd2",
+    "gcs_uri": "gs://dev-bucket-holo/images/8da6ef80-03b1-4662-869c-23ddeb8aefd2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-18T08:45:03.087647+00:00",
+    "updated_at": "2025-09-18T08:45:03.934304+00:00"
+  },
+  {
+    "img_id": "b4cba442-ed31-435b-b118-27d6a75e9239",
+    "gcs_uri": "gs://dev-bucket-holo/images/b4cba442-ed31-435b-b118-27d6a75e9239.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-18T08:46:18.351086+00:00",
+    "updated_at": "2025-09-18T08:46:18.677558+00:00"
+  },
+  {
+    "img_id": "c83c0ec7-3090-496f-a5bc-fb5772852c7b",
+    "gcs_uri": "gs://dev-bucket-holo/images/c83c0ec7-3090-496f-a5bc-fb5772852c7b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-18T08:49:10.218566+00:00",
+    "updated_at": "2025-09-18T08:49:10.527752+00:00"
+  },
+  {
+    "img_id": "f167c6b3-5f39-4967-9b03-bb9b027e4e5f",
+    "gcs_uri": "gs://dev-bucket-holo/images/f167c6b3-5f39-4967-9b03-bb9b027e4e5f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-18T08:51:44.369468+00:00",
+    "updated_at": "2025-09-18T08:51:44.691210+00:00"
+  },
+  {
+    "img_id": "bc23b30b-af10-42cc-9170-508555eb5513",
+    "gcs_uri": "gs://dev-bucket-holo/images/bc23b30b-af10-42cc-9170-508555eb5513.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27285,
+    "sha256_hex": "0b93be78f1c56f1f22594bc274b189588f1d34e4ee11d4b6dec3e09a089f1b45",
+    "status": "stored",
+    "created_at": "2025-09-18T08:53:48.141912+00:00",
+    "updated_at": "2025-09-18T08:53:48.465221+00:00"
+  },
+  {
+    "img_id": "6fd21e0b-84a3-4d78-b43f-d28a11c7e214",
+    "gcs_uri": "gs://dev-bucket-holo/images/6fd21e0b-84a3-4d78-b43f-d28a11c7e214.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27285,
+    "sha256_hex": "0b93be78f1c56f1f22594bc274b189588f1d34e4ee11d4b6dec3e09a089f1b45",
+    "status": "stored",
+    "created_at": "2025-09-18T08:56:38.756327+00:00",
+    "updated_at": "2025-09-18T08:56:39.057249+00:00"
+  },
+  {
+    "img_id": "f7dd587a-80d4-484d-8e06-491060ec070c",
+    "gcs_uri": "gs://dev-bucket-holo/images/f7dd587a-80d4-484d-8e06-491060ec070c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27285,
+    "sha256_hex": "0b93be78f1c56f1f22594bc274b189588f1d34e4ee11d4b6dec3e09a089f1b45",
+    "status": "stored",
+    "created_at": "2025-09-18T08:57:22.866777+00:00",
+    "updated_at": "2025-09-18T08:57:23.188136+00:00"
+  },
+  {
+    "img_id": "220bdb6d-780b-4248-bf75-4ce80a73dcab",
+    "gcs_uri": "gs://dev-bucket-holo/images/220bdb6d-780b-4248-bf75-4ce80a73dcab.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27285,
+    "sha256_hex": "0b93be78f1c56f1f22594bc274b189588f1d34e4ee11d4b6dec3e09a089f1b45",
+    "status": "stored",
+    "created_at": "2025-09-18T08:59:41.550612+00:00",
+    "updated_at": "2025-09-18T08:59:41.846381+00:00"
+  },
+  {
+    "img_id": "47b61ba6-1020-49ec-bbf1-b32acada824a",
+    "gcs_uri": "gs://dev-bucket-holo/images/47b61ba6-1020-49ec-bbf1-b32acada824a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 22955,
+    "sha256_hex": "5294a51abe68c1f2ccff25f2deb551be85fab15d199ed183ac4ca5a65867305e",
+    "status": "stored",
+    "created_at": "2025-09-18T09:08:09.987793+00:00",
+    "updated_at": "2025-09-18T09:08:10.538046+00:00"
+  },
+  {
+    "img_id": "70a51fb5-e79d-4c33-ac68-a43af5a9e31a",
+    "gcs_uri": "gs://dev-bucket-holo/images/70a51fb5-e79d-4c33-ac68-a43af5a9e31a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 19846,
+    "sha256_hex": "54c07029a0089a07ec7615de2d35fabb0e40640b4a08501258bbc6b2e6ee2bfd",
+    "status": "stored",
+    "created_at": "2025-09-18T09:09:10.125893+00:00",
+    "updated_at": "2025-09-18T09:09:10.453218+00:00"
+  },
+  {
+    "img_id": "9036c0f7-558e-4fb2-86d7-4ba628efa9cd",
+    "gcs_uri": "gs://dev-bucket-holo/images/9036c0f7-558e-4fb2-86d7-4ba628efa9cd.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 20030,
+    "sha256_hex": "d19f706d051dfc9b50230eae2c4673038e4297d139aa5123a608f6dbaf022394",
+    "status": "stored",
+    "created_at": "2025-09-18T09:24:23.897423+00:00",
+    "updated_at": "2025-09-18T09:24:24.582915+00:00"
+  },
+  {
+    "img_id": "7af6129e-0f1c-4fba-9ec5-eec66acd098e",
+    "gcs_uri": "gs://dev-bucket-holo/images/7af6129e-0f1c-4fba-9ec5-eec66acd098e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 15210,
+    "sha256_hex": "2ddea191b1aad8686cdbd1c9424cd63a30ee75f23f35be7bfa3907041c6c2214",
+    "status": "stored",
+    "created_at": "2025-09-18T09:54:48.387999+00:00",
+    "updated_at": "2025-09-18T09:54:49.682154+00:00"
+  },
+  {
+    "img_id": "79d99bf8-6e47-4554-b33e-254f7e110ff2",
+    "gcs_uri": "gs://dev-bucket-holo/images/79d99bf8-6e47-4554-b33e-254f7e110ff2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 25286,
+    "sha256_hex": "4d52a7ababed2ab18caa30b12d9a016eb4c912f91c1d0968fe423d5071aa28ba",
+    "status": "stored",
+    "created_at": "2025-09-18T10:06:25.571002+00:00",
+    "updated_at": "2025-09-18T10:06:26.453042+00:00"
+  },
+  {
+    "img_id": "a242fa25-4e3e-4f07-b040-19f250df445e",
+    "gcs_uri": "gs://dev-bucket-holo/images/a242fa25-4e3e-4f07-b040-19f250df445e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 23270,
+    "sha256_hex": "22c3f899499143db122194055d8672e1cbafb7ee4cc101375b6a28e41733f57e",
+    "status": "stored",
+    "created_at": "2025-09-18T10:08:56.132960+00:00",
+    "updated_at": "2025-09-18T10:08:56.590806+00:00"
+  },
+  {
+    "img_id": "423c0f25-9459-4a65-8e14-f44aa89f3188",
+    "gcs_uri": "gs://dev-bucket-holo/images/423c0f25-9459-4a65-8e14-f44aa89f3188.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 12788,
+    "sha256_hex": "a1b735eb548143604e08cd8ce0109c8cc86ba5782269497dd3fec1373cbaa91b",
+    "status": "stored",
+    "created_at": "2025-09-18T10:10:33.920869+00:00",
+    "updated_at": "2025-09-18T10:10:34.532703+00:00"
+  },
+  {
+    "img_id": "8840ccdf-6888-4a6c-b3af-ed0288d46465",
+    "gcs_uri": "gs://dev-bucket-holo/images/8840ccdf-6888-4a6c-b3af-ed0288d46465.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 12788,
+    "sha256_hex": "a1b735eb548143604e08cd8ce0109c8cc86ba5782269497dd3fec1373cbaa91b",
+    "status": "stored",
+    "created_at": "2025-09-18T10:11:54.821976+00:00",
+    "updated_at": "2025-09-18T10:11:55.169447+00:00"
+  },
+  {
+    "img_id": "c7766aa0-06de-40b2-863b-3b2366547346",
+    "gcs_uri": "gs://dev-bucket-holo/images/c7766aa0-06de-40b2-863b-3b2366547346.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 12788,
+    "sha256_hex": "a1b735eb548143604e08cd8ce0109c8cc86ba5782269497dd3fec1373cbaa91b",
+    "status": "stored",
+    "created_at": "2025-09-18T10:17:34.691397+00:00",
+    "updated_at": "2025-09-18T10:17:35.333214+00:00"
+  },
+  {
+    "img_id": "9ff75f1d-6614-47f6-94c3-fe3203cc1d37",
+    "gcs_uri": "gs://dev-bucket-holo/images/9ff75f1d-6614-47f6-94c3-fe3203cc1d37.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 25131,
+    "sha256_hex": "5e73d3eee2816872f4e42419dd52e03409c8da92f398e3733c37b1f2ece70576",
+    "status": "stored",
+    "created_at": "2025-09-18T10:17:42.438363+00:00",
+    "updated_at": "2025-09-18T10:17:42.923053+00:00"
+  },
+  {
+    "img_id": "1600095c-de3d-42cc-ab3b-7c2761c3cd16",
+    "gcs_uri": "gs://dev-bucket-holo/images/1600095c-de3d-42cc-ab3b-7c2761c3cd16.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 12788,
+    "sha256_hex": "a1b735eb548143604e08cd8ce0109c8cc86ba5782269497dd3fec1373cbaa91b",
+    "status": "stored",
+    "created_at": "2025-09-18T10:20:13.218209+00:00",
+    "updated_at": "2025-09-18T10:20:13.556207+00:00"
+  },
+  {
+    "img_id": "524fbd67-35da-43e4-a870-2bf35d12ab5d",
+    "gcs_uri": "gs://dev-bucket-holo/images/524fbd67-35da-43e4-a870-2bf35d12ab5d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 25131,
+    "sha256_hex": "5e73d3eee2816872f4e42419dd52e03409c8da92f398e3733c37b1f2ece70576",
+    "status": "stored",
+    "created_at": "2025-09-18T10:20:27.160386+00:00",
+    "updated_at": "2025-09-18T10:20:27.440524+00:00"
+  },
+  {
+    "img_id": "5c6c3732-50e0-43e4-a982-5af5d074a159",
+    "gcs_uri": "gs://dev-bucket-holo/images/5c6c3732-50e0-43e4-a982-5af5d074a159.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 29083,
+    "sha256_hex": "90bd390935f13dd4f013b4a78dcdd17a1adf3f03bd6fd48b12ede25030a873fe",
+    "status": "stored",
+    "created_at": "2025-09-18T10:23:36.226538+00:00",
+    "updated_at": "2025-09-18T10:23:36.532929+00:00"
+  },
+  {
+    "img_id": "29fa8d33-2b06-4109-ba38-634a8560c1e3",
+    "gcs_uri": "gs://dev-bucket-holo/images/29fa8d33-2b06-4109-ba38-634a8560c1e3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 24876,
+    "sha256_hex": "2755ceb05731f8395a9e86304a15f43280394491d0b41d99a49a6713c9e7db6b",
+    "status": "stored",
+    "created_at": "2025-09-18T10:44:29.136248+00:00",
+    "updated_at": "2025-09-18T10:44:29.873124+00:00"
+  },
+  {
+    "img_id": "6e369b97-8bc5-492f-b373-a6cddf0b465f",
+    "gcs_uri": "gs://dev-bucket-holo/images/6e369b97-8bc5-492f-b373-a6cddf0b465f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 24747,
+    "sha256_hex": "6a8ad89985cf1350f9f1473d65c3c452288825b99f0c0aa8bab2c9338b0e45af",
+    "status": "stored",
+    "created_at": "2025-09-18T10:47:00.774719+00:00",
+    "updated_at": "2025-09-18T10:47:01.301867+00:00"
+  },
+  {
+    "img_id": "bdeaa3f9-dda2-4f7f-b056-6b09fb0af621",
+    "gcs_uri": "gs://dev-bucket-holo/images/bdeaa3f9-dda2-4f7f-b056-6b09fb0af621.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 44231,
+    "sha256_hex": "4a26657c8c34af7b82b4bf50aa04303a000bc323c863a4f39c9043fab5596336",
+    "status": "stored",
+    "created_at": "2025-09-18T11:42:14.446256+00:00",
+    "updated_at": "2025-09-18T11:42:14.623088+00:00"
+  },
+  {
+    "img_id": "f64faff9-fe1a-4fc9-9ff7-393079f3c787",
+    "gcs_uri": "gs://dev-bucket-holo/images/f64faff9-fe1a-4fc9-9ff7-393079f3c787.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 96409,
+    "sha256_hex": "75f2197c87ca99a59432a71d3b6dc83f1156fe07dfb92d54750e2500dc137162",
+    "status": "stored",
+    "created_at": "2025-09-18T11:44:48.808846+00:00",
+    "updated_at": "2025-09-18T11:44:48.961891+00:00"
+  },
+  {
+    "img_id": "1660fb27-f3db-492f-8cb5-30fd2f2628af",
+    "gcs_uri": "gs://dev-bucket-holo/images/1660fb27-f3db-492f-8cb5-30fd2f2628af.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 9572,
+    "sha256_hex": "d87434470add692c016ee744499218a6a5f8d99c148e2735f9876718305daba0",
+    "status": "stored",
+    "created_at": "2025-09-18T14:35:14.085215+00:00",
+    "updated_at": "2025-09-18T14:35:14.261070+00:00"
+  },
+  {
+    "img_id": "ef67a554-9a27-4343-9262-af9db4aefc93",
+    "gcs_uri": "gs://dev-bucket-holo/images/ef67a554-9a27-4343-9262-af9db4aefc93.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 28533,
+    "sha256_hex": "73aa2bba7b25b399860195668bf64d359f9132024c886b9e8fe8eeb1a16f5a92",
+    "status": "stored",
+    "created_at": "2025-09-18T14:38:56.048107+00:00",
+    "updated_at": "2025-09-18T14:38:56.125985+00:00"
+  },
+  {
+    "img_id": "a4e660f9-7ee7-4439-84e1-82903872809e",
+    "gcs_uri": "gs://dev-bucket-holo/images/a4e660f9-7ee7-4439-84e1-82903872809e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 10302,
+    "sha256_hex": "b378e34579acbaa5bb73dce4eeba1277338cbbdbc261ad2182c9a167716c7881",
+    "status": "stored",
+    "created_at": "2025-09-18T14:39:07.770938+00:00",
+    "updated_at": "2025-09-18T14:39:07.920216+00:00"
+  },
+  {
+    "img_id": "4d511f72-f16a-4253-9e6f-b251b167dd0c",
+    "gcs_uri": "gs://dev-bucket-holo/images/4d511f72-f16a-4253-9e6f-b251b167dd0c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 633,
+    "sha256_hex": "3941d704b433e96cae2dff3b129be5394e9d14e91441a2e97d9feeaa8f8e0127",
+    "status": "stored",
+    "created_at": "2025-09-18T14:56:54.803755+00:00",
+    "updated_at": "2025-09-18T14:56:54.947131+00:00"
+  },
+  {
+    "img_id": "a5812a19-e6d7-4f9a-a5d2-c052a26a9744",
+    "gcs_uri": "gs://dev-bucket-holo/images/a5812a19-e6d7-4f9a-a5d2-c052a26a9744.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 633,
+    "sha256_hex": "3941d704b433e96cae2dff3b129be5394e9d14e91441a2e97d9feeaa8f8e0127",
+    "status": "stored",
+    "created_at": "2025-09-18T14:57:12.558216+00:00",
+    "updated_at": "2025-09-18T14:57:12.636471+00:00"
+  },
+  {
+    "img_id": "2ce9be40-616b-4408-b029-372ef5a0b91b",
+    "gcs_uri": "gs://dev-bucket-holo/images/2ce9be40-616b-4408-b029-372ef5a0b91b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 21930,
+    "sha256_hex": "ec2b91c6175226c03281e830dc7b9cdbdb9f603c54027c3c60d416bd9ad9bde7",
+    "status": "stored",
+    "created_at": "2025-09-18T16:20:11.947403+00:00",
+    "updated_at": "2025-09-18T16:20:12.130031+00:00"
+  },
+  {
+    "img_id": "40a54150-027d-41bd-8de2-d2711450b547",
+    "gcs_uri": "gs://dev-bucket-holo/images/40a54150-027d-41bd-8de2-d2711450b547.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 62531,
+    "sha256_hex": "4acbc7d70988444328312d739e54e0e9d88533672004162812a062a7857f0eff",
+    "status": "stored",
+    "created_at": "2025-09-19T01:04:32.519013+00:00",
+    "updated_at": "2025-09-19T01:04:32.731368+00:00"
+  },
+  {
+    "img_id": "4791c45c-bb5f-4d02-be14-189530263c2c",
+    "gcs_uri": "gs://dev-bucket-holo/images/4791c45c-bb5f-4d02-be14-189530263c2c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 62531,
+    "sha256_hex": "4acbc7d70988444328312d739e54e0e9d88533672004162812a062a7857f0eff",
+    "status": "stored",
+    "created_at": "2025-09-19T01:05:24.828057+00:00",
+    "updated_at": "2025-09-19T01:05:24.942277+00:00"
+  },
+  {
+    "img_id": "e6ab4295-f6e8-42e3-b335-2087c7b885f5",
+    "gcs_uri": "gs://dev-bucket-holo/images/e6ab4295-f6e8-42e3-b335-2087c7b885f5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 86298,
+    "sha256_hex": "4545023809895f2686991f6963f90fdea54bd9f5f2b4d84185cca77f3183b2df",
+    "status": "stored",
+    "created_at": "2025-09-19T01:09:09.107563+00:00",
+    "updated_at": "2025-09-19T01:09:09.212425+00:00"
+  },
+  {
+    "img_id": "321396d9-588b-41f8-8f6b-24020062a2b5",
+    "gcs_uri": "gs://dev-bucket-holo/images/321396d9-588b-41f8-8f6b-24020062a2b5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27586,
+    "sha256_hex": "e208b835cc3bffe69b3776f1637c48514892759537f3a0ab0520a688488acee1",
+    "status": "stored",
+    "created_at": "2025-09-19T02:34:26.775088+00:00",
+    "updated_at": "2025-09-19T02:34:28.282388+00:00"
+  },
+  {
+    "img_id": "df3fffce-d30a-4f74-b7f7-0c4c8b9520df",
+    "gcs_uri": "gs://dev-bucket-holo/images/df3fffce-d30a-4f74-b7f7-0c4c8b9520df.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27586,
+    "sha256_hex": "e208b835cc3bffe69b3776f1637c48514892759537f3a0ab0520a688488acee1",
+    "status": "stored",
+    "created_at": "2025-09-19T02:36:12.087330+00:00",
+    "updated_at": "2025-09-19T02:36:13.561140+00:00"
+  },
+  {
+    "img_id": "4e334e07-2974-46a8-ac30-5d4c0943ed91",
+    "gcs_uri": "gs://dev-bucket-holo/images/4e334e07-2974-46a8-ac30-5d4c0943ed91.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27586,
+    "sha256_hex": "e208b835cc3bffe69b3776f1637c48514892759537f3a0ab0520a688488acee1",
+    "status": "stored",
+    "created_at": "2025-09-19T02:43:43.885511+00:00",
+    "updated_at": "2025-09-19T02:43:45.014312+00:00"
+  },
+  {
+    "img_id": "e38ac8e5-d78b-4300-bfa7-482882c33370",
+    "gcs_uri": "gs://dev-bucket-holo/images/e38ac8e5-d78b-4300-bfa7-482882c33370.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 30126,
+    "sha256_hex": "ab682bb3422d1296cb4b1f07688be0a6d28bcac3f0f01dc09ca2707e5cf455b2",
+    "status": "stored",
+    "created_at": "2025-09-19T02:44:46.247566+00:00",
+    "updated_at": "2025-09-19T02:44:55.874400+00:00"
+  },
+  {
+    "img_id": "0c6b65c5-72d7-4851-a829-bd611f9c41a7",
+    "gcs_uri": "gs://dev-bucket-holo/images/0c6b65c5-72d7-4851-a829-bd611f9c41a7.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:10:29.492277+00:00",
+    "updated_at": "2025-09-19T03:10:31.432121+00:00"
+  },
+  {
+    "img_id": "f6caef98-0da7-4dd5-8891-faa8df2eec42",
+    "gcs_uri": "gs://dev-bucket-holo/images/f6caef98-0da7-4dd5-8891-faa8df2eec42.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 1755,
+    "sha256_hex": "68d186b76d023a372713512d83900bc599e08910c781a7892e6210a448ffce3b",
+    "status": "stored",
+    "created_at": "2025-09-19T02:47:40.162401+00:00",
+    "updated_at": "2025-09-19T02:47:41.437143+00:00"
+  },
+  {
+    "img_id": "15e1acb9-4406-46f8-bf4d-2fdadd06a532",
+    "gcs_uri": "gs://dev-bucket-holo/images/15e1acb9-4406-46f8-bf4d-2fdadd06a532.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 41912,
+    "sha256_hex": "9a2cee3582b36e724da3ddd8ace64adb0f213e75f7abe844e0bf21a25f963fc8",
+    "status": "stored",
+    "created_at": "2025-09-19T02:53:39.553227+00:00",
+    "updated_at": "2025-09-19T02:53:39.778312+00:00"
+  },
+  {
+    "img_id": "1828acd1-b363-4f32-83a9-594f8abe5650",
+    "gcs_uri": "gs://dev-bucket-holo/images/1828acd1-b363-4f32-83a9-594f8abe5650.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 65594,
+    "sha256_hex": "660511fd95b7c33a0d3c0f8b755747ad9f28f7002d1102d807a3b38bbef1ff5f",
+    "status": "stored",
+    "created_at": "2025-09-19T03:11:29.171286+00:00",
+    "updated_at": "2025-09-19T03:11:29.358933+00:00"
+  },
+  {
+    "img_id": "c23dbdb0-6c7c-4e5c-93e0-a19d413019b2",
+    "gcs_uri": "gs://dev-bucket-holo/images/c23dbdb0-6c7c-4e5c-93e0-a19d413019b2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:14:15.176924+00:00",
+    "updated_at": "2025-09-19T03:14:15.977671+00:00"
+  },
+  {
+    "img_id": "41e1fc2d-fc63-4691-ae0d-fe6c95cd17fb",
+    "gcs_uri": "gs://dev-bucket-holo/images/41e1fc2d-fc63-4691-ae0d-fe6c95cd17fb.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:16:01.390248+00:00",
+    "updated_at": "2025-09-19T03:16:05.538233+00:00"
+  },
+  {
+    "img_id": "b4e1942d-e582-404f-be5d-3dad7946155a",
+    "gcs_uri": "gs://dev-bucket-holo/images/b4e1942d-e582-404f-be5d-3dad7946155a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:20:34.805368+00:00",
+    "updated_at": "2025-09-19T03:20:35.858713+00:00"
+  },
+  {
+    "img_id": "dd4a8565-3b96-462e-9596-19e121af9b91",
+    "gcs_uri": "gs://dev-bucket-holo/images/dd4a8565-3b96-462e-9596-19e121af9b91.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:23:59.226223+00:00",
+    "updated_at": "2025-09-19T03:23:59.930400+00:00"
+  },
+  {
+    "img_id": "e97ca9a1-589d-4ac8-9750-4519af27086b",
+    "gcs_uri": "gs://dev-bucket-holo/images/e97ca9a1-589d-4ac8-9750-4519af27086b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 72174,
+    "sha256_hex": "442d4abbe39328555969ad3ac433354bda253a336adfb4eaa206f47569694a0e",
+    "status": "stored",
+    "created_at": "2025-09-19T03:25:27.834467+00:00",
+    "updated_at": "2025-09-19T03:25:28.002200+00:00"
+  },
+  {
+    "img_id": "956e5000-aec8-44a7-a6fe-40548157cdc6",
+    "gcs_uri": "gs://dev-bucket-holo/images/956e5000-aec8-44a7-a6fe-40548157cdc6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:25:33.752685+00:00",
+    "updated_at": "2025-09-19T03:25:34.519474+00:00"
+  },
+  {
+    "img_id": "f8de3de0-f001-4c7e-9fe1-68f2ce2ea3b2",
+    "gcs_uri": "gs://dev-bucket-holo/images/f8de3de0-f001-4c7e-9fe1-68f2ce2ea3b2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 72174,
+    "sha256_hex": "442d4abbe39328555969ad3ac433354bda253a336adfb4eaa206f47569694a0e",
+    "status": "stored",
+    "created_at": "2025-09-19T03:26:30.471888+00:00",
+    "updated_at": "2025-09-19T03:26:30.671277+00:00"
+  },
+  {
+    "img_id": "cb65b8c0-4faf-42f1-b2ab-4786414d78b9",
+    "gcs_uri": "gs://dev-bucket-holo/images/cb65b8c0-4faf-42f1-b2ab-4786414d78b9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 53093,
+    "sha256_hex": "fe2a91eb675a6a15dd8d957c8e9e2c4a5c0711c1daaf3f52d90f8a2e394ec0d9",
+    "status": "stored",
+    "created_at": "2025-09-19T03:28:01.832918+00:00",
+    "updated_at": "2025-09-19T03:28:02.007327+00:00"
+  },
+  {
+    "img_id": "0e34ee37-04b5-4c5b-9be6-7a8d44595978",
+    "gcs_uri": "gs://dev-bucket-holo/images/0e34ee37-04b5-4c5b-9be6-7a8d44595978.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:28:40.371869+00:00",
+    "updated_at": "2025-09-19T03:28:41.075479+00:00"
+  },
+  {
+    "img_id": "d0ba4dcb-3160-4ee8-bd2b-b9f2f7f35f74",
+    "gcs_uri": "gs://dev-bucket-holo/images/d0ba4dcb-3160-4ee8-bd2b-b9f2f7f35f74.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:31:21.682253+00:00",
+    "updated_at": "2025-09-19T03:31:22.389304+00:00"
+  },
+  {
+    "img_id": "578bc683-5aaf-47a0-a468-e09559292ef3",
+    "gcs_uri": "gs://dev-bucket-holo/images/578bc683-5aaf-47a0-a468-e09559292ef3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 109451,
+    "sha256_hex": "0aa95c43f47001e85a86b398645495551500323d52d1da0935645f8c947b7853",
+    "status": "stored",
+    "created_at": "2025-09-19T03:32:34.469381+00:00",
+    "updated_at": "2025-09-19T03:32:34.651143+00:00"
+  },
+  {
+    "img_id": "f64b4f5d-cd77-4f1b-a21a-35dedae7786c",
+    "gcs_uri": "gs://dev-bucket-holo/images/f64b4f5d-cd77-4f1b-a21a-35dedae7786c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:33:51.330669+00:00",
+    "updated_at": "2025-09-19T03:33:52.123500+00:00"
+  },
+  {
+    "img_id": "24c3060c-78cc-4d29-aefb-eaf55c119405",
+    "gcs_uri": "gs://dev-bucket-holo/images/24c3060c-78cc-4d29-aefb-eaf55c119405.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T03:52:18.519382+00:00",
+    "updated_at": "2025-09-19T03:52:20.092157+00:00"
+  },
+  {
+    "img_id": "485bc167-802a-4f02-849b-73899597b109",
+    "gcs_uri": "gs://dev-bucket-holo/images/485bc167-802a-4f02-849b-73899597b109.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 101614,
+    "sha256_hex": "4a7ee127e43681fd0c72df9e628b11345637458873c45cc14da8fa626cc8120a",
+    "status": "stored",
+    "created_at": "2025-09-19T03:55:33.418459+00:00",
+    "updated_at": "2025-09-19T03:55:33.594603+00:00"
+  },
+  {
+    "img_id": "adbcd749-10dc-469a-9a55-1434615cdba0",
+    "gcs_uri": "gs://dev-bucket-holo/images/adbcd749-10dc-469a-9a55-1434615cdba0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 85862,
+    "sha256_hex": "9b7083b70215feaa21ee605cb36281577b29023c11412c40810c7ede8df9b309",
+    "status": "stored",
+    "created_at": "2025-09-19T03:58:29.835677+00:00",
+    "updated_at": "2025-09-19T03:58:29.930046+00:00"
+  },
+  {
+    "img_id": "4a46bfa7-aa88-4b5d-b4fa-0031a5986609",
+    "gcs_uri": "gs://dev-bucket-holo/images/4a46bfa7-aa88-4b5d-b4fa-0031a5986609.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 105715,
+    "sha256_hex": "b8c81e3c5c778b5b1199a654df3dd17f75044c713a40e6cf628442b287d5e953",
+    "status": "stored",
+    "created_at": "2025-09-19T04:07:24.888036+00:00",
+    "updated_at": "2025-09-19T04:07:25.059953+00:00"
+  },
+  {
+    "img_id": "dd538fa7-20a7-4f8f-8b7f-400f5d3ec58d",
+    "gcs_uri": "gs://dev-bucket-holo/images/dd538fa7-20a7-4f8f-8b7f-400f5d3ec58d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 57070,
+    "sha256_hex": "5a9c955602b7908592fd8a9207abf0b17655d1484695f16f22a1bb7d5e11a45f",
+    "status": "stored",
+    "created_at": "2025-09-19T04:07:28.249089+00:00",
+    "updated_at": "2025-09-19T04:07:28.406033+00:00"
+  },
+  {
+    "img_id": "46ccf4df-c864-474c-87d0-e93fa308269d",
+    "gcs_uri": "gs://dev-bucket-holo/images/46ccf4df-c864-474c-87d0-e93fa308269d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 133119,
+    "sha256_hex": "2ca34faab3475be177913ed0131da2bd9ebb7f4d018cba6ebb84dd08cdd88ae5",
+    "status": "stored",
+    "created_at": "2025-09-19T04:07:40.391308+00:00",
+    "updated_at": "2025-09-19T04:07:40.478068+00:00"
+  },
+  {
+    "img_id": "d408549d-f230-4f83-816c-7d176f151551",
+    "gcs_uri": "gs://dev-bucket-holo/images/d408549d-f230-4f83-816c-7d176f151551.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 133119,
+    "sha256_hex": "2ca34faab3475be177913ed0131da2bd9ebb7f4d018cba6ebb84dd08cdd88ae5",
+    "status": "stored",
+    "created_at": "2025-09-19T04:08:51.279783+00:00",
+    "updated_at": "2025-09-19T04:08:51.399741+00:00"
+  },
+  {
+    "img_id": "b662a947-cf22-459d-8c62-ed18f2c0ef25",
+    "gcs_uri": "gs://dev-bucket-holo/images/b662a947-cf22-459d-8c62-ed18f2c0ef25.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 96271,
+    "sha256_hex": "b1b2319e2d4130b1357eae78ae6baea92fa6bd711dad2ece21f87e52b903f88d",
+    "status": "stored",
+    "created_at": "2025-09-19T04:10:28.572412+00:00",
+    "updated_at": "2025-09-19T04:10:28.676197+00:00"
+  },
+  {
+    "img_id": "0aec8f28-efe9-427e-b785-eed85b6d1600",
+    "gcs_uri": "gs://dev-bucket-holo/images/0aec8f28-efe9-427e-b785-eed85b6d1600.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T04:10:46.710359+00:00",
+    "updated_at": "2025-09-19T04:11:10.322112+00:00"
+  },
+  {
+    "img_id": "4870b52e-2f58-45f5-a0b7-53be41bab67c",
+    "gcs_uri": "gs://dev-bucket-holo/images/4870b52e-2f58-45f5-a0b7-53be41bab67c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 105390,
+    "sha256_hex": "a5a5150e6bc3ee1c3486b94d6257bf4ac97f53f56261ab80411d775b40fe972b",
+    "status": "stored",
+    "created_at": "2025-09-19T04:15:52.384145+00:00",
+    "updated_at": "2025-09-19T04:15:52.540953+00:00"
+  },
+  {
+    "img_id": "18bb319d-6268-4186-bda4-127e327ceb09",
+    "gcs_uri": "gs://dev-bucket-holo/images/18bb319d-6268-4186-bda4-127e327ceb09.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 103556,
+    "sha256_hex": "4c53045576aca0621c0cc0ccb53923bbf85de5829467441ce79262efb1e7f0e7",
+    "status": "stored",
+    "created_at": "2025-09-19T04:21:24.773956+00:00",
+    "updated_at": "2025-09-19T04:21:24.947368+00:00"
+  },
+  {
+    "img_id": "f00f8cee-fa74-4c42-b31b-89609dd463d8",
+    "gcs_uri": "gs://dev-bucket-holo/images/f00f8cee-fa74-4c42-b31b-89609dd463d8.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 74507,
+    "sha256_hex": "de7fcf6f13c6ecfc4bcb901a75490e43dc8dfeb8d5c52b9d77f23cf79c5314a3",
+    "status": "stored",
+    "created_at": "2025-09-19T04:26:35.724403+00:00",
+    "updated_at": "2025-09-19T04:26:35.908740+00:00"
+  },
+  {
+    "img_id": "a13585f8-f624-41a0-a191-cbfb59df1810",
+    "gcs_uri": "gs://dev-bucket-holo/images/a13585f8-f624-41a0-a191-cbfb59df1810.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 70599,
+    "sha256_hex": "f4988437396b5d76872fb983df3f70ca99c9dc9d57e75c0402b55bff9fde5ea6",
+    "status": "stored",
+    "created_at": "2025-09-19T04:40:21.088147+00:00",
+    "updated_at": "2025-09-19T04:40:21.258968+00:00"
+  },
+  {
+    "img_id": "aa3efaf0-3643-4eac-8fdf-69f2c1be0d69",
+    "gcs_uri": "gs://dev-bucket-holo/images/aa3efaf0-3643-4eac-8fdf-69f2c1be0d69.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 60296,
+    "sha256_hex": "32a86c2efd19e0b51b02909d6f5cf92d7f3848e55a1c4b06f6b7ff9543b34529",
+    "status": "stored",
+    "created_at": "2025-09-19T04:53:25.932381+00:00",
+    "updated_at": "2025-09-19T04:53:26.116010+00:00"
+  },
+  {
+    "img_id": "bed10928-a537-4aff-8da5-b354555b1b5a",
+    "gcs_uri": "gs://dev-bucket-holo/images/bed10928-a537-4aff-8da5-b354555b1b5a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 60152,
+    "sha256_hex": "f3b38a0e6618b893afa1b9288f21c416fd5d801e1a0fd9d1a22c331a161e49f1",
+    "status": "stored",
+    "created_at": "2025-09-19T05:02:19.595336+00:00",
+    "updated_at": "2025-09-19T05:02:19.799340+00:00"
+  },
+  {
+    "img_id": "5c93ccd5-8c8b-4792-b99f-b454a755c60f",
+    "gcs_uri": "gs://dev-bucket-holo/images/5c93ccd5-8c8b-4792-b99f-b454a755c60f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 96996,
+    "sha256_hex": "c5d15309133949f5066f1236682dc714259cd6cb8b41c6db8e57be664ae243d8",
+    "status": "stored",
+    "created_at": "2025-09-19T05:07:32.699306+00:00",
+    "updated_at": "2025-09-19T05:07:32.866050+00:00"
+  },
+  {
+    "img_id": "eac20441-bcfb-4234-a566-7913a02c86e5",
+    "gcs_uri": "gs://dev-bucket-holo/images/eac20441-bcfb-4234-a566-7913a02c86e5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 77468,
+    "sha256_hex": "c29cc433402304dea90f44a584b584f06101e6dbd040b037c5292056b6b6a7cd",
+    "status": "stored",
+    "created_at": "2025-09-19T05:09:54.726889+00:00",
+    "updated_at": "2025-09-19T05:09:54.819975+00:00"
+  },
+  {
+    "img_id": "1b9aa156-feb0-4f24-a33e-46c6da659ca6",
+    "gcs_uri": "gs://dev-bucket-holo/images/1b9aa156-feb0-4f24-a33e-46c6da659ca6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 87972,
+    "sha256_hex": "0bf970799bf61a6740f4440b7e04984b26d4284629cf57769270cdb87498c9fd",
+    "status": "stored",
+    "created_at": "2025-09-19T05:10:06.006735+00:00",
+    "updated_at": "2025-09-19T05:10:06.166445+00:00"
+  },
+  {
+    "img_id": "126e235c-2fe7-4e66-af1b-3448afafde2d",
+    "gcs_uri": "gs://dev-bucket-holo/images/126e235c-2fe7-4e66-af1b-3448afafde2d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 97758,
+    "sha256_hex": "dec6a86d76abce48ee79a62cca1930c15fc3d8374b960070e6560f7922228612",
+    "status": "stored",
+    "created_at": "2025-09-19T05:14:44.397593+00:00",
+    "updated_at": "2025-09-19T05:14:44.547283+00:00"
+  },
+  {
+    "img_id": "263db8f7-11af-485f-ba75-bf29e0677fb9",
+    "gcs_uri": "gs://dev-bucket-holo/images/263db8f7-11af-485f-ba75-bf29e0677fb9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 87482,
+    "sha256_hex": "409d857e716bf2e9565b37f481dc1be8bab4ba0f11cd0ed0d59cd97a99f177a8",
+    "status": "stored",
+    "created_at": "2025-09-19T05:17:04.588898+00:00",
+    "updated_at": "2025-09-19T05:17:04.692319+00:00"
+  },
+  {
+    "img_id": "a6c36c85-dea5-4f54-98d4-60d70b2b8672",
+    "gcs_uri": "gs://dev-bucket-holo/images/a6c36c85-dea5-4f54-98d4-60d70b2b8672.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 66113,
+    "sha256_hex": "e0a2f94cd82eb886f50830499b5b1bcc149285264e37cff92934920af7dd43f5",
+    "status": "stored",
+    "created_at": "2025-09-19T05:48:02.251954+00:00",
+    "updated_at": "2025-09-19T05:48:02.420747+00:00"
+  },
+  {
+    "img_id": "9f527056-e7ef-4cec-b96d-afe11a057d2b",
+    "gcs_uri": "gs://dev-bucket-holo/images/9f527056-e7ef-4cec-b96d-afe11a057d2b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 100138,
+    "sha256_hex": "726d84d81c2d1369d6842ff8450844bc38e850dffbda840c77e986dcb98fb800",
+    "status": "stored",
+    "created_at": "2025-09-19T06:04:51.653128+00:00",
+    "updated_at": "2025-09-19T06:04:51.815353+00:00"
+  },
+  {
+    "img_id": "8cfb985c-6364-4c5a-b88a-030455adce02",
+    "gcs_uri": "gs://dev-bucket-holo/images/8cfb985c-6364-4c5a-b88a-030455adce02.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 60334,
+    "sha256_hex": "1828fd4c8b4033292994ce19c578384c749419ae519dde72c8471c4a9e3d8450",
+    "status": "stored",
+    "created_at": "2025-09-19T06:14:05.755458+00:00",
+    "updated_at": "2025-09-19T06:14:05.922154+00:00"
+  },
+  {
+    "img_id": "a71a91bc-f32f-4a68-bad3-84308f8f8b9a",
+    "gcs_uri": "gs://dev-bucket-holo/images/a71a91bc-f32f-4a68-bad3-84308f8f8b9a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 975022,
+    "sha256_hex": "8f71854aa021111b8e4c9d8b438e263131a17144f6f06510c2678aa7c78dedcc",
+    "status": "stored",
+    "created_at": "2025-09-19T06:41:39.331757+00:00",
+    "updated_at": "2025-09-19T06:41:43.302348+00:00"
+  },
+  {
+    "img_id": "1f459e61-6d6f-406f-a20b-b95232830e61",
+    "gcs_uri": "gs://dev-bucket-holo/images/1f459e61-6d6f-406f-a20b-b95232830e61.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 118001,
+    "sha256_hex": "35731ff1a96da891eea7147aa0de4faa6f33a74ff2f3a2607eccf8563e388dad",
+    "status": "stored",
+    "created_at": "2025-09-19T06:46:43.557940+00:00",
+    "updated_at": "2025-09-19T06:46:43.729474+00:00"
+  },
+  {
+    "img_id": "b2e74c06-8080-44f5-a333-4f074b00c4b6",
+    "gcs_uri": "gs://dev-bucket-holo/images/b2e74c06-8080-44f5-a333-4f074b00c4b6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 90679,
+    "sha256_hex": "8b8544b1151a3cba87a6eb65cca595ed173cd5c2bf911d5a5c37f4320544a335",
+    "status": "stored",
+    "created_at": "2025-09-19T07:58:56.468513+00:00",
+    "updated_at": "2025-09-19T07:58:56.635478+00:00"
+  },
+  {
+    "img_id": "67060d01-795f-47cb-8d5e-6108af857134",
+    "gcs_uri": "gs://dev-bucket-holo/images/67060d01-795f-47cb-8d5e-6108af857134.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 94216,
+    "sha256_hex": "adcf6bc0e1d20b56f710aeafe90285ed728d5f72b9330d3919972b0c59598328",
+    "status": "stored",
+    "created_at": "2025-09-19T07:13:31.807073+00:00",
+    "updated_at": "2025-09-19T07:13:31.994569+00:00"
+  },
+  {
+    "img_id": "02fb092f-bd6d-4492-a0b9-c29ba4f33690",
+    "gcs_uri": "gs://dev-bucket-holo/images/02fb092f-bd6d-4492-a0b9-c29ba4f33690.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 25327,
+    "sha256_hex": "feb276b806bf1df0391d05609b9f81fcda3794a6b0c6e794a49a00d89f2e6853",
+    "status": "stored",
+    "created_at": "2025-09-19T07:23:42.727449+00:00",
+    "updated_at": "2025-09-19T07:23:43.367950+00:00"
+  },
+  {
+    "img_id": "38e44afe-c84e-44e7-9340-661660c2f07f",
+    "gcs_uri": "gs://dev-bucket-holo/images/38e44afe-c84e-44e7-9340-661660c2f07f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 23989,
+    "sha256_hex": "76c76ee313f0f40861d5321cbb77be07ddfb98635d0bf775b4b34fd5827e95ff",
+    "status": "stored",
+    "created_at": "2025-09-19T07:24:29.964759+00:00",
+    "updated_at": "2025-09-19T07:24:30.214864+00:00"
+  },
+  {
+    "img_id": "f19d0ad3-5960-4084-a6a1-b6fc13fc416d",
+    "gcs_uri": "gs://dev-bucket-holo/images/f19d0ad3-5960-4084-a6a1-b6fc13fc416d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 65413,
+    "sha256_hex": "04060625c447ada026b3c6768a32ae5b2aa5bc7adf41f19531f97fce1ddb60fe",
+    "status": "stored",
+    "created_at": "2025-09-19T07:45:22.962119+00:00",
+    "updated_at": "2025-09-19T07:45:23.138745+00:00"
+  },
+  {
+    "img_id": "5518179f-d9df-43d3-910a-046968a57ef9",
+    "gcs_uri": "gs://dev-bucket-holo/images/5518179f-d9df-43d3-910a-046968a57ef9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 71718,
+    "sha256_hex": "840d34617b7fb884078c51e48da1ed25131da1f8ea19186905a2832d20f93d7c",
+    "status": "stored",
+    "created_at": "2025-09-19T07:47:17.753350+00:00",
+    "updated_at": "2025-09-19T07:47:17.928397+00:00"
+  },
+  {
+    "img_id": "f1594987-df64-43e6-8877-ab95b4ac8b18",
+    "gcs_uri": "gs://dev-bucket-holo/images/f1594987-df64-43e6-8877-ab95b4ac8b18.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 115946,
+    "sha256_hex": "0f9bc15cd6de861817aaf05bf101f6a4189f2cbf9924ac412afa5d5cbd1ee574",
+    "status": "stored",
+    "created_at": "2025-09-19T07:55:51.701713+00:00",
+    "updated_at": "2025-09-19T07:55:51.868812+00:00"
+  },
+  {
+    "img_id": "ae15f58a-b4a0-4c0c-a33d-fb7785a84f58",
+    "gcs_uri": "gs://dev-bucket-holo/images/ae15f58a-b4a0-4c0c-a33d-fb7785a84f58.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 13248,
+    "sha256_hex": "18eafa77bc0ab0c2d63db2155cb0f3eb261f873fd3b6c63ab4b0d48ec957b67b",
+    "status": "stored",
+    "created_at": "2025-09-19T07:59:58.650811+00:00",
+    "updated_at": "2025-09-19T08:00:00.993464+00:00"
+  },
+  {
+    "img_id": "13053228-8e9a-4664-982e-6741dfb567c2",
+    "gcs_uri": "gs://dev-bucket-holo/images/13053228-8e9a-4664-982e-6741dfb567c2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 77142,
+    "sha256_hex": "4f925c28c6d9ae6b27c52bca5d2ff56a27b4d4a83738552e4385069fb3c1e9e9",
+    "status": "stored",
+    "created_at": "2025-09-19T08:03:46.050662+00:00",
+    "updated_at": "2025-09-19T08:03:46.213272+00:00"
+  },
+  {
+    "img_id": "2a0ade81-bed5-478f-956e-0f8e86578a7c",
+    "gcs_uri": "gs://dev-bucket-holo/images/2a0ade81-bed5-478f-956e-0f8e86578a7c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 90512,
+    "sha256_hex": "ddf70e9b48b76a09826501ef2ff2a72f485c4f3d2f5791f86a10a9242d9b358f",
+    "status": "stored",
+    "created_at": "2025-09-19T08:14:48.509460+00:00",
+    "updated_at": "2025-09-19T08:14:48.682297+00:00"
+  },
+  {
+    "img_id": "d9d266bf-1007-45e6-8c73-cff87f09871d",
+    "gcs_uri": "gs://dev-bucket-holo/images/d9d266bf-1007-45e6-8c73-cff87f09871d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 77257,
+    "sha256_hex": "ac1d4db922b536f8b16ebec3d83fd798dc44b135ac8bb2fa81d1067e8ade79e9",
+    "status": "stored",
+    "created_at": "2025-09-19T08:20:40.878002+00:00",
+    "updated_at": "2025-09-19T08:20:41.044875+00:00"
+  },
+  {
+    "img_id": "4f571722-1974-4965-9863-ae7e223e3997",
+    "gcs_uri": "gs://dev-bucket-holo/images/4f571722-1974-4965-9863-ae7e223e3997.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 78239,
+    "sha256_hex": "8ebd11c20083dd854edadc3903865260f9c12716e7bf9f45377c11ce61040a91",
+    "status": "stored",
+    "created_at": "2025-09-19T08:29:20.317629+00:00",
+    "updated_at": "2025-09-19T08:29:20.477966+00:00"
+  },
+  {
+    "img_id": "01ab26dc-24c0-4531-96f8-2bf77ad23212",
+    "gcs_uri": "gs://dev-bucket-holo/images/01ab26dc-24c0-4531-96f8-2bf77ad23212.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 62657,
+    "sha256_hex": "399e8e0d3f68f718f95cbb2330bf4451d60a2324496e751fda07f9f5da6da581",
+    "status": "stored",
+    "created_at": "2025-09-19T08:29:32.245895+00:00",
+    "updated_at": "2025-09-19T08:29:32.401432+00:00"
+  },
+  {
+    "img_id": "c2cb1bab-3ce1-4b9b-a0e3-eabd67a0d8f9",
+    "gcs_uri": "gs://dev-bucket-holo/images/c2cb1bab-3ce1-4b9b-a0e3-eabd67a0d8f9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 69016,
+    "sha256_hex": "5a06fb4105f287c04760c5fb01a114ba9327105a52e2765471cdef77376f6105",
+    "status": "stored",
+    "created_at": "2025-09-19T08:31:29.699243+00:00",
+    "updated_at": "2025-09-19T08:31:29.869151+00:00"
+  },
+  {
+    "img_id": "d3626efe-aa19-4046-9b90-8db0c7d1081f",
+    "gcs_uri": "gs://dev-bucket-holo/images/d3626efe-aa19-4046-9b90-8db0c7d1081f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 59263,
+    "sha256_hex": "dd228ef37c423d2432b81483f4e0161a40c3ccfb6271f34536ee0a40f5343e6d",
+    "status": "stored",
+    "created_at": "2025-09-19T08:32:45.221428+00:00",
+    "updated_at": "2025-09-19T08:32:45.398623+00:00"
+  },
+  {
+    "img_id": "a68af884-404e-4855-b929-753148a821ea",
+    "gcs_uri": "gs://dev-bucket-holo/images/a68af884-404e-4855-b929-753148a821ea.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 80573,
+    "sha256_hex": "ec0ac5d5bce7b1e4a8f7ff414aee802033d329104614497894f7876d7b6da56a",
+    "status": "stored",
+    "created_at": "2025-09-19T08:34:33.808821+00:00",
+    "updated_at": "2025-09-19T08:34:33.904548+00:00"
+  },
+  {
+    "img_id": "1c4d7fb1-953f-4582-aa99-2bda01967dec",
+    "gcs_uri": "gs://dev-bucket-holo/images/1c4d7fb1-953f-4582-aa99-2bda01967dec.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 80573,
+    "sha256_hex": "ec0ac5d5bce7b1e4a8f7ff414aee802033d329104614497894f7876d7b6da56a",
+    "status": "stored",
+    "created_at": "2025-09-19T08:35:38.792849+00:00",
+    "updated_at": "2025-09-19T08:35:38.979635+00:00"
+  },
+  {
+    "img_id": "32525c3a-e9e1-427a-9f57-54d28d46e018",
+    "gcs_uri": "gs://dev-bucket-holo/images/32525c3a-e9e1-427a-9f57-54d28d46e018.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 65618,
+    "sha256_hex": "1a2a350d883bc63ee89d595c0ce69f0300a79b94ea0f0220978903d987b4ceda",
+    "status": "stored",
+    "created_at": "2025-09-19T08:36:25.944581+00:00",
+    "updated_at": "2025-09-19T08:36:26.030400+00:00"
+  },
+  {
+    "img_id": "da52b7f0-a868-40df-99ee-d04965c3274d",
+    "gcs_uri": "gs://dev-bucket-holo/images/da52b7f0-a868-40df-99ee-d04965c3274d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 90067,
+    "sha256_hex": "ddb6883e2d26807cb343a0e9246dbe90db3c8cef1fd4053fea5471f84f90b957",
+    "status": "stored",
+    "created_at": "2025-09-19T08:37:01.734738+00:00",
+    "updated_at": "2025-09-19T08:37:01.820744+00:00"
+  },
+  {
+    "img_id": "8ee6525f-2a4e-47c8-b77e-d0c69018120f",
+    "gcs_uri": "gs://dev-bucket-holo/images/8ee6525f-2a4e-47c8-b77e-d0c69018120f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 19333,
+    "sha256_hex": "e83f229f6922dbfe53cdc84e7d7c6ae8f7511ff1b7443d4a6da32395692e9bfb",
+    "status": "stored",
+    "created_at": "2025-09-19T08:38:58.685558+00:00",
+    "updated_at": "2025-09-19T08:38:59.373090+00:00"
+  },
+  {
+    "img_id": "bac0bbfd-6fff-4646-8c3b-9a1ad339ce13",
+    "gcs_uri": "gs://dev-bucket-holo/images/bac0bbfd-6fff-4646-8c3b-9a1ad339ce13.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 20320,
+    "sha256_hex": "d72a60a0ac2c343f5aea13ed23879b97b43f0ba2f79d674b1165b780b9217f36",
+    "status": "stored",
+    "created_at": "2025-09-19T08:40:10.228474+00:00",
+    "updated_at": "2025-09-19T08:40:10.410491+00:00"
+  },
+  {
+    "img_id": "37cf4869-997f-4ca2-a484-fdab22a34df5",
+    "gcs_uri": "gs://dev-bucket-holo/images/37cf4869-997f-4ca2-a484-fdab22a34df5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 52880,
+    "sha256_hex": "9942723d2d8abd55e67d24e5207f62d2ff7f178b17809c57ca6e5c0c1e3cc21d",
+    "status": "stored",
+    "created_at": "2025-09-19T08:43:24.575269+00:00",
+    "updated_at": "2025-09-19T08:43:24.757555+00:00"
+  },
+  {
+    "img_id": "23f30f18-f808-4607-96ff-bc59e871283f",
+    "gcs_uri": "gs://dev-bucket-holo/images/23f30f18-f808-4607-96ff-bc59e871283f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 53424,
+    "sha256_hex": "e889c7d8cc5e86d5aa4b9a3b3b89424e23a803aba6c5ea8d42e8792c16281836",
+    "status": "stored",
+    "created_at": "2025-09-19T08:46:08.630431+00:00",
+    "updated_at": "2025-09-19T08:46:08.780241+00:00"
+  },
+  {
+    "img_id": "1f5e3277-3b94-428c-a87a-70aed1f9cf9c",
+    "gcs_uri": "gs://dev-bucket-holo/images/1f5e3277-3b94-428c-a87a-70aed1f9cf9c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 127430,
+    "sha256_hex": "761bad7b108019c204b09aea3e7e40b15665c2ca2fc4f9c86076449649e3b5bd",
+    "status": "stored",
+    "created_at": "2025-09-19T08:46:24.446627+00:00",
+    "updated_at": "2025-09-19T08:46:24.553577+00:00"
+  },
+  {
+    "img_id": "e5a637e1-6184-4d6a-9faf-242c2f52454b",
+    "gcs_uri": "gs://dev-bucket-holo/images/e5a637e1-6184-4d6a-9faf-242c2f52454b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 89693,
+    "sha256_hex": "3dd98daf77732965876925c454b11ca9ed16eb865f2c4da1a8c325661be75420",
+    "status": "stored",
+    "created_at": "2025-09-19T08:50:07.027282+00:00",
+    "updated_at": "2025-09-19T08:50:07.135406+00:00"
+  },
+  {
+    "img_id": "86070b38-ef0b-440d-b12c-92b98fcb8763",
+    "gcs_uri": "gs://dev-bucket-holo/images/86070b38-ef0b-440d-b12c-92b98fcb8763.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 39205,
+    "sha256_hex": "17140e0ed07d45593f369d5b8421a1c53b50e83ceda053dd9fb5e44317cac18c",
+    "status": "stored",
+    "created_at": "2025-09-19T08:50:59.514379+00:00",
+    "updated_at": "2025-09-19T08:50:59.609407+00:00"
+  },
+  {
+    "img_id": "bf564bc4-a4ed-4e5e-9a0b-afc9fde95c44",
+    "gcs_uri": "gs://dev-bucket-holo/images/bf564bc4-a4ed-4e5e-9a0b-afc9fde95c44.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 38746,
+    "sha256_hex": "fbe912bb5a6fb6b913a43b0d25231f18e6da236247d7ef6295d41502ed396308",
+    "status": "stored",
+    "created_at": "2025-09-19T09:14:38.702923+00:00",
+    "updated_at": "2025-09-19T09:14:38.892589+00:00"
+  },
+  {
+    "img_id": "2d68b73c-8761-44a6-9afa-4e803d8318d9",
+    "gcs_uri": "gs://dev-bucket-holo/images/2d68b73c-8761-44a6-9afa-4e803d8318d9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 50341,
+    "sha256_hex": "30f2d600a3706ac21b4dbe1eaac0ce3e6c479daae9d3cd3d9550be2875b2c88b",
+    "status": "stored",
+    "created_at": "2025-09-19T08:55:42.132522+00:00",
+    "updated_at": "2025-09-19T08:55:42.298343+00:00"
+  },
+  {
+    "img_id": "03356b67-6acd-470e-9a91-c293beaefe53",
+    "gcs_uri": "gs://dev-bucket-holo/images/03356b67-6acd-470e-9a91-c293beaefe53.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 70161,
+    "sha256_hex": "88d79a7606a91754dadedf65b05015f3029189c127a5a27abd9522e4a5620cc0",
+    "status": "stored",
+    "created_at": "2025-09-19T08:59:30.258619+00:00",
+    "updated_at": "2025-09-19T08:59:30.493734+00:00"
+  },
+  {
+    "img_id": "1bd64097-04d9-4bd9-a08b-d598dbea7415",
+    "gcs_uri": "gs://dev-bucket-holo/images/1bd64097-04d9-4bd9-a08b-d598dbea7415.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 48182,
+    "sha256_hex": "cdc355c18fd3c00d89b70d2f0fb69c6d43289e90f7a3bfefac5e7befd5252062",
+    "status": "stored",
+    "created_at": "2025-09-19T09:03:41.653446+00:00",
+    "updated_at": "2025-09-19T09:03:41.825521+00:00"
+  },
+  {
+    "img_id": "b286a4c7-194e-48bb-8cc7-844573ffc58f",
+    "gcs_uri": "gs://dev-bucket-holo/images/b286a4c7-194e-48bb-8cc7-844573ffc58f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 24668,
+    "sha256_hex": "1581707b35da084418b8f3b33f1fd7239a65dd4de651c905a21cec91b02dd984",
+    "status": "stored",
+    "created_at": "2025-09-19T09:07:53.648481+00:00",
+    "updated_at": "2025-09-19T09:07:53.839521+00:00"
+  },
+  {
+    "img_id": "265ec225-ac21-4529-a943-582aaf80eff1",
+    "gcs_uri": "gs://dev-bucket-holo/images/265ec225-ac21-4529-a943-582aaf80eff1.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27996,
+    "sha256_hex": "b8a1c918fc4f834c2364cb599a59d1cad1451cc63973de88e1d3964a1402dd23",
+    "status": "stored",
+    "created_at": "2025-09-19T09:08:53.144888+00:00",
+    "updated_at": "2025-09-19T09:08:53.245191+00:00"
+  },
+  {
+    "img_id": "071e7375-cf1f-407f-bc93-406fe6dcb935",
+    "gcs_uri": "gs://dev-bucket-holo/images/071e7375-cf1f-407f-bc93-406fe6dcb935.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37262,
+    "sha256_hex": "d00f95fd28da2d181c4b9ad359fd58eaa17c83f6565aec58495503486c8dd2cc",
+    "status": "stored",
+    "created_at": "2025-09-19T09:09:53.412125+00:00",
+    "updated_at": "2025-09-19T09:09:53.583312+00:00"
+  },
+  {
+    "img_id": "5fdebff2-cf72-4567-8d24-b81407d42a9d",
+    "gcs_uri": "gs://dev-bucket-holo/images/5fdebff2-cf72-4567-8d24-b81407d42a9d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 83014,
+    "sha256_hex": "3a2e0f357c511369110229cc1ca47b33828bda5cd53e12afbb702f4e4ed6993a",
+    "status": "stored",
+    "created_at": "2025-09-19T09:11:10.954716+00:00",
+    "updated_at": "2025-09-19T09:11:11.045582+00:00"
+  },
+  {
+    "img_id": "a14c5694-a745-40c7-a2a5-a99e274732e3",
+    "gcs_uri": "gs://dev-bucket-holo/images/a14c5694-a745-40c7-a2a5-a99e274732e3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 89423,
+    "sha256_hex": "776931a509313115abf5e7ec972a116d1cc953c0f095af645948d6302809049d",
+    "status": "stored",
+    "created_at": "2025-09-19T09:13:20.351846+00:00",
+    "updated_at": "2025-09-19T09:13:20.447413+00:00"
+  },
+  {
+    "img_id": "8e046e78-01e8-4fce-ac98-0d9ecf0067a4",
+    "gcs_uri": "gs://dev-bucket-holo/images/8e046e78-01e8-4fce-ac98-0d9ecf0067a4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 23908,
+    "sha256_hex": "49bbc9e2ffa47fb159f0c538ab7497e9ff7b0db1b64528e23d9c9fa1ed3a734b",
+    "status": "stored",
+    "created_at": "2025-09-19T09:14:48.634836+00:00",
+    "updated_at": "2025-09-19T09:14:48.776156+00:00"
+  },
+  {
+    "img_id": "f8bbce02-5c3f-4a83-b5b6-82c2c7594d1d",
+    "gcs_uri": "gs://dev-bucket-holo/images/f8bbce02-5c3f-4a83-b5b6-82c2c7594d1d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 17581,
+    "sha256_hex": "55bcb29e46d60e97dad128922d03883d19455831ab60e462cc4d087b30b1dbd9",
+    "status": "stored",
+    "created_at": "2025-09-19T09:15:53.053705+00:00",
+    "updated_at": "2025-09-19T09:15:53.218131+00:00"
+  },
+  {
+    "img_id": "47e03c90-a50d-437a-b832-e4a162536c69",
+    "gcs_uri": "gs://dev-bucket-holo/images/47e03c90-a50d-437a-b832-e4a162536c69.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 101905,
+    "sha256_hex": "bca3f6d3caa609d929c8162612d3e8ee70971ee35d6731c521967c914af1fd94",
+    "status": "stored",
+    "created_at": "2025-09-19T09:31:21.479091+00:00",
+    "updated_at": "2025-09-19T09:31:21.629281+00:00"
+  },
+  {
+    "img_id": "82458da9-31ef-4cb6-973e-949bf4a87ddf",
+    "gcs_uri": "gs://dev-bucket-holo/images/82458da9-31ef-4cb6-973e-949bf4a87ddf.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 26730,
+    "sha256_hex": "51d001684515c645d4f31aa10587e4e6fde3d04cc3f2c04e49313501e2926b1f",
+    "status": "stored",
+    "created_at": "2025-09-19T09:19:54.524785+00:00",
+    "updated_at": "2025-09-19T09:19:54.671749+00:00"
+  },
+  {
+    "img_id": "5db504b7-c29b-4318-b54e-f0931261d8c5",
+    "gcs_uri": "gs://dev-bucket-holo/images/5db504b7-c29b-4318-b54e-f0931261d8c5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 38130,
+    "sha256_hex": "506509359b1abed91aee31d0dae9641cb8d23d54b2fcf831def7a3fcd290f487",
+    "status": "stored",
+    "created_at": "2025-09-19T09:23:55.236540+00:00",
+    "updated_at": "2025-09-19T09:23:55.393189+00:00"
+  },
+  {
+    "img_id": "c3d765c6-4e36-43cd-959b-9a4cee19eb93",
+    "gcs_uri": "gs://dev-bucket-holo/images/c3d765c6-4e36-43cd-959b-9a4cee19eb93.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 74922,
+    "sha256_hex": "0638fac47313a9d5e881e15bf4192d70c3070f02b2d334a2a2f4100805c4e3c1",
+    "status": "stored",
+    "created_at": "2025-09-19T09:29:11.432399+00:00",
+    "updated_at": "2025-09-19T09:29:11.593503+00:00"
+  },
+  {
+    "img_id": "d00c7080-807e-4c81-9652-9e69af06c4f4",
+    "gcs_uri": "gs://dev-bucket-holo/images/d00c7080-807e-4c81-9652-9e69af06c4f4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 41961,
+    "sha256_hex": "0621216448451ed1a3031b0c017194d55ff74438e1cc177a64752f93fa64aaa4",
+    "status": "stored",
+    "created_at": "2025-09-19T09:33:18.530968+00:00",
+    "updated_at": "2025-09-19T09:33:18.675664+00:00"
+  },
+  {
+    "img_id": "6750d308-943c-44cb-a762-a1efc793a96a",
+    "gcs_uri": "gs://dev-bucket-holo/images/6750d308-943c-44cb-a762-a1efc793a96a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 75607,
+    "sha256_hex": "d80a16f321b9543040844e77827363701f4395a3087d7d39ed7f67c74e3023e2",
+    "status": "stored",
+    "created_at": "2025-09-19T09:34:02.992917+00:00",
+    "updated_at": "2025-09-19T09:34:03.123535+00:00"
+  },
+  {
+    "img_id": "0fc5e074-79a7-4da1-8a54-69f72d72903b",
+    "gcs_uri": "gs://dev-bucket-holo/images/0fc5e074-79a7-4da1-8a54-69f72d72903b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 41961,
+    "sha256_hex": "0621216448451ed1a3031b0c017194d55ff74438e1cc177a64752f93fa64aaa4",
+    "status": "stored",
+    "created_at": "2025-09-19T09:34:08.551218+00:00",
+    "updated_at": "2025-09-19T09:34:08.735392+00:00"
+  },
+  {
+    "img_id": "9056fcb3-c5b2-4fe3-bdb7-d787528ee891",
+    "gcs_uri": "gs://dev-bucket-holo/images/9056fcb3-c5b2-4fe3-bdb7-d787528ee891.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 39797,
+    "sha256_hex": "ae93c5a5f549cbb8c49e765c3f21d9ee102ef4190191f3fd33741ad273c00a60",
+    "status": "stored",
+    "created_at": "2025-09-19T09:38:19.402783+00:00",
+    "updated_at": "2025-09-19T09:38:19.556084+00:00"
+  },
+  {
+    "img_id": "7aeb71a3-32ae-4544-ac2c-5b1747b2e09d",
+    "gcs_uri": "gs://dev-bucket-holo/images/7aeb71a3-32ae-4544-ac2c-5b1747b2e09d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T09:42:08.568987+00:00",
+    "updated_at": "2025-09-19T09:42:09.617313+00:00"
+  },
+  {
+    "img_id": "25e2d2f3-d0b4-4778-94b3-89307df36094",
+    "gcs_uri": "gs://dev-bucket-holo/images/25e2d2f3-d0b4-4778-94b3-89307df36094.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 71468,
+    "sha256_hex": "18ff46a511f5435df8e446c95a22108eea7ef0c8b6d0abc40c3b32e5fc88600c",
+    "status": "stored",
+    "created_at": "2025-09-19T09:51:47.655875+00:00",
+    "updated_at": "2025-09-19T09:51:47.803963+00:00"
+  },
+  {
+    "img_id": "0f9e1ac5-7da3-42ce-8ea3-af8d0f3ad6d3",
+    "gcs_uri": "gs://dev-bucket-holo/images/0f9e1ac5-7da3-42ce-8ea3-af8d0f3ad6d3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 1640,
+    "sha256_hex": "6791cbf199a15fa22fc330c04b9d606360c557751aa85bfa5af8b97adc691e5b",
+    "status": "stored",
+    "created_at": "2025-09-19T09:52:08.076488+00:00",
+    "updated_at": "2025-09-19T09:52:08.166270+00:00"
+  },
+  {
+    "img_id": "a21ee476-0e0c-4004-a050-988e84e19af7",
+    "gcs_uri": "gs://dev-bucket-holo/images/a21ee476-0e0c-4004-a050-988e84e19af7.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 43579,
+    "sha256_hex": "a648a49f867bcc824e0743738750fed572e833ac177b5c9af825f394925eaa06",
+    "status": "stored",
+    "created_at": "2025-09-19T09:56:22.467833+00:00",
+    "updated_at": "2025-09-19T09:56:22.633755+00:00"
+  },
+  {
+    "img_id": "38a50a73-cce1-4a13-a408-3490873dfb2d",
+    "gcs_uri": "gs://dev-bucket-holo/images/38a50a73-cce1-4a13-a408-3490873dfb2d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 62548,
+    "sha256_hex": "1e7e6dcd3134f50214960c8d7282f50429000d32797af521dc73228b7bdb0ced",
+    "status": "stored",
+    "created_at": "2025-09-19T09:56:42.530538+00:00",
+    "updated_at": "2025-09-19T09:56:42.688649+00:00"
+  },
+  {
+    "img_id": "511ebd7c-a267-4b27-b163-a418ffbd4d20",
+    "gcs_uri": "gs://dev-bucket-holo/images/511ebd7c-a267-4b27-b163-a418ffbd4d20.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 53569,
+    "sha256_hex": "fc2cbdd17b1f178a8346d86443501c3941bde2386fca88308bc24916677e1c50",
+    "status": "stored",
+    "created_at": "2025-09-19T09:58:55.616584+00:00",
+    "updated_at": "2025-09-19T09:58:55.711132+00:00"
+  },
+  {
+    "img_id": "9ea3d26e-54e7-45b0-b517-bd2bea45413c",
+    "gcs_uri": "gs://dev-bucket-holo/images/9ea3d26e-54e7-45b0-b517-bd2bea45413c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 39730,
+    "sha256_hex": "4aac32371082d5a6ed318502720bcba0524122b3df1ca212ec7667e138047d76",
+    "status": "stored",
+    "created_at": "2025-09-19T09:59:15.022991+00:00",
+    "updated_at": "2025-09-19T09:59:15.104682+00:00"
+  },
+  {
+    "img_id": "96d3d1ce-433e-442d-a8a8-e9afea366bb1",
+    "gcs_uri": "gs://dev-bucket-holo/images/96d3d1ce-433e-442d-a8a8-e9afea366bb1.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 39730,
+    "sha256_hex": "4aac32371082d5a6ed318502720bcba0524122b3df1ca212ec7667e138047d76",
+    "status": "stored",
+    "created_at": "2025-09-19T10:00:08.149977+00:00",
+    "updated_at": "2025-09-19T10:00:08.242264+00:00"
+  },
+  {
+    "img_id": "4e0fbcb5-5781-4226-a4cd-c318060d5449",
+    "gcs_uri": "gs://dev-bucket-holo/images/4e0fbcb5-5781-4226-a4cd-c318060d5449.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 53961,
+    "sha256_hex": "c7f6b38ae68e318b811830a7dc9fc5b24f07c2018efe2aa359caaf2ff0447161",
+    "status": "stored",
+    "created_at": "2025-09-19T10:02:03.416428+00:00",
+    "updated_at": "2025-09-19T10:02:03.500433+00:00"
+  },
+  {
+    "img_id": "6ca444e8-4218-41c8-a46f-bfcd31c2ef34",
+    "gcs_uri": "gs://dev-bucket-holo/images/6ca444e8-4218-41c8-a46f-bfcd31c2ef34.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 101841,
+    "sha256_hex": "ce334b0d2af1ef0d3e6821bc9b0def0b82236776ba0f4a661ca7b01515076b4d",
+    "status": "stored",
+    "created_at": "2025-09-19T10:09:32.331605+00:00",
+    "updated_at": "2025-09-19T10:09:32.484112+00:00"
+  },
+  {
+    "img_id": "4d50747f-8157-482e-939c-0f310af66560",
+    "gcs_uri": "gs://dev-bucket-holo/images/4d50747f-8157-482e-939c-0f310af66560.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 56538,
+    "sha256_hex": "e65b650304e00fec4573884913eddb772a4256de71be4a3d8c434ad066f7283f",
+    "status": "stored",
+    "created_at": "2025-09-19T10:11:44.109481+00:00",
+    "updated_at": "2025-09-19T10:11:44.206121+00:00"
+  },
+  {
+    "img_id": "6642cdf6-5293-4a41-bd26-4f61b71a062e",
+    "gcs_uri": "gs://dev-bucket-holo/images/6642cdf6-5293-4a41-bd26-4f61b71a062e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 73473,
+    "sha256_hex": "e4aef5e134bf37d803cf32caf2cc4c9571c50c2311d46cde1abad1ca762e245b",
+    "status": "stored",
+    "created_at": "2025-09-19T10:14:57.581576+00:00",
+    "updated_at": "2025-09-19T10:14:57.677432+00:00"
+  },
+  {
+    "img_id": "5103e386-2c85-4d1d-bbce-7e3de092c1b0",
+    "gcs_uri": "gs://dev-bucket-holo/images/5103e386-2c85-4d1d-bbce-7e3de092c1b0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 54276,
+    "sha256_hex": "06a12cb54feed4bcd9d862c5260ddbcbec5df16f8d8489e478427d96fbd7f0d1",
+    "status": "stored",
+    "created_at": "2025-09-19T10:16:02.594760+00:00",
+    "updated_at": "2025-09-19T10:16:02.681125+00:00"
+  },
+  {
+    "img_id": "7ec0e4b7-82a9-4926-9f50-ad992e5b221e",
+    "gcs_uri": "gs://dev-bucket-holo/images/7ec0e4b7-82a9-4926-9f50-ad992e5b221e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 108001,
+    "sha256_hex": "0b3ae0d76bb07cef345dfd8fd42d6424828ace9548cb04e98d4499b85be9b6ac",
+    "status": "stored",
+    "created_at": "2025-09-19T10:24:39.668575+00:00",
+    "updated_at": "2025-09-19T10:24:39.825243+00:00"
+  },
+  {
+    "img_id": "3f126e5c-366f-48f1-b788-f53e3b2a24db",
+    "gcs_uri": "gs://dev-bucket-holo/images/3f126e5c-366f-48f1-b788-f53e3b2a24db.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 72023,
+    "sha256_hex": "9d3d4c74db022e3934b4699a60d3fa3f78c59c6fc856222fe35595dfb8e8a0cb",
+    "status": "stored",
+    "created_at": "2025-09-19T10:28:14.687518+00:00",
+    "updated_at": "2025-09-19T10:28:14.869778+00:00"
+  },
+  {
+    "img_id": "878059c8-1dad-4a51-b434-c74f1a6665af",
+    "gcs_uri": "gs://dev-bucket-holo/images/878059c8-1dad-4a51-b434-c74f1a6665af.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 85531,
+    "sha256_hex": "dde679ae66484e3e171b8c7b8c46eb87f048a8b1ee487ee133b7c87e5c9f4b6e",
+    "status": "stored",
+    "created_at": "2025-09-19T10:28:43.382054+00:00",
+    "updated_at": "2025-09-19T10:28:43.467296+00:00"
+  },
+  {
+    "img_id": "246b9e86-c3e0-4274-aeab-27f91e93c46b",
+    "gcs_uri": "gs://dev-bucket-holo/images/246b9e86-c3e0-4274-aeab-27f91e93c46b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 35984,
+    "sha256_hex": "a04bb2f8a4ffc062da72fb791fca42b7c5c25d86b4564deb5a65fed00f09d3fc",
+    "status": "stored",
+    "created_at": "2025-09-19T10:49:47.557338+00:00",
+    "updated_at": "2025-09-19T10:49:47.715116+00:00"
+  },
+  {
+    "img_id": "ef2516ee-cc7e-4667-8ff3-247d3d45b24a",
+    "gcs_uri": "gs://dev-bucket-holo/images/ef2516ee-cc7e-4667-8ff3-247d3d45b24a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 84571,
+    "sha256_hex": "218e384aab6789c2fc57af78655311f60464a5e4f58b9251433a1e7305f07522",
+    "status": "stored",
+    "created_at": "2025-09-19T10:38:13.201523+00:00",
+    "updated_at": "2025-09-19T10:38:13.353229+00:00"
+  },
+  {
+    "img_id": "bfd32426-1abd-40be-b29e-f6360997a63c",
+    "gcs_uri": "gs://dev-bucket-holo/images/bfd32426-1abd-40be-b29e-f6360997a63c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 65476,
+    "sha256_hex": "aa2f3aca937f49df3d0eadea1ae1e3a1564abe667d3b478fa01f101257cebe7e",
+    "status": "stored",
+    "created_at": "2025-09-19T10:40:44.630856+00:00",
+    "updated_at": "2025-09-19T10:40:44.787125+00:00"
+  },
+  {
+    "img_id": "7e448248-18a3-4da8-a29a-3a51b35859c6",
+    "gcs_uri": "gs://dev-bucket-holo/images/7e448248-18a3-4da8-a29a-3a51b35859c6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 83823,
+    "sha256_hex": "9dc62ca6b2fa424ba8d9b6cfdedf40edd3beb5740a64c267d52960ee905f67d7",
+    "status": "stored",
+    "created_at": "2025-09-19T10:40:51.254145+00:00",
+    "updated_at": "2025-09-19T10:40:51.349014+00:00"
+  },
+  {
+    "img_id": "59b7a646-3a3e-405b-b480-3fac3149167b",
+    "gcs_uri": "gs://dev-bucket-holo/images/59b7a646-3a3e-405b-b480-3fac3149167b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 10749,
+    "sha256_hex": "5334237c64747abf3f4db743460836bd80e13c33c60e4b8136372fec89a8c28b",
+    "status": "stored",
+    "created_at": "2025-09-19T10:42:23.635919+00:00",
+    "updated_at": "2025-09-19T10:42:25.433440+00:00"
+  },
+  {
+    "img_id": "b7236c71-5f70-4a5e-bfb5-f68f24d7a947",
+    "gcs_uri": "gs://dev-bucket-holo/images/b7236c71-5f70-4a5e-bfb5-f68f24d7a947.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 93409,
+    "sha256_hex": "57a1f1b3a07764bffb1d860f19b0a3ad2170c7a679b5f72d8719080d85722b00",
+    "status": "stored",
+    "created_at": "2025-09-19T10:42:36.529081+00:00",
+    "updated_at": "2025-09-19T10:42:36.620349+00:00"
+  },
+  {
+    "img_id": "6babf6af-f8e8-4b69-95cb-304578ad79be",
+    "gcs_uri": "gs://dev-bucket-holo/images/6babf6af-f8e8-4b69-95cb-304578ad79be.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 36903,
+    "sha256_hex": "0e113ecfb3026340474d1d334640a05f5b968c5c7f821c7ba15dc3d8792a6e35",
+    "status": "stored",
+    "created_at": "2025-09-19T10:48:27.145334+00:00",
+    "updated_at": "2025-09-19T10:48:27.312422+00:00"
+  },
+  {
+    "img_id": "def4e537-9038-49e9-86c5-c5191b159bc4",
+    "gcs_uri": "gs://dev-bucket-holo/images/def4e537-9038-49e9-86c5-c5191b159bc4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 60253,
+    "sha256_hex": "87a0f1032b6f77f46d4db12614be59713a0c22e81b54473f027e87979db3a7d8",
+    "status": "stored",
+    "created_at": "2025-09-19T10:51:25.536403+00:00",
+    "updated_at": "2025-09-19T10:51:25.637485+00:00"
+  },
+  {
+    "img_id": "f119769d-0426-4902-820d-af9d84e9731b",
+    "gcs_uri": "gs://dev-bucket-holo/images/f119769d-0426-4902-820d-af9d84e9731b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 98235,
+    "sha256_hex": "9a68aeeb9ee4b9f4ba277ff36bc6df96b96d66d8c19644fda4c2991e767fa88e",
+    "status": "stored",
+    "created_at": "2025-09-19T10:53:43.460719+00:00",
+    "updated_at": "2025-09-19T10:53:43.643883+00:00"
+  },
+  {
+    "img_id": "283de519-0890-44de-a953-a8857d459e7e",
+    "gcs_uri": "gs://dev-bucket-holo/images/283de519-0890-44de-a953-a8857d459e7e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 44505,
+    "sha256_hex": "9678d1813ef34eb477a3187a7c871829c1860b7a27e53442ba48deb63b93572c",
+    "status": "stored",
+    "created_at": "2025-09-19T10:59:18.381129+00:00",
+    "updated_at": "2025-09-19T10:59:18.534723+00:00"
+  },
+  {
+    "img_id": "68387151-7e96-47f0-a046-249ab84012a2",
+    "gcs_uri": "gs://dev-bucket-holo/images/68387151-7e96-47f0-a046-249ab84012a2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 47649,
+    "sha256_hex": "509d2e773a92f0d6db09027397220c148728aa3ff4a4e3255c38dbf68c1105a9",
+    "status": "stored",
+    "created_at": "2025-09-19T11:11:49.888034+00:00",
+    "updated_at": "2025-09-19T11:11:50.033765+00:00"
+  },
+  {
+    "img_id": "84740f03-6b8e-486d-b36f-df61b379cd47",
+    "gcs_uri": "gs://dev-bucket-holo/images/84740f03-6b8e-486d-b36f-df61b379cd47.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 36442,
+    "sha256_hex": "32269c788a1da724a888c4d5a69eee4951f528046584db46e2d1384fd4aadb57",
+    "status": "stored",
+    "created_at": "2025-09-19T11:19:51.526768+00:00",
+    "updated_at": "2025-09-19T11:19:51.698436+00:00"
+  },
+  {
+    "img_id": "1fcb13e6-ff72-4060-86ed-cccca63dbb45",
+    "gcs_uri": "gs://dev-bucket-holo/images/1fcb13e6-ff72-4060-86ed-cccca63dbb45.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 29162,
+    "sha256_hex": "6b0b6c087b6cf37498024a2948e31d8e7e0c71181f4b1adccec9954a64fd3dd9",
+    "status": "stored",
+    "created_at": "2025-09-19T11:21:05.000184+00:00",
+    "updated_at": "2025-09-19T11:21:05.243740+00:00"
+  },
+  {
+    "img_id": "7982cbe8-b4b2-4d58-a93d-196c7b2844e6",
+    "gcs_uri": "gs://dev-bucket-holo/images/7982cbe8-b4b2-4d58-a93d-196c7b2844e6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 67994,
+    "sha256_hex": "720e7ccf145a8e9af0d47c68f71db53d2e9dd893870caa15f8cfa10138e28fb4",
+    "status": "stored",
+    "created_at": "2025-09-19T11:22:32.698728+00:00",
+    "updated_at": "2025-09-19T11:22:32.844838+00:00"
+  },
+  {
+    "img_id": "1ef54b67-a7d8-4731-af6f-daeb855872ce",
+    "gcs_uri": "gs://dev-bucket-holo/images/1ef54b67-a7d8-4731-af6f-daeb855872ce.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 85082,
+    "sha256_hex": "07abfa7aa59963e0dd9f02ff331416d10be3cc274a2661bd713b3616919c2a7c",
+    "status": "stored",
+    "created_at": "2025-09-19T11:23:14.729988+00:00",
+    "updated_at": "2025-09-19T11:23:14.804349+00:00"
+  },
+  {
+    "img_id": "11417cf5-c158-45fb-a9bb-a25deaa64380",
+    "gcs_uri": "gs://dev-bucket-holo/images/11417cf5-c158-45fb-a9bb-a25deaa64380.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 45994,
+    "sha256_hex": "26b913fd147d6ddcd50313da47613d578509023044ebdec5cb8f712221ebdaa1",
+    "status": "stored",
+    "created_at": "2025-09-19T11:30:58.237332+00:00",
+    "updated_at": "2025-09-19T11:30:58.373449+00:00"
+  },
+  {
+    "img_id": "faecb316-c595-431e-9c3c-6b538fb75f86",
+    "gcs_uri": "gs://dev-bucket-holo/images/faecb316-c595-431e-9c3c-6b538fb75f86.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 56567,
+    "sha256_hex": "00309fafe67da7bf69906e369732281e0f83f3dd2f1741c6e839d52557a72952",
+    "status": "stored",
+    "created_at": "2025-09-19T11:31:08.423493+00:00",
+    "updated_at": "2025-09-19T11:31:08.545730+00:00"
+  },
+  {
+    "img_id": "ab78bc1c-8829-4210-bedf-a0779718d436",
+    "gcs_uri": "gs://dev-bucket-holo/images/ab78bc1c-8829-4210-bedf-a0779718d436.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 35371,
+    "sha256_hex": "2aa5e435c7f9a467339cf6afd5bb4c5d073a6ea99a70409fd0f01ce7f6171904",
+    "status": "stored",
+    "created_at": "2025-09-19T11:33:13.365030+00:00",
+    "updated_at": "2025-09-19T11:33:13.443540+00:00"
+  },
+  {
+    "img_id": "ecb38343-1f6d-41da-96d2-c16a9c9e71a3",
+    "gcs_uri": "gs://dev-bucket-holo/images/ecb38343-1f6d-41da-96d2-c16a9c9e71a3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 45459,
+    "sha256_hex": "b7fda98a53c48f927ef6f2324c6096070b4b0d4a6205f487a94cd7ab0917e469",
+    "status": "stored",
+    "created_at": "2025-09-19T11:35:55.858086+00:00",
+    "updated_at": "2025-09-19T11:35:55.938607+00:00"
+  },
+  {
+    "img_id": "b64c6779-37db-4060-9652-3049cbd632b8",
+    "gcs_uri": "gs://dev-bucket-holo/images/b64c6779-37db-4060-9652-3049cbd632b8.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 10855,
+    "sha256_hex": "49189b4601bec74b0988b8ed6786f00f5aa7e6c233317a940852fbbc9f714ef2",
+    "status": "stored",
+    "created_at": "2025-09-19T11:39:53.173681+00:00",
+    "updated_at": "2025-09-19T11:39:53.694575+00:00"
+  },
+  {
+    "img_id": "0671969b-2003-428d-8d4d-040843de943d",
+    "gcs_uri": "gs://dev-bucket-holo/images/0671969b-2003-428d-8d4d-040843de943d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 81935,
+    "sha256_hex": "a3560e243cb76438aa441fccb017b09776ee82c9475afa05a231189ce511ddc0",
+    "status": "stored",
+    "created_at": "2025-09-19T11:50:29.957670+00:00",
+    "updated_at": "2025-09-19T11:50:30.085202+00:00"
+  },
+  {
+    "img_id": "af8a7220-1b05-4d35-9a4d-369d920f7fa1",
+    "gcs_uri": "gs://dev-bucket-holo/images/af8a7220-1b05-4d35-9a4d-369d920f7fa1.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 80746,
+    "sha256_hex": "89fdc28308812680d631824f0804b1b0e7b377dc7a69a1b6071a6842a9fcbedb",
+    "status": "stored",
+    "created_at": "2025-09-19T11:43:21.343772+00:00",
+    "updated_at": "2025-09-19T11:43:21.476248+00:00"
+  },
+  {
+    "img_id": "c1daf386-b6be-4a74-ab7a-df4776252c69",
+    "gcs_uri": "gs://dev-bucket-holo/images/c1daf386-b6be-4a74-ab7a-df4776252c69.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 88816,
+    "sha256_hex": "e8f43550af8c2f99ccb65a47ebc23c387475a8bc1538fe3a7951f767ecec3342",
+    "status": "stored",
+    "created_at": "2025-09-19T11:47:37.651871+00:00",
+    "updated_at": "2025-09-19T11:47:37.817319+00:00"
+  },
+  {
+    "img_id": "4593d03e-8bcc-49d5-a9c4-fd1dac524363",
+    "gcs_uri": "gs://dev-bucket-holo/images/4593d03e-8bcc-49d5-a9c4-fd1dac524363.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 86942,
+    "sha256_hex": "81ec461abeb4893eed1272c749b7232155ef620867f94e110e8b7e0f965610eb",
+    "status": "stored",
+    "created_at": "2025-09-19T11:49:36.843134+00:00",
+    "updated_at": "2025-09-19T11:49:36.928929+00:00"
+  },
+  {
+    "img_id": "d02ca105-6b31-4440-8469-3deb58fa659f",
+    "gcs_uri": "gs://dev-bucket-holo/images/d02ca105-6b31-4440-8469-3deb58fa659f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 81935,
+    "sha256_hex": "a3560e243cb76438aa441fccb017b09776ee82c9475afa05a231189ce511ddc0",
+    "status": "stored",
+    "created_at": "2025-09-19T11:51:16.935146+00:00",
+    "updated_at": "2025-09-19T11:51:17.011523+00:00"
+  },
+  {
+    "img_id": "4457f30f-18b1-424f-a157-ad53c5bec8e2",
+    "gcs_uri": "gs://dev-bucket-holo/images/4457f30f-18b1-424f-a157-ad53c5bec8e2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 59788,
+    "sha256_hex": "d255f9af601e9b1bfdde6982c155f30240c99316ff958b63b167ba25025cfa1e",
+    "status": "stored",
+    "created_at": "2025-09-19T11:58:15.370440+00:00",
+    "updated_at": "2025-09-19T11:58:15.535864+00:00"
+  },
+  {
+    "img_id": "5300a2c5-cd78-4d92-aff4-ad83da649a98",
+    "gcs_uri": "gs://dev-bucket-holo/images/5300a2c5-cd78-4d92-aff4-ad83da649a98.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37816,
+    "sha256_hex": "6644b28cd9e6c22352c1d7d54819c40b329be390f0096653444ef9b82e44a68e",
+    "status": "stored",
+    "created_at": "2025-09-19T12:03:49.707008+00:00",
+    "updated_at": "2025-09-19T12:03:49.854032+00:00"
+  },
+  {
+    "img_id": "f11f5534-87b1-4cf3-8ed1-11af0d9f0a6a",
+    "gcs_uri": "gs://dev-bucket-holo/images/f11f5534-87b1-4cf3-8ed1-11af0d9f0a6a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 31172,
+    "sha256_hex": "11e063b8dd769f54f3fd01c4cc638320346b0e34fa2a3c082ce8923190b36dc8",
+    "status": "stored",
+    "created_at": "2025-09-19T12:05:08.835427+00:00",
+    "updated_at": "2025-09-19T12:05:08.905371+00:00"
+  },
+  {
+    "img_id": "a438c485-34a0-4689-aeda-b697bd9519be",
+    "gcs_uri": "gs://dev-bucket-holo/images/a438c485-34a0-4689-aeda-b697bd9519be.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 43081,
+    "sha256_hex": "41c6a81dd93a577b20f0994505cfbf99251ce805da5b4053c7ba5c9fd4408dd4",
+    "status": "stored",
+    "created_at": "2025-09-19T12:06:02.838592+00:00",
+    "updated_at": "2025-09-19T12:06:02.911587+00:00"
+  },
+  {
+    "img_id": "6081f68d-221c-4bd1-bb06-a1b1466f3c2b",
+    "gcs_uri": "gs://dev-bucket-holo/images/6081f68d-221c-4bd1-bb06-a1b1466f3c2b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 77813,
+    "sha256_hex": "52e0bbccfbd39c964edff27cc58db28261210e212bf14acf2ec0fca68bfe343a",
+    "status": "stored",
+    "created_at": "2025-09-19T12:07:15.812663+00:00",
+    "updated_at": "2025-09-19T12:07:15.899655+00:00"
+  },
+  {
+    "img_id": "e90d6452-21e6-46ce-bbdd-e48681d9f14a",
+    "gcs_uri": "gs://dev-bucket-holo/images/e90d6452-21e6-46ce-bbdd-e48681d9f14a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 83946,
+    "sha256_hex": "0c9e74bf9e9b7f17ac8112dd483892ef217aed69344ec49955c15d81ec7dd00e",
+    "status": "stored",
+    "created_at": "2025-09-19T12:08:01.057710+00:00",
+    "updated_at": "2025-09-19T12:08:01.205330+00:00"
+  },
+  {
+    "img_id": "626c041a-4757-4dd5-beaf-65edc6773bff",
+    "gcs_uri": "gs://dev-bucket-holo/images/626c041a-4757-4dd5-beaf-65edc6773bff.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 43059,
+    "sha256_hex": "da918d8d50d76b9972438931b988ff566ee60fa9811df0e76620ed373dd45e0f",
+    "status": "stored",
+    "created_at": "2025-09-19T12:09:29.422724+00:00",
+    "updated_at": "2025-09-19T12:09:29.497564+00:00"
+  },
+  {
+    "img_id": "51696fc5-cf99-4f80-8543-b8f6f48b3b93",
+    "gcs_uri": "gs://dev-bucket-holo/images/51696fc5-cf99-4f80-8543-b8f6f48b3b93.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 55714,
+    "sha256_hex": "534878ffeaf3c642a41eb3ce0ad9bcecc8080fcff5653a0b063bc88b518e8bb9",
+    "status": "stored",
+    "created_at": "2025-09-19T12:10:07.589272+00:00",
+    "updated_at": "2025-09-19T12:10:07.681860+00:00"
+  },
+  {
+    "img_id": "42c20427-cd85-47ad-8ac1-415c237ac6b8",
+    "gcs_uri": "gs://dev-bucket-holo/images/42c20427-cd85-47ad-8ac1-415c237ac6b8.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37551,
+    "sha256_hex": "c61282c7d7f0326e3e4eec64f654cdd8995c216a43b083db61c9bb8f783c442b",
+    "status": "stored",
+    "created_at": "2025-09-19T12:11:17.941370+00:00",
+    "updated_at": "2025-09-19T12:11:18.029306+00:00"
+  },
+  {
+    "img_id": "4872989d-9a70-4f19-b1ab-9c611ef2972f",
+    "gcs_uri": "gs://dev-bucket-holo/images/4872989d-9a70-4f19-b1ab-9c611ef2972f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 43444,
+    "sha256_hex": "dec72c83fa68ff889b1f977ccb4b5a2618f15213d80e917fd59045c94562b7cd",
+    "status": "stored",
+    "created_at": "2025-09-19T12:12:23.807344+00:00",
+    "updated_at": "2025-09-19T12:12:23.946412+00:00"
+  },
+  {
+    "img_id": "a7af3945-dcb8-4df5-81e3-044ddb4434af",
+    "gcs_uri": "gs://dev-bucket-holo/images/a7af3945-dcb8-4df5-81e3-044ddb4434af.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 39419,
+    "sha256_hex": "6fe3dfc6da13cb5733d2c0300979e8e099751a06a10be7e8fd485137b7d020f4",
+    "status": "stored",
+    "created_at": "2025-09-19T12:15:31.862409+00:00",
+    "updated_at": "2025-09-19T12:15:31.997406+00:00"
+  },
+  {
+    "img_id": "0ad29185-21e3-44d1-8aa7-d6359a08beb0",
+    "gcs_uri": "gs://dev-bucket-holo/images/0ad29185-21e3-44d1-8aa7-d6359a08beb0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 61081,
+    "sha256_hex": "e7693e77027a64e361f6d1918907480123131d01fbe85e15666a8a8ee8a7dfe6",
+    "status": "stored",
+    "created_at": "2025-09-19T12:19:09.493364+00:00",
+    "updated_at": "2025-09-19T12:19:09.569463+00:00"
+  },
+  {
+    "img_id": "b957d93b-dcf8-48a4-953b-ae27d5916e5c",
+    "gcs_uri": "gs://dev-bucket-holo/images/b957d93b-dcf8-48a4-953b-ae27d5916e5c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 46150,
+    "sha256_hex": "20b199f1bf05a27110f6e5a3cfd746b7627c6f978192a01a3f9cf791fbd1b187",
+    "status": "stored",
+    "created_at": "2025-09-19T12:22:19.242991+00:00",
+    "updated_at": "2025-09-19T12:22:19.395087+00:00"
+  },
+  {
+    "img_id": "e8b158e9-462f-4f2e-b4d6-dd388aa2354c",
+    "gcs_uri": "gs://dev-bucket-holo/images/e8b158e9-462f-4f2e-b4d6-dd388aa2354c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 72565,
+    "sha256_hex": "4b4b348d4b7723a28333296f3fd7a2f1cdb956aa94ddb9f58c4f6983e14d566e",
+    "status": "stored",
+    "created_at": "2025-09-19T12:23:35.000405+00:00",
+    "updated_at": "2025-09-19T12:23:35.138148+00:00"
+  },
+  {
+    "img_id": "b5cbe188-2eed-4dcf-9bcc-f1a569fbd5a6",
+    "gcs_uri": "gs://dev-bucket-holo/images/b5cbe188-2eed-4dcf-9bcc-f1a569fbd5a6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 61797,
+    "sha256_hex": "1d1aa81d4dc176affbf16d22c6ddde1fbfb47db5679f8b55d984cbd759a96253",
+    "status": "stored",
+    "created_at": "2025-09-19T12:24:27.923561+00:00",
+    "updated_at": "2025-09-19T12:24:28.003947+00:00"
+  },
+  {
+    "img_id": "ed4408cf-b1c0-4f3e-b767-6f4a485ca6a2",
+    "gcs_uri": "gs://dev-bucket-holo/images/ed4408cf-b1c0-4f3e-b767-6f4a485ca6a2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 49179,
+    "sha256_hex": "012d1d901d34c775f841e58c3db98c763a5a7b11f060410f51bc0e7cdf10d4df",
+    "status": "stored",
+    "created_at": "2025-09-19T12:25:53.510339+00:00",
+    "updated_at": "2025-09-19T12:25:53.654858+00:00"
+  },
+  {
+    "img_id": "f01b0b6c-46bd-454e-a675-dc23f81b6f87",
+    "gcs_uri": "gs://dev-bucket-holo/images/f01b0b6c-46bd-454e-a675-dc23f81b6f87.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37122,
+    "sha256_hex": "9211c595f02f034d885554782a66ec0335a75ed41f9ffeec18a395b9434837c9",
+    "status": "stored",
+    "created_at": "2025-09-19T12:37:09.423581+00:00",
+    "updated_at": "2025-09-19T12:37:09.554710+00:00"
+  },
+  {
+    "img_id": "84f1b7f3-0cab-4034-8f9e-80f6b705b53a",
+    "gcs_uri": "gs://dev-bucket-holo/images/84f1b7f3-0cab-4034-8f9e-80f6b705b53a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 54378,
+    "sha256_hex": "966d0a2893d1f1571629c33f166d128775327a457885188f907ed5e47d0e74c7",
+    "status": "stored",
+    "created_at": "2025-09-19T12:39:11.906912+00:00",
+    "updated_at": "2025-09-19T12:39:11.982852+00:00"
+  },
+  {
+    "img_id": "ab184fd4-e8a7-4a33-a705-fe9d59728d64",
+    "gcs_uri": "gs://dev-bucket-holo/images/ab184fd4-e8a7-4a33-a705-fe9d59728d64.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 61385,
+    "sha256_hex": "8db2112cfb04f0f5d50f4e20503d30ce0ab981aa125adef57ac7be3e24959ef0",
+    "status": "stored",
+    "created_at": "2025-09-19T12:47:03.896188+00:00",
+    "updated_at": "2025-09-19T12:47:04.036217+00:00"
+  },
+  {
+    "img_id": "96b1be77-d76f-49b9-97b2-c4ff50f168d6",
+    "gcs_uri": "gs://dev-bucket-holo/images/96b1be77-d76f-49b9-97b2-c4ff50f168d6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 57710,
+    "sha256_hex": "0670661855388738116fb0e799961d7b6509fd3c9ba174048b73403a8ffda808",
+    "status": "stored",
+    "created_at": "2025-09-19T12:48:36.845085+00:00",
+    "updated_at": "2025-09-19T12:48:36.983697+00:00"
+  },
+  {
+    "img_id": "3bf941d1-8315-421a-83e9-8c9732c63fa6",
+    "gcs_uri": "gs://dev-bucket-holo/images/3bf941d1-8315-421a-83e9-8c9732c63fa6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 40862,
+    "sha256_hex": "23a9b7f2dd50f28eba5a2bf0d8a704ddc5d6c21556f0c11152a45458bb769906",
+    "status": "stored",
+    "created_at": "2025-09-19T12:50:36.894365+00:00",
+    "updated_at": "2025-09-19T12:50:36.968546+00:00"
+  },
+  {
+    "img_id": "db22ba04-8557-469d-9183-1963f9fbe9ec",
+    "gcs_uri": "gs://dev-bucket-holo/images/db22ba04-8557-469d-9183-1963f9fbe9ec.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 40339,
+    "sha256_hex": "2d683740f9d666162736d953d0200d6254b44aae9ab49c0df0a57f291bd0d48f",
+    "status": "stored",
+    "created_at": "2025-09-19T13:05:27.431822+00:00",
+    "updated_at": "2025-09-19T13:05:27.572973+00:00"
+  },
+  {
+    "img_id": "0b6751f6-f922-4e1b-9427-329dc4ddf77b",
+    "gcs_uri": "gs://dev-bucket-holo/images/0b6751f6-f922-4e1b-9427-329dc4ddf77b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 38527,
+    "sha256_hex": "6f51422ad66fd84ad0b2a5c9ac836fbe61b68afa875afc6525f5e4f89b5e5177",
+    "status": "stored",
+    "created_at": "2025-09-19T13:26:03.319891+00:00",
+    "updated_at": "2025-09-19T13:26:03.481515+00:00"
+  },
+  {
+    "img_id": "a5cdee26-4c96-4186-b8aa-88b6d914e9c2",
+    "gcs_uri": "gs://dev-bucket-holo/images/a5cdee26-4c96-4186-b8aa-88b6d914e9c2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 71106,
+    "sha256_hex": "3c90d9c4af8b3b56e2ca6c138b3086c19b1242381e60c841c55d7fd5240cc121",
+    "status": "stored",
+    "created_at": "2025-09-19T13:27:42.749927+00:00",
+    "updated_at": "2025-09-19T13:27:42.823737+00:00"
+  },
+  {
+    "img_id": "ba1616c4-e0f0-4b79-b269-7767c10c9393",
+    "gcs_uri": "gs://dev-bucket-holo/images/ba1616c4-e0f0-4b79-b269-7767c10c9393.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 67199,
+    "sha256_hex": "5e30f5f24f8183a485f701b49747d840cb117a8575241c63164709d3dbd3d30a",
+    "status": "stored",
+    "created_at": "2025-09-19T13:29:50.101868+00:00",
+    "updated_at": "2025-09-19T13:29:50.249444+00:00"
+  },
+  {
+    "img_id": "83b9b81b-f72a-4d22-a3e2-9a3799ed5504",
+    "gcs_uri": "gs://dev-bucket-holo/images/83b9b81b-f72a-4d22-a3e2-9a3799ed5504.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 26987,
+    "sha256_hex": "95f5267fad6e3b59e67173bdd26a21b4426b544b905f41bb00da1f0374aa0b4f",
+    "status": "stored",
+    "created_at": "2025-09-19T13:37:45.258144+00:00",
+    "updated_at": "2025-09-19T13:37:45.392316+00:00"
+  },
+  {
+    "img_id": "bc5a8a3a-488d-47cf-a5ad-926b3e30cd49",
+    "gcs_uri": "gs://dev-bucket-holo/images/bc5a8a3a-488d-47cf-a5ad-926b3e30cd49.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 21323,
+    "sha256_hex": "85931983010410481cb3c4318d7734577bcb89d692692d7834d97eab6e01e5fe",
+    "status": "stored",
+    "created_at": "2025-09-19T13:44:59.714404+00:00",
+    "updated_at": "2025-09-19T13:44:59.864977+00:00"
+  },
+  {
+    "img_id": "4f32ff68-92a4-44a0-839d-3f9f09d2865c",
+    "gcs_uri": "gs://dev-bucket-holo/images/4f32ff68-92a4-44a0-839d-3f9f09d2865c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 21323,
+    "sha256_hex": "85931983010410481cb3c4318d7734577bcb89d692692d7834d97eab6e01e5fe",
+    "status": "stored",
+    "created_at": "2025-09-19T13:46:48.598344+00:00",
+    "updated_at": "2025-09-19T13:46:48.829751+00:00"
+  },
+  {
+    "img_id": "443a62b8-b19f-4429-b90b-fb234d23c315",
+    "gcs_uri": "gs://dev-bucket-holo/images/443a62b8-b19f-4429-b90b-fb234d23c315.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 27956,
+    "sha256_hex": "e82acedec651a50f30671fe47ad44d2d3317cc5b6d2a5a8c576cf591c0f4cac0",
+    "status": "stored",
+    "created_at": "2025-09-19T13:59:26.427414+00:00",
+    "updated_at": "2025-09-19T13:59:26.577121+00:00"
+  },
+  {
+    "img_id": "c24d3637-1814-46dd-8f4a-d4e615054852",
+    "gcs_uri": "gs://dev-bucket-holo/images/c24d3637-1814-46dd-8f4a-d4e615054852.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T14:33:13.541023+00:00",
+    "updated_at": "2025-09-19T14:33:14.770139+00:00"
+  },
+  {
+    "img_id": "b22c0454-9268-40e1-ae35-cd6ca8f2ee3d",
+    "gcs_uri": "gs://dev-bucket-holo/images/b22c0454-9268-40e1-ae35-cd6ca8f2ee3d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T14:35:04.289504+00:00",
+    "updated_at": "2025-09-19T14:35:04.738652+00:00"
+  },
+  {
+    "img_id": "c804b714-cb46-4985-aa2f-f71ca8c31a7c",
+    "gcs_uri": "gs://dev-bucket-holo/images/c804b714-cb46-4985-aa2f-f71ca8c31a7c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T14:36:27.070457+00:00",
+    "updated_at": "2025-09-19T14:36:27.950042+00:00"
+  },
+  {
+    "img_id": "e53ac023-e228-432e-8db8-90c06f2f0876",
+    "gcs_uri": "gs://dev-bucket-holo/images/e53ac023-e228-432e-8db8-90c06f2f0876.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 65958,
+    "sha256_hex": "a0f1b0da98bc0f239bcdaf0b3d48ba1800a78299d022d4a0ae9f38bfc06cf9be",
+    "status": "stored",
+    "created_at": "2025-09-19T14:51:21.762524+00:00",
+    "updated_at": "2025-09-19T14:51:21.932477+00:00"
+  },
+  {
+    "img_id": "5ece9bd0-9243-45c5-947a-8736b195d1d5",
+    "gcs_uri": "gs://dev-bucket-holo/images/5ece9bd0-9243-45c5-947a-8736b195d1d5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 65958,
+    "sha256_hex": "a0f1b0da98bc0f239bcdaf0b3d48ba1800a78299d022d4a0ae9f38bfc06cf9be",
+    "status": "stored",
+    "created_at": "2025-09-19T14:52:30.356377+00:00",
+    "updated_at": "2025-09-19T14:52:30.547558+00:00"
+  },
+  {
+    "img_id": "1c962384-e87f-48a0-b7e2-bd581538db73",
+    "gcs_uri": "gs://dev-bucket-holo/images/1c962384-e87f-48a0-b7e2-bd581538db73.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 21935,
+    "sha256_hex": "2dd9c08cdc0616b73e793a2c4fabb7f252241802c613260eebb47bce767e4007",
+    "status": "stored",
+    "created_at": "2025-09-19T14:52:54.244869+00:00",
+    "updated_at": "2025-09-19T14:52:54.406158+00:00"
+  },
+  {
+    "img_id": "2600ba59-de23-4b88-97cd-8124b13a597d",
+    "gcs_uri": "gs://dev-bucket-holo/images/2600ba59-de23-4b88-97cd-8124b13a597d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 34708,
+    "sha256_hex": "97f2c97200653d3cd34d313edac15dd18532d12f0576d9b8434f4149198a5091",
+    "status": "stored",
+    "created_at": "2025-09-19T14:57:39.087536+00:00",
+    "updated_at": "2025-09-19T14:57:39.236381+00:00"
+  },
+  {
+    "img_id": "deef9303-4f34-4aed-9e69-a289cd8d69f0",
+    "gcs_uri": "gs://dev-bucket-holo/images/deef9303-4f34-4aed-9e69-a289cd8d69f0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37485,
+    "sha256_hex": "a1bc6635707c7ff4751ae7dfb8bb1167b5a5db03357bd2dab7515576b292daed",
+    "status": "stored",
+    "created_at": "2025-09-19T15:09:14.884825+00:00",
+    "updated_at": "2025-09-19T15:09:15.023581+00:00"
+  },
+  {
+    "img_id": "23561320-2e17-4271-a783-fd0cf03f7d71",
+    "gcs_uri": "gs://dev-bucket-holo/images/23561320-2e17-4271-a783-fd0cf03f7d71.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 6321,
+    "sha256_hex": "eb5002e92b359b72e698f7229d262ab288a4fbcc0524f8424b60bc447231e1f3",
+    "status": "stored",
+    "created_at": "2025-09-19T15:26:32.295036+00:00",
+    "updated_at": "2025-09-19T15:26:32.472802+00:00"
+  },
+  {
+    "img_id": "770c695b-fd6c-4597-b80e-fec8b23d163e",
+    "gcs_uri": "gs://dev-bucket-holo/images/770c695b-fd6c-4597-b80e-fec8b23d163e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 6321,
+    "sha256_hex": "eb5002e92b359b72e698f7229d262ab288a4fbcc0524f8424b60bc447231e1f3",
+    "status": "stored",
+    "created_at": "2025-09-19T15:27:04.625244+00:00",
+    "updated_at": "2025-09-19T15:27:04.788155+00:00"
+  },
+  {
+    "img_id": "9328a6cd-91cc-4047-a132-40881a9e0028",
+    "gcs_uri": "gs://dev-bucket-holo/images/9328a6cd-91cc-4047-a132-40881a9e0028.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 5184,
+    "sha256_hex": "cf46711d3e7e93b71c1028c0eac0f21dc5caf07c0bc3f28a4e8c8d71499edc90",
+    "status": "stored",
+    "created_at": "2025-09-19T15:28:49.397153+00:00",
+    "updated_at": "2025-09-19T15:28:49.478064+00:00"
+  },
+  {
+    "img_id": "e547cab3-ed42-4851-a8f7-f47fa97fef37",
+    "gcs_uri": "gs://dev-bucket-holo/images/e547cab3-ed42-4851-a8f7-f47fa97fef37.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 50072,
+    "sha256_hex": "ca0e3a7a643ce0a036eecbb0cba4a6c63a225493c4ae735061033a121fdad35f",
+    "status": "stored",
+    "created_at": "2025-09-19T15:30:59.376605+00:00",
+    "updated_at": "2025-09-19T15:30:59.543595+00:00"
+  },
+  {
+    "img_id": "f7004b3b-8f37-4f7d-adc7-65949a87b457",
+    "gcs_uri": "gs://dev-bucket-holo/images/f7004b3b-8f37-4f7d-adc7-65949a87b457.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 35065,
+    "sha256_hex": "c7bd10b73ea1c304a26e3a72a550f1ea11edfa17b6b00d6df0236625ccdbc9f1",
+    "status": "stored",
+    "created_at": "2025-09-19T16:17:57.815443+00:00",
+    "updated_at": "2025-09-19T16:17:57.967374+00:00"
+  },
+  {
+    "img_id": "eb4129b9-b735-4074-8111-45ed2c0b6cb3",
+    "gcs_uri": "gs://dev-bucket-holo/images/eb4129b9-b735-4074-8111-45ed2c0b6cb3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 81067,
+    "sha256_hex": "da4848bf104c85931f410b375d6f2c227c4a2a6c8cd4b9ecb52a88132761e92e",
+    "status": "stored",
+    "created_at": "2025-09-19T15:36:37.103328+00:00",
+    "updated_at": "2025-09-19T15:36:37.182992+00:00"
+  },
+  {
+    "img_id": "d2cb7a67-7193-44b9-87b5-ce0d61feb232",
+    "gcs_uri": "gs://dev-bucket-holo/images/d2cb7a67-7193-44b9-87b5-ce0d61feb232.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 81067,
+    "sha256_hex": "da4848bf104c85931f410b375d6f2c227c4a2a6c8cd4b9ecb52a88132761e92e",
+    "status": "stored",
+    "created_at": "2025-09-19T15:40:16.042665+00:00",
+    "updated_at": "2025-09-19T15:40:16.198377+00:00"
+  },
+  {
+    "img_id": "3f88bdab-f536-44a2-9039-2702544c6e02",
+    "gcs_uri": "gs://dev-bucket-holo/images/3f88bdab-f536-44a2-9039-2702544c6e02.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 65143,
+    "sha256_hex": "e13c272b1140e2c20bca0e12e1a330b6a35a3e8f598ccc79fc088fd426981531",
+    "status": "stored",
+    "created_at": "2025-09-19T15:59:04.191446+00:00",
+    "updated_at": "2025-09-19T15:59:04.345559+00:00"
+  },
+  {
+    "img_id": "e608569c-be47-43e6-a8f2-2ddbca90617a",
+    "gcs_uri": "gs://dev-bucket-holo/images/e608569c-be47-43e6-a8f2-2ddbca90617a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 34855,
+    "sha256_hex": "42fce5c57e4180cbaf5d7c96ba2426e649b0c48523092ae36b0816b56f15936d",
+    "status": "stored",
+    "created_at": "2025-09-19T16:15:17.275550+00:00",
+    "updated_at": "2025-09-19T16:15:17.419227+00:00"
+  },
+  {
+    "img_id": "783d75d6-b742-4c3a-a922-2443228c2b74",
+    "gcs_uri": "gs://dev-bucket-holo/images/783d75d6-b742-4c3a-a922-2443228c2b74.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 32448,
+    "sha256_hex": "6de74e837534d60cb148301f040f9630490f8c715ceeedcd54c68bd6ea6be033",
+    "status": "stored",
+    "created_at": "2025-09-19T16:16:30.420888+00:00",
+    "updated_at": "2025-09-19T16:16:30.499535+00:00"
+  },
+  {
+    "img_id": "aae9a810-41c9-41ba-91c0-f84b1f927443",
+    "gcs_uri": "gs://dev-bucket-holo/images/aae9a810-41c9-41ba-91c0-f84b1f927443.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 21247,
+    "sha256_hex": "a3266fa96cf62a6ba3303081df2f328e315d64a182d7a3ea46a25b9ca5ed471a",
+    "status": "stored",
+    "created_at": "2025-09-19T16:41:40.971929+00:00",
+    "updated_at": "2025-09-19T16:41:41.144416+00:00"
+  },
+  {
+    "img_id": "f153b786-48c5-47c4-850b-c265c1d4f210",
+    "gcs_uri": "gs://dev-bucket-holo/images/f153b786-48c5-47c4-850b-c265c1d4f210.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 21247,
+    "sha256_hex": "a3266fa96cf62a6ba3303081df2f328e315d64a182d7a3ea46a25b9ca5ed471a",
+    "status": "stored",
+    "created_at": "2025-09-19T16:42:19.957047+00:00",
+    "updated_at": "2025-09-19T16:42:20.112471+00:00"
+  },
+  {
+    "img_id": "27cec1fd-2c92-4119-a6a5-dd36112fa33a",
+    "gcs_uri": "gs://dev-bucket-holo/images/27cec1fd-2c92-4119-a6a5-dd36112fa33a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 52333,
+    "sha256_hex": "eafd39a16b7643f3e2a6075a59bef5bbcce3ac27568825bc3cf97d2f57eccb36",
+    "status": "stored",
+    "created_at": "2025-09-19T16:51:26.955793+00:00",
+    "updated_at": "2025-09-19T16:51:27.117532+00:00"
+  },
+  {
+    "img_id": "7d53b1c6-7204-4e30-93ef-f0739bc92880",
+    "gcs_uri": "gs://dev-bucket-holo/images/7d53b1c6-7204-4e30-93ef-f0739bc92880.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 52333,
+    "sha256_hex": "eafd39a16b7643f3e2a6075a59bef5bbcce3ac27568825bc3cf97d2f57eccb36",
+    "status": "stored",
+    "created_at": "2025-09-19T16:52:41.313532+00:00",
+    "updated_at": "2025-09-19T16:52:41.387510+00:00"
+  },
+  {
+    "img_id": "91047aa0-f9a4-4e23-b08b-eeafd96a9e93",
+    "gcs_uri": "gs://dev-bucket-holo/images/91047aa0-f9a4-4e23-b08b-eeafd96a9e93.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 43590,
+    "sha256_hex": "58f5054b61887ff92bae18dc22d9e8e4946250c0e9dc1664a85451918394dda3",
+    "status": "stored",
+    "created_at": "2025-09-19T16:57:34.636375+00:00",
+    "updated_at": "2025-09-19T16:57:34.772433+00:00"
+  },
+  {
+    "img_id": "c22d1856-bb5d-432f-9ffb-ad31fd17e18d",
+    "gcs_uri": "gs://dev-bucket-holo/images/c22d1856-bb5d-432f-9ffb-ad31fd17e18d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 37493,
+    "sha256_hex": "de317721b178b737c103745ebe0e55eac31fb79224336e7594ff3621ee2e3c89",
+    "status": "stored",
+    "created_at": "2025-09-19T17:08:02.085151+00:00",
+    "updated_at": "2025-09-19T17:08:02.272387+00:00"
+  },
+  {
+    "img_id": "d4103002-f244-443f-bf3d-b9415e83f0d5",
+    "gcs_uri": "gs://dev-bucket-holo/images/d4103002-f244-443f-bf3d-b9415e83f0d5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 17195,
+    "sha256_hex": "1480390f686c36dddcc5ba5fbd0e0eb317be7dbaf53f7eae7098c1ab7138b731",
+    "status": "stored",
+    "created_at": "2025-09-19T17:15:13.094423+00:00",
+    "updated_at": "2025-09-19T17:15:13.228946+00:00"
+  },
+  {
+    "img_id": "b3a93564-ba11-42b5-b923-636aca5de121",
+    "gcs_uri": "gs://dev-bucket-holo/images/b3a93564-ba11-42b5-b923-636aca5de121.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T18:13:04.365640+00:00",
+    "updated_at": "2025-09-19T18:13:07.237898+00:00"
+  },
+  {
+    "img_id": "e8fe9b36-e169-4040-b14c-cea4deb21cbd",
+    "gcs_uri": "gs://dev-bucket-holo/images/e8fe9b36-e169-4040-b14c-cea4deb21cbd.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2374,
+    "sha256_hex": "bf175d6be38adfd683698e9079435ad960c98c7df3f672a16dfdcea3cb242633",
+    "status": "stored",
+    "created_at": "2025-09-19T19:10:51.061206+00:00",
+    "updated_at": "2025-09-19T19:10:51.225157+00:00"
+  },
+  {
+    "img_id": "dcb46ef0-a4f4-4ceb-b66a-e4fc8d19464b",
+    "gcs_uri": "gs://dev-bucket-holo/images/dcb46ef0-a4f4-4ceb-b66a-e4fc8d19464b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T18:06:06.597244+00:00",
+    "updated_at": "2025-09-19T18:06:09.478296+00:00"
+  },
+  {
+    "img_id": "ae924b0e-d6f1-45f3-884b-9cb8f6b85e49",
+    "gcs_uri": "gs://dev-bucket-holo/images/ae924b0e-d6f1-45f3-884b-9cb8f6b85e49.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T18:07:42.604574+00:00",
+    "updated_at": "2025-09-19T18:07:45.478361+00:00"
+  },
+  {
+    "img_id": "2b164eb8-9636-4715-b6f4-8c2a072f0fec",
+    "gcs_uri": "gs://dev-bucket-holo/images/2b164eb8-9636-4715-b6f4-8c2a072f0fec.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T18:10:24.357914+00:00",
+    "updated_at": "2025-09-19T18:10:27.239404+00:00"
+  },
+  {
+    "img_id": "28dc7076-ed1e-4e7c-991e-bf2b42272ae3",
+    "gcs_uri": "gs://dev-bucket-holo/images/28dc7076-ed1e-4e7c-991e-bf2b42272ae3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T18:15:24.677493+00:00",
+    "updated_at": "2025-09-19T18:15:27.558194+00:00"
+  },
+  {
+    "img_id": "11ae8d93-066c-4bb2-ada3-99c88a944fa6",
+    "gcs_uri": "gs://dev-bucket-holo/images/11ae8d93-066c-4bb2-ada3-99c88a944fa6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2716,
+    "sha256_hex": "4003d9800bc2ef0b7f84f1db4ed866e95be7c38cc0bd058a55173cf07a824142",
+    "status": "stored",
+    "created_at": "2025-09-19T18:16:31.078302+00:00",
+    "updated_at": "2025-09-19T18:16:33.965446+00:00"
+  },
+  {
+    "img_id": "72f68b37-b349-4222-87a5-e8e472b2e971",
+    "gcs_uri": "gs://dev-bucket-holo/images/72f68b37-b349-4222-87a5-e8e472b2e971.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 5181,
+    "sha256_hex": "58ec05e4a5d04672e5e60033ab1db9f10bcfed3a5402025db06e2427ced37c6a",
+    "status": "stored",
+    "created_at": "2025-09-19T18:52:14.475220+00:00",
+    "updated_at": "2025-09-19T18:52:15.011232+00:00"
+  },
+  {
+    "img_id": "fdb998ce-38e7-4499-be83-642f88376bd6",
+    "gcs_uri": "gs://dev-bucket-holo/images/fdb998ce-38e7-4499-be83-642f88376bd6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 2362,
+    "sha256_hex": "1cd7e65287586922163b10415f8ab87ba7b3f56058e263d6f0ba65d0d8159ec1",
+    "status": "stored",
+    "created_at": "2025-09-19T18:53:12.802829+00:00",
+    "updated_at": "2025-09-19T18:53:12.966249+00:00"
+  },
+  {
+    "img_id": "f14f33ab-9ce6-4e55-adc6-2be749b84d03",
+    "gcs_uri": "gs://dev-bucket-holo/images/f14f33ab-9ce6-4e55-adc6-2be749b84d03.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 119086,
+    "sha256_hex": "49b1ba98511202323155227c41efe13c1c94f7a9676f705a258b9af590fd34f9",
+    "status": "stored",
+    "created_at": "2025-09-19T19:24:16.190248+00:00",
+    "updated_at": "2025-09-19T19:24:16.365946+00:00"
+  },
+  {
+    "img_id": "70210d77-c53f-41bd-a700-beab150100f3",
+    "gcs_uri": "gs://dev-bucket-holo/images/70210d77-c53f-41bd-a700-beab150100f3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 121434,
+    "sha256_hex": "e8ba38789791c9b0756df5ec02a35513ae96858b39694e25c18fbdfe5fb39790",
+    "status": "stored",
+    "created_at": "2025-09-19T19:25:06.765357+00:00",
+    "updated_at": "2025-09-19T19:25:06.866199+00:00"
+  },
+  {
+    "img_id": "b24dca9e-9963-4eeb-ba1c-de9c531a9505",
+    "gcs_uri": "gs://dev-bucket-holo/images/b24dca9e-9963-4eeb-ba1c-de9c531a9505.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 39306,
+    "sha256_hex": "3f59c304b6edc105e384ce58c77f44858d545bc40be8e2cf0aa7fb41cd0aba9c",
+    "status": "stored",
+    "created_at": "2025-09-19T19:26:43.080489+00:00",
+    "updated_at": "2025-09-19T19:26:43.208362+00:00"
+  },
+  {
+    "img_id": "5d7f7146-14e6-47b9-b37e-f67826d9a0f3",
+    "gcs_uri": "gs://dev-bucket-holo/images/5d7f7146-14e6-47b9-b37e-f67826d9a0f3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 96372,
+    "sha256_hex": "ba9a6f022e93e40f61f53f6920a9cdeed3c38448c83f0bb21d7cc7d5d777bcb0",
+    "status": "stored",
+    "created_at": "2025-09-19T19:28:54.474248+00:00",
+    "updated_at": "2025-09-19T19:28:54.566118+00:00"
+  },
+  {
+    "img_id": "cf123630-abb2-49ae-94b0-8cd1b72e81cd",
+    "gcs_uri": "gs://dev-bucket-holo/images/cf123630-abb2-49ae-94b0-8cd1b72e81cd.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 70271,
+    "sha256_hex": "07096e3f4e05fb926abefcb35e4ddb7fa4d686faae6eab5977adb278d41048c5",
+    "status": "stored",
+    "created_at": "2025-09-19T20:19:20.196725+00:00",
+    "updated_at": "2025-09-19T20:19:20.390842+00:00"
+  },
+  {
+    "img_id": "76b572ce-c512-44d1-8d10-b0d5326eded2",
+    "gcs_uri": "gs://dev-bucket-holo/images/76b572ce-c512-44d1-8d10-b0d5326eded2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 81875,
+    "sha256_hex": "0ab9da693841247f2061407d36e42f0ec721a4cedb6ad8b5615f8017d8cb5577",
+    "status": "stored",
+    "created_at": "2025-09-19T20:25:33.534406+00:00",
+    "updated_at": "2025-09-19T20:25:33.669507+00:00"
+  },
+  {
+    "img_id": "4319e779-89c6-49d3-933a-e211e03d72e4",
+    "gcs_uri": "gs://dev-bucket-holo/images/4319e779-89c6-49d3-933a-e211e03d72e4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 95197,
+    "sha256_hex": "2e5363bb76cac7d64a9b956935b6cd1694c862c0ed540228326246cd2d86172c",
+    "status": "stored",
+    "created_at": "2025-09-19T20:32:40.302539+00:00",
+    "updated_at": "2025-09-19T20:32:40.443800+00:00"
+  },
+  {
+    "img_id": "722488ac-c0af-4268-8ead-52fd547f5451",
+    "gcs_uri": "gs://dev-bucket-holo/images/722488ac-c0af-4268-8ead-52fd547f5451.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 20094,
+    "sha256_hex": "95e9ff1657fddc57c67e3f468b78f8455b1e4d0fb7f83088cdf68dc17f063936",
+    "status": "stored",
+    "created_at": "2025-09-19T20:42:24.950477+00:00",
+    "updated_at": "2025-09-19T20:42:25.131763+00:00"
+  },
+  {
+    "img_id": "aa695bbf-ee36-4095-a7f8-04f67f257605",
+    "gcs_uri": "gs://dev-bucket-holo/images/aa695bbf-ee36-4095-a7f8-04f67f257605.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 88351,
+    "sha256_hex": "e609d4f2833cf4137a2d4c9903bb2998bf06d27ab4fa95b8e9ae70b011913907",
+    "status": "stored",
+    "created_at": "2025-09-19T20:43:00.184529+00:00",
+    "updated_at": "2025-09-19T20:43:00.338389+00:00"
+  },
+  {
+    "img_id": "817a95a5-a80d-48d4-a016-980e9a23ae42",
+    "gcs_uri": "gs://dev-bucket-holo/images/817a95a5-a80d-48d4-a016-980e9a23ae42.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 85631,
+    "sha256_hex": "07384ff1ff5ee4645d154d325906e02758f4632f42750b652a44ef52a4245a51",
+    "status": "stored",
+    "created_at": "2025-09-19T20:46:22.259129+00:00",
+    "updated_at": "2025-09-19T20:46:22.424884+00:00"
+  },
+  {
+    "img_id": "33598dce-684c-4676-b4ab-8d5b79df517b",
+    "gcs_uri": "gs://dev-bucket-holo/images/33598dce-684c-4676-b4ab-8d5b79df517b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 67050,
+    "sha256_hex": "89d6a3915dc312f4d85eb1eebb3293e6d257b3eebe51c5fa4ca9f73c3e66608e",
+    "status": "stored",
+    "created_at": "2025-09-19T20:49:26.552529+00:00",
+    "updated_at": "2025-09-19T20:49:26.638070+00:00"
+  },
+  {
+    "img_id": "9af91aa5-9d3a-4069-9d07-fc7d0d63d351",
+    "gcs_uri": "gs://dev-bucket-holo/images/9af91aa5-9d3a-4069-9d07-fc7d0d63d351.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 94001,
+    "sha256_hex": "828bb724908659daed2fa263d6adc08ed2a50d17ec79343a574bab4bc351fbdc",
+    "status": "stored",
+    "created_at": "2025-09-19T20:52:35.367365+00:00",
+    "updated_at": "2025-09-19T20:52:35.479660+00:00"
+  },
+  {
+    "img_id": "2a3437d6-b85c-499f-a7cb-89c7ca1c2fac",
+    "gcs_uri": "gs://dev-bucket-holo/images/2a3437d6-b85c-499f-a7cb-89c7ca1c2fac.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 90470,
+    "sha256_hex": "0bee056e1de00df455f702623615940fd2516def43f8db68c8978b98bc386b10",
+    "status": "stored",
+    "created_at": "2025-09-19T20:58:30.248318+00:00",
+    "updated_at": "2025-09-19T20:58:30.419224+00:00"
+  },
+  {
+    "img_id": "24652f84-fcb1-4257-9a88-a8f326637310",
+    "gcs_uri": "gs://dev-bucket-holo/images/24652f84-fcb1-4257-9a88-a8f326637310.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 105342,
+    "sha256_hex": "352f52090dfa4bc1a0d3bf771c542e1171ddfceec83c2bd4fd477f7d70f8c969",
+    "status": "stored",
+    "created_at": "2025-09-19T21:04:55.946833+00:00",
+    "updated_at": "2025-09-19T21:04:56.119446+00:00"
+  },
+  {
+    "img_id": "2ee4fea4-eb23-4e19-94ee-f7892bcdecaf",
+    "gcs_uri": "gs://dev-bucket-holo/images/2ee4fea4-eb23-4e19-94ee-f7892bcdecaf.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 136671,
+    "sha256_hex": "452dde803dab24a95216398f605c603c09db76bb8f9d4f47fce3bc9596e579b1",
+    "status": "stored",
+    "created_at": "2025-09-19T21:05:23.058237+00:00",
+    "updated_at": "2025-09-19T21:05:23.258577+00:00"
+  },
+  {
+    "img_id": "7469d334-fc2f-4d44-be9b-cf43d2261fe3",
+    "gcs_uri": "gs://dev-bucket-holo/images/7469d334-fc2f-4d44-be9b-cf43d2261fe3.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 156245,
+    "sha256_hex": "cbc7b4e7792fa2aa6b5df27d35f3fb68bdac8cb13cf0acc172f5959cb18fda55",
+    "status": "stored",
+    "created_at": "2025-09-19T21:06:18.786768+00:00",
+    "updated_at": "2025-09-19T21:06:18.874483+00:00"
+  },
+  {
+    "img_id": "36a3fa09-693a-4aa6-a271-d5071129d007",
+    "gcs_uri": "gs://dev-bucket-holo/images/36a3fa09-693a-4aa6-a271-d5071129d007.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 142125,
+    "sha256_hex": "41ae4c886b8d7348bf14d89facece9744624ff0e725b415a96cfeadec8ce215f",
+    "status": "stored",
+    "created_at": "2025-09-19T21:07:10.606023+00:00",
+    "updated_at": "2025-09-19T21:07:10.695067+00:00"
+  },
+  {
+    "img_id": "3a95ae7a-6aa0-4161-975b-3c04223e6c82",
+    "gcs_uri": "gs://dev-bucket-holo/images/3a95ae7a-6aa0-4161-975b-3c04223e6c82.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 141908,
+    "sha256_hex": "785c2ada96c91e5a204608c820d8fc32416f6556a838545bd4f6c1d3b64427e1",
+    "status": "stored",
+    "created_at": "2025-09-19T21:08:29.904442+00:00",
+    "updated_at": "2025-09-19T21:08:30.010449+00:00"
+  },
+  {
+    "img_id": "b7319358-9f18-4e06-9dec-76e6d7276be9",
+    "gcs_uri": "gs://dev-bucket-holo/images/b7319358-9f18-4e06-9dec-76e6d7276be9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 126680,
+    "sha256_hex": "50456cc23223a6d2149773e5e659bec1a40200e84b6f8603f17904b70ce518d2",
+    "status": "stored",
+    "created_at": "2025-09-19T21:10:58.535961+00:00",
+    "updated_at": "2025-09-19T21:10:58.620527+00:00"
+  },
+  {
+    "img_id": "c9e08e20-f222-4a9a-8134-b6951cfab70b",
+    "gcs_uri": "gs://dev-bucket-holo/images/c9e08e20-f222-4a9a-8134-b6951cfab70b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 134170,
+    "sha256_hex": "195efda97173012ac7e7bab0220b7681f9f6943586db0df88707e89386d24749",
+    "status": "stored",
+    "created_at": "2025-09-19T21:12:12.327923+00:00",
+    "updated_at": "2025-09-19T21:12:12.429088+00:00"
+  },
+  {
+    "img_id": "0ae4157a-e62e-49d3-9441-da0f3519df4d",
+    "gcs_uri": "gs://dev-bucket-holo/images/0ae4157a-e62e-49d3-9441-da0f3519df4d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 77337,
+    "sha256_hex": "d37fc6d888fbbc0e1585708366a503e3f0b8b02a53667ea3beb08bfb58f3ea30",
+    "status": "stored",
+    "created_at": "2025-09-19T21:18:19.298681+00:00",
+    "updated_at": "2025-09-19T21:18:19.442479+00:00"
+  },
+  {
+    "img_id": "bcde6826-d7e9-43ef-bff5-4968913647a9",
+    "gcs_uri": "gs://dev-bucket-holo/images/bcde6826-d7e9-43ef-bff5-4968913647a9.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 122824,
+    "sha256_hex": "ea606a64541a66e4943130877a2cae50067136719d2961933155b156fc77970a",
+    "status": "stored",
+    "created_at": "2025-09-19T21:30:31.170905+00:00",
+    "updated_at": "2025-09-19T21:30:31.314746+00:00"
+  },
+  {
+    "img_id": "7fc07aa1-a379-4d35-b690-6fd6218eff83",
+    "gcs_uri": "gs://dev-bucket-holo/images/7fc07aa1-a379-4d35-b690-6fd6218eff83.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 65592,
+    "sha256_hex": "8cb48b555198cc8be33ca8a10b5204f12343edbba46e26161b40b58726cb222b",
+    "status": "stored",
+    "created_at": "2025-09-19T21:36:18.977501+00:00",
+    "updated_at": "2025-09-19T21:36:19.143791+00:00"
+  },
+  {
+    "img_id": "5ecef94a-ab48-47ab-af1a-976e0661a884",
+    "gcs_uri": "gs://dev-bucket-holo/images/5ecef94a-ab48-47ab-af1a-976e0661a884.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 122148,
+    "sha256_hex": "063b9740d6dce9761259de4f7b47fa40a48215c83c73a67114ad37ea66954da7",
+    "status": "stored",
+    "created_at": "2025-09-19T21:37:57.872533+00:00",
+    "updated_at": "2025-09-19T21:37:57.950880+00:00"
+  },
+  {
+    "img_id": "0868657b-ae0c-461d-a119-f3b21f86ac8e",
+    "gcs_uri": "gs://dev-bucket-holo/images/0868657b-ae0c-461d-a119-f3b21f86ac8e.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 90792,
+    "sha256_hex": "ea45118d8d81668756ad4163ee6c0bb050e6c82e0dfbaa6e37ad147599f8bc3c",
+    "status": "stored",
+    "created_at": "2025-09-19T21:44:03.648762+00:00",
+    "updated_at": "2025-09-19T21:44:03.812683+00:00"
+  },
+  {
+    "img_id": "b47fd564-1b12-4e6a-861e-6082141f04e5",
+    "gcs_uri": "gs://dev-bucket-holo/images/b47fd564-1b12-4e6a-861e-6082141f04e5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 39521,
+    "sha256_hex": "b9e7c88870a5aeb17b276fd8eef99a4a2935d295b34d60ccce5b66d39059d457",
+    "status": "stored",
+    "created_at": "2025-09-19T21:45:44.392020+00:00",
+    "updated_at": "2025-09-19T21:45:44.520407+00:00"
+  },
+  {
+    "img_id": "7ca86b49-3460-44eb-aa01-7ecfa5aee583",
+    "gcs_uri": "gs://dev-bucket-holo/images/7ca86b49-3460-44eb-aa01-7ecfa5aee583.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 71519,
+    "sha256_hex": "40ee9774705b45726aaf266541ad9733652c9cdac7a6ac3bdbae45908a9f27e1",
+    "status": "stored",
+    "created_at": "2025-09-19T21:47:00.390787+00:00",
+    "updated_at": "2025-09-19T21:47:00.461142+00:00"
+  },
+  {
+    "img_id": "f91591d8-c409-46a1-9417-13f4dd420c1c",
+    "gcs_uri": "gs://dev-bucket-holo/images/f91591d8-c409-46a1-9417-13f4dd420c1c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 139096,
+    "sha256_hex": "f3015616301ef6ca97c312852919b706d86c5e1c605169b48a52a7a650db12f4",
+    "status": "stored",
+    "created_at": "2025-09-19T21:48:35.723513+00:00",
+    "updated_at": "2025-09-19T21:48:35.804394+00:00"
+  },
+  {
+    "img_id": "211ade84-262f-4a77-8d64-fc5f001f9f6b",
+    "gcs_uri": "gs://dev-bucket-holo/images/211ade84-262f-4a77-8d64-fc5f001f9f6b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 47714,
+    "sha256_hex": "d9d5e7ce752cbe9eddbd476ff59154ca7f6993d37d1e3ae80b3d0d1c54592ad7",
+    "status": "stored",
+    "created_at": "2025-09-19T21:49:45.576708+00:00",
+    "updated_at": "2025-09-19T21:49:45.657235+00:00"
+  },
+  {
+    "img_id": "83882474-579b-4d8e-ac3c-0ed440e2cdf5",
+    "gcs_uri": "gs://dev-bucket-holo/images/83882474-579b-4d8e-ac3c-0ed440e2cdf5.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 97602,
+    "sha256_hex": "4d43e00368cdf39c49670ba6641fbf87da72e499789db2ba3a789d475f4feb9c",
+    "status": "stored",
+    "created_at": "2025-09-19T21:56:54.103890+00:00",
+    "updated_at": "2025-09-19T21:56:54.244035+00:00"
+  },
+  {
+    "img_id": "d3ecacb1-832f-4a06-a624-815b8d5aa1f7",
+    "gcs_uri": "gs://dev-bucket-holo/images/d3ecacb1-832f-4a06-a624-815b8d5aa1f7.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 120435,
+    "sha256_hex": "25c00a7a0121e2863c3316329ebb0b3c938971a3859e732f6f227be58ec0a193",
+    "status": "stored",
+    "created_at": "2025-09-19T21:58:19.641270+00:00",
+    "updated_at": "2025-09-19T21:58:19.721948+00:00"
+  },
+  {
+    "img_id": "45492b68-7512-4836-9402-8f609e601049",
+    "gcs_uri": "gs://dev-bucket-holo/images/45492b68-7512-4836-9402-8f609e601049.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 80977,
+    "sha256_hex": "69ee2311f90ddbe81d020ffc3a5f21de1b2a22949045fc9d6c3620931003e33e",
+    "status": "stored",
+    "created_at": "2025-09-19T22:03:00.400294+00:00",
+    "updated_at": "2025-09-19T22:03:00.558971+00:00"
+  },
+  {
+    "img_id": "cbf552bb-4ac2-4bc9-8932-ecf9cabc65ea",
+    "gcs_uri": "gs://dev-bucket-holo/images/cbf552bb-4ac2-4bc9-8932-ecf9cabc65ea.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 111614,
+    "sha256_hex": "ddb97e1d71ad142dc32a22558374b5c36669dbd9ff15905eea55cf4754ff1f2d",
+    "status": "stored",
+    "created_at": "2025-09-19T22:03:20.819780+00:00",
+    "updated_at": "2025-09-19T22:03:20.977105+00:00"
+  },
+  {
+    "img_id": "15be2c37-75d7-4338-b6d0-6a7282ace779",
+    "gcs_uri": "gs://dev-bucket-holo/images/15be2c37-75d7-4338-b6d0-6a7282ace779.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 76062,
+    "sha256_hex": "a26a82f9ad0cc65b4f0bb6591c1818f6bffa2a315eecd4986fc8b59e571f338f",
+    "status": "stored",
+    "created_at": "2025-09-19T22:04:42.944834+00:00",
+    "updated_at": "2025-09-19T22:04:43.048347+00:00"
+  },
+  {
+    "img_id": "ab25673f-1b79-4dd1-a0e0-29804d96c21f",
+    "gcs_uri": "gs://dev-bucket-holo/images/ab25673f-1b79-4dd1-a0e0-29804d96c21f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 108365,
+    "sha256_hex": "875974544312dd04ef4d05ac854fc8f1ecfe16371da5f73d20b0a1e05d47fb5f",
+    "status": "stored",
+    "created_at": "2025-09-19T22:04:43.811287+00:00",
+    "updated_at": "2025-09-19T22:04:43.966654+00:00"
+  },
+  {
+    "img_id": "19d04d3a-0800-4a53-baec-7ae87adee624",
+    "gcs_uri": "gs://dev-bucket-holo/images/19d04d3a-0800-4a53-baec-7ae87adee624.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 58553,
+    "sha256_hex": "8a689180be9ae3c90698eff22ef341f8f0aa2bf392e5686823418d6d22f936b6",
+    "status": "stored",
+    "created_at": "2025-09-19T22:15:44.150553+00:00",
+    "updated_at": "2025-09-19T22:15:44.281952+00:00"
+  },
+  {
+    "img_id": "233146d5-e88f-4734-93a4-3ef04770e90c",
+    "gcs_uri": "gs://dev-bucket-holo/images/233146d5-e88f-4734-93a4-3ef04770e90c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 109708,
+    "sha256_hex": "c4c8f70af77cc6b528ed6b7839ffa5b6b3a1f88509419f33336c742337322179",
+    "status": "stored",
+    "created_at": "2025-09-19T22:16:57.075411+00:00",
+    "updated_at": "2025-09-19T22:16:57.158837+00:00"
+  },
+  {
+    "img_id": "d0791fd7-84d8-4728-a29b-63602a5a580a",
+    "gcs_uri": "gs://dev-bucket-holo/images/d0791fd7-84d8-4728-a29b-63602a5a580a.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 115711,
+    "sha256_hex": "90a3401aaa90441aa861d60359860e6035097c5d129ddb985211b4c7e1a7dd39",
+    "status": "stored",
+    "created_at": "2025-09-19T22:36:39.353778+00:00",
+    "updated_at": "2025-09-19T22:36:39.525978+00:00"
+  },
+  {
+    "img_id": "2383ab09-f25e-4682-bd73-90d3546dd8ac",
+    "gcs_uri": "gs://dev-bucket-holo/images/2383ab09-f25e-4682-bd73-90d3546dd8ac.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 26840,
+    "sha256_hex": "b2feb6d209b4e0c9ce4ba6d88662e2c6be988d3e6fbca7101d9d4882ae196cf4",
+    "status": "stored",
+    "created_at": "2025-09-19T22:37:50.895268+00:00",
+    "updated_at": "2025-09-19T22:37:51.051192+00:00"
+  },
+  {
+    "img_id": "de864cb6-d5ed-4d61-95b2-2371f3fbff6c",
+    "gcs_uri": "gs://dev-bucket-holo/images/de864cb6-d5ed-4d61-95b2-2371f3fbff6c.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 74318,
+    "sha256_hex": "34dea1fd142e51aa47d8109c095b09332ea59392b061e829e3b3ddabce11d1f8",
+    "status": "stored",
+    "created_at": "2025-09-19T22:39:06.030458+00:00",
+    "updated_at": "2025-09-19T22:39:06.118489+00:00"
+  },
+  {
+    "img_id": "522e93de-ff3a-40ae-9e6e-941002d039b6",
+    "gcs_uri": "gs://dev-bucket-holo/images/522e93de-ff3a-40ae-9e6e-941002d039b6.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 106551,
+    "sha256_hex": "53ca316d4e4be7ff6613bed0d0463f7556607072cfa0429067b364d8a403c2ca",
+    "status": "stored",
+    "created_at": "2025-09-19T22:39:59.506398+00:00",
+    "updated_at": "2025-09-19T22:39:59.596119+00:00"
+  },
+  {
+    "img_id": "5edc3e59-a29e-46cc-9a9e-2d5a4eb3646b",
+    "gcs_uri": "gs://dev-bucket-holo/images/5edc3e59-a29e-46cc-9a9e-2d5a4eb3646b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 118739,
+    "sha256_hex": "490c604feee0ff9aab91c8debcbf7fb19992e4ece161248d8fd5b2dcf18ebd86",
+    "status": "stored",
+    "created_at": "2025-09-19T22:41:41.547817+00:00",
+    "updated_at": "2025-09-19T22:41:41.633531+00:00"
+  },
+  {
+    "img_id": "08cb408f-dc11-4ba8-a955-6ee4eba58dbb",
+    "gcs_uri": "gs://dev-bucket-holo/images/08cb408f-dc11-4ba8-a955-6ee4eba58dbb.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 106298,
+    "sha256_hex": "1c95f0ee5793b3772dc4a90b9f658fd6c1a36edd3fb5fca8be944f57590856f5",
+    "status": "stored",
+    "created_at": "2025-09-19T22:43:50.868455+00:00",
+    "updated_at": "2025-09-19T22:43:50.958405+00:00"
+  },
+  {
+    "img_id": "9edfc419-7b1d-474c-9525-dab49234d29b",
+    "gcs_uri": "gs://dev-bucket-holo/images/9edfc419-7b1d-474c-9525-dab49234d29b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 59845,
+    "sha256_hex": "01522b826a80652c2740f4d995039649260efacc938a02ab4c9e9ac5f0d71c96",
+    "status": "stored",
+    "created_at": "2025-09-19T22:44:53.613807+00:00",
+    "updated_at": "2025-09-19T22:44:53.692232+00:00"
+  },
+  {
+    "img_id": "3fc882b0-ee94-4b3a-8a68-90ed315459e2",
+    "gcs_uri": "gs://dev-bucket-holo/images/3fc882b0-ee94-4b3a-8a68-90ed315459e2.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 38005,
+    "sha256_hex": "dddb9a679e35796e0be5283675556d8a9c150252087bf657d2236e0345ec1753",
+    "status": "stored",
+    "created_at": "2025-09-19T22:45:41.829822+00:00",
+    "updated_at": "2025-09-19T22:45:41.969402+00:00"
+  },
+  {
+    "img_id": "a2c6290a-775c-4626-90a1-e0a7edde60f0",
+    "gcs_uri": "gs://dev-bucket-holo/images/a2c6290a-775c-4626-90a1-e0a7edde60f0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 67452,
+    "sha256_hex": "5085fb629986bafb82b940902b075909480f13310e3652bb922429859328ec79",
+    "status": "stored",
+    "created_at": "2025-09-19T22:47:11.782958+00:00",
+    "updated_at": "2025-09-19T22:47:11.879277+00:00"
+  },
+  {
+    "img_id": "2de5fd0c-85c5-4b33-9bb9-2e9962024895",
+    "gcs_uri": "gs://dev-bucket-holo/images/2de5fd0c-85c5-4b33-9bb9-2e9962024895.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 93589,
+    "sha256_hex": "5a77db890185f692a1091f1eeff43e29675c27ae52ced709fc5e3c9190185d40",
+    "status": "stored",
+    "created_at": "2025-09-19T22:50:22.950233+00:00",
+    "updated_at": "2025-09-19T22:50:23.134104+00:00"
+  },
+  {
+    "img_id": "59cc70b8-386b-4132-989a-5d401e2bb40d",
+    "gcs_uri": "gs://dev-bucket-holo/images/59cc70b8-386b-4132-989a-5d401e2bb40d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 111863,
+    "sha256_hex": "95ac08fb60b8e6f51f768cec2a676d10b267b5d13a73d4be697505cd5d262be3",
+    "status": "stored",
+    "created_at": "2025-09-19T22:54:36.367986+00:00",
+    "updated_at": "2025-09-19T22:54:36.522158+00:00"
+  },
+  {
+    "img_id": "b637c728-b82b-4fe0-a454-e100b007b319",
+    "gcs_uri": "gs://dev-bucket-holo/images/b637c728-b82b-4fe0-a454-e100b007b319.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 86301,
+    "sha256_hex": "5abe2cbfdc89b872a68caf16f80053c0612f8d6e841de2142cdfdcd31658628c",
+    "status": "stored",
+    "created_at": "2025-09-19T22:56:29.612324+00:00",
+    "updated_at": "2025-09-19T22:56:29.703926+00:00"
+  },
+  {
+    "img_id": "8af8c3fe-a122-462c-993b-1197edd47ed4",
+    "gcs_uri": "gs://dev-bucket-holo/images/8af8c3fe-a122-462c-993b-1197edd47ed4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 105610,
+    "sha256_hex": "2db37df7080dbac10c0350ed540b838d5985464280ea8e580dd3d3864746397a",
+    "status": "stored",
+    "created_at": "2025-09-19T22:58:26.906710+00:00",
+    "updated_at": "2025-09-19T22:58:27.053513+00:00"
+  },
+  {
+    "img_id": "8fdd64a3-9852-47c2-9db1-e5ab48284ceb",
+    "gcs_uri": "gs://dev-bucket-holo/images/8fdd64a3-9852-47c2-9db1-e5ab48284ceb.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 115937,
+    "sha256_hex": "5a2a52504d711397dd8cfd52d8e096207424dabe973cb942f09abeace87e3434",
+    "status": "stored",
+    "created_at": "2025-09-19T22:59:07.004199+00:00",
+    "updated_at": "2025-09-19T22:59:07.079570+00:00"
+  },
+  {
+    "img_id": "e55e9da3-0d54-49ca-8c08-bed5287fe3ef",
+    "gcs_uri": "gs://dev-bucket-holo/images/e55e9da3-0d54-49ca-8c08-bed5287fe3ef.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 131775,
+    "sha256_hex": "3a74bcab180264702cdc1ab8b44fe3e49d7e05775fe91ceffcc934340b1a4a2f",
+    "status": "stored",
+    "created_at": "2025-09-19T23:28:53.235492+00:00",
+    "updated_at": "2025-09-19T23:28:53.387492+00:00"
+  },
+  {
+    "img_id": "dfc6da0e-99f5-47b5-9b07-9f58c3ac5322",
+    "gcs_uri": "gs://dev-bucket-holo/images/dfc6da0e-99f5-47b5-9b07-9f58c3ac5322.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 142834,
+    "sha256_hex": "ad98740fe95fdddb3cd5f2710a9ebd788c6c919b37268d0f56fa33851a8f64ea",
+    "status": "stored",
+    "created_at": "2025-09-19T23:32:49.571713+00:00",
+    "updated_at": "2025-09-19T23:32:49.658428+00:00"
+  },
+  {
+    "img_id": "7e563cf9-c98c-4414-96c8-62a640b65301",
+    "gcs_uri": "gs://dev-bucket-holo/images/7e563cf9-c98c-4414-96c8-62a640b65301.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 87243,
+    "sha256_hex": "83ea0a491c967535532460686cfef6bde7098bae114bc5b44738d6f82594fa81",
+    "status": "stored",
+    "created_at": "2025-09-19T23:34:37.241625+00:00",
+    "updated_at": "2025-09-19T23:34:37.419345+00:00"
+  },
+  {
+    "img_id": "ae9efe6a-c61a-4d84-9a4e-396a7b4ee1bf",
+    "gcs_uri": "gs://dev-bucket-holo/images/ae9efe6a-c61a-4d84-9a4e-396a7b4ee1bf.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 107942,
+    "sha256_hex": "23b6c20c01d4e2c1ded72f088d03a7dbbb239cd73cd426c0ca58b50dcdc89e44",
+    "status": "stored",
+    "created_at": "2025-09-20T03:25:16.459139+00:00",
+    "updated_at": "2025-09-20T03:25:16.567384+00:00"
+  },
+  {
+    "img_id": "f4824324-dcb7-4ed8-9f40-6ab8f5f4c5a7",
+    "gcs_uri": "gs://dev-bucket-holo/images/f4824324-dcb7-4ed8-9f40-6ab8f5f4c5a7.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 78170,
+    "sha256_hex": "ecea59cd691d044e77998280b5c879f18e99988af49c5727029589865e01a587",
+    "status": "stored",
+    "created_at": "2025-09-20T00:56:01.766734+00:00",
+    "updated_at": "2025-09-20T00:56:01.858284+00:00"
+  },
+  {
+    "img_id": "628919ad-19f0-4499-ae65-0ba538b1bb6f",
+    "gcs_uri": "gs://dev-bucket-holo/images/628919ad-19f0-4499-ae65-0ba538b1bb6f.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 97618,
+    "sha256_hex": "36799f6b9f952eb23612787fb497b588ca85fcfe5c617a2daa350c51e1ea5b9a",
+    "status": "stored",
+    "created_at": "2025-09-20T02:53:16.199634+00:00",
+    "updated_at": "2025-09-20T02:53:16.394586+00:00"
+  },
+  {
+    "img_id": "81b98201-d7e9-45f8-a794-bb41475eed2d",
+    "gcs_uri": "gs://dev-bucket-holo/images/81b98201-d7e9-45f8-a794-bb41475eed2d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 59964,
+    "sha256_hex": "dc4ff801b51f7b99aa049f8c64e9258afc98ee769a5a1d747215906e5e4517cd",
+    "status": "stored",
+    "created_at": "2025-09-20T03:13:23.158425+00:00",
+    "updated_at": "2025-09-20T03:13:23.340267+00:00"
+  },
+  {
+    "img_id": "77cd1525-a563-427a-a6f6-58f132bc4993",
+    "gcs_uri": "gs://dev-bucket-holo/images/77cd1525-a563-427a-a6f6-58f132bc4993.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 40419,
+    "sha256_hex": "ce882ef959f23c0ded62c3d3123533c9bbf2beb94d36b9c8b8202cdc68c111b9",
+    "status": "stored",
+    "created_at": "2025-09-20T03:16:36.891141+00:00",
+    "updated_at": "2025-09-20T03:16:36.970535+00:00"
+  },
+  {
+    "img_id": "a36005ca-5916-4a35-a08a-d9624fb8791d",
+    "gcs_uri": "gs://dev-bucket-holo/images/a36005ca-5916-4a35-a08a-d9624fb8791d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 91244,
+    "sha256_hex": "f4109d2fb1366f0c5267d90461e0b0ebc747841ca00d81ba45aa9bf546859e9b",
+    "status": "stored",
+    "created_at": "2025-09-20T03:22:08.442804+00:00",
+    "updated_at": "2025-09-20T03:22:08.605535+00:00"
+  },
+  {
+    "img_id": "7ca7a16e-4bac-449d-adc6-9337fd040672",
+    "gcs_uri": "gs://dev-bucket-holo/images/7ca7a16e-4bac-449d-adc6-9337fd040672.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 80214,
+    "sha256_hex": "46013f3241230fd74a7e7508dd8a3095ceda6f3c55680a6240415d24c9cae5ae",
+    "status": "stored",
+    "created_at": "2025-09-20T03:33:10.555249+00:00",
+    "updated_at": "2025-09-20T03:33:10.739523+00:00"
+  },
+  {
+    "img_id": "03eaa848-2b3a-40ec-ba0a-9f88aec8c02b",
+    "gcs_uri": "gs://dev-bucket-holo/images/03eaa848-2b3a-40ec-ba0a-9f88aec8c02b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 74625,
+    "sha256_hex": "fd1f60bb07f023cbd6a0140d532c27e1b8d28ff1826e14e37e03cc38aadbd213",
+    "status": "stored",
+    "created_at": "2025-09-20T03:34:11.935202+00:00",
+    "updated_at": "2025-09-20T03:34:12.120136+00:00"
+  },
+  {
+    "img_id": "c4ec2c26-58e1-4e08-aa75-81a1fe240645",
+    "gcs_uri": "gs://dev-bucket-holo/images/c4ec2c26-58e1-4e08-aa75-81a1fe240645.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 93635,
+    "sha256_hex": "b15658e9fe113540894dc82dce4b52cabe81fea3005854dbf72ad461330696fd",
+    "status": "stored",
+    "created_at": "2025-09-20T03:36:25.019259+00:00",
+    "updated_at": "2025-09-20T03:36:25.118437+00:00"
+  },
+  {
+    "img_id": "0be06572-d717-49fa-a87c-177a12aae5bc",
+    "gcs_uri": "gs://dev-bucket-holo/images/0be06572-d717-49fa-a87c-177a12aae5bc.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 52645,
+    "sha256_hex": "95293b5520217063680838efc445c57064969cb4cdf574331e7d11d94a79fbf1",
+    "status": "stored",
+    "created_at": "2025-09-20T03:38:37.882936+00:00",
+    "updated_at": "2025-09-20T03:38:38.067978+00:00"
+  },
+  {
+    "img_id": "ada395ba-72e6-423f-99f9-d736e7b25209",
+    "gcs_uri": "gs://dev-bucket-holo/images/ada395ba-72e6-423f-99f9-d736e7b25209.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 70569,
+    "sha256_hex": "f778d77f1b59ee480b55dfca095a8f7c961678cefd0d26835fd051a318349531",
+    "status": "stored",
+    "created_at": "2025-09-20T04:39:46.097351+00:00",
+    "updated_at": "2025-09-20T04:39:46.295800+00:00"
+  },
+  {
+    "img_id": "748424a9-cc22-4f21-97e3-edc4ddd7758b",
+    "gcs_uri": "gs://dev-bucket-holo/images/748424a9-cc22-4f21-97e3-edc4ddd7758b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 64397,
+    "sha256_hex": "b4e2384085f752f98ca2502c8093b3904ab0025a1769f4d7921dd93c39721c72",
+    "status": "stored",
+    "created_at": "2025-09-20T04:39:49.462251+00:00",
+    "updated_at": "2025-09-20T04:39:49.597222+00:00"
+  },
+  {
+    "img_id": "c49886c0-5576-4c00-8111-0c9a7985348d",
+    "gcs_uri": "gs://dev-bucket-holo/images/c49886c0-5576-4c00-8111-0c9a7985348d.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 69231,
+    "sha256_hex": "e2e08f68002072ab7c00c91670c7f8d6b622b260ff577639f9fd2dd91c94f11a",
+    "status": "stored",
+    "created_at": "2025-09-20T04:41:35.980016+00:00",
+    "updated_at": "2025-09-20T04:41:36.057898+00:00"
+  },
+  {
+    "img_id": "980fc0f9-fa05-480d-8793-908793a54f86",
+    "gcs_uri": "gs://dev-bucket-holo/images/980fc0f9-fa05-480d-8793-908793a54f86.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 76577,
+    "sha256_hex": "f356a6caf939efebbd84331119ff20a4d307be82700fccc6535314f35fcbec85",
+    "status": "stored",
+    "created_at": "2025-09-20T04:42:22.148690+00:00",
+    "updated_at": "2025-09-20T04:42:22.223993+00:00"
+  },
+  {
+    "img_id": "4ccde41c-0f3a-48eb-8227-f8e2942f3949",
+    "gcs_uri": "gs://dev-bucket-holo/images/4ccde41c-0f3a-48eb-8227-f8e2942f3949.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 71526,
+    "sha256_hex": "ded5727f298ad6d880e1518594da6aa3c92915bfac8b422cca7ec69207da5392",
+    "status": "stored",
+    "created_at": "2025-09-20T04:43:24.784347+00:00",
+    "updated_at": "2025-09-20T04:43:24.853503+00:00"
+  },
+  {
+    "img_id": "37176d92-27ca-40e4-8b3a-60290464584b",
+    "gcs_uri": "gs://dev-bucket-holo/images/37176d92-27ca-40e4-8b3a-60290464584b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 61010,
+    "sha256_hex": "a195319834ac69062c10753425618b4a0a82a6e92967ea8f36196a290a7c4904",
+    "status": "stored",
+    "created_at": "2025-09-20T04:46:14.951810+00:00",
+    "updated_at": "2025-09-20T04:46:15.039332+00:00"
+  },
+  {
+    "img_id": "8bdea8c4-d865-4412-9096-b8313a3e1cb0",
+    "gcs_uri": "gs://dev-bucket-holo/images/8bdea8c4-d865-4412-9096-b8313a3e1cb0.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 106376,
+    "sha256_hex": "0699de96d53ea53dc425abdc5065a4cb0efdcea6878908aeaf34030c47911214",
+    "status": "stored",
+    "created_at": "2025-09-20T06:05:20.735238+00:00",
+    "updated_at": "2025-09-20T06:05:20.912868+00:00"
+  },
+  {
+    "img_id": "11960d82-9bfd-4fc8-9093-3f6985fe05b7",
+    "gcs_uri": "gs://dev-bucket-holo/images/11960d82-9bfd-4fc8-9093-3f6985fe05b7.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 52525,
+    "sha256_hex": "33b329e228afaada7a7ab45509e16ba8e5cd9c8d8617139de5ab9710c52f9222",
+    "status": "stored",
+    "created_at": "2025-09-20T06:06:40.782060+00:00",
+    "updated_at": "2025-09-20T06:06:40.881785+00:00"
+  },
+  {
+    "img_id": "985f232a-0f7c-4865-a583-cb1d030bce7b",
+    "gcs_uri": "gs://dev-bucket-holo/images/985f232a-0f7c-4865-a583-cb1d030bce7b.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 124759,
+    "sha256_hex": "068052d94f132f22dae4e1137b2205c6d01accc56f9b24f5a7963ead39001d12",
+    "status": "stored",
+    "created_at": "2025-09-20T07:48:20.867346+00:00",
+    "updated_at": "2025-09-20T07:48:21.108133+00:00"
+  },
+  {
+    "img_id": "2d07e7df-09b8-4b9a-b754-99f410bdd715",
+    "gcs_uri": "gs://dev-bucket-holo/images/2d07e7df-09b8-4b9a-b754-99f410bdd715.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 75213,
+    "sha256_hex": "1e0a2e9707fe3bec54f45f2bc5c6fa25d04ea66a4465f1e464a2611818720cef",
+    "status": "stored",
+    "created_at": "2025-09-20T07:49:27.577124+00:00",
+    "updated_at": "2025-09-20T07:49:27.739020+00:00"
+  },
+  {
+    "img_id": "5ceeba33-b01a-4b79-a6e3-09ac4877c312",
+    "gcs_uri": "gs://dev-bucket-holo/images/5ceeba33-b01a-4b79-a6e3-09ac4877c312.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 60331,
+    "sha256_hex": "7a605b8d4f65cc39248e0a2d86d56c90a45a50bdc233a492a28b22844a6da1e2",
+    "status": "stored",
+    "created_at": "2025-09-22T04:07:35.037940+00:00",
+    "updated_at": "2025-09-22T04:07:35.235510+00:00"
+  },
+  {
+    "img_id": "346ecd11-cc89-4890-ad1c-2b5bfc4138b4",
+    "gcs_uri": "gs://dev-bucket-holo/images/346ecd11-cc89-4890-ad1c-2b5bfc4138b4.jpg",
+    "mime_type": "image/jpeg",
+    "size_bytes": 47610,
+    "sha256_hex": "f1f12baea076b54628faf9a5fd14753dc12c6dbb119473aabd914cd231c22c22",
+    "status": "stored",
+    "created_at": "2025-09-22T14:55:26.903378+00:00",
+    "updated_at": "2025-09-22T14:55:27.117395+00:00"
+  }
+]
