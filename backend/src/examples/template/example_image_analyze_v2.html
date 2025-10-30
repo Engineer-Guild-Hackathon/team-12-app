@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>example_image_analyze_v2</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
+      background: #f5f7fa;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: #fff;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.05);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: .75rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: .65rem;
+      border-radius: 8px;
+      border: 1px solid #cbd5f5;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    input[type="file"] {
+      margin-top: .5rem;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: .75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: #1e4fd3;
+    }
+
+    .result {
+      margin-top: 1.25rem;
+      border-top: 2px solid #e0e7ff;
+      padding-top: 1.25rem;
+    }
+
+    .pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .4rem .85rem;
+      border-radius: 999px;
+      font-size: .85rem;
+      font-weight: 600;
+    }
+
+    .badge.ok {
+      background: rgba(34, 197, 94, 0.15);
+      color: #15803d;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .badge.warn {
+      background: rgba(248, 113, 113, 0.12);
+      color: #b91c1c;
+      border: 1px solid rgba(248, 113, 113, 0.35);
+    }
+
+    .link {
+      display: inline-block;
+      margin-top: .75rem;
+      word-break: break-all;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: .9rem;
+    }
+
+    .error {
+      color: #b91c1c;
+      background: rgba(248, 113, 113, 0.12);
+      border: 1px solid rgba(248, 113, 113, 0.35);
+      padding: .85rem 1rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="section">
+      <h1>Gemini 画像解析 v2 デモ</h1>
+      <p class="muted">
+        画像ファイルと質問文を <code>POST /api/image_analyze</code> に送信し、Gemini の応答(JSON)を表示します。
+        <br />
+        特に <code>ai_reference</code>（<code>grounding_urls</code> の先頭）にリダイレクトを挟まないURLが入っているかを確認できます。
+      </p>
+
+      <form id="analyzeForm" enctype="multipart/form-data">
+        <label for="img_file">画像ファイル (必須)</label>
+        <input type="file" id="img_file" name="img_file" accept="image/*" required />
+
+        <label for="user_question">質問文 (任意)</label>
+        <input type="text" id="user_question" name="user_question"
+          placeholder="例: この画像に写る動物について詳しく教えてください。" />
+
+        <label for="latitude">緯度 latitude (任意)</label>
+        <input type="number" id="latitude" name="latitude" step="0.000001" min="-90" max="90"
+          placeholder="35.681236" />
+
+        <label for="longitude">経度 longitude (任意)</label>
+        <input type="number" id="longitude" name="longitude" step="0.000001" min="-180" max="180"
+          placeholder="139.767125" />
+
+        <button type="submit">解析を実行する</button>
+      </form>
+
+      <div id="resultArea" class="result"></div>
+    </section>
+  </div>
+
+  <script>
+    const resultArea = document.getElementById("resultArea");
+
+    const esc = (value) => (value ?? "").toString().replace(/[&<>"]/g, (ch) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;"
+    }[ch]));
+
+    document.getElementById("analyzeForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      resultArea.innerHTML = "<p class=\"muted\">送信中...</p>";
+
+      const form = event.currentTarget;
+      const fd = new FormData(form);
+      const file = fd.get("img_file");
+
+      if (!file || (file instanceof File && file.size === 0)) {
+        resultArea.innerHTML = '<div class="error">画像ファイルは必須です。</div>';
+        return;
+      }
+
+      // 空のテキストフィールドは送信しない
+      ["user_question", "latitude", "longitude"].forEach((key) => {
+        const value = fd.get(key);
+        if (value === null) return;
+        if (typeof value === "string" && value.trim() === "") {
+          fd.delete(key);
+        }
+      });
+
+      try {
+        const resp = await fetch("/api/image_analyze", {
+          method: "POST",
+          body: fd,
+        });
+
+        const data = await resp.json().catch(() => ({}));
+        const aiResponse = data?.ai_response ?? data?.aiResponse ?? null;
+        const grounding = Array.isArray(aiResponse?.grounding_urls)
+          ? aiResponse.grounding_urls
+          : Array.isArray(aiResponse?.groundingUrls)
+            ? aiResponse.groundingUrls
+            : [];
+        const aiReference = grounding.length > 0 ? grounding[0] : null;
+        const isRedirectLike =
+          typeof aiReference === "string" && aiReference.includes("vertexaisearch.cloud.google.com");
+
+        const badgeClass = aiReference
+          ? (isRedirectLike ? "badge warn" : "badge ok")
+          : "badge warn";
+        const badgeText = !aiReference
+          ? "⚠️ ai_reference は取得できませんでした"
+          : isRedirectLike
+            ? "⚠️ リダイレクトURLの可能性があります"
+            : "✅ リダイレクト無しのURLが取得できました";
+
+        const linkHtml = aiReference
+          ? `<a class="link" href="${esc(aiReference)}" target="_blank" rel="noopener noreferrer">${esc(aiReference)}</a>`
+          : "<span class=\"muted\">ai_reference は取得できませんでした</span>";
+
+        const jsonText = esc(JSON.stringify(data, null, 2));
+
+        const statusText = resp.ok ? "" : esc(resp.status + " " + (resp.statusText || ""));
+        const errorBlock = resp.ok
+          ? ""
+          : `<div class="error">解析に失敗しました (${statusText})</div>`;
+
+        resultArea.innerHTML = `
+          ${errorBlock}
+          <div class="${badgeClass}" style="margin-top:.75rem;">${badgeText}</div>
+          <div style="margin-top:.75rem;"><strong>ai_reference:</strong><br />${linkHtml}</div>
+          <div style="margin-top:1rem;">
+            <strong>レスポンス(JSON)</strong>
+            <pre class="pre">${jsonText}</pre>
+          </div>
+        `;
+      } catch (error) {
+        resultArea.innerHTML = `<div class="error">通信エラーが発生しました: ${esc(error)}</div>`;
+      }
+    });
+  </script>
+</body>
+
+</html>
