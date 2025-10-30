@@ -14,6 +14,12 @@
 - 直近の `posts` テーブルバックアップとダウンロード済み画像を比較し、`posts` に存在しない `img_id` の画像ファイルを削除します。
 - `--dry-run` オプションで削除対象を確認することができます。
 
+### refresh_ai_references.py
+- Gemini による画像解析を再実行し、`posts.ai_reference` を再取得・更新します。
+- 引数なしで実行すると全投稿を対象にします。
+- `["post_id1", "post_id2"]` のように `post_id`(文字列) のリストを渡すと、その投稿のみを対象にします。
+- グラウンディングURLが取得できるまで無制限に再試行し、成功した場合のみ更新します。
+
 ### restore_backup.py
 - `download_backup.py` で生成した JSON と画像を指定した日付 (`YYYYMMDD`) から読み込み、Cloud SQL と Cloud Storage に復元します。
 - 日付パラメータはコマンドライン引数で受け取り、必要に応じて `--skip-db` / `--skip-gcs` により片側のみ復元することが可能です。
@@ -28,6 +34,12 @@ python backend/src/backup/download_backup.py
 
 # 投稿データとダウンロード済み画像の整合性チェック (削除対象を確認だけする例)
 python backend/src/backup/cleanup_orphan_images.py --dry-run
+
+# ai_reference の再取得 (全投稿)
+python backend/src/backup/refresh_ai_references.py
+
+# 特定の投稿のみ ai_reference を再取得 (JSON 形式のリストを渡す例)
+python backend/src/backup/refresh_ai_references.py '["51f9bfb7-7d2e-4f55-9402-2a13b0e5f9f2","8b8dfd9f-0ba9-4f33-8845-8bb9f4c4a2b7"]'
 
 # 削除の実行
 python backend/src/backup/cleanup_orphan_images.py
