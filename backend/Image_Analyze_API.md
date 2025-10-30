@@ -9,8 +9,7 @@
 > - `POST /api/image_analyze` は **画像を保存（GCS + DB）→ 取得した `gs://` を使って Gemini 解析** の順で処理し、結果と `img_id` を返します。   
 > - `image_url` は **`gs://` のみ対応**。HTTP(S) など他スキームは **400** になります。   
 > - 画像 MIME はサーバ側で処理（`python-magic`）し、**非画像は 400**。空バイトも 400。   
-> - モデル出力は **厳密に JSON（object_label / ai_answer / ai_question の3フィールド）** にパースし、**`grounding_urls`（参照元URLの配列）** を添えて返します。URLは可能な限りリダイレクト解決後の最終URLになります（解決できなかった場合は元のリダイレクトURL）。 
-
+> - モデル出力は **厳密に JSON（object_label / ai_answer / ai_question の3フィールド）** にパースし、**`grounding_urls`（参照元URLの配列）** を添えて返します。URLはトークン付きのリダイレクトURIであり、現状、グラウンディングされた日時から30日間のみ有効です。
 ---
 
 ## エンドポイント一覧
@@ -205,13 +204,14 @@ console.log(data.img_id, data.ai_response);
 - **MIME 検出とバリデーション**：`python-magic` でファイルタイプの検出。`image/*` 以外は拒否。空データも拒否。   
 - **サイズに応じた呼び分け**：小さい画像は **JPEG に縮小**して **インライン**（Base64/バイナリ）投稿。大きい画像は **Files API** で一旦アップロード後にモデル生成。どちらも最終出力は **JSON 3フィールド + grounding_urls** にパース。   
 - **JSON スキーマ強制**：新しい SDK では `response_mime_type="application/json"` と `response_schema` による構造化出力を指定（未対応環境ではフォールバック）。
-- **グラウンディングURLのリダイレクト解消**：Gemini が返すリダイレクトURL（`https://vertexaisearch.cloud.google.com/grounding-api-redirect/...`）はサーバ側で `requests` による HEAD/GET を試み、到達した最終URLに置き換えた上で `grounding_urls` に格納します（解決に失敗した場合は元URLをそのまま返します）。
-- **位置情報と時刻の文脈注入**：`latitude`/`longitude` が与えられた場合は Geopy で逆ジオコーディングし、`timezonefinder` でタイムゾーンを推定、現地時刻（ISO 8601）をプロンプトに含めてモデルへ渡します。
+- **グラウンディングURLのリダイレクト**：Gemini が返すリダイレクトURL（`https://vertexaisearch.cloud.google.com/grounding-api-redirect/...`）は30日間のみ有効で、requestsなどを用いてサーバー側からリダイレクト後のURLを取得することは、仕様上不可能となっています。
 
 > **引用**  
 > Google 検索によるグラウンディングの場合、グラウンディングされた結果が生成されると、メタデータには、グラウンディングされた結果の生成に使用したコンテンツのパブリッシャーにリダイレクトする URI が付与されます。メタデータにはパブリッシャーのドメインも付与されます。指定された URI には、グラウンディングされた結果の生成後 30 日間アクセスできます。  
 
 > 重要: 指定された URI にはエンドユーザーが直接アクセスする必要があります。自動化された手段でプログラムによってクエリを実行してはいけません。自動アクセスが検出されると、Google Search によるグラウンディングのサービスがリダイレクト URI の提供を停止することがあります。リダイレクト URI を再起動するには、カスタマー エンジニアにお問い合わせください。
+
+- **位置情報と時刻の文脈注入**：`latitude`/`longitude` が与えられた場合は Geopy で逆ジオコーディングし、`timezonefinder` でタイムゾーンを推定、現地時刻（ISO 8601）をプロンプトに含めてモデルへ渡します。
 
 ---
 
