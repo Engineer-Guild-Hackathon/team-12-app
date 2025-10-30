@@ -9,15 +9,14 @@
 > - `POST /api/image_analyze` は **画像を保存（GCS + DB）→ 取得した `gs://` を使って Gemini 解析** の順で処理し、結果と `img_id` を返します。   
 > - `image_url` は **`gs://` のみ対応**。HTTP(S) など他スキームは **400** になります。   
 > - 画像 MIME はサーバ側で処理（`python-magic`）し、**非画像は 400**。空バイトも 400。   
-> - モデル出力は **厳密に JSON（object_label / ai_answer / ai_question の3フィールド）** にパースして返します。 
-
+> - モデル出力は **厳密に JSON（object_label / ai_answer / ai_question の3フィールド）** にパースし、**`grounding_urls`（参照元URLの配列）** を添えて返します。URLはトークン付きのリダイレクトURIであり、現状、グラウンディングされた日時から30日間のみ有効です。
 ---
 
 ## エンドポイント一覧
 
 | メソッド | パス | 概要 |
 |:--------:|:----|:----|
-| POST | `/v1/analyze` | 画像（ファイル or gs://URL）を解析し、**JSON 3フィールド**を返す |
+| POST | `/v1/analyze` | 画像（ファイル or gs://URL）を解析し、**JSON 3フィールド + grounding_urls** を返す |
 | POST | `/api/image_analyze` | 画像を保存し（GCS+DB）、保存した `gs://` で解析して結果 + `img_id` + `location` を返す |
 
 ---
@@ -44,7 +43,7 @@
 ### 説明
 - マルチパートで **`file`** を送るか、フォームフィールド **`image_url`** に **`gs://` 形式の URL** を指定します（**どちらか必須**）。  
 - 画像はバイト列を取得後に MIME を推定し、**画像でない場合は 400**。空データも 400。  
-- 画像サイズが小さい場合は **インライン（画像バイト列）**、大きい場合は **Files API** でアップロードしてから Gemini を呼びます。応答テキストは JSON としてパースし、**`{object_label, ai_answer, ai_question}`** の辞書として返します。  
+- 画像サイズが小さい場合は **インライン（画像バイト列）**、大きい場合は **Files API** でアップロードしてから Gemini を呼びます。応答テキストは JSON としてパースし、**`{object_label, ai_answer, ai_question, grounding_urls}`** の辞書として返します。  
 
 ### リクエスト（multipart/form-data）
 - `file`: 画像ファイル（任意）  
@@ -58,10 +57,16 @@
   "ai_response": {
     "object_label": "検知した物体の名前（簡潔）",
     "ai_answer": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",
-    "ai_question": "その物体に関する興味深い問いを1つ（日本語）"
+    "ai_question": "その物体に関する興味深い問いを1つ（日本語）",
+    "grounding_urls": [
+      "https://example.com/reference-1",
+      "https://example.com/reference-2"
+    ]
   }
 }
 ```
+
+`grounding_urls` は検索結果の参照元を示す配列で、最初の要素がもっとも有力な引用に対応します（引用が無い場合は空配列）。
 
 ### 失敗例（400）
 ```json
@@ -110,11 +115,17 @@ curl -X POST http://localhost:5001/v1/analyze   -F "image_url=gs://your-bucket/i
   "ai_response": {
     "object_label": "検知した物体の名前（簡潔）",
     "ai_answer": "物体の詳細な説明・特徴・生態・用途など（日本語で数文）",
-    "ai_question": "その物体に関する興味深い問いを1つ（日本語）"
+    "ai_question": "その物体に関する興味深い問いを1つ（日本語）",
+    "grounding_urls": [
+      "https://example.com/reference-1",
+      "https://example.com/reference-2"
+    ]
   },
   "location": "大丸, 北5条西4, 中央区, 札幌市, 北海道, 日本"  
 }
 ```
+
+`grounding_urls` が空の場合、モデルが外部参照を返さなかったことを意味します。
 
 ### 失敗例（400 / 502 / 503 / 504）
 ```json
@@ -183,14 +194,23 @@ const data = await resp.json();
 console.log(data.img_id, data.ai_response);
 ```
 
+`grounding_urls` の先頭要素を投稿データの `ai_reference` として保存すると、Gemini が参照した代表的なページへのリンクをユーザーに提示できます（配列が空の場合は参照なし）。
+
 ---
 
 ## 実装詳細（参考）
 
 - **URL 受け取りは gs:// のみ**：HTTP(S) 等は 400。GCS からは `google.cloud.storage` でバイト取得。末尾が`/`であるURL（フォルダ）はエラー。   
 - **MIME 検出とバリデーション**：`python-magic` でファイルタイプの検出。`image/*` 以外は拒否。空データも拒否。   
-- **サイズに応じた呼び分け**：小さい画像は **JPEG に縮小**して **インライン**（Base64/バイナリ）投稿。大きい画像は **Files API** で一旦アップロード後にモデル生成。どちらも最終出力は **JSON 3フィールド**にパース。   
+- **サイズに応じた呼び分け**：小さい画像は **JPEG に縮小**して **インライン**（Base64/バイナリ）投稿。大きい画像は **Files API** で一旦アップロード後にモデル生成。どちらも最終出力は **JSON 3フィールド + grounding_urls** にパース。   
 - **JSON スキーマ強制**：新しい SDK では `response_mime_type="application/json"` と `response_schema` による構造化出力を指定（未対応環境ではフォールバック）。
+- **グラウンディングURLのリダイレクト**：Gemini が返すリダイレクトURL（`https://vertexaisearch.cloud.google.com/grounding-api-redirect/...`）は30日間のみ有効で、requestsなどを用いてサーバー側からリダイレクト後のURLを取得することは、仕様上不可能となっています。
+
+> **引用**  
+> Google 検索によるグラウンディングの場合、グラウンディングされた結果が生成されると、メタデータには、グラウンディングされた結果の生成に使用したコンテンツのパブリッシャーにリダイレクトする URI が付与されます。メタデータにはパブリッシャーのドメインも付与されます。指定された URI には、グラウンディングされた結果の生成後 30 日間アクセスできます。  
+
+> 重要: 指定された URI にはエンドユーザーが直接アクセスする必要があります。自動化された手段でプログラムによってクエリを実行してはいけません。自動アクセスが検出されると、Google Search によるグラウンディングのサービスがリダイレクト URI の提供を停止することがあります。リダイレクト URI を再起動するには、カスタマー エンジニアにお問い合わせください。
+
 - **位置情報と時刻の文脈注入**：`latitude`/`longitude` が与えられた場合は Geopy で逆ジオコーディングし、`timezonefinder` でタイムゾーンを推定、現地時刻（ISO 8601）をプロンプトに含めてモデルへ渡します。
 
 ---
@@ -201,3 +221,5 @@ console.log(data.img_id, data.ai_response);
 - Image API: `/api/images`（アップロード / 取得 / 削除） 
 - Posts API: `/api/posts`（作成 / 取得 / 一覧 / recent / 削除） 
 
+参考資料:
+- [Grounded generation - Google Generative AI App Builder](https://docs.cloud.google.com/generative-ai-app-builder/docs/grounded-gen?utm_source=chatgpt.com&hl=ja)

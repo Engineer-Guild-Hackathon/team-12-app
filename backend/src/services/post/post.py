@@ -31,7 +31,9 @@ class Post(Base):
     latitude = sa.Column(sa.Float, nullable=False)
     longitude = sa.Column(sa.Float, nullable=False)
 
-    is_public = sa.Column(sa.Boolean, nullable=False, server_default=sa.sql.expression.false())
+    is_public = sa.Column(
+        sa.Boolean, nullable=False, server_default=sa.sql.expression.false()
+    )
     post_rarity = sa.Column(sa.Integer, nullable=False, server_default=sa.text("0"))
 
     date = sa.Column(
@@ -45,6 +47,100 @@ class Post(Base):
         onupdate=sa.func.now(),
         nullable=False,
     )
+
+    # --- 返却整形を集約 ---
+    def to_dict(self) -> Dict[str, Any]:
+        """Post オブジェクトを辞書形式に変換して返す"""
+        return {
+            "post_id": str(self.post_id),
+            "user_id": str(self.user_id),
+            "img_id": str(self.img_id),
+            "user_question": self.user_question,
+            "object_label": self.object_label,
+            "ai_answer": self.ai_answer,
+            "ai_question": self.ai_question,
+            "ai_reference": self.ai_reference,
+            "location": self.location,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+            "is_public": self.is_public,
+            "post_rarity": self.post_rarity,
+            "date": self.date.isoformat() if self.date else None,
+            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+        }
+
+
+# --- 型/値の正規化ユーティリティ（update_post の冗長性削減用） ---
+def _parse_str_required(name: str, v: Any) -> str:
+    """必須文字列フィールド"""
+    if v is None or not isinstance(v, str):
+        raise ValueError(f"{name} は文字列で指定してください")
+    return v
+
+
+def _parse_ai_reference(v: Any) -> Optional[str]:
+    """AI 参照フィールド"""
+    # ai_reference（NULL 可）
+    if v is None:
+        return None
+    if not isinstance(v, str):
+        raise ValueError("ai_reference は文字列または None で指定してください")
+    t = v.strip()
+    return t or None
+
+
+def _parse_float(name: str, v: Any) -> float:
+    """必須浮動小数点フィールド"""
+    # 緯度・経度
+    if v is None:
+        raise ValueError(f"{name} は None を指定できません")
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        raise ValueError(f"{name} は数値で指定してください")
+
+
+def _parse_bool(v: Any) -> bool:
+    """ブールフィールド"""
+    # is_public
+    if isinstance(v, bool):
+        return v
+    if isinstance(v, str):
+        lowered = v.strip().lower()
+        if lowered in {"true", "1", "yes", "on"}:
+            return True
+        if lowered in {"false", "0", "no", "off", ""}:
+            return False
+    raise ValueError("is_public は bool もしくはその文字列表現で指定してください")
+
+
+def _parse_nonneg_int(name: str, v: Any) -> int:
+    """非負整数フィールド"""
+    # post_rarity
+    if v is None:
+        raise ValueError(f"{name} は None を指定できません")
+    try:
+        i = int(v)
+    except (TypeError, ValueError):
+        raise ValueError(f"{name} は整数で指定してください")
+    if i < 0:
+        raise ValueError(f"{name} は 0 以上で指定してください")
+    return i
+
+
+def _parse_uuid(name: str, v: Any) -> uuid.UUID:
+    """UUID フィールド"""
+    # img_id
+    if v is None:
+        raise ValueError(f"{name} は None を指定できません")
+    if isinstance(v, uuid.UUID):
+        return v
+    if isinstance(v, str):
+        try:
+            return uuid.UUID(v)
+        except ValueError as exc:
+            raise ValueError(f"{name} は UUID 形式で指定してください") from exc
+    raise ValueError(f"{name} は UUID で指定してください")
 
 
 class PostService:
@@ -96,27 +192,23 @@ class PostService:
                 session.commit()
                 session.refresh(post)
 
-                return {
-                    "post_id": str(post.post_id),
-                    "user_id": str(post.user_id),
-                    "img_id": str(post.img_id),
-                    "user_question": post.user_question,
-                    "object_label": post.object_label,
-                    "ai_answer": post.ai_answer,
-                    "ai_question": post.ai_question,
-                    "ai_reference": post.ai_reference,
-                    "location": post.location,
-                    "latitude": post.latitude,
-                    "longitude": post.longitude,
-                    "is_public": post.is_public,
-                    "post_rarity": post.post_rarity,
-                    "date": post.date.isoformat() if post.date else None,
-                    "updated_at": post.updated_at.isoformat() if post.updated_at else None,
-                }
+                # 返却整形は to_dict() に集約
+                return post.to_dict()
             except Exception as e:
                 session.rollback()
                 print(f"ERROR: failed to insert post: {e}")
                 return None
+
+    @staticmethod
+    def list_all_posts() -> List[Dict[str, Any]]:
+        """公開状態に関わらず全投稿を取得"""
+        if SessionLocal is None or engine is None:
+            raise RuntimeError("Database is not initialized")
+
+        with SessionLocal() as session:
+            rows = session.query(Post).order_by(Post.date.desc()).all()
+            # 返却整形は to_dict() に集約
+            return [p.to_dict() for p in rows]
 
     @staticmethod
     def get_post(post_id: uuid.UUID) -> Optional[Dict[str, Any]]:
@@ -128,24 +220,7 @@ class PostService:
             post = session.get(Post, post_id)
             if not post:
                 return None
-
-            return {
-                "post_id": str(post.post_id),
-                "user_id": str(post.user_id),
-                "img_id": str(post.img_id),
-                "user_question": post.user_question,
-                "object_label": post.object_label,
-                "ai_answer": post.ai_answer,
-                "ai_question": post.ai_question,
-                "ai_reference": post.ai_reference,
-                "location": post.location,
-                "latitude": post.latitude,
-                "longitude": post.longitude,
-                "is_public": post.is_public,
-                "post_rarity": post.post_rarity,
-                "date": post.date.isoformat() if post.date else None,
-                "updated_at": post.updated_at.isoformat() if post.updated_at else None,
-            }
+            return post.to_dict()
 
     @staticmethod
     def list_posts(limit: int = 10, offset: int = 0) -> List[Dict[str, Any]]:
@@ -162,26 +237,8 @@ class PostService:
                 .offset(offset)
                 .all()
             )
-            return [
-                {
-                    "post_id": str(p.post_id),
-                    "user_id": str(p.user_id),
-                    "img_id": str(p.img_id),
-                    "user_question": p.user_question,
-                    "object_label": p.object_label,
-                    "ai_answer": p.ai_answer,
-                    "ai_question": p.ai_question,
-                    "ai_reference": p.ai_reference,
-                    "location": p.location,
-                    "latitude": p.latitude,
-                    "longitude": p.longitude,
-                    "is_public": p.is_public,
-                    "post_rarity": p.post_rarity,
-                    "date": p.date.isoformat() if p.date else None,
-                    "updated_at": p.updated_at.isoformat() if p.updated_at else None,
-                }
-                for p in posts
-            ]
+            # 返却整形は to_dict() に集約
+            return [p.to_dict() for p in posts]
 
     @staticmethod
     def list_posts_before(cutoff: datetime.datetime) -> List[Dict[str, Any]]:
@@ -197,26 +254,7 @@ class PostService:
                 .order_by(Post.date.desc())
                 .all()
             )
-            return [
-                {
-                    "post_id": str(p.post_id),
-                    "user_id": str(p.user_id),
-                    "img_id": str(p.img_id),
-                    "user_question": p.user_question,
-                    "object_label": p.object_label,
-                    "ai_answer": p.ai_answer,
-                    "ai_question": p.ai_question,
-                    "ai_reference": p.ai_reference,
-                    "location": p.location,
-                    "latitude": p.latitude,
-                    "longitude": p.longitude,
-                    "is_public": p.is_public,
-                    "post_rarity": p.post_rarity,
-                    "date": p.date.isoformat() if p.date else None,
-                    "updated_at": p.updated_at.isoformat() if p.updated_at else None,
-                }
-                for p in rows
-            ]
+            return [p.to_dict() for p in rows]
 
     @staticmethod
     def list_posts_before_with_visibility(
@@ -243,26 +281,7 @@ class PostService:
                 .order_by(Post.date.desc())
                 .all()
             )
-            return [
-                {
-                    "post_id": str(p.post_id),
-                    "user_id": str(p.user_id),
-                    "img_id": str(p.img_id),
-                    "user_question": p.user_question,
-                    "object_label": p.object_label,
-                    "ai_answer": p.ai_answer,
-                    "ai_question": p.ai_question,
-                    "ai_reference": p.ai_reference,
-                    "location": p.location,
-                    "latitude": p.latitude,
-                    "longitude": p.longitude,
-                    "is_public": p.is_public,
-                    "post_rarity": p.post_rarity,
-                    "date": p.date.isoformat() if p.date else None,
-                    "updated_at": p.updated_at.isoformat() if p.updated_at else None,
-                }
-                for p in rows
-            ]
+            return [p.to_dict() for p in rows]
 
     @staticmethod
     def delete_post(post_id: uuid.UUID) -> bool:
@@ -277,6 +296,68 @@ class PostService:
             session.delete(post)
             session.commit()
             return True
+
+    @staticmethod
+    def update_post(post_id: uuid.UUID, **fields: Any) -> Optional[Dict[str, Any]]:
+        """
+        指定した post_id の投稿内容を更新する。
+
+        Args:
+            post_id: 更新対象の投稿ID
+            **fields: 更新したいフィールド（user_question, object_label, ai_answer, ai_question,
+                      ai_reference, location, latitude, longitude, is_public, post_rarity, img_id）
+
+        Returns:
+            更新後の投稿情報。post_id が存在しない場合は None。
+
+        Raises:
+            ValueError: フィールド値が不正な場合
+        """
+        if SessionLocal is None or engine is None:
+            raise RuntimeError("Database is not initialized")
+
+        # 更新対象の正規化マップ（key: 正規化関数）
+        normalizers = {
+            "user_question": lambda v: _parse_str_required("user_question", v),
+            "object_label": lambda v: _parse_str_required("object_label", v),
+            "ai_answer": lambda v: _parse_str_required("ai_answer", v),
+            "ai_question": lambda v: _parse_str_required("ai_question", v),
+            "location": lambda v: _parse_str_required("location", v),
+            "ai_reference": _parse_ai_reference,
+            "latitude": lambda v: _parse_float("latitude", v),
+            "longitude": lambda v: _parse_float("longitude", v),
+            "is_public": _parse_bool,
+            "post_rarity": lambda v: _parse_nonneg_int("post_rarity", v),
+            "img_id": lambda v: _parse_uuid("img_id", v),
+        }
+
+        # 許可するキーのみ拾う
+        updates = {k: v for k, v in fields.items() if k in normalizers}
+        if not updates:
+            # 変更指定なし → 現状を返す
+            with SessionLocal() as session:
+                post = session.get(Post, post_id)
+                return post.to_dict() if post else None
+
+        with SessionLocal() as session:
+            post = session.get(Post, post_id)
+            if not post:
+                return None
+
+            changed = False
+
+            # 正規化→差分適用（同値なら代入しない）
+            for key, raw in updates.items():
+                new_val = normalizers[key](raw)
+                if getattr(post, key) != new_val:
+                    setattr(post, key, new_val)
+                    changed = True
+
+            if changed:
+                session.commit()
+                session.refresh(post)
+
+            return post.to_dict()
 
 
 # --- アプリ終了時のクリーンアップ ---

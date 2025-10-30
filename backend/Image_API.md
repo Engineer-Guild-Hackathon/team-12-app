@@ -24,12 +24,12 @@
 
 ## 共通のエラー形式
 
-~~~json
+```json
 {
   "error": "メッセージ",
   "detail": "（任意）詳細"
 }
-~~~
+```
 
 代表的なステータス:
 - `400 Bad Request`（入力エラー・ファイル形式不正）
@@ -56,7 +56,7 @@
 
 ### レスポンス例（201）
 
-~~~json
+```json
 {
   "image": {
     "img_id": "c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
@@ -69,24 +69,24 @@
     "updated_at": "2025-09-12T08:30:00.123456+00:00"
   }
 }
-~~~
+```
 
 ### 失敗例（400）
 
-~~~json
+```json
 {
   "error": "ファイル形式が不正です",
   "detail": "img_file に画像ファイルを指定してください"
 }
-~~~
+```
 
 ### curl 例
 
-~~~bash
+```bash
 # "/path/to/your/photo.jpg" の部分を実際のファイルパスに置き換えてください
 curl -X POST http://localhost:5001/api/images \
   -F "img_file=@/path/to/your/photo.jpg"
-~~~
+```
 
 ---
 
@@ -99,7 +99,7 @@ curl -X POST http://localhost:5001/api/images \
 
 ### レスポンス例（200）
 
-~~~json
+```json
 {
   "image": {
     "img_id": "c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
@@ -113,21 +113,21 @@ curl -X POST http://localhost:5001/api/images \
     "updated_at": "2025-09-12T08:30:00.123456+00:00"
   }
 }
-~~~
+```
 
 ### 失敗例（404）
 
-~~~json
+```json
 {
   "error": "指定された画像は存在しないか、保存処理に失敗しています"
 }
-~~~
+```
 
 ### curl 例
 
-~~~bash
+```bash
 curl http://localhost:5001/api/images/c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6
-~~~
+```
 
 ---
 
@@ -139,26 +139,26 @@ curl http://localhost:5001/api/images/c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6
 
 ### レスポンス例（200）
 
-~~~json
+```json
 {
   "status": "deleted",
   "img_id": "c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6"
 }
-~~~
+```
 
 ### 失敗例（404）
 
-~~~json
+```json
 {
   "error": "指定された画像は存在しません"
 }
-~~~
+```
 
 ### curl 例
 
-~~~bash
+```bash
 curl -X DELETE http://localhost:5001/api/images/c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6
-~~~
+```
 
 ---
 
@@ -166,7 +166,7 @@ curl -X DELETE http://localhost:5001/api/images/c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4
 
 ### 作成（ページ遷移なし、File API を利用）
 
-~~~js
+```js
 const fileInput = document.querySelector('input[type="file"]');
 const formData = new FormData();
 formData.append('img_file', fileInput.files[0]);
@@ -183,11 +183,11 @@ if (resp.ok) {
   console.error("error:", data);
   alert("アップロード失敗: " + (data.error || data.detail));
 }
-~~~
+```
 
 ### 削除（ページ遷移なし）
 
-~~~js
+```js
 const imageId = "c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6";
 const resp = await fetch(`/api/images/${imageId}`, { method: "DELETE" });
 const data = await resp.json();
@@ -196,13 +196,13 @@ if (resp.ok) {
 } else {
   alert("削除に失敗: " + (data.error || "Unknown error"));
 }
-~~~
+```
 
 ---
 
 ## データ例（DB 保存イメージ）
 
-~~~json
+```json
 [
   {
     "img_id": "c1c2a3b4-d5e6-f7a8-b9c0-d1e2f3a4b5c6",
@@ -215,7 +215,7 @@ if (resp.ok) {
     "updated_at": "2025-09-12T08:30:00.123456+00:00"
   }
 ]
-~~~
+```
 
 ---
 

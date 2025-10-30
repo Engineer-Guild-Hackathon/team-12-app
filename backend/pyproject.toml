@@ -30,7 +30,6 @@ ipykernel = "^6.29.5"
 pytest = "^8.2.2"
 pytest-clarity = "^1.0.1"
 code2flow = "^2.5.1"
-requests = "^2.32.3"
 mojimoji = "^0.0.13"
 
 [tool.poetry.group.doc.dependencies]
