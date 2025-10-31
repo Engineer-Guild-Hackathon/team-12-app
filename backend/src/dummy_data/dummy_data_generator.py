@@ -1,4 +1,5 @@
 import datetime as dt
+import re
 import uuid
 from pathlib import Path
 
@@ -224,7 +225,7 @@ dummy_data_list = [
     # },
     {
         "img_path": "/backend/src/dummy_data/dummy_images/dummy_cat_2.jpg",
-        "post_id": "4b3f32a9-dead-def6-64b8-450750ff6c9c",
+        "post_id": "c6db67b6-8429-4b61-b636-2d2ee75ffd85",
         "user_id": "EPf2uVkawzZgXpAflj30xlxR74O2",
         "user_question": "猫だ！！！！！",
         "object_label": "猫",
@@ -238,7 +239,7 @@ dummy_data_list = [
     },
     {
         "img_path": "/backend/src/dummy_data/dummy_images/dummy_cat_3.jpg",
-        "post_id": "fb452cba-0548-5f78-6db6-9b700dc941cb",
+        "post_id": "577681bd-719e-4e88-88e1-bd1c65650824",
         "user_id": "EPf2uVkawzZgXpAflj30xlxR74O2",
         "user_question": "この模様の猫は何ていう種類？",
         "object_label": "猫",
@@ -277,7 +278,19 @@ def dummy_data_generator() -> None:
     """
     ダミーデータを Cloud SQL と Cloud Storage に保存する
     """
+    # v1–v5 対応の簡易UUIDチェック（フロントと同一）
+    UUID_RE = re.compile(
+        r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+        re.IGNORECASE,
+    )
+
     for d in dummy_data_list:
+        # バリデーションチェック
+        post_id_raw = str(d.get("post_id", ""))
+        if not UUID_RE.match(post_id_raw):
+            print(f"skip: post_id が不適切です。post_id={post_id_raw}")
+            continue  # 登録せずに次へ
+
         # 1) 画像を登録する（bytes と正しい MIME を渡す）
         try:
             file_bytes = _load_file_bytes(d["img_path"])
@@ -322,7 +335,7 @@ def dummy_data_generator() -> None:
             print(f"error: DB初期化エラー, detail: {str(e)}")
             return
 
-    print("全てのデータの登録を完了しました！")
+    print("データの登録を完了しました！")
 
 
 def main():
